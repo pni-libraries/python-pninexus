@@ -1,0 +1,44 @@
+from distutils import sysconfig
+from smod import ProgramVersion
+from smod import PythonVersionParser
+Import("python_build_env")
+
+
+python_build_env.Append(LIBS=["pniutils"])
+python_build_env.Prepend(LIBS=["pninx"])
+python_build_env.Prepend(LIBPATH=["../src"])
+
+python_version = sysconfig.get_python_version()
+python_version = python_version.replace(".","")
+
+python_build_env.Append(LIBS=["boost_python","boost_python-py"+python_version])
+python_build_env.Append(CPPPATH=[sysconfig.get_python_inc()])
+
+python_sources = ["NXObject.cpp","NXAttribute.cpp","NXGroup.cpp"]
+
+#,"NXFilter.cpp","NXGroup.cpp",
+#                  "NXFile.cpp","NXField.cpp","NXNumericField.cpp",
+#                  "NXStringField.cpp","NXBinaryField.cpp",
+#                  "nx.cpp"]
+
+module = python_build_env.SharedLibrary("pni/nx/h5/nxh5",python_sources,SHLIBPREFIX="")
+python_build_env.Alias("python",[module])
+
+#installing the python module
+
+python_version = PythonVersionParser().parse()
+
+if python_version < ProgramVersion(2,7,0):
+    subpath = "site-packages"
+else:
+    subpath = "dist-packages"
+
+#assemble installation path
+python_install_path = "$LIBINSTPATH"+"/python"+\
+                      sysconfig.get_python_version()+\
+                      "/"+subpath
+
+python_install = python_build_env.Install(python_install_path,"pni")
+Depends(python_install,module)
+python_build_env.Alias("install",[python_install])
+
