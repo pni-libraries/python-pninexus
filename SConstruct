@@ -34,8 +34,14 @@ env = Environment(variables=var)
 
 #set the compiler used for the build
 env.Replace(CXX = env["CXX"])
+env.Append(CXXFLAGS = ["-std=c++0x"])
+
+env.Append(LIBS = ["pniutils","pninx","hdf5"])
 
 
+build_env = env.Clone()
+Export("build_env")
 
-SConscript["src/SConscript"]
+SConscript("src/SConscript")
+
 

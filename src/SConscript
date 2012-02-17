@@ -1,28 +1,24 @@
 from distutils import sysconfig
 from smod import ProgramVersion
 from smod import PythonVersionParser
-Import("python_build_env")
+Import("build_env")
 
 
-python_build_env.Append(LIBS=["pniutils"])
-python_build_env.Prepend(LIBS=["pninx"])
-python_build_env.Prepend(LIBPATH=["../src"])
+build_env.Append(LIBS=["pniutils"])
+build_env.Prepend(LIBS=["pninx"])
+build_env.Prepend(LIBPATH=["../src"])
 
 python_version = sysconfig.get_python_version()
 python_version = python_version.replace(".","")
 
-python_build_env.Append(LIBS=["boost_python","boost_python-py"+python_version])
-python_build_env.Append(CPPPATH=[sysconfig.get_python_inc()])
+build_env.Append(LIBS=["boost_python","boost_python-py"+python_version])
+build_env.Append(CPPPATH=[sysconfig.get_python_inc()])
 
-python_sources = ["NXObject.cpp","NXAttribute.cpp","NXGroup.cpp"]
+python_sources = ["nx.cpp"]
 
-#,"NXFilter.cpp","NXGroup.cpp",
-#                  "NXFile.cpp","NXField.cpp","NXNumericField.cpp",
-#                  "NXStringField.cpp","NXBinaryField.cpp",
-#                  "nx.cpp"]
 
-module = python_build_env.SharedLibrary("pni/nx/h5/nxh5",python_sources,SHLIBPREFIX="")
-python_build_env.Alias("python",[module])
+module = build_env.SharedLibrary("nxh5",python_sources,SHLIBPREFIX="")
+build_env.Alias("python",[module])
 
 #installing the python module
 
@@ -38,7 +34,7 @@ python_install_path = "$LIBINSTPATH"+"/python"+\
                       sysconfig.get_python_version()+\
                       "/"+subpath
 
-python_install = python_build_env.Install(python_install_path,"pni")
+python_install = build_env.Install(python_install_path,"pni")
 Depends(python_install,module)
-python_build_env.Alias("install",[python_install])
+build_env.Alias("install",[python_install])
 

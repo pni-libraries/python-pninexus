@@ -1,102 +1,66 @@
 #ifndef __NXATTRIBUTEPY_HPP__
 #define __NXATTRIBUTEPY_HPP__
 
-#define WRITE_SIMPLE_ATTR_PTR(wname,imp_type,type,ifix)\
-    void (NXAttribute<imp_type>::*(wname ## __write_ ## ifix ## _simple))\
-            (const type &) const= &NXAttribute<imp_type>::write;\
+#include <pni/utils/Types.hpp>
+#include <pni/utils/Shape.hpp>
+#include <pni/utils/Scalar.hpp>
+#include <pni/utils/Array.hpp>
+#include <pni/utils/Buffer.hpp>
 
-#define WRITE_SIMPLE_ATTR_METHOD(wname,mname,ifix)\
-    .def(#mname,(wname ## __write_ ## ifix ## _simple))
+#include <pni/nx/NX.hpp>
 
-#define WRITE_SCALAR_ATTR_PTR(wname,imp_type,type,ifix)\
-    void (NXAttribute<imp_type>::*(wname ## __write_ ## ifix ## _scalar))\
-            (const Scalar<type> &) const= &NXAttribute<imp_type>::write;\
+using namespace pni::utils;
 
-#define WRITE_SCALAR_ATTR_METHOD(wname,mname,ifix)\
-    .def(#mname,(wname ## __write_ ## ifix ## _scalar))
+template<typename AttributeClass> 
+class AttributeWrapper:private AttributeClass
+{
+    public:
+        //! conversion copy constructor
 
-#define WRITE_ARRAY_ATTR_PTR(wname,imp_type,type,ifix)\
-    void (NXAttribute<imp_type>::*(wname ## __write_ ## ifix ## _array))\
-            (const Array<type,Buffer> &) const= &NXAttribute<imp_type>::write;\
+        //! Creates an AttributeWrapper object  from an AttributeClass object.
+        AttributeWrapper(const AttributeClass &c):
+            AttributeClass(c)
+        {
+        }
 
-#define WRITE_ARRAY_ATTR_METHOD(wname,mname,ifix)\
-    .def(#mname,(wname ## __write_ ## ifix ## _array))
+        //! conversion move constructor
 
-#define NXATTRIBUTE_WRAPPER(wname,imp_type)\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,UInt8,ui8);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Int8,i8);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,UInt16,ui16);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Int16,i16);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,UInt32,ui32);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Int32,i32);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,UInt64,ui64);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Int64,i64);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Float32,f32);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Float64,f64);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,Float128,f128);\
-    WRITE_SIMPLE_ATTR_PTR(wname,imp_type,String,str);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,UInt8,ui8);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Int8,i8);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,UInt16,ui16);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Int16,i16);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,UInt32,ui32);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Int32,i32);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,UInt64,ui64);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Int64,i64);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Float32,f32);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Float64,f64);\
-    WRITE_SCALAR_ATTR_PTR(wname,imp_type,Float128,f128);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,UInt8,ui8);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Int8,i8);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,UInt16,ui16);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Int16,i16);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,UInt32,ui32);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Int32,i32);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,UInt64,ui64);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Int64,i64);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Float32,f32);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Float64,f64);\
-    WRITE_ARRAY_ATTR_PTR(wname,imp_type,Float128,f128);\
-	class_<NXAttribute<imp_type> >(#wname)\
-            .def(init<>())\
-            .add_property("type_id",&NXAttribute<imp_type>::type_id)\
-            .add_property("shape",&NXAttribute<imp_type>::shape)\
-            .def("close",&NXAttribute<imp_type>::close)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_str,str)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_ui8,ui8)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_i8,i8)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_ui16,ui16)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_i16,i16)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_ui32,ui32)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_i32,i32)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_ui64,ui64)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_i64,i64)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_f32,f32)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_f64,f64)\
-            WRITE_SIMPLE_ATTR_METHOD(wname,__write_simple_f128,f128)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_ui8,ui8)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_i8,i8)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_ui16,ui16)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_i16,i16)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_ui32,ui32)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_i32,i32)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_ui64,ui64)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_i64,i64)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_f32,f32)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_f64,f64)\
-            WRITE_SCALAR_ATTR_METHOD(wname,__write_scalar_f128,f128)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_ui8,ui8)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_i8,i8)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_ui16,ui16)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_i16,i16)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_ui32,ui32)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_i32,i32)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_ui64,ui64)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_i64,i64)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_f32,f32)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_f64,f64)\
-            WRITE_ARRAY_ATTR_METHOD(wname,__write_array_f128,f128)\
-            
-            ;
+        //! Creates an AttributeWrapper object form an AttributeClass object.
+        AttributeWrapper(AttributeClass &&c):
+            AttributeClass(std::move(c))
+        {
+        }
+
+        //! conversion copy assignment
+        AttributeWrapper &operator=(const AttributeClass &c)
+        {
+            AttributeClass::operator=(c);
+            return *this;
+        }
+
+        //! conversion move assignment
+        AttributeWrapper &operator=(AttributeClass &&c)
+        {
+            AttributeClass::operator=(std::move(c));
+            return *this;
+        }
+
+        Shape shape() const
+        {
+            return AttributeClass::shape();
+        }
+
+        TypID type_id() const
+        {
+            return AttributeClass::type_id();
+        }
+
+        void close()
+        {
+            AttributeClass::close();
+        }
+        
+};
+
 
 #endif
