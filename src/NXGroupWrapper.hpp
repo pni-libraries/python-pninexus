@@ -33,6 +33,12 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         //! conversion move constructor
         explicit NXGroupWrapper(GType &&g):NXObjectWrapper<GType>(std::move(g)){}
 
+        //----------------------------------------------------------------------
+        //! destructor
+        virtual ~NXGroupWrapper()
+        {
+        }
+
 
         //====================assignment operators==============================
         //! conversion copy assignment from wrapped object
@@ -70,7 +76,14 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         NXGroupWrapper<typename NXObjectMap<GType>::GroupType > create_group(const String &n) const
         {
             typedef typename NXObjectMap<GType>::GroupType GroupType;
-            return NXGroupWrapper<GroupType> (this->_object.create_group(n));
+            NXGroupWrapper<GroupType> g(this->_object.create_group(n));
+            if(g.is_valid()){
+                std::cout<<"everyting went fine"<<std::endl;
+            }else{
+                std::cout<<"something went wrong"<<std::endl;
+            }
+
+            return g;
         }
 
         //! open a type

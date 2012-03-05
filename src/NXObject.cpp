@@ -14,12 +14,12 @@
 #include <pni/utils/ArrayObject.hpp>
 #include <pni/utils/ScalarObject.hpp>
 
-#include "../src/NXObject.hpp"
+#include <pni/nx/NXObject.hpp>
 
-#include "../src/h5/H5AttributeObject.hpp"
-#include "../src/h5/H5Dataset.hpp"
-#include "../src/h5/H5Group.hpp"
-#include "../src/h5/H5File.hpp"
+#include <pni/nx/h5/H5AttributeObject.hpp>
+#include <pni/nx/h5/H5Dataset.hpp>
+#include <pni/nx/h5/H5Group.hpp>
+#include <pni/nx/h5/H5File.hpp>
 
 
 #include "NXObject.hpp"

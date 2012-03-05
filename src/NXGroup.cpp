@@ -17,10 +17,10 @@
 #include <pni/utils/NumericObject.hpp>
 
 
-#include "../src/NXGroup.hpp"
-#include "../src/h5/H5DeflateFilter.hpp"
-#include "../src/NXFilter.hpp"
-#include "../src/NXField.hpp"
+#include <pni/nx/NXGroup.hpp>
+#include <pni/nx/h5/H5DeflateFilter.hpp>
+#include <pni/nx/NXFilter.hpp>
+#include <pni/nx/NXField.hpp>
 
 
 using namespace pni::utils;

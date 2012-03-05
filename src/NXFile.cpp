@@ -17,11 +17,9 @@
 #include <pni/utils/NumericObject.hpp>
 
 
-#include "../src/NXObject.hpp"
-#include "../src/NXGroup.hpp"
-#include "../src/NXFile.hpp"
-#include "../src/h5/NXFileH5Implementation.hpp"
-#include "../src/h5/NXObjectH5Implementation.hpp"
+#include <pni/nx/NXObject.hpp>
+#include <pni/nx/NXGroup.hpp>
+#include <pni/nx/NXFile.hpp>
 
 
 using namespace pni::utils;

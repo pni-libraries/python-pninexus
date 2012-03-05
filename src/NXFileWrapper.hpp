@@ -29,6 +29,12 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
         //! copy conversion constructor from wrapped object
         explicit NXFileWrapper(const FType &f):NXGroupWrapper<FType>(f){}
 
+        //----------------------------------------------------------------------
+        //! destructor
+        ~NXFileWrapper()
+        {
+        }
+
         //=======================assignment operators===========================
         //! move conversion assignment from wrapped object
         NXFileWrapper<FType> &operator=(FType &&f)
@@ -59,6 +65,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
         }
 };
 
+//-----------------------------------------------------------------------------
 template<typename FType> NXFileWrapper<FType> create_file(const String &n,
         bool ov=true,ssize_t s=0)
 {
@@ -73,12 +80,14 @@ template<typename FType> NXFileWrapper<FType> create_file(const String &n,
     return file;
 }
 
+//------------------------------------------------------------------------------
 template<typename FType> NXFileWrapper<FType> open_file(const String &n,
         bool ro=false)
 {
     return NXFileWrapper<FType>(FType::open_file(n,ro)); 
 }
 
+//------------------------------------------------------------------------------
 template<typename FType> void wrap_nxfile(const String &class_name)
 {
     

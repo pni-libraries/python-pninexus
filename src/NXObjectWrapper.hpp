@@ -41,6 +41,13 @@ template<typename OType> class NXObjectWrapper
         explicit NXObjectWrapper(OType &&o):_object(std::move(o)){
         }
 
+        //---------------------------------------------------------------------
+        //! destructor
+        virtual ~NXObjectWrapper()
+        {
+            this->close();
+        }
+
         //==================assignment operators===============================
         //! copy conversion assignment from wrapped type
         NXObjectWrapper<OType> &operator=(const OType &o)
@@ -100,6 +107,12 @@ template<typename OType> class NXObjectWrapper
             return _object.is_valid();
         }
 
+        //! close the object
+        void close()
+        {
+            _object.close();
+        }
+
 
         NXAttribute attr(const String &name,TypeID &id){
 
@@ -113,9 +126,6 @@ template<typename OType> class NXObjectWrapper
 //template function wrapping a single NXObject 
 //type. 
 
-
-
-
 template<typename OType> void wrap_nxobject(const String &class_name)
 {
     class_<NXObjectWrapper<OType> >(class_name.c_str())
@@ -124,6 +134,7 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("path",&NXObjectWrapper<OType>::path)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
+        .def("close",&NXObjectWrapper<OType>::close)
         ;
 }
 
