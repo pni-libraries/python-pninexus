@@ -1,2 +1,5 @@
 *.swp
 *.dblite
+*.log
+build
+
