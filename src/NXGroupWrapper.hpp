@@ -83,7 +83,13 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         }
 
         //-------------------------------------------------------------------------
-        //! open a type
+        /*! \brief open an object
+
+        This method opens an object and tries to figure out by itself what kind
+        of object is has to deal with. Consequently it returns already a Python
+        obeject of the appropriate type. 
+        \param n name of the object to open
+        */
         object open(const String &n) const
         {
             typedef typename NXObjectMap<GType>::ObjectType ObjectType;
@@ -100,6 +106,8 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 
             if(nxobject.object_type() == pni::nx::NXObjectType::NXGROUP)
             {
+                //we use here copy construction thus we do not have to care
+                //of the original nxobject goes out of scope and gets destroyed.
                 NXGroupWrapper<GroupType> *ptr = new
                     NXGroupWrapper<GroupType>(GroupType(nxobject));
                 return object(ptr);
@@ -115,6 +123,11 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         }
 
         //---------------------------------------------------------------------
+        /*! \brief create links
+
+        Exposes only one of the three link creation methods from the original
+        NXGroup object.
+        */
         void link(const String &p,const String &n) const
         {
             this->_object.link(p,n);

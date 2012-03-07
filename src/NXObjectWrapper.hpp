@@ -117,7 +117,7 @@ template<typename OType> class NXObjectWrapper
             return attr_type(this->_object.template attr<type>(name));
 
         NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType>  
-            attr(String name,String type_str)
+            scalar_attr(const String &name,const String &type_str)
         {
             typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType > attr_type;
 
@@ -144,11 +144,38 @@ template<typename OType> class NXObjectWrapper
 
         }
 
-        /*
-        NXAttribute attr(const String &name,TypeID &id,const Shape &s){
+#define ARRAY_ATTRIBUTE_CREATOR(pytype,type,name)\
+        if(type_str == pytype)\
+            return attr_type(this->_object.template attr<type>(name,s));
+
+        NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType> 
+            array_attr(const String &name,const String &type_str,const list &l)
+        {
+
+            typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType > attr_type;
+            Shape s= List2Shape(l);
+            std::cout<<s<<std::endl;
+            ARRAY_ATTRIBUTE_CREATOR("string",String,name);
+            ARRAY_ATTRIBUTE_CREATOR("int8",Int8,name);
+            ARRAY_ATTRIBUTE_CREATOR("uint8",UInt8,name);
+            ARRAY_ATTRIBUTE_CREATOR("int16",Int16,name);
+            ARRAY_ATTRIBUTE_CREATOR("uint16",UInt16,name);
+            ARRAY_ATTRIBUTE_CREATOR("int32",Int32,name);
+            ARRAY_ATTRIBUTE_CREATOR("uint32",UInt32,name);
+            ARRAY_ATTRIBUTE_CREATOR("int64",Int64,name);
+            ARRAY_ATTRIBUTE_CREATOR("uint64",UInt64,name);
+
+            ARRAY_ATTRIBUTE_CREATOR("float32",Float32,name);
+            ARRAY_ATTRIBUTE_CREATOR("float64",Float64,name);
+            ARRAY_ATTRIBUTE_CREATOR("float128",Float128,name);
+
+            ARRAY_ATTRIBUTE_CREATOR("complex64",Complex32,name);
+            ARRAY_ATTRIBUTE_CREATOR("complex128",Complex64,name);
+            ARRAY_ATTRIBUTE_CREATOR("complex256",Complex128,name);
+
 
         }
-        */
+
 };
 
 //template function wrapping a single NXObject 
@@ -162,7 +189,8 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("path",&NXObjectWrapper<OType>::path)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
-        .def("attr",&NXObjectWrapper<OType>::attr)
+        .def("__scalar_attr",&NXObjectWrapper<OType>::scalar_attr)
+        .def("__array_attr",&NXObjectWrapper<OType>::array_attr)
         .def("close",&NXObjectWrapper<OType>::close)
         ;
 }

@@ -1,5 +1,6 @@
 //helper functions to create wrappers
 
+#include <boost/python/extract.hpp>
 #include "NXWrapperHelpers.hpp"
 
 //-----------------------------------------------------------------------------
@@ -40,8 +41,12 @@ list Shape2List(const Shape &s){
 
 //-----------------------------------------------------------------------------
 Shape List2Shape(const list &l){
-    Shape s;
+    long size = len(l);
+    Shape s(size);
+
+    for(ssize_t i=0;i<size;i++){
+        s.dim(i,extract<size_t>(l[i]));
+    }
 
     return s;
-
 }
