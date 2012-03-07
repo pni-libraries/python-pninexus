@@ -43,6 +43,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
+        //-----------------------------------------------------------------------
         //! copy conversion assignment from wrapped object
         NXFileWrapper<FType> &operator=(const FType &f)
         {
@@ -50,6 +51,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
+        //------------------------------------------------------------------------
         //! copy assignment
         NXFileWrapper<FType> &operator=(const NXFileWrapper<FType> &f)
         {
@@ -57,6 +59,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
+        //-------------------------------------------------------------------------
         //! move assignment
         NXFileWrapper<FType> &operator=(NXFileWrapper<FType> &&f)
         {

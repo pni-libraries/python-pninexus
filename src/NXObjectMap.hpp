@@ -7,6 +7,7 @@ template<typename GType> class NXObjectMap{
         typedef void GroupType;
         typedef void FieldType;
         typedef void SelectionType;
+        typedef void AttributeType;
 };
 
 #endif

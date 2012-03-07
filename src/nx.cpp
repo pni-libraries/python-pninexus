@@ -27,6 +27,14 @@ using namespace pni::nx::h5;
 #include "NXFileWrapper.hpp"
 #include "NXObjectMap.hpp"
 
+template<> class NXObjectMap<pni::nx::h5::NXObject>{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXSelection SelectionType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
 
 template<> class NXObjectMap<pni::nx::h5::NXGroup>{
     public:
@@ -34,6 +42,7 @@ template<> class NXObjectMap<pni::nx::h5::NXGroup>{
         typedef pni::nx::h5::NXGroup GroupType;
         typedef pni::nx::h5::NXField FieldType;
         typedef pni::nx::h5::NXSelection SelectionType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
 };
 
 template<> class NXObjectMap<pni::nx::h5::NXFile>{
@@ -42,6 +51,7 @@ template<> class NXObjectMap<pni::nx::h5::NXFile>{
         typedef pni::nx::h5::NXGroup GroupType;
         typedef pni::nx::h5::NXField FieldType;
         typedef pni::nx::h5::NXSelection SelectionType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
 };
 /*
 void NXFileError_translator(pni::nx::NXFileError const &error){
@@ -62,19 +72,28 @@ void NXFieldError_translator(pni::nx::NXFieldError const &error){
 
 BOOST_PYTHON_MODULE(nxh5)
 {
+    //need a wrapper for the object ids
+
+
     /*
     register_exception_translator<pni::nx::NXFileError>(NXFileError_translator);
     register_exception_translator<pni::nx::NXGroupError>(NXGroupError_translator);
     register_exception_translator<pni::nx::NXAttributeError>(NXAttributeError_translator);
     register_exception_translator<pni::nx::NXFieldError>(NXFieldError_translator);
     */
+   
+    //wrap NX-attribute object
+    wrap_nxattribute<pni::nx::h5::NXAttribute>();
+
+    //wrap NX-object
     wrap_nxobject<pni::nx::h5::NXObject>("NXObject");
 
+    //wrap NX-group
     wrap_nxobject<pni::nx::h5::NXGroup>("NXObject_GroupInstance");
     wrap_nxgroup<pni::nx::h5::NXGroup>("NXGroup");
 
-    wrap_nxattribute<pni::nx::h5::NXAttribute>();
 
+    //wrap NX-file
     wrap_nxobject<pni::nx::h5::NXFile>("NXObject_FileInstance");
     wrap_nxgroup<pni::nx::h5::NXFile>("NXGroup_FileInstance");
     wrap_nxfile<pni::nx::h5::NXFile>("NXFile");

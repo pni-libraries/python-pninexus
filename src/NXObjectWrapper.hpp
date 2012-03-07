@@ -3,6 +3,10 @@
 
 #include <pni/utils/Types.hpp>
 
+#include "NXObjectMap.hpp"
+#include "NXAttributeWrapper.hpp"
+
+
 
 template<typename OType> class NXObjectWrapper
 {
@@ -17,19 +21,13 @@ template<typename OType> class NXObjectWrapper
         //! copy constructor
         NXObjectWrapper(const NXObjectWrapper<OType> &o):
             _object(o._object)
-        {
-        }
+        { }
 
         //---------------------------------------------------------------------
         //! move constructor
         NXObjectWrapper(NXObjectWrapper<OType> &&o):
             _object(std::move(o._object)) 
         {
-            if(_object.is_valid()){
-                std::cerr<<"everything went fine!"<<std::endl;
-            }else{
-                std::cerr<<"something went wrong!"<<std::endl;
-            }
         }
 
         //---------------------------------------------------------------------
@@ -45,6 +43,7 @@ template<typename OType> class NXObjectWrapper
         //! destructor
         virtual ~NXObjectWrapper()
         {
+            //close the object on wrapper destruction
             this->close();
         }
 
@@ -52,7 +51,7 @@ template<typename OType> class NXObjectWrapper
         //! copy conversion assignment from wrapped type
         NXObjectWrapper<OType> &operator=(const OType &o)
         {
-            _object = o;
+            if(&_object != &o) _object = o;
             return *this;
         }
 
@@ -60,7 +59,7 @@ template<typename OType> class NXObjectWrapper
         //! move conversion assignment from wrapped type
         NXObjectWrapper<OType> &operator=(OType &&o)
         {
-            _object = std::move(o);
+            if(&_object != &o) _object = std::move(o);
             return *this;
         }
 
@@ -113,14 +112,43 @@ template<typename OType> class NXObjectWrapper
             _object.close();
         }
 
+#define ATTRIBUTE_CREATOR(pytype,type,name)\
+        if(type_str == pytype)\
+            return attr_type(this->_object.template attr<type>(name));
 
-        NXAttribute attr(const String &name,TypeID &id){
+        NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType>  
+            attr(String name,String type_str)
+        {
+            typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType > attr_type;
+
+            ATTRIBUTE_CREATOR("string",String,name);
+            ATTRIBUTE_CREATOR("int8",Int8,name);
+            ATTRIBUTE_CREATOR("uint8",UInt8,name);
+            ATTRIBUTE_CREATOR("int16",Int16,name);
+            ATTRIBUTE_CREATOR("uint16",UInt16,name);
+            ATTRIBUTE_CREATOR("int32",Int32,name);
+            ATTRIBUTE_CREATOR("uint32",UInt32,name);
+            ATTRIBUTE_CREATOR("int64",Int64,name);
+            ATTRIBUTE_CREATOR("uint64",UInt64,name);
+
+            ATTRIBUTE_CREATOR("float32",Float32,name);
+            ATTRIBUTE_CREATOR("float64",Float64,name);
+            ATTRIBUTE_CREATOR("float128",Float128,name);
+
+            ATTRIBUTE_CREATOR("complex64",Complex32,name);
+            ATTRIBUTE_CREATOR("complex128",Complex64,name);
+            ATTRIBUTE_CREATOR("complex256",Complex128,name);
+
+
+            //should raise here an exception if something goes wrong
 
         }
 
+        /*
         NXAttribute attr(const String &name,TypeID &id,const Shape &s){
 
         }
+        */
 };
 
 //template function wrapping a single NXObject 
@@ -134,6 +162,7 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("path",&NXObjectWrapper<OType>::path)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
+        .def("attr",&NXObjectWrapper<OType>::attr)
         .def("close",&NXObjectWrapper<OType>::close)
         ;
 }
