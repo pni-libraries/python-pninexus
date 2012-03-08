@@ -23,6 +23,7 @@ a = numpy.zeros(field.shape,dtype=field.type_id)
 a[...] = 1.421e-1+34.2334j
 field.write(a)
 print field.read()
+print field[0]
 
 field2 = f.open("data2")
 field2.attr("description","string").value = "a stupid data field"

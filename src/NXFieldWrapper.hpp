@@ -243,6 +243,12 @@ template<typename FieldT> class NXFieldWrapper:
             return object();
         }
 
+        object __getitem__(const object &o){
+            std::cout<<"this is getitem"<<std::endl;
+
+            return object();
+        }
+
         
 };
 
@@ -256,6 +262,7 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .add_property("shape",&NXFieldWrapper<FType>::shape)
         .def("write",&NXFieldWrapper<FType>::write)
         .def("read",&NXFieldWrapper<FType>::read)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__)
         ;
 }
 
