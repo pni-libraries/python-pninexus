@@ -176,6 +176,15 @@ template<typename OType> class NXObjectWrapper
 
         }
 
+        NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType>
+            open_attr(const String &n) const
+        {
+            typedef NXAttributeWrapper<typename
+                NXObjectMap<OType>::AttributeType> attr_type;
+
+            return attr_type(this->_object.attr(n));
+        }
+
 };
 
 //template function wrapping a single NXObject 
@@ -189,8 +198,9 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("path",&NXObjectWrapper<OType>::path)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
-        .def("__scalar_attr",&NXObjectWrapper<OType>::scalar_attr)
-        .def("__array_attr",&NXObjectWrapper<OType>::array_attr)
+        .def("attr",&NXObjectWrapper<OType>::scalar_attr)
+        .def("attr",&NXObjectWrapper<OType>::array_attr)
+        .def("attr",&NXObjectWrapper<OType>::open_attr)
         .def("close",&NXObjectWrapper<OType>::close)
         ;
 }

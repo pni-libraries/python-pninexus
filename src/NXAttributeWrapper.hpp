@@ -111,8 +111,13 @@ template<typename AttrType> class NXAttributeWrapper{
                 WRITE_SCALAR(TypeID::FLOAT32,Float32);
                 WRITE_SCALAR(TypeID::FLOAT64,Float64);
                 WRITE_SCALAR(TypeID::FLOAT128,Float128);
+                WRITE_SCALAR(TypeID::COMPLEX32,Complex32);
+                WRITE_SCALAR(TypeID::COMPLEX64,Complex64);
+                WRITE_SCALAR(TypeID::COMPLEX128,Complex128);
             }else{
                 //now things become a bit more difficult
+                //check if object is a numpy array
+
                 
 
             }
