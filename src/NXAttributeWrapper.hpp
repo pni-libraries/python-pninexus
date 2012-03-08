@@ -1,8 +1,13 @@
 #ifndef __NXATTRIBUTEWRAPPER_HPP__
 #define __NXATTRIBUTEWRAPPER_HPP__
 
+extern "C"{
+#include<numpy/arrayobject.h>
+}
+
 #include <pni/utils/Types.hpp>
 #include <pni/utils/Shape.hpp>
+#include <pni/utils/Array.hpp>
 using namespace pni::utils;
 
 #include "NXWrapperHelpers.hpp"
@@ -79,11 +84,63 @@ template<typename AttrType> class NXAttributeWrapper{
             return this->_attribute.is_valid();
         }
 
+#define READ_SCALAR_ATTRIBUTE(typeid,type)\
+        if(this->_attribute.type_id() == typeid){\
+            type value = this->_attribute.template read<type>();\
+            object o(value);\
+            return o;\
+        }
+
+#define READ_ARRAY_ATTRIBUTE(typeid,type)\
+        if(this->_attribute.type_id() == typeid){\
+                PyObject *ptr =\
+                    CreateNumpyArray<type>(this->_attribute.shape());\
+                handle<> h(ptr);\
+                object o(h);\
+                Array<type,RefBuffer> rarray = Numpy2RefArray<type>(o);\
+                this->_attribute.read(rarray);\
+                return o;\
+        }
+
         //--------------read methods-------------------------------
         object read() const
         {
+            if(this->_attribute.shape().rank() == 0){
+                READ_SCALAR_ATTRIBUTE(TypeID::UINT8,UInt8);
+                READ_SCALAR_ATTRIBUTE(TypeID::INT8,Int8);
+                READ_SCALAR_ATTRIBUTE(TypeID::UINT16,UInt16);
+                READ_SCALAR_ATTRIBUTE(TypeID::INT16,Int16);
+                READ_SCALAR_ATTRIBUTE(TypeID::UINT32,UInt32);
+                READ_SCALAR_ATTRIBUTE(TypeID::INT32,Int32);
+                READ_SCALAR_ATTRIBUTE(TypeID::UINT64,UInt64);
+                READ_SCALAR_ATTRIBUTE(TypeID::INT64,Int64);
 
+                READ_SCALAR_ATTRIBUTE(TypeID::FLOAT32,Float32);
+                READ_SCALAR_ATTRIBUTE(TypeID::FLOAT64,Float64);
+                READ_SCALAR_ATTRIBUTE(TypeID::FLOAT128,Float128);
+                READ_SCALAR_ATTRIBUTE(TypeID::COMPLEX32,Complex32);
+                READ_SCALAR_ATTRIBUTE(TypeID::COMPLEX64,Complex64);
+                READ_SCALAR_ATTRIBUTE(TypeID::COMPLEX128,Complex128);
+                
+                READ_SCALAR_ATTRIBUTE(TypeID::STRING,String);
+            }else{
+                //we need to read array data
+                READ_ARRAY_ATTRIBUTE(TypeID::UINT8,UInt8);
+                READ_ARRAY_ATTRIBUTE(TypeID::INT8,Int8);
+                READ_ARRAY_ATTRIBUTE(TypeID::UINT16,UInt16);
+                READ_ARRAY_ATTRIBUTE(TypeID::INT16,Int16);
+                READ_ARRAY_ATTRIBUTE(TypeID::UINT32,UInt32);
+                READ_ARRAY_ATTRIBUTE(TypeID::INT32,Int32);
+                READ_ARRAY_ATTRIBUTE(TypeID::UINT64,UInt64);
+                READ_ARRAY_ATTRIBUTE(TypeID::INT64,Int64);
 
+                READ_ARRAY_ATTRIBUTE(TypeID::FLOAT32,Float32);
+                READ_ARRAY_ATTRIBUTE(TypeID::FLOAT64,Float64);
+                READ_ARRAY_ATTRIBUTE(TypeID::FLOAT128,Float128);
+                READ_ARRAY_ATTRIBUTE(TypeID::COMPLEX32,Complex32);
+                READ_ARRAY_ATTRIBUTE(TypeID::COMPLEX64,Complex64);
+                READ_ARRAY_ATTRIBUTE(TypeID::COMPLEX128,Complex128);
+            }
         }
 
 #define WRITE_SCALAR(typid,type)\
@@ -117,8 +174,58 @@ template<typename AttrType> class NXAttributeWrapper{
             }else{
                 //now things become a bit more difficult
                 //check if object is a numpy array
+                if(!PyArray_CheckExact(o.ptr())){
+                    std::cerr<<"Object is not a numpy array!"<<std::endl;
+                    return;
+                }
+               
+                switch(PyArray_TYPE(o.ptr())){
+                    case NPY_UBYTE:
+                        this->_attribute.write(Numpy2RefArray<UInt8>(o));
+                        break;
+                    case NPY_BYTE:
+                        this->_attribute.write(Numpy2RefArray<Int8>(o));
+                        break;
+                    case NPY_USHORT:
+                        this->_attribute.write(Numpy2RefArray<UInt16>(o));
+                        break;
+                    case NPY_SHORT:
+                        this->_attribute.write(Numpy2RefArray<Int16>(o));
+                        break;
+                    case NPY_UINT:
+                        this->_attribute.write(Numpy2RefArray<UInt32>(o));
+                        break;
+                    case NPY_INT:
+                        this->_attribute.write(Numpy2RefArray<Int32>(o));
+                        break;
+                    case NPY_ULONG:
+                        this->_attribute.write(Numpy2RefArray<UInt64>(o));
+                        break;
+                    case NPY_LONG:
+                        this->_attribute.write(Numpy2RefArray<Int64>(o));
+                        break;
+                    case NPY_FLOAT:
+                        this->_attribute.write(Numpy2RefArray<Float32>(o));
+                        break;
+                    case NPY_DOUBLE:
+                        this->_attribute.write(Numpy2RefArray<Float64>(o));
+                        break;
+                    case NPY_LONGDOUBLE:
+                        this->_attribute.write(Numpy2RefArray<Float128>(o));
+                        break;
+                    case NPY_CFLOAT:
+                        this->_attribute.write(Numpy2RefArray<Complex32>(o));
+                        break;
+                    case NPY_CDOUBLE:
+                        this->_attribute.write(Numpy2RefArray<Complex64>(o));
+                        break;
+                    case NPY_CLONGDOUBLE:
+                        this->_attribute.write(Numpy2RefArray<Complex128>(o));
+                        break;
+                    default:
+                        std::cerr<<"Array is of unkown type!"<<std::endl;
 
-                
+                };
 
             }
 
@@ -133,6 +240,8 @@ template<typename AType> void wrap_nxattribute()
         .add_property("type_id",&NXAttributeWrapper<AType>::type_id)
         .add_property("is_valid",&NXAttributeWrapper<AType>::is_valid)
         .def("read",&NXAttributeWrapper<AType>::read)
+        .add_property("value",&NXAttributeWrapper<AType>::read,
+                              &NXAttributeWrapper<AType>::write)
         .def("write",&NXAttributeWrapper<AType>::write)
         .def("close",&NXAttributeWrapper<AType>::close)
         ;

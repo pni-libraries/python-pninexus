@@ -73,13 +73,6 @@ template<typename FType> NXFileWrapper<FType> create_file(const String &n,
         bool ov=true,ssize_t s=0)
 {
     NXFileWrapper<FType> file(FType::create_file(n,ov,s));
-    if(!file.is_valid())
-    {
-        std::cerr<<"Error creating file!"<<std::endl;
-    }else{
-        std::cerr<<"File creation successful!"<<std::endl;
-    }
-
     return file;
 }
 

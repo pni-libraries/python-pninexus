@@ -6,7 +6,8 @@
  */
 
 extern "C"{
-    #include<Python.h>
+#include<Python.h>
+#include<numpy/arrayobject.h>
 }
 
 #include <boost/python.hpp>
@@ -81,6 +82,10 @@ BOOST_PYTHON_MODULE(nxh5)
     register_exception_translator<pni::nx::NXAttributeError>(NXAttributeError_translator);
     register_exception_translator<pni::nx::NXFieldError>(NXFieldError_translator);
     */
+
+    //this is absolutely necessary - otherwise the nympy API functions do not
+    //work.
+    import_array();
    
     //wrap NX-attribute object
     wrap_nxattribute<pni::nx::h5::NXAttribute>();

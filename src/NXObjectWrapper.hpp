@@ -154,7 +154,6 @@ template<typename OType> class NXObjectWrapper
 
             typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType > attr_type;
             Shape s= List2Shape(l);
-            std::cout<<s<<std::endl;
             ARRAY_ATTRIBUTE_CREATOR("string",String,name);
             ARRAY_ATTRIBUTE_CREATOR("int8",Int8,name);
             ARRAY_ATTRIBUTE_CREATOR("uint8",UInt8,name);
