@@ -71,6 +71,7 @@ void NXFieldError_translator(pni::nx::NXFieldError const &error){
     PyErr_SetString(PyExc_UserWarning,"NXFieldError raised by C++ code!");
 }*/
 
+
 BOOST_PYTHON_MODULE(nxh5)
 {
     //need a wrapper for the object ids
