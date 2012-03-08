@@ -141,7 +141,9 @@ template<typename OType> class NXObjectWrapper
 
 
             //should raise here an exception if something goes wrong
-
+    
+            //this here is to avoid compiler warnings
+            return attr_type();
         }
 
 #define ARRAY_ATTRIBUTE_CREATOR(pytype,type,name)\
@@ -172,6 +174,10 @@ template<typename OType> class NXObjectWrapper
             ARRAY_ATTRIBUTE_CREATOR("complex128",Complex64,name);
             ARRAY_ATTRIBUTE_CREATOR("complex256",Complex128,name);
 
+            //should raise here an exception if something goes wrong
+    
+            //this here is to avoid compiler warnings
+            return attr_type();
 
         }
 

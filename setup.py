@@ -11,7 +11,7 @@ include_dirs = ["/home/eugen/Development/HDRI/projects/install/include",
 library_dirs = ["/home/eugen/Development/HDRI/projects/install/lib",
                 "/home/eugen/Development/HDRI/projects/hdf5/lib"]
 compile_args = ["-std=c++0x","-O0","-g"]
-files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXAttributeWrapper.cpp"]
+files = ["src/nx.cpp","src/NXWrapperHelpers.cpp"]
 
 
 nxh5 = Extension("nxh5",files,

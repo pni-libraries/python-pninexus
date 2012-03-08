@@ -27,6 +27,7 @@ using namespace pni::nx::h5;
 #include "NXAttributeWrapper.hpp"
 #include "NXFileWrapper.hpp"
 #include "NXObjectMap.hpp"
+#include "NXFieldWrapper.hpp"
 
 template<> class NXObjectMap<pni::nx::h5::NXObject>{
     public:
@@ -46,6 +47,14 @@ template<> class NXObjectMap<pni::nx::h5::NXGroup>{
         typedef pni::nx::h5::NXAttribute AttributeType;
 };
 
+template<> class NXObjectMap<pni::nx::h5::NXField>{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXSelection SelectionType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
 template<> class NXObjectMap<pni::nx::h5::NXFile>{
     public:
         typedef pni::nx::h5::NXObject ObjectType;
@@ -97,6 +106,10 @@ BOOST_PYTHON_MODULE(nxh5)
     //wrap NX-group
     wrap_nxobject<pni::nx::h5::NXGroup>("NXObject_GroupInstance");
     wrap_nxgroup<pni::nx::h5::NXGroup>("NXGroup");
+
+    //wrap NX-field
+    wrap_nxobject<pni::nx::h5::NXField>("NXObject_FieldInstance");
+    wrap_nxfield<pni::nx::h5::NXField>("NXField");
 
 
     //wrap NX-file

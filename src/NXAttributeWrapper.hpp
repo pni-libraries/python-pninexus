@@ -141,6 +141,11 @@ template<typename AttrType> class NXAttributeWrapper{
                 READ_ARRAY_ATTRIBUTE(TypeID::COMPLEX64,Complex64);
                 READ_ARRAY_ATTRIBUTE(TypeID::COMPLEX128,Complex128);
             }
+
+            //should raise an exception here
+
+            //this is only to avoid compiler warnings
+            return object();
         }
 
 #define WRITE_SCALAR(typid,type)\
