@@ -1,8 +1,10 @@
 #ifndef __NXFIELDWRAPPER_HPP__
 #define __NXFIELDWRAPPER_HPP__
 
+#include <boost/python/slice.hpp>
 #include "NXObjectWrapper.hpp"
 #include "NXWrapperHelpers.hpp"
+#include "NXIOOperations.hpp"
 
 template<typename FieldT> class NXFieldWrapper:
     public NXObjectWrapper<FieldT>
@@ -85,111 +87,22 @@ template<typename FieldT> class NXFieldWrapper:
             return Shape2List(this->_object.shape());
         }
 
-#define WRITE_SCALAR_FIELD(typeid,type)\
-        if(this->_object.type_id() == typeid){\
-            type value = extract<type>(o);\
-            this->_object.write(value);\
-        }
         //---------------------------------------------------------------------
         //! writing data to the field
         void write(const object &o) const
         {
             if(this->_object.shape().size() == 1){
                 //scalar field - here we can use any scalar type to write data
-                WRITE_SCALAR_FIELD(TypeID::UINT8,UInt8);
-                WRITE_SCALAR_FIELD(TypeID::INT8,Int8);
-                WRITE_SCALAR_FIELD(TypeID::UINT16,UInt16);
-                WRITE_SCALAR_FIELD(TypeID::INT16,Int16);
-                WRITE_SCALAR_FIELD(TypeID::UINT32,UInt32);
-                WRITE_SCALAR_FIELD(TypeID::INT32,Int32);
-                WRITE_SCALAR_FIELD(TypeID::UINT64,UInt64);
-                WRITE_SCALAR_FIELD(TypeID::INT64,Int64);
-
-                WRITE_SCALAR_FIELD(TypeID::FLOAT32,Float32);
-                WRITE_SCALAR_FIELD(TypeID::FLOAT64,Float64);
-                WRITE_SCALAR_FIELD(TypeID::FLOAT128,Float128);
-                WRITE_SCALAR_FIELD(TypeID::COMPLEX32,Complex32);
-                WRITE_SCALAR_FIELD(TypeID::COMPLEX64,Complex64);
-                WRITE_SCALAR_FIELD(TypeID::COMPLEX128,Complex128);
+                io_write<ScalarWriter>(this->_object,o);
             }else{
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
-                if(!PyArray_CheckExact(o.ptr())){
-                    std::cerr<<"Object is not a numpy array!"<<std::endl;
-                    //need to raise an exception here
-                    return;
-                }
 
-                switch(PyArray_TYPE(o.ptr())){
-                    case NPY_UBYTE:
-                        this->_object.write(Numpy2RefArray<UInt8>(o));
-                        break;
-                    case NPY_BYTE:
-                        this->_object.write(Numpy2RefArray<Int8>(o));
-                        break;
-                    case NPY_USHORT:
-                        this->_object.write(Numpy2RefArray<UInt16>(o));
-                        break;
-                    case NPY_SHORT:
-                        this->_object.write(Numpy2RefArray<Int16>(o));
-                        break;
-                    case NPY_UINT:
-                        this->_object.write(Numpy2RefArray<UInt32>(o));
-                        break;
-                    case NPY_INT:
-                        this->_object.write(Numpy2RefArray<Int32>(o));
-                        break;
-                    case NPY_ULONG:
-                        this->_object.write(Numpy2RefArray<UInt64>(o));
-                        break;
-                    case NPY_LONG:
-                        this->_object.write(Numpy2RefArray<Int64>(o));
-                        break;
-                    case NPY_FLOAT:
-                        this->_object.write(Numpy2RefArray<Float32>(o));
-                        break;
-                    case NPY_DOUBLE:
-                        this->_object.write(Numpy2RefArray<Float64>(o));
-                        break;
-                    case NPY_LONGDOUBLE:
-                        this->_object.write(Numpy2RefArray<Float128>(o));
-                        break;
-                    case NPY_CFLOAT:
-                        this->_object.write(Numpy2RefArray<Complex32>(o));
-                        break;
-                    case NPY_CDOUBLE:
-                        this->_object.write(Numpy2RefArray<Complex64>(o));
-                        break;
-                    case NPY_CLONGDOUBLE:
-                        this->_object.write(Numpy2RefArray<Complex128>(o));
-                        break;
-                    default:
-                        std::cerr<<"Array is of unkown type!"<<std::endl;
-
-                };
-
+                ArrayWriter::write(this->_object,o);
             }
 
         }
 
-#define READ_SCALAR_FIELD(typeid,type)\
-        if(this->_object.type_id() == typeid){\
-            type value;\
-            this->_object.read(value);\
-            object o(value);\
-            return o;\
-        }
-
-#define READ_ARRAY_FIELD(typeid,type)\
-        if(this->_object.type_id() == typeid){\
-                PyObject *ptr =\
-                    CreateNumpyArray<type>(this->_object.shape());\
-                handle<> h(ptr);\
-                object o(h);\
-                Array<type,RefBuffer> rarray = Numpy2RefArray<type>(o);\
-                this->_object.read(rarray);\
-                return o;\
-        }
         //---------------------------------------------------------------------
         //! reading data from the field
         object read() const
@@ -197,44 +110,12 @@ template<typename FieldT> class NXFieldWrapper:
             if(this->_object.shape().size() == 1){
                 //the field contains only a single value - can return a
                 //primitive python object
-                
-                READ_SCALAR_FIELD(TypeID::UINT8,UInt8);
-                READ_SCALAR_FIELD(TypeID::INT8,Int8);
-                READ_SCALAR_FIELD(TypeID::UINT16,UInt16);
-                READ_SCALAR_FIELD(TypeID::INT16,Int16);
-                READ_SCALAR_FIELD(TypeID::UINT32,UInt32);
-                READ_SCALAR_FIELD(TypeID::INT32,Int32);
-                READ_SCALAR_FIELD(TypeID::UINT64,UInt64);
-                READ_SCALAR_FIELD(TypeID::INT64,Int64);
-
-                READ_SCALAR_FIELD(TypeID::FLOAT32,Float32);
-                READ_SCALAR_FIELD(TypeID::FLOAT64,Float64);
-                READ_SCALAR_FIELD(TypeID::FLOAT128,Float128);
-                READ_SCALAR_FIELD(TypeID::COMPLEX32,Complex32);
-                READ_SCALAR_FIELD(TypeID::COMPLEX64,Complex64);
-                READ_SCALAR_FIELD(TypeID::COMPLEX128,Complex128);
-                
-                READ_SCALAR_FIELD(TypeID::STRING,String);
+                return io_read<ScalarReader>(this->_object);                
 
             }else{
                 //the field contains multidimensional data  - we return a numpy
                 //array
-
-                READ_ARRAY_FIELD(TypeID::UINT8,UInt8);
-                READ_ARRAY_FIELD(TypeID::INT8,Int8);
-                READ_ARRAY_FIELD(TypeID::UINT16,UInt16);
-                READ_ARRAY_FIELD(TypeID::INT16,Int16);
-                READ_ARRAY_FIELD(TypeID::UINT32,UInt32);
-                READ_ARRAY_FIELD(TypeID::INT32,Int32);
-                READ_ARRAY_FIELD(TypeID::UINT64,UInt64);
-                READ_ARRAY_FIELD(TypeID::INT64,Int64);
-
-                READ_ARRAY_FIELD(TypeID::FLOAT32,Float32);
-                READ_ARRAY_FIELD(TypeID::FLOAT64,Float64);
-                READ_ARRAY_FIELD(TypeID::FLOAT128,Float128);
-                READ_ARRAY_FIELD(TypeID::COMPLEX32,Complex32);
-                READ_ARRAY_FIELD(TypeID::COMPLEX64,Complex64);
-                READ_ARRAY_FIELD(TypeID::COMPLEX128,Complex128);
+                return io_read<ArrayReader>(this->_object);
             }
 
             //we should raise an exception here
@@ -242,13 +123,70 @@ template<typename FieldT> class NXFieldWrapper:
             //this is only to avoid compiler warnings
             return object();
         }
+       
+        //---------------------------------------------------------------------
+        object __getitem__tuple(const tuple &t){
 
-        object __getitem__(const object &o){
-            std::cout<<"this is getitem"<<std::endl;
+            //first we need to create a selection
+            NXSelection selection = create_selection(t,this->_object);
+
+            //once the selection is build we can start to create the 
+            //return value
+            if(selection.size()==1){
+                //in this case we return a primitive python value
+                return io_read<ScalarReader>(selection);
+            }else{
+                //a numpy array will be returned
+                return io_read<ArrayReader>(selection);
+            }
+
 
             return object();
+
         }
 
+        //---------------------------------------------------------------------
+        object __getitem__index(size_t i){
+            return __getitem__tuple(make_tuple<size_t>(i));
+        }
+
+        //---------------------------------------------------------------------
+        object __getitem__slice(const slice &o){
+            return __getitem__tuple(make_tuple<slice>(o));
+        }
+
+        //---------------------------------------------------------------------
+        void __setitem__tuple(const tuple &t,const object &o){
+            
+            NXSelection selection = create_selection(t,this->_object);
+
+            if(selection.shape().size() == 1){
+                //in this case we can write only a single scalar value. Thus the
+                //object passed must be a simple scalar value
+                io_write<ScalarWriter>(selection,o);
+            }else{
+                //here we have two possibl: 
+                //1.) object referes to a scalar => all positions marked by the 
+                //    selection will be set to this scalar value
+                //2.) object referes to an array => if the selection shape and
+                //    the array shape match (sizes match) we can write array
+                //    data.
+
+                //let us assume here that we only do broadcast
+
+
+            }
+        }
+
+        //---------------------------------------------------------------------
+        void __setitem__index(size_t i,const object &o){
+            __setitem__tuple(make_tuple<size_t>(i),o);
+        }
+
+        //---------------------------------------------------------------------
+        void __setitem__slice(const slice &s,const object &o){
+             __setitem__tuple(make_tuple<slice>(s),o);
+        }
         
 };
 
@@ -262,7 +200,12 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .add_property("shape",&NXFieldWrapper<FType>::shape)
         .def("write",&NXFieldWrapper<FType>::write)
         .def("read",&NXFieldWrapper<FType>::read)
-        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__index)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__slice)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__tuple)
+        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__index)
+        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__slice)
+        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__tuple)
         ;
 }
 

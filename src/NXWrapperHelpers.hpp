@@ -10,9 +10,13 @@ extern "C"{
 #include<pni/utils/Array.hpp>
 #include<pni/utils/RefBuffer.hpp>
 
+#include<pni/nx/NX.hpp>
+
 #include<boost/python/list.hpp>
+#include<boost/python/tuple.hpp>
 using namespace pni::utils;
 using namespace boost::python;
+using namespace pni::nx::h5;
 /*! \brief type mape for numpy types
 
 This type-map maps PNI types as defines in pni/utils/Types.hpp to 
@@ -104,6 +108,12 @@ template<> class PNI2NumpyType<Complex128>{
         static const int typenum = NPY_CLONGDOUBLE;
 };
 
+//-----------------------------------------------------------------------------
+template<> class PNI2NumpyType<String>{
+    public:
+        static const int typenum = NPY_STRING;
+};
+
 //=============================================================================
 /*! \brief create string from type id
 
@@ -167,6 +177,16 @@ template<typename T> PyObject *CreateNumpyArray(const Shape &s)
 
     return ptr;
 }
+
+/*! \brief selection from tuple 
+
+Adopts the selection of a field according to a tuple with indices and slices.
+\param t tuple with indices and slices
+\param s reference to the selection to create
+*/
+NXSelection create_selection(const tuple &t,const NXField &f);
+
+
 
 
 #endif
