@@ -193,7 +193,6 @@ template<typename FieldT> class NXFieldWrapper:
 
                 //let us assume here that we only do broadcast
                 if(!PyArray_CheckExact(o.ptr())){
-                    std::cerr<<"Object is not a numpy array!"<<std::endl;
                     ArrayBroadcastWriter::write(selection,o);
                 }else{
                     ArrayWriter::write(selection,o);

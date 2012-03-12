@@ -29,6 +29,7 @@ print field[...]
 print field[1:5,:]
 print field[:,0]
 print field[0,1]
+field[4,:] = 1.-3.j
 print field.read()
 
 print "try write selections"

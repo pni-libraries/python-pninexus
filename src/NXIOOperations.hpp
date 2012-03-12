@@ -112,18 +112,19 @@ class ArrayBroadcastWriter{
         {
             //need to figure out the datatype used for o
             if(PyInt_Check(o.ptr())){
-                std::cout<<"broadcast type is integer ..."<<std::endl;
                 __write<Int64>(w,o);
                 return;
             }
             if(PyLong_Check(o.ptr())){
-                std::cout<<"broadcast type is long ...."<<std::endl;
                 __write<Int64>(w,o);
                 return;
             }
             if(PyFloat_Check(o.ptr())){
-                std::cout<<"broadcast type is float ...."<<std::endl;
                 __write<Float64>(w,o);
+                return;
+            }
+            if(PyComplex_Check(o.ptr())){
+                __write<Complex64>(w,o);
                 return;
             }
         }
