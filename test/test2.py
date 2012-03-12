@@ -32,13 +32,17 @@ print field[0,1]
 print field.read()
 
 print "try write selections"
-field = f.create_field("data4","float32",[4,5])
+field = f.create_field("data4","uint8",[4,5])
 a = numpy.zeros(field.shape,dtype=field.type_id)
 field.write(a)
 print field[...]
 field[1,1] = 2
 print field[...]
-print field[100]
+
+field[...] = numpy.ones(field.shape,dtype=field.type_id)
+print field[...]
+field[1,:] = 10.
+print field[...]
 
 field2 = f.open("data2")
 field2.attr("description","string").value = "a stupid data field"

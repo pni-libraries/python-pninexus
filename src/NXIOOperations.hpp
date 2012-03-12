@@ -97,51 +97,35 @@ class ArrayWriter{
 };
 
 class ArrayBroadcastWriter{
+    private:
+        template<typename T,typename WType>  static
+            void __write(const WType &w,const object &o)
+        {
+            Array<T,Buffer> a(w.shape());
+            const T &value = extract<T>(o);
+            a = value;
+            w.write(a);
+        }
     public:
-        template<typename T,typename WType> static
+        template<typename WType> static
             void write(const WType &w,const object &o)
         {
-            if(!PyArray_CheckExact(o.ptr())){
-                std::cerr<<"Object is not a numpy array!"<<std::endl;
-                //need to raise an exception here
+            //need to figure out the datatype used for o
+            if(PyInt_Check(o.ptr())){
+                std::cout<<"broadcast type is integer ..."<<std::endl;
+                __write<Int64>(w,o);
                 return;
             }
-
-            switch(PyArray_TYPE(o.ptr())){
-                case NPY_UBYTE:
-                    auto a = Numpy2RefArray<UInt8>(o);
-                    auto value = extract<UInt8>(o);
-                    w.write(value);break;
-                case NPY_BYTE:
-                    w.write(Numpy2RefArray<Int8>(o));break;
-                case NPY_USHORT:
-                    w.write(Numpy2RefArray<UInt16>(o));break;
-                case NPY_SHORT:
-                    w.write(Numpy2RefArray<Int16>(o));break;
-                case NPY_UINT:
-                    w.write(Numpy2RefArray<UInt32>(o)); break;
-                case NPY_INT:
-                    w.write(Numpy2RefArray<Int32>(o));break;
-                case NPY_ULONG:
-                    w.write(Numpy2RefArray<UInt64>(o)); break;
-                case NPY_LONG:
-                    w.write(Numpy2RefArray<Int64>(o)); break;
-                case NPY_FLOAT:
-                    w.write(Numpy2RefArray<Float32>(o)); break;
-                case NPY_DOUBLE:
-                    w.write(Numpy2RefArray<Float64>(o)); break;
-                case NPY_LONGDOUBLE:
-                    w.write(Numpy2RefArray<Float128>(o));break;
-                case NPY_CFLOAT:
-                    w.write(Numpy2RefArray<Complex32>(o));break;
-                case NPY_CDOUBLE:
-                    w.write(Numpy2RefArray<Complex64>(o)); break;
-                case NPY_CLONGDOUBLE:
-                    w.write(Numpy2RefArray<Complex128>(o));break;
-                default:
-                    std::cerr<<"Array is of unkown type!"<<std::endl;
-
-            };
+            if(PyLong_Check(o.ptr())){
+                std::cout<<"broadcast type is long ...."<<std::endl;
+                __write<Int64>(w,o);
+                return;
+            }
+            if(PyFloat_Check(o.ptr())){
+                std::cout<<"broadcast type is float ...."<<std::endl;
+                __write<Float64>(w,o);
+                return;
+            }
         }
 };
 

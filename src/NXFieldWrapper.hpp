@@ -99,6 +99,7 @@ template<typename FieldT> class NXFieldWrapper:
                 //check if the passed object is a numpy array
 
                 ArrayWriter::write(this->_object,o);
+
             }
 
         }
@@ -191,8 +192,12 @@ template<typename FieldT> class NXFieldWrapper:
                 //    data.
 
                 //let us assume here that we only do broadcast
-
-
+                if(!PyArray_CheckExact(o.ptr())){
+                    std::cerr<<"Object is not a numpy array!"<<std::endl;
+                    ArrayBroadcastWriter::write(selection,o);
+                }else{
+                    ArrayWriter::write(selection,o);
+                }
             }
         }
 
