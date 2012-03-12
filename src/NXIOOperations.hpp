@@ -152,24 +152,39 @@ class ArrayBroadcastWriter{
 template<typename IOOp,typename OType> object io_read(const OType &readable)
 {
     IOOp operation;
-    if(readable.type_id() == TypeID::UINT8) return operation.template run<UInt8>(readable);
-    if(readable.type_id() == TypeID::INT8)  return operation.template run<Int8>(readable);
-    if(readable.type_id() == TypeID::UINT16) return operation.template run<UInt16>(readable);
-    if(readable.type_id() == TypeID::INT16)  return operation.template run<Int16>(readable);
-    if(readable.type_id() == TypeID::UINT32) return operation.template run<UInt32>(readable);
-    if(readable.type_id() == TypeID::INT32)  return operation.template run<Int32>(readable);
-    if(readable.type_id() == TypeID::UINT64) return operation.template run<UInt64>(readable);
-    if(readable.type_id() == TypeID::INT64)  return operation.template run<Int64>(readable);
+    if(readable.type_id() == TypeID::UINT8) 
+        return operation.template run<UInt8>(readable);
+    if(readable.type_id() == TypeID::INT8)  
+        return operation.template run<Int8>(readable);
+    if(readable.type_id() == TypeID::UINT16) 
+        return operation.template run<UInt16>(readable);
+    if(readable.type_id() == TypeID::INT16)  
+        return operation.template run<Int16>(readable);
+    if(readable.type_id() == TypeID::UINT32) 
+        return operation.template run<UInt32>(readable);
+    if(readable.type_id() == TypeID::INT32)  
+        return operation.template run<Int32>(readable);
+    if(readable.type_id() == TypeID::UINT64) 
+        return operation.template run<UInt64>(readable);
+    if(readable.type_id() == TypeID::INT64)  
+        return operation.template run<Int64>(readable);
 
-    if(readable.type_id() == TypeID::FLOAT32) return operation.template run<Float32>(readable);
-    if(readable.type_id() == TypeID::FLOAT64) return operation.template run<Float64>(readable);
-    if(readable.type_id() == TypeID::FLOAT128) return operation.template run<Float128>(readable);
+    if(readable.type_id() == TypeID::FLOAT32) 
+        return operation.template run<Float32>(readable);
+    if(readable.type_id() == TypeID::FLOAT64) 
+        return operation.template run<Float64>(readable);
+    if(readable.type_id() == TypeID::FLOAT128) 
+        return operation.template run<Float128>(readable);
 
-    if(readable.type_id() == TypeID::COMPLEX32) return operation.template run<Complex32>(readable);
-    if(readable.type_id() == TypeID::COMPLEX64) return operation.template run<Complex64>(readable);
-    if(readable.type_id() == TypeID::COMPLEX128) return operation.template run<Complex128>(readable);
+    if(readable.type_id() == TypeID::COMPLEX32) 
+        return operation.template run<Complex32>(readable);
+    if(readable.type_id() == TypeID::COMPLEX64) 
+        return operation.template run<Complex64>(readable);
+    if(readable.type_id() == TypeID::COMPLEX128) 
+        return operation.template run<Complex128>(readable);
 
-    if(readable.type_id() == TypeID::STRING) return operation.template run<String>(readable);
+    if(readable.type_id() == TypeID::STRING) 
+        return operation.template run<String>(readable);
    
     //should raise an exception here
     return object();

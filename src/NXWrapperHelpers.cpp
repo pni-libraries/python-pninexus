@@ -58,16 +58,37 @@ NXSelection create_selection(const tuple &t,const NXField &field)
     //obtain a selection object
     NXSelection selection = field.selection();
 
-    //as the selection has the same rank as the field it belongs to we
-    //can use this here for checking the length of the tupl
-    if(len(t) != selection.shape().rank())
+    //the number of elements in the tuple must not be equal to the 
+    //rank of the field. This is due to the fact that the tuple can contain
+    //one ellipsis which spans over several dimensions.
+
+    bool has_ellipsis = false;
+    size_t ellipsis_size = 0;
+    if(len(t) > selection.shape().rank()){
+        //with or without ellipsis something went wrong here
+        ShapeMissmatchError error;
+        error.issuer("NXSelection create_selection(const tuple &t,"
+                "const NXField &field)");
+        error.description("Tuple with indices, slices, and ellipsis is "
+                "longer than the rank of the field - something went wrong"
+                "here");
+        throw(error);
+    }
+    else if(len(t) != selection.shape().rank())
     {
-        std::cerr<<"number of dimensions does not macht array"<<std::endl;
-        //raise an exception here
+        //here we have to fix the size of an ellipsis
+        ellipsis_size = selection.shape().rank()-(len(t)-1);
     }
 
-    for(size_t i=0;i<len(t);i++){
-        extract<size_t> index(t[i]);
+    /*this loop has tow possibilities:
+    -> there is no ellipse and the rank of the field is larger than the size of
+       the tuple passed. In this case an IndexError will occur. In this case we 
+       know immediately that a shape error occured.
+    -> 
+    */
+    for(size_t i=0,j=0;i<selection.shape().rank();i++,j++){
+        //manage a single index
+        extract<size_t> index(t[j]);
 
         if(index.check()){
             selection.offset(i,index);
@@ -76,7 +97,8 @@ NXSelection create_selection(const tuple &t,const NXField &field)
             continue;
         }
 
-        extract<slice> s(t[i]);
+        //manage a slice
+        extract<slice> s(t[j]);
         if(s.check()){
             //now we have to investigate the components of the 
             //slice
@@ -107,9 +129,39 @@ NXSelection create_selection(const tuple &t,const NXField &field)
             
             ssize_t res = (stop-start)%step;
             selection.shape(i,(stop-start-res)/step);
+            continue;
         }
 
-        //here we would need code to manage ellipses - that is still missing
+        //manage an ellipse
+        const object &o = t[j];
+        if(Py_Ellipsis != o.ptr())
+        {
+            std::cerr<<"not an ellipsis ..."<<std::endl;
+            //raise an exception here
+        }
+        //assume here that the object is an ellipsis - this is a bit difficult
+        //to handle as we do not know over how many 
+        if(!has_ellipsis){
+            has_ellipsis = true;
+            while(i<j+ellipsis_size){
+                selection.stride(i,1);
+                selection.offset(i,0);
+                i++;
+            }
+        }else{
+            std::cerr<<"only one ellipsis is allowed per selection!"<<std::endl;
+            //raise an exception here
+        }
+    }
+
+    //once we are done with looping over all elemnts in the tuple we need 
+    //to adjust the selection to take into account an ellipsis
+    if((ellipsis_size) && (!has_ellipsis)){
+        ShapeMissmatchError error;
+        error.issuer("NXSelection create_selection(const tuple &t,const "
+                "NXField &field)");
+        error.description("Selection rank does not match field rank");
+        throw(error);
     }
 
     return selection;

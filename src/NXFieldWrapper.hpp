@@ -144,6 +144,15 @@ template<typename FieldT> class NXFieldWrapper:
             return object();
 
         }
+        //---------------------------------------------------------------------
+        object __getitem__object(const object &o)
+        {
+            //need to check here if o is already a tuple 
+            if(PyTuple_Check(o.ptr()))
+                return __getitem__tuple(tuple(o));
+            else
+                return __getitem__tuple(make_tuple<object>(o));
+        }
 
         //---------------------------------------------------------------------
         object __getitem__index(size_t i){
@@ -155,6 +164,15 @@ template<typename FieldT> class NXFieldWrapper:
             return __getitem__tuple(make_tuple<slice>(o));
         }
 
+        //---------------------------------------------------------------------
+        void __setitem__object(const object &o,const object &d)
+        {
+            //need to check here if o is already a tuple 
+            if(PyTuple_Check(o.ptr()))
+                __setitem__tuple(tuple(o),d);
+            else
+                __setitem__tuple(make_tuple<object>(o),d);
+        }
         //---------------------------------------------------------------------
         void __setitem__tuple(const tuple &t,const object &o){
             
@@ -203,9 +221,11 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .def("__getitem__",&NXFieldWrapper<FType>::__getitem__index)
         .def("__getitem__",&NXFieldWrapper<FType>::__getitem__slice)
         .def("__getitem__",&NXFieldWrapper<FType>::__getitem__tuple)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__object)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__index)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__slice)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__tuple)
+        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__object)
         ;
 }
 
