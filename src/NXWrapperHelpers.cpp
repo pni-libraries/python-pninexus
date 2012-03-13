@@ -53,6 +53,18 @@ Shape List2Shape(const list &l){
 }
 
 //------------------------------------------------------------------------------
+Shape Tuple2Shape(const tuple &t)
+{
+    long size = len(t);
+    Shape s(size);
+
+    for(size_t i=0;i<size;i++){
+        s.dim(i,extract<size_t>(t[i]));
+    }
+    return s;
+}
+
+//------------------------------------------------------------------------------
 NXSelection create_selection(const tuple &t,const NXField &field)
 {
     //obtain a selection object

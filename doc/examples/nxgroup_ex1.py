@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 #File: nxgroup_ex1.py
 import pni.nx.h5 as nx
 
-nxfile = nx.create_file("nxgroup_ex1.h5",True,0)
+nxfile = nx.create_file("nxgroup_ex1.h5",overwrite=True)
 
 #create groups
 group = nxfile.create_group("data1")

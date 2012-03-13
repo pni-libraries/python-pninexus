@@ -82,6 +82,14 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             NXGroupWrapper<GroupType> g(this->_object.create_group(n));
             return g;
         }
+        //! create group with NXclass
+        NXGroupWrapper<typename NXObjectMap<GType>::GroupType >
+            create_group_class(const String &n,const String &c) const
+        {
+            typedef typename NXObjectMap<GType>::GroupType GroupType;
+            NXGroupWrapper<GroupType> g(this->_object.create_group(n,c));
+            return g;
+        }
 
 #define CREATE_SCALAR_FIELD(typecode,type)\
         if(type_code == typecode)\
@@ -262,7 +270,9 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
     class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > >(class_name.c_str())
         .def(init<>())
         .def("open",&NXGroupWrapper<GType>::open)
+        .def("__getitem__",&NXGroupWrapper<GType>::open)
         .def("create_group",&NXGroupWrapper<GType>::create_group)
+        .def("create_group",&NXGroupWrapper<GType>::create_group_class)
         .def("create_field",&NXGroupWrapper<GType>::create_scalar_field)
         .def("create_field",&NXGroupWrapper<GType>::create_array_field)
         .def("create_field",&NXGroupWrapper<GType>::create_array_field_chunked)

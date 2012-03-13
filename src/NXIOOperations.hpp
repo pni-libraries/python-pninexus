@@ -1,5 +1,5 @@
 #ifndef __NXIOOPERATIONS_HPP__
-#define __HXIOOPERATIONS_HPP__
+#define __NXIOOPERATIONS_HPP__
 
 #include "NXWrapperHelpers.hpp"
 
@@ -55,9 +55,12 @@ class ArrayWriter{
         {
             
             if(!PyArray_CheckExact(o.ptr())){
-                std::cerr<<"Object is not a numpy array!"<<std::endl;
-                //need to raise an exception here
-                return;
+                TypeError error;
+                error.issuer("template<typename WType> static void "
+                        "ArrayWriter::write(const WType &w,const "
+                        "object &o)");
+                error.description("Python object is not a numpy array!");
+                throw error;
             }
 
             switch(PyArray_TYPE(o.ptr())){
@@ -90,8 +93,13 @@ class ArrayWriter{
                 case NPY_CLONGDOUBLE:
                     w.write(Numpy2RefArray<Complex128>(o));break;
                 default:
-                    std::cerr<<"Array is of unkown type!"<<std::endl;
-
+                    TypeError error;
+                    error.issuer("template<typename WType> static void "
+                            "ArrayWriter::write(const WType &w,const "
+                            "object &o)");
+                    error.description("Type of numpy array cannot be "
+                            "handled!");
+                    throw error;
             };
         }
 };

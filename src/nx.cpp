@@ -134,7 +134,15 @@ void SizeMissmatchError_translator(pni::utils::SizeMissmatchError const &error)
 {
     std::stringstream estr;
     estr<<error;
-    PyErr_SetString(PyExc_IndexError,error.description().c_str());
+    PyErr_SetString(PyExc_IndexError,estr.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void TypeError_translator(pni::utils::TypeError const &error)
+{
+    std::stringstream estr;
+    estr<<error;
+    PyErr_SetString(PyExc_TypeError,estr.str().c_str());
 }
 
 //=================implementation of the python extension======================

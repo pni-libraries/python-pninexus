@@ -143,6 +143,16 @@ elements along a particular dimension.
 */
 Shape List2Shape(const list &l);
 
+/*! \brief tuple to Shape conversion
+
+Converts a Python tuple to a Shape object. The length of the tuple determines
+the rank of the Shape and its elements the number of elements along each
+dimension.
+\param t tuple object
+\return instance of class Shape
+*/
+Shape Tuple2Shape(const tuple &t);
+
 /*! \brief create reference array from numpy array
 
 This template method creates a reference array to the data held by a numpy
