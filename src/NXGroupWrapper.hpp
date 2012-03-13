@@ -7,11 +7,13 @@
 #include "NXObjectMap.hpp"
 #include "NXObjectWrapper.hpp"
 #include "NXFieldWrapper.hpp"
+#include "FieldCreator.hpp"
 
 
 template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 {
     public:
+        typedef NXFieldWrapper<typename NXObjectMap<GType>::FieldType> field_type;
         //================constructors and destructor==========================
         //! default constructor
         NXGroupWrapper():NXObjectWrapper<GType>(){}
@@ -74,14 +76,17 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             return *this;
         }
 
-        //------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         //! create a group
-        NXGroupWrapper<typename NXObjectMap<GType>::GroupType > create_group(const String &n) const
+        NXGroupWrapper<typename NXObjectMap<GType>::GroupType > 
+            create_group(const String &n) const
         {
             typedef typename NXObjectMap<GType>::GroupType GroupType;
             NXGroupWrapper<GroupType> g(this->_object.create_group(n));
             return g;
         }
+
+        //----------------------------------------------------------------------
         //! create group with NXclass
         NXGroupWrapper<typename NXObjectMap<GType>::GroupType >
             create_group_class(const String &n,const String &c) const
@@ -91,115 +96,44 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             return g;
         }
 
-#define CREATE_SCALAR_FIELD(typecode,type)\
-        if(type_code == typecode)\
-            return field_type(this->_object.template create_field<type>(n));
 
         //-------------------------------------------------------------------------
         //! create a scalar field field
-        NXFieldWrapper<typename NXObjectMap<GType>::FieldType>
-            create_scalar_field(const String &n,const String type_code)
+
+        field_type 
+            create_scalar_field(const String &n,const String &type_code) const
         {
-            typedef NXFieldWrapper<typename NXObjectMap<GType>::FieldType> field_type;
-
-            CREATE_SCALAR_FIELD("uint8",UInt8);
-            CREATE_SCALAR_FIELD("int8",Int8);
-            CREATE_SCALAR_FIELD("uint16",UInt16);
-            CREATE_SCALAR_FIELD("int16",Int16);
-            CREATE_SCALAR_FIELD("uint32",UInt32);
-            CREATE_SCALAR_FIELD("int32",Int32);
-            CREATE_SCALAR_FIELD("uint64",UInt64);
-            CREATE_SCALAR_FIELD("int64",Int64);
-
-            CREATE_SCALAR_FIELD("float32",Float32);
-            CREATE_SCALAR_FIELD("float64",Float64);
-            CREATE_SCALAR_FIELD("float128",Float128);
-            
-            CREATE_SCALAR_FIELD("complex64",Complex32);
-            CREATE_SCALAR_FIELD("complex128",Complex64);
-            CREATE_SCALAR_FIELD("complex256",Complex128);
-
-            CREATE_SCALAR_FIELD("string",String);
-
-            //should raise an exception here
-
-            //this here is only to avoid compiler warnings
-            return field_type();
+            FieldCreator<field_type> creator(n);
+            return creator.create(this->_object,type_code);
         }
 
-#define CREATE_ARRAY_FIELD(typecode,type)\
-        if(type_code == typecode)\
-            return field_type(this->_object.template create_field<type>(n,s));
         //-------------------------------------------------------------------------
         //! create a multidimensional field
-        NXFieldWrapper<typename NXObjectMap<GType>::FieldType>
-            create_array_field(const String &n,const String &type_code,const
-                    list &shape)
+        field_type
+            create_array_field(const String &n,const String &type_code,const object &o)
         {
-            typedef NXFieldWrapper<typename NXObjectMap<GType>::FieldType> field_type;
             //create the shape of the new field
+            list shape(o);
             Shape s = List2Shape(shape);
-
-            CREATE_ARRAY_FIELD("uint8",UInt8);
-            CREATE_ARRAY_FIELD("int8",Int8);
-            CREATE_ARRAY_FIELD("uint16",UInt16);
-            CREATE_ARRAY_FIELD("int16",Int16);
-            CREATE_ARRAY_FIELD("uint32",UInt32);
-            CREATE_ARRAY_FIELD("int32",Int32);
-            CREATE_ARRAY_FIELD("uint64",UInt64);
-            CREATE_ARRAY_FIELD("int64",Int64);
-
-            CREATE_ARRAY_FIELD("float32",Float32);
-            CREATE_ARRAY_FIELD("float64",Float64);
-            CREATE_ARRAY_FIELD("float128",Float128);
-            
-            CREATE_ARRAY_FIELD("complex64",Complex32);
-            CREATE_ARRAY_FIELD("complex128",Complex64);
-            CREATE_ARRAY_FIELD("complex256",Complex128);
-
-            //should raise an exception here
-
-            //this here is only to avoid compiler warning
-            return field_type();
+            FieldCreator<field_type> creator(n,s);
+            return creator.create(this->_object,type_code);
         }
-
-#define CREATE_ARRAY_FIELD_CHUNKED(typecode,type)\
-        if(type_code == typecode)\
-            return field_type(this->_object.template create_field<type>(n,s,cs));
 
         //-------------------------------------------------------------------------
         //! create a multidimensional field with chunks
-        NXFieldWrapper<typename NXObjectMap<GType>::FieldType>
+        field_type
             create_array_field_chunked(const String &n,const String &type_code,
-                    const list &shape,const list &chunk)
+                    const object &shape_obj,const object &chunk_obj)
         {
-            typedef NXFieldWrapper<typename NXObjectMap<GType>::FieldType> field_type;
             //create the shape of the new array
+            list shape(shape_obj); 
             Shape s = List2Shape(shape);
             //create the chunk shape
+            list chunk(chunk_obj);
             Shape cs = List2Shape(chunk);
 
-            CREATE_ARRAY_FIELD_CHUNKED("uint8",UInt8);
-            CREATE_ARRAY_FIELD_CHUNKED("int8",Int8);
-            CREATE_ARRAY_FIELD_CHUNKED("uint16",UInt16);
-            CREATE_ARRAY_FIELD_CHUNKED("int16",Int16);
-            CREATE_ARRAY_FIELD_CHUNKED("uint32",UInt32);
-            CREATE_ARRAY_FIELD_CHUNKED("int32",Int32);
-            CREATE_ARRAY_FIELD_CHUNKED("uint64",UInt64);
-            CREATE_ARRAY_FIELD_CHUNKED("int64",Int64);
-
-            CREATE_ARRAY_FIELD_CHUNKED("float32",Float32);
-            CREATE_ARRAY_FIELD_CHUNKED("float64",Float64);
-            CREATE_ARRAY_FIELD_CHUNKED("float128",Float128);
-            
-            CREATE_ARRAY_FIELD_CHUNKED("complex64",Complex32);
-            CREATE_ARRAY_FIELD_CHUNKED("complex128",Complex64);
-            CREATE_ARRAY_FIELD_CHUNKED("complex256",Complex128);
-
-            //should raise an exception here
-
-            //this here is to avoid compiler warnings
-            return field_type();
+            FieldCreator<field_type> creator(n,s,cs);
+            return creator.create(this->_object,type_code);
         }
 
         //-------------------------------------------------------------------------
@@ -210,7 +144,7 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         obeject of the appropriate type. 
         \param n name of the object to open
         */
-        object open(const String &n) const
+        object open_by_name(const String &n) const
         {
             typedef typename NXObjectMap<GType>::ObjectType ObjectType;
             typedef typename NXObjectMap<GType>::GroupType GroupType;
@@ -242,11 +176,28 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 
         }
 
+        /*! \brief open object by index
+
+        */
+        object open(size_t i) const
+        {
+            typedef typename NXObjectMap<GType>::ObjectType ObjectType;
+            ObjectType nxobject = this->_object.open(i);
+
+            return open_by_name(nxobject.path());
+        }
+
         //--------------------------------------------------------------------------
         //! wrap the exists method
         bool exists(const String &n) const
         {
             return this->_object.exists(n);
+        }
+
+        //--------------------------------------------------------------------------
+        size_t nchilds() const
+        {
+            return this->_object.nchilds();
         }
 
         //---------------------------------------------------------------------
@@ -260,7 +211,6 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             this->_object.link(p,n);
         }
 
-
 };
 
 
@@ -269,8 +219,9 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
 
     class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > >(class_name.c_str())
         .def(init<>())
-        .def("open",&NXGroupWrapper<GType>::open)
+        .def("open",&NXGroupWrapper<GType>::open_by_name)
         .def("__getitem__",&NXGroupWrapper<GType>::open)
+        .def("__getitem__",&NXGroupWrapper<GType>::open_by_name)
         .def("create_group",&NXGroupWrapper<GType>::create_group)
         .def("create_group",&NXGroupWrapper<GType>::create_group_class)
         .def("create_field",&NXGroupWrapper<GType>::create_scalar_field)
@@ -278,6 +229,7 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
         .def("create_field",&NXGroupWrapper<GType>::create_array_field_chunked)
         .def("exists",&NXGroupWrapper<GType>::exists)
         .def("link",&NXGroupWrapper<GType>::link)
+        .add_property("nchilds",&NXGroupWrapper<GType>::nchilds)   
         ;
 }
 
