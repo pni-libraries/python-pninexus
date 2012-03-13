@@ -92,8 +92,8 @@ template<typename FType> void wrap_nxfile(const String &class_name)
         ;
 
     //need some functions
-    def("create_file",&create_file<FType>);
-    def("open_file",&open_file<FType>);
+    def("__create_file",&create_file<FType>);
+    def("__open_file",&open_file<FType>);
 }
 
 #endif
