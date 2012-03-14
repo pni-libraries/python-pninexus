@@ -1,14 +1,15 @@
-
+#!/usr/bin/env python
 import numpy
 import pni.nx.h5 as nx
 
-def write_data(fname,np,nx,ny):
-    frame = numpy.zeros((nx,ny),dtype="uint16")
+def write_data(fname,np,nxpt,nypt):
+    frame = numpy.zeros((nxpt,nypt),dtype="uint16")
 
-    nxfile = nx.create_file(fname,True,0)
+    nxfile = nx.create_file(fname,overwrite=True)
 
     g = nxfile.create_group("/scan_1/instrument/detector","NXdetector");
-    data = g.create_field("data","uint16",(0,nx,ny))
+    data = g.create_field("data","uint16",[0,nxpt,nypt])
+    print data.shape
 
     for i in range(np):
         data.grow(0)
@@ -22,10 +23,10 @@ def write_data(fname,np,nx,ny):
 
 def read_data(fname):
 
-    nxfile = nx.open_file(fname);
+    nxfile = nx.open_file(fname,readonly=False);
     field = nxfile["/scan_1/instrument/detector/data"];
 
-    data = numpy.zeros((field.shape[1],field.shapep[2]),dtype=field.type_id)
+    data = numpy.zeros(field.shape[1:],dtype=field.type_id)
    
     for i in range(field.shape[0]):
         data = field[i,...]
@@ -36,12 +37,12 @@ def read_data(fname):
     nxfile.close()
 
 fname="simple_io.h5"
-nx = 10
-ny = 20
+nxpt = 10
+nypt = 20
 np = 100
 
 print "writing data ..."
-wite_data(fname,np,nx,ny)
+write_data(fname,np,nxpt,nypt)
 print "reading data ..."
 read_data(fname)
 print "program finished ..."

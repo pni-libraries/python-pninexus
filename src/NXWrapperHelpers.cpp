@@ -76,7 +76,7 @@ NXSelection create_selection(const tuple &t,const NXField &field)
 
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
-    if(len(t) > selection.shape().rank()){
+    if(len(t) > selection.rank()){
         //with or without ellipsis something went wrong here
         ShapeMissmatchError error;
         error.issuer("NXSelection create_selection(const tuple &t,"
@@ -86,10 +86,10 @@ NXSelection create_selection(const tuple &t,const NXField &field)
                 "here");
         throw(error);
     }
-    else if(len(t) != selection.shape().rank())
+    else if(len(t) != selection.rank())
     {
         //here we have to fix the size of an ellipsis
-        ellipsis_size = selection.shape().rank()-(len(t)-1);
+        ellipsis_size = selection.rank()-(len(t)-1);
     }
 
     /*this loop has tow possibilities:
@@ -98,7 +98,7 @@ NXSelection create_selection(const tuple &t,const NXField &field)
        know immediately that a shape error occured.
     -> 
     */
-    for(size_t i=0,j=0;i<selection.shape().rank();i++,j++){
+    for(size_t i=0,j=0;i<selection.rank();i++,j++){
         //manage a single index
         extract<size_t> index(t[j]);
 

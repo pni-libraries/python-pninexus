@@ -205,6 +205,7 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             return this->_object.nchilds();
         }
 
+
         //---------------------------------------------------------------------
         /*! \brief create links
 

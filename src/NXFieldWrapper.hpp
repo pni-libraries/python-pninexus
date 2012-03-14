@@ -210,6 +210,22 @@ template<typename FieldT> class NXFieldWrapper:
              __setitem__tuple(make_tuple<slice>(s),o);
         }
         
+        //--------------------------------------------------------------------------
+        void grow_default()
+        {
+            this->_object.grow(0,1);
+        }
+
+        void grow_dim(size_t d)
+        {
+            this->_object.grow(d,1);
+        }
+
+        void grow(size_t d,size_t s)
+        {
+            this->_object.grow(d,s);
+        }
+        
 };
 
 
@@ -230,6 +246,9 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__slice)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__tuple)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__object)
+        .def("grow",&NXFieldWrapper<FType>::grow)
+        .def("grow",&NXFieldWrapper<FType>::grow_default)
+        .def("grow",&NXFieldWrapper<FType>::grow_dim)
         ;
 }
 
