@@ -8,6 +8,7 @@
 #include "NXObjectWrapper.hpp"
 #include "NXFieldWrapper.hpp"
 #include "FieldCreator.hpp"
+#include "ChildIterator.hpp"
 
 
 template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
@@ -178,6 +179,9 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 
         /*! \brief open object by index
 
+        Opens a child of the group by its index.
+        \param i index of the child
+        \return child object
         */
         object open(size_t i) const
         {
@@ -211,6 +215,12 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             this->_object.link(p,n);
         }
 
+        //----------------------------------------------------------------------
+        ChildIterator<NXGroupWrapper<GType>,object> get_child_iterator() const
+        {
+            return ChildIterator<NXGroupWrapper<GType>,object>(*this);
+        }
+
 };
 
 
@@ -230,6 +240,7 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
         .def("exists",&NXGroupWrapper<GType>::exists)
         .def("link",&NXGroupWrapper<GType>::link)
         .add_property("nchilds",&NXGroupWrapper<GType>::nchilds)   
+        .add_property("childs",&NXGroupWrapper<GType>::get_child_iterator)
         ;
 }
 

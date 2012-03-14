@@ -29,6 +29,7 @@ using namespace pni::nx::h5;
 #include "NXFileWrapper.hpp"
 #include "NXObjectMap.hpp"
 #include "NXFieldWrapper.hpp"
+#include "ChildIterator.hpp"
 
 template<> class NXObjectMap<pni::nx::h5::NXObject>{
     public:
@@ -145,6 +146,12 @@ void TypeError_translator(pni::utils::TypeError const &error)
     PyErr_SetString(PyExc_TypeError,estr.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+void ChildIteratorStop_translator(ChildIteratorStop const &error)
+{
+    PyErr_SetString(PyExc_StopIteration,"iteration stop");
+}
+
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(nxh5)
 {
@@ -166,6 +173,7 @@ BOOST_PYTHON_MODULE(nxh5)
         (SizeMissmatchError_translator);
     register_exception_translator<pni::nx::NXSelectionError>
         (NXSelectionError_translator);
+    register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
 
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
@@ -180,6 +188,8 @@ BOOST_PYTHON_MODULE(nxh5)
     //wrap NX-group
     wrap_nxobject<pni::nx::h5::NXGroup>("NXObject_GroupInstance");
     wrap_nxgroup<pni::nx::h5::NXGroup>("NXGroup");
+    wrap_childiterator<NXGroupWrapper<pni::nx::h5::NXGroup>
+        >("NXGroupChildIterator");
 
     //wrap NX-field
     wrap_nxobject<pni::nx::h5::NXField>("NXObject_FieldInstance");
@@ -189,5 +199,7 @@ BOOST_PYTHON_MODULE(nxh5)
     wrap_nxobject<pni::nx::h5::NXFile>("NXObject_FileInstance");
     wrap_nxgroup<pni::nx::h5::NXFile>("NXGroup_FileInstance");
     wrap_nxfile<pni::nx::h5::NXFile>("NXFile");
+    wrap_childiterator<NXGroupWrapper<pni::nx::h5::NXFile>
+        >("NXFileChildIterator");
 
 }

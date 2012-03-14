@@ -26,6 +26,12 @@
 #ifndef __CHILDITERATOR_HPP__
 #define __CHILDITERATOR_HPP__
 
+//! \brief exception to stop iteration
+class ChildIteratorStop:public std::exception
+{
+
+};
+
 
 //! \brief child iterator
 
@@ -43,7 +49,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
         typedef ItemT&    reference;
         typedef ItemT     value_type;
         typedef IterableT iterable_type;
-        //===========constructors and destructor===================
+        //=======================constructors and destructor====================
         //! default constructor
         ChildIterator():
             _parent(nullptr),
@@ -51,6 +57,8 @@ template<typename IterableT,typename ItemT> class ChildIterator
             _index(0),
             _item()
         {}   
+        
+        //---------------------------------------------------------------------
         //! copy constructor
         ChildIterator(const ChildIterator<IterableT,ItemT> &i):
             _parent(i._parent),
@@ -59,6 +67,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             _item(i._item)
         {}
 
+        //---------------------------------------------------------------------
         //! move constructor
         ChildIterator(ChildIterator<IterableT,ItemT> &&i):
             _parent(i._parent),
@@ -71,6 +80,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             i._index  = 0;
         }
 
+        //---------------------------------------------------------------------
         //! constructor from group object
         ChildIterator(const IterableT &g,size_t start_index=0):
             _parent(&g),
@@ -81,6 +91,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             if(_index < _nlinks) _item = _parent->open(_index);
         }
 
+        //---------------------------------------------------------------------
         //! destructor
         virtual ~ChildIterator(){
             _parent = nullptr;
@@ -88,7 +99,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             _index  = 0;
         }
 
-        //=============assignment operators========================
+        //=======================assignment operators==========================
         //! copy assignment operator
         ChildIterator<IterableT,ItemT> &
             operator=(const ChildIterator<IterableT,ItemT> &i)
@@ -102,6 +113,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return *this;
         }
 
+        //---------------------------------------------------------------------
         //! move assignment operator
         ChildIterator<IterableT,ItemT> &
             operator=(ChildIterator<IterableT,ItemT> &&i)
@@ -118,6 +130,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return *this;
         }
 
+        //---------------------------------------------------------------------
         //! conversion to bool 
         operator bool() 
         {
@@ -125,12 +138,14 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return true;
         }
 
+        //---------------------------------------------------------------------
         //! pointer access operator
         ItemT  *operator->()
         {
             return &_item;
         }
-        
+       
+        //---------------------------------------------------------------------
         //! pointer access operator
         const ItemT *operator->() const
         {
@@ -143,11 +158,13 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return _item;
         }
 
+        //---------------------------------------------------------------------
         const ItemT &operator*() const
         {
             return _item;
         }
 
+        //--------------------------------------------------------------------
         //! increment operator
         ChildIterator<IterableT,ItemT> &operator++()
         {
@@ -164,6 +181,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return *this;
         }
 
+        //---------------------------------------------------------------------
         ChildIterator<IterableT,ItemT> &operator++(int i)
         {
             EXCEPTION_SETUP("H5GroupIterator<ItemT> &operator++(int i)");
@@ -179,6 +197,22 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return *this;
         }
 
+        //---------------------------------------------------------------------
+        ItemT next()
+        {
+            //check if iteration is still possible
+            if(_index == _nlinks){
+                //raise exception here
+                throw(ChildIteratorStop());
+                return(ItemT());
+            }
+            ItemT item(*(*this));
+            (*this)++;
+
+            return item;
+        }
+
+        //---------------------------------------------------------------------
         bool operator==(const ChildIterator<IterableT,ItemT> &o)
             const
         {
@@ -188,6 +222,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return true;
         }
 
+        //---------------------------------------------------------------------
         bool operator!=(const ChildIterator<IterableT,ItemT> &o)
             const
         {
@@ -195,14 +230,15 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return true;
         }
 
-
 };
-
+inline object pass_through(object const& o) { return o; }
 template<typename Iterable> void wrap_childiterator(const String &class_name)
 {
     class_<ChildIterator<Iterable,object> >(class_name.c_str())
-        .def(init<>)
-        .def("__iter__",
+        .def(init<>())
+        .def("next",&ChildIterator<Iterable,object>::next)
+        .def("__iter__",pass_through)
+        ;
 }
 
 #endif
