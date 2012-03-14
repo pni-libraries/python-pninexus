@@ -88,43 +88,15 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             return g;
         }
 
-
         //-------------------------------------------------------------------------
-        //! create a scalar field field
+        //! \brief create field without filter
 
-        field_type 
-            create_scalar_field(const String &n,const String &type_code) const
+        field_type create_field_nofilter(const String &name,const String
+                &type_code,const object &shape=list(),const object &chunk=list())
+        
         {
-            FieldCreator<field_type> creator(n);
-            return creator.create(this->_object,type_code);
-        }
-
-        //-------------------------------------------------------------------------
-        //! create a multidimensional field
-        field_type
-            create_array_field(const String &n,const String &type_code,const object &o)
-        {
-            //create the shape of the new field
-            list shape(o);
-            Shape s = List2Shape(shape);
-            FieldCreator<field_type> creator(n,s);
-            return creator.create(this->_object,type_code);
-        }
-
-        //-------------------------------------------------------------------------
-        //! create a multidimensional field with chunks
-        field_type
-            create_array_field_chunked(const String &n,const String &type_code,
-                    const object &shape_obj,const object &chunk_obj)
-        {
-            //create the shape of the new array
-            list shape(shape_obj); 
-            Shape s = List2Shape(shape);
-            //create the chunk shape
-            list chunk(chunk_obj);
-            Shape cs = List2Shape(chunk);
-
-            FieldCreator<field_type> creator(n,s,cs);
+            FieldCreator<field_type> creator(name,
+                    List2Shape(list(shape)),List2Shape(list(chunk)));
             return creator.create(this->_object,type_code);
         }
 
@@ -225,9 +197,8 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
         .def("__getitem__",&NXGroupWrapper<GType>::open)
         .def("__getitem__",&NXGroupWrapper<GType>::open_by_name)
         .def("create_group",&NXGroupWrapper<GType>::create_group,("n",arg("nxclass")=String()))
-        .def("create_field",&NXGroupWrapper<GType>::create_scalar_field)
-        .def("create_field",&NXGroupWrapper<GType>::create_array_field)
-        .def("create_field",&NXGroupWrapper<GType>::create_array_field_chunked)
+        .def("create_field",&NXGroupWrapper<GType>::create_field_nofilter,
+                ("name","type_code",arg("shape")=list(),arg("chunk")=list()))
         .def("exists",&NXGroupWrapper<GType>::exists)
         .def("link",&NXGroupWrapper<GType>::link)
         .add_property("nchilds",&NXGroupWrapper<GType>::nchilds)   
