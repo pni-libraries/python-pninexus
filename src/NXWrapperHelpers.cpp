@@ -43,6 +43,8 @@ list Shape2List(const Shape &s){
 //-----------------------------------------------------------------------------
 Shape List2Shape(const list &l){
     long size = len(l);
+    if(size==0) return Shape();
+
     Shape s(size);
 
     for(ssize_t i=0;i<size;i++){

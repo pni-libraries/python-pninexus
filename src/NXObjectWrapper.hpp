@@ -6,75 +6,12 @@
 #include "NXObjectMap.hpp"
 #include "NXAttributeWrapper.hpp"
 #include "AttributeIterator.hpp"
+#include "AttributeCreator.hpp"
 
 
 
 template<typename OType> class NXObjectWrapper
 {   
-    private:
-        typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType>
-            __attribute_type; //!< type for attributes
-        /*! \brief create a scalar attribute
-
-        Creates a scalar attribute of type T. The second template parameter is
-        the type of the object used to create the attribute. This can be any
-        object that exposes the attribute-interface.
-        \param o object to create the attribute
-        \param n name of the attribute
-        \return attribute object
-        */
-        template<typename T,typename AOType> __attribute_type
-            __create_scalar_attr(const AOType &o,const String &n) const
-        {
-            return attribute_type(o.template attr<T>(n));
-        }
-
-        /*! \brief create array attribute
-        
-        Create an array attribute of type T and shape s. The second template
-        parameter determines the type of the object used to create the
-        attribute. This can be any object that exposes the attribute-interface.
-        \param o attribute creating object
-        \param n name of the attribute
-        \param s shape of the attribute
-        \return attribute object
-        */
-        template<typename T,typename AOType> __attribute_type
-            __create_array_attr(const AOType &o,const String &n,const Shape &s)
-            const
-        {
-            return attribute_type(o.template attr<T>(n,s));
-        }
-
-        /*! \brief create scalar attribute
-
-        create a scalar attribute of a datatype determined by typestr. 
-        The template parameter determines the type of the object creating the
-        attribute. This type must expose the attribute-interface.
-        \param o attribute creating object
-        \param n name of the attribute
-        \param typestr Python type string determining the datatype
-        \return attribute object
-        */
-        template<typename AOType> __attribute_type
-            __create_scalar_attr(const AOType &o,const String &n,const String
-                    &typestr) const;
-
-        /*! \brief create array attribute
-
-        create a scalar attribute of a datatype determined by typestr and shape
-        s. The template parameter determines the type of the object creating the
-        attribute. This type must expose the attribute-interface.
-        \param o attribute creating object
-        \param n name of the attribute
-        \param typestr Python type string determining the datatype
-        \param s shape of the array attribute
-        \return attribute object
-        */
-        template<typename AOType> __attribute_type
-            __create_array_attr(const AOType &,const String &n,const String
-                    &typestr,const Shape &s) const;
-
     protected:
         //object is not defined private here. The intention of this class is 
         //not encapsulation but rather reducing the writing effort for the 
@@ -184,7 +121,6 @@ template<typename OType> class NXObjectWrapper
             _object.close();
         }
 
-
         //---------------------------------------------------------------------
 
         attribute_type create_attribute(const String &name,const String
@@ -194,13 +130,10 @@ template<typename OType> class NXObjectWrapper
             //first we need to decide wether we need a scalar or an array 
             //attribute
             list shape_list(shape);
-            if(len(shape_list)==0){
-                //create a scalar attribute
-                return __create_scalar_attr(this->_object,name,type_code);
-            }else{
-                Shape s = List2Shape(shape_list);
-                return __create_array_attr(this->_object,name,type_code,s);
-            }
+            AttributeCreator<attribute_type>
+                creator(name,List2Shape(list(shape)));
+
+            return creator.create(this->_object,type_code);
         }
 
         //---------------------------------------------------------------------
@@ -228,90 +161,8 @@ template<typename OType> class NXObjectWrapper
             return
                 AttributeIterator<NXObjectWrapper<OType>,attribute_type>(*this);
         }
-
-
-
-
 };
 
-//===============implementation of non-inline methods===========================
-template<typename OType>
-template<typename AOType> 
-typename NXObjectWrapper<OType>::__attribute_type NXObjectWrapper<OType>::
-__create_scalar_attr(const AOType &o,const String &n,const String &typestr) const
-{
-
-    if(typestr == "string") return __create_scalar_attr<String>(o,n); 
-    if(typestr == "int8")   return __create_scalar_attr<Int8>(o,n);
-    if(typestr == "uint8")  return __create_scalar_attr<UInt8>(o,n);
-    if(typestr == "int16")  return __create_scalar_attr<Int16>(o,n);
-    if(typestr == "uint16") return __create_scalar_attr<UInt16>(o,n);
-    if(typestr == "int32")  return __create_scalar_attr<Int32>(o,n);
-    if(typestr == "uint32") return __create_scalar_attr<UInt32>(o,n);
-    if(typestr == "int64")  return __create_scalar_attr<Int64>(o,n);
-    if(typestr == "uint64") return __create_scalar_attr<UInt64>(o,n);
-
-    if(typestr == "float32") return __create_scalar_attr<Float32>(o,n);
-    if(typestr == "float64") return __create_scalar_attr<Float64>(o,n);
-    if(typestr == "float128") return __create_scalar_attr<Float128>(o,n); 
-    
-    if(typestr == "complex64") return __create_scalar_attr<Complex32>(o,n);
-    if(typestr == "complex128") return __create_scalar_attr<Complex64>(o,n);
-    if(typestr == "complex256") return __create_scalar_attr<Complex128>(o,n);
-
-    //here we should raise an exception
-    TypeError error;
-    error.issuer("template<typename OType> template<typename AOType> "
-                 "typename NXObjectWrapper<OType>::__attribute_type "
-                 "NXObjectWrapper<OType>::__create_scalar_attr("
-                 "const AOType &o,const String &n,const String &typestr)"
-                 " const");
-    error.description(
-            "Type string ("+typestr+") has no appropriate Nexus type!");
-    throw(error);
-
-    return attribute_type();
-}
-
-//-----------------------------------------------------------------------------
-template<typename OType>
-template<typename AOType> 
-typename NXObjectWrapper<OType>::__attribute_type NXObjectWrapper<OType>::
-__create_array_attr(const AOType &o,const String &n,const String &typestr,
-        const Shape &s) const
-{
-    if(typestr == "string") return __create_array_attr<String>(o,n,s); 
-    if(typestr == "int8")   return __create_array_attr<Int8>(o,n,s);
-    if(typestr == "uint8")  return __create_array_attr<UInt8>(o,n,s);
-    if(typestr == "int16")  return __create_array_attr<Int16>(o,n,s);
-    if(typestr == "uint16") return __create_array_attr<UInt16>(o,n,s);
-    if(typestr == "int32")  return __create_array_attr<Int32>(o,n,s);
-    if(typestr == "uint32") return __create_array_attr<UInt32>(o,n,s);
-    if(typestr == "int64")  return __create_array_attr<Int64>(o,n,s);
-    if(typestr == "uint64") return __create_array_attr<UInt64>(o,n,s);
-
-    if(typestr == "float32") return __create_array_attr<Float32>(o,n,s);
-    if(typestr == "float64") return __create_array_attr<Float64>(o,n,s);
-    if(typestr == "float128") return __create_array_attr<Float128>(o,n,s); 
-    
-    if(typestr == "complex64") return __create_array_attr<Complex32>(o,n,s);
-    if(typestr == "complex128") return __create_array_attr<Complex64>(o,n,s);
-    if(typestr == "complex256") return __create_array_attr<Complex128>(o,n,s);
-
-    //here we should raise an exception
-    TypeError error;
-    error.issuer("template<typename OType> template<typename AOType> "
-                 "typename NXObjectWrapper<OType>::__attribute_type "
-                 "NXObjectWrapper<OType>:: __create_array_attr("
-                 "const AOType &o,const String &n,const String &typestr,"
-                 "const Shape &s) const");
-    error.description(
-            "Type string ("+typestr+") has no appropriate Nexus type!");
-    throw(error);
-
-
-    return attribute_type();
-}
 
 //template function wrapping a single NXObject 
 //type. 
