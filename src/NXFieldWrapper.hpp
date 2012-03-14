@@ -211,23 +211,16 @@ template<typename FieldT> class NXFieldWrapper:
         }
         
         //--------------------------------------------------------------------------
-        void grow_default()
-        {
-            this->_object.grow(0,1);
-        }
 
-        void grow_dim(size_t d)
-        {
-            this->_object.grow(d,1);
-        }
-
-        void grow(size_t d,size_t s)
+        void grow(size_t d=0,size_t s=1)
         {
             this->_object.grow(d,s);
         }
         
 };
 
+static const char __grow_docstr[]=
+"hello world ";
 
 template<typename FType> void wrap_nxfield(const String &class_name)
 {
@@ -246,9 +239,7 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__slice)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__tuple)
         .def("__setitem__",&NXFieldWrapper<FType>::__setitem__object)
-        .def("grow",&NXFieldWrapper<FType>::grow)
-        .def("grow",&NXFieldWrapper<FType>::grow_default)
-        .def("grow",&NXFieldWrapper<FType>::grow_dim)
+        .def("grow",&NXFieldWrapper<FType>::grow,(arg("dim")=0,arg("ext")=1),__grow_docstr)
         ;
 }
 
