@@ -186,29 +186,23 @@ template<typename OType> class NXObjectWrapper
 
 
         //---------------------------------------------------------------------
-        attribute_type scalar_attr(const String &name,const String &type_str)
+
+        attribute_type create_attribute(const String &name,const String
+                &type_code,const object &shape=list())
             const
         {
-            return __create_scalar_attr(this->_object,name,type_str);
+            //first we need to decide wether we need a scalar or an array 
+            //attribute
+            list shape_list(shape);
+            if(len(shape_list)==0){
+                //create a scalar attribute
+                return __create_scalar_attr(this->_object,name,type_code);
+            }else{
+                Shape s = List2Shape(shape_list);
+                return __create_array_attr(this->_object,name,type_code,s);
+            }
         }
 
-        //---------------------------------------------------------------------
-        attribute_type array_attr_from_list(const String &name,
-                const String &type_str,const list &l) const
-        {
-            Shape s= List2Shape(l);
-
-            return __create_array_attr(this->_object,name,type_str,s);
-        }
-
-        //---------------------------------------------------------------------
-        attribute_type array_attr_from_tuple(const String &name,
-                const String &type_str,const tuple &l) const
-        {
-            Shape s= Tuple2Shape(l);
-
-            return __create_array_attr(this->_object,name,type_str,s);
-        }
         //---------------------------------------------------------------------
         attribute_type open_attr(const String &n) const
         {
@@ -331,9 +325,8 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
         .add_property("nattrs",&NXObjectWrapper<OType>::nattrs)
-        .def("attr",&NXObjectWrapper<OType>::scalar_attr)
-        .def("attr",&NXObjectWrapper<OType>::array_attr_from_list)
-        .def("attr",&NXObjectWrapper<OType>::array_attr_from_tuple)
+        .def("attr",&NXObjectWrapper<OType>::create_attribute,("name","type_code",
+                    arg("shape")=list()))
         .def("attr",&NXObjectWrapper<OType>::open_attr)
         .def("close",&NXObjectWrapper<OType>::close)
         .add_property("attributes",&NXObjectWrapper<OType>::get_attribute_iterator)
