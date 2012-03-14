@@ -130,71 +130,12 @@ template<typename IterableT,typename ItemT> class ChildIterator
             return *this;
         }
 
-        //---------------------------------------------------------------------
-        //! conversion to bool 
-        operator bool() 
-        {
-            if(_index >= _nlinks) return false;
-            return true;
-        }
 
-        //---------------------------------------------------------------------
-        //! pointer access operator
-        ItemT  *operator->()
-        {
-            return &_item;
-        }
-       
-        //---------------------------------------------------------------------
-        //! pointer access operator
-        const ItemT *operator->() const
-        {
-            return &_item;
-        }
-        
-        //! dereferencing operator
-        ItemT & operator*()
-        {
-            return _item;
-        }
-
-        //---------------------------------------------------------------------
-        const ItemT &operator*() const
-        {
-            return _item;
-        }
-
-        //--------------------------------------------------------------------
-        //! increment operator
-        ChildIterator<IterableT,ItemT> &operator++()
-        {
-            EXCEPTION_SETUP("ChildIterator<ItemT> &operator++()");
-
-            //if the actual index is equal to the total number
-            //of links no increment is possible
+        void increment(){
             _index++;
             if(_index < _nlinks){
                 _item = _parent->open(_index);
             }
-
-
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
-        ChildIterator<IterableT,ItemT> &operator++(int i)
-        {
-            EXCEPTION_SETUP("H5GroupIterator<ItemT> &operator++(int i)");
-            
-            //if the actual index is equal to the total number
-            //of links no increment is possible
-            _index++;
-            if(_index < _nlinks){
-                _item = _parent->open(_index);
-            }
-
-
-            return *this;
         }
 
         //---------------------------------------------------------------------
@@ -206,38 +147,27 @@ template<typename IterableT,typename ItemT> class ChildIterator
                 throw(ChildIteratorStop());
                 return(ItemT());
             }
-            ItemT item(*(*this));
-            (*this)++;
+
+            ItemT item(_item);
+            this->increment();
 
             return item;
         }
 
-        //---------------------------------------------------------------------
-        bool operator==(const ChildIterator<IterableT,ItemT> &o)
-            const
+        //----------------------------------------------------------------------
+        object __iter__()
         {
-            if(_parent != o._parent) return false;
-            if(_index  != o._index)  return false;
-            if(_nlinks != o._nlinks) return false;
-            return true;
-        }
-
-        //---------------------------------------------------------------------
-        bool operator!=(const ChildIterator<IterableT,ItemT> &o)
-            const
-        {
-            if(*this == o) return false;
-            return true;
+            return object(this);
         }
 
 };
-inline object pass_through(object const& o) { return o; }
+
 template<typename Iterable> void wrap_childiterator(const String &class_name)
 {
     class_<ChildIterator<Iterable,object> >(class_name.c_str())
         .def(init<>())
         .def("next",&ChildIterator<Iterable,object>::next)
-        .def("__iter__",pass_through)
+        .def("__iter__",&ChildIterator<Iterable,object>::__iter__)
         ;
 }
 
