@@ -30,6 +30,7 @@ using namespace pni::nx::h5;
 #include "NXObjectMap.hpp"
 #include "NXFieldWrapper.hpp"
 #include "ChildIterator.hpp"
+#include "AttributeIterator.hpp"
 
 template<> class NXObjectMap<pni::nx::h5::NXObject>{
     public:
@@ -98,6 +99,7 @@ void NXFieldError_translator(pni::nx::NXFieldError const &error)
     PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
 void NXSelectionError_translator(pni::nx::NXSelectionError const &error)
 {
     std::stringstream estr;
@@ -118,7 +120,8 @@ void MemoryAccessError_translator(pni::utils::MemoryAccessError const &error)
 {
     std::stringstream estr;
     estr << error;
-    PyErr_SetString(PyExc_MemoryError,estr.str().c_str());
+    std::cerr<<error<<std::endl;
+    PyErr_SetString(PyExc_MemoryError,"from me");
 }
 
 //-----------------------------------------------------------------------------
@@ -127,7 +130,8 @@ void MemoryAllocationError_translator(pni::utils::MemoryAllocationError const
 {
     std::stringstream estr;
     estr<<error;
-    PyErr_SetString(PyExc_MemoryError,estr.str().c_str());
+    std::cerr<<error<<std::endl;
+    PyErr_SetString(PyExc_MemoryError,"from me");
 }
 
 //-----------------------------------------------------------------------------
@@ -148,6 +152,11 @@ void TypeError_translator(pni::utils::TypeError const &error)
 
 //-----------------------------------------------------------------------------
 void ChildIteratorStop_translator(ChildIteratorStop const &error)
+{
+    PyErr_SetString(PyExc_StopIteration,"iteration stop");
+}
+
+void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
@@ -174,6 +183,7 @@ BOOST_PYTHON_MODULE(nxh5)
     register_exception_translator<pni::nx::NXSelectionError>
         (NXSelectionError_translator);
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
+    register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
 
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
@@ -184,6 +194,15 @@ BOOST_PYTHON_MODULE(nxh5)
 
     //wrap NX-object
     wrap_nxobject<pni::nx::h5::NXObject>("NXObject");
+    wrap_attributeiterator
+        <NXObjectWrapper<pni::nx::h5::NXGroup>,
+         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXGroupAttributeIterator");
+    wrap_attributeiterator
+        <NXObjectWrapper<pni::nx::h5::NXField>,
+         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXFieldAttributeIterator");
+    wrap_attributeiterator
+        <NXObjectWrapper<pni::nx::h5::NXFile>,
+         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXFiledAttributeIterator");
 
     //wrap NX-group
     wrap_nxobject<pni::nx::h5::NXGroup>("NXObject_GroupInstance");

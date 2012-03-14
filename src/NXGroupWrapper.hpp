@@ -9,6 +9,7 @@
 #include "NXFieldWrapper.hpp"
 #include "FieldCreator.hpp"
 #include "ChildIterator.hpp"
+#include "AttributeIterator.hpp"
 
 
 template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>

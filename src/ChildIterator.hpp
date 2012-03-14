@@ -131,6 +131,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
         }
 
 
+        //---------------------------------------------------------------------
         void increment(){
             _index++;
             if(_index < _nlinks){

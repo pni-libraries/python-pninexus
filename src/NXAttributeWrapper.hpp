@@ -95,6 +95,10 @@ template<typename AttrType> class NXAttributeWrapper{
         }
 
         //----------------------------------------------------------------------
+        String name() const
+        {
+            return this->_attribute.name();
+        }
 
         //=========================read methods================================
         object read() const
@@ -129,7 +133,11 @@ template<typename AttrType> class NXAttributeWrapper{
 
             }else{
                 //throw an exception here
-
+                pni::nx::NXAttributeError error;
+                error.issuer("template<typename AttrType> void"
+                        "NXAttributeWrapper<AttrType>::write(object o)");
+                error.description("Found no procedure to write this data!");
+                throw(error);
             }
 
         }
@@ -142,10 +150,9 @@ template<typename AType> void wrap_nxattribute()
         .add_property("shape",&NXAttributeWrapper<AType>::shape)
         .add_property("type_id",&NXAttributeWrapper<AType>::type_id)
         .add_property("is_valid",&NXAttributeWrapper<AType>::is_valid)
-        .def("read",&NXAttributeWrapper<AType>::read)
+        .add_property("name",&NXAttributeWrapper<AType>::name)
         .add_property("value",&NXAttributeWrapper<AType>::read,
                               &NXAttributeWrapper<AType>::write)
-        .def("write",&NXAttributeWrapper<AType>::write)
         .def("close",&NXAttributeWrapper<AType>::close)
         ;
 

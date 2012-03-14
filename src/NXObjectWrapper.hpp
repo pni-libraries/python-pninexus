@@ -5,6 +5,7 @@
 
 #include "NXObjectMap.hpp"
 #include "NXAttributeWrapper.hpp"
+#include "AttributeIterator.hpp"
 
 
 
@@ -214,6 +215,29 @@ template<typename OType> class NXObjectWrapper
             return attribute_type(this->_object.attr(n));
         }
 
+        //---------------------------------------------------------------------
+        size_t nattrs() const
+        {
+            return this->_object.nattr();
+        }
+
+        //---------------------------------------------------------------------
+        attribute_type open_attr_by_id(size_t i) const
+        {
+            return attribute_type(this->_object.attr(i));
+        }
+
+        //---------------------------------------------------------------------
+        AttributeIterator<NXObjectWrapper<OType>,attribute_type> 
+            get_attribute_iterator() const
+        {
+            return
+                AttributeIterator<NXObjectWrapper<OType>,attribute_type>(*this);
+        }
+
+
+
+
 };
 
 //===============implementation of non-inline methods===========================
@@ -306,11 +330,13 @@ template<typename OType> void wrap_nxobject(const String &class_name)
         .add_property("path",&NXObjectWrapper<OType>::path)
         .add_property("base",&NXObjectWrapper<OType>::base)
         .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
+        .add_property("nattrs",&NXObjectWrapper<OType>::nattrs)
         .def("attr",&NXObjectWrapper<OType>::scalar_attr)
         .def("attr",&NXObjectWrapper<OType>::array_attr_from_list)
         .def("attr",&NXObjectWrapper<OType>::array_attr_from_tuple)
         .def("attr",&NXObjectWrapper<OType>::open_attr)
         .def("close",&NXObjectWrapper<OType>::close)
+        .add_property("attributes",&NXObjectWrapper<OType>::get_attribute_iterator)
         ;
 }
 

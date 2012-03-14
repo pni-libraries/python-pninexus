@@ -9,18 +9,23 @@ g = nxfile.create_group("scan_1","NXentry")
 g.create_group("instrument","NXinstrument")
 g.create_group("sample","NXsample")
 g.create_group("data","NXdata")
-g.create_field("experiment_description","string").write("SI0815")
-print g.nchilds
+f = g.create_field("experiment_description","string")
+f.write("SI0815")
+
+
+#iterate over all attributes of the file object
+for a in nxfile.attributes:
+    print a.name,": ",a.value
+
 
 print "Iterate over file childs ..."
 for c in nxfile.childs:
     print c.path
 
 print "Iterate over group childs ..."
-for i in range(g.nchilds):
-    print g[i],g[i].path
-
 for c in g.childs:
     print c,c.path
+    for a in c.attributes:
+        print a.name,": ",a.value
 
 nxfile.close()
