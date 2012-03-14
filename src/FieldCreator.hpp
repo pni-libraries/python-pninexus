@@ -2,6 +2,8 @@
 #include<pni/utils/Types.hpp>
 #include<pni/utils/Exceptions.hpp>
 
+#include<pni/nx/NX.hpp>
+
 using namespace pni::utils;
 
 /*! \brief field creator class
@@ -41,19 +43,8 @@ template<typename FieldT>
 template<typename T,typename OType> 
     FieldT FieldCreator<FieldT>::create(const OType &o) const
 {
-    if(__s.rank() == 0){
-        //create a scalar field
-        return FieldT(o.template create_field<T>(__n));
-    }else{
-        //create an array field
-        if(__cs.rank() == 0){
-            //create a field with automatic chunk size
-            return FieldT(o.template create_field<T>(__n,__s));
-        }else{
-            //create a field with custom chunk 
-            return FieldT(o.template create_field<T>(__n,__s,__cs));
-        }
-    }
+
+    return FieldT(o.template create_field<T>(__n,__s,__cs));
 }
 
 //------------------------------------------------------------------------------
