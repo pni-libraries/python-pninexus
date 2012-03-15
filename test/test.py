@@ -9,20 +9,20 @@ import pni.nx.h5 as nx
 
 f = nx.create_file("test.h5",True,0);
 d = f.attr("runnumber","int32")
-d.write(1209)
-print d.read()
+d.value = 1209
+print d.value
 
 g = f.create_group("scan_1/detector/data")
 
 d = g.attr("description","string")
-d.write("hello world")
+d.value = "hello world"
 print d.value
 
 g.attr("temperature","float32",[4,2,3])
 g.link("/scan_1/detector/data","/data")
 
 a = g.attr("temperature")
-t = numpy.zeros(a.shape,a.type_id)
+t = numpy.zeros(a.shape,a.dtype)
 t[0,:,:] = 17.2
 t[1,:,:] = 18.2
 t[2,:,:] = 19.2
@@ -35,7 +35,7 @@ a = f.attr("runnumber")
 print a.value
 
 g = f.open("/scan_1/detector/data")
-g.attr("ref_index","complex64").write(1.0548e-4+2.123e-6j)
+g.attr("ref_index","complex64").value = 1.0548e-4+2.123e-6j
 print g.attr("ref_index").value
 
 
