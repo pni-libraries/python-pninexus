@@ -42,7 +42,7 @@ void NXFileError_translator(pni::nx::NXFileError const &error)
 {
     std::stringstream estr;
     estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
+    PyErr_SetString(PyExc_IOError,estr.str().c_str());
 }
 
 //-----------------------------------------------------------------------------

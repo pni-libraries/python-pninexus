@@ -1,4 +1,3 @@
-import sys
 import unittest
 
 from pni.nx.h5 import NXFile
@@ -19,7 +18,8 @@ class NXFileTest(unittest.TestCase):
         self.assertTrue(f.valid)
         f.close()
     
-        self.assertRaises(UserWarning,create_file,"test.h5",False)
+        self.assertRaises(IOError,create_file,"test.h5",False)
+        f = open_file("test.h5",readonly=False)
 
     def test_attributes(self):
         s = "a string attribute"
