@@ -2,6 +2,7 @@
 from nxh5 import NXObject
 from nxh5 import NXGroup
 from nxh5 import NXFile
+from nxh5 import NXDeflateFilter
 
 #import helper methods
 from nxh5 import __create_file

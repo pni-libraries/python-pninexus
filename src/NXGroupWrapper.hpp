@@ -92,11 +92,12 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         //! \brief create field without filter
 
         field_type create_field_nofilter(const String &name,const String
-                &type_code,const object &shape=list(),const object &chunk=list())
+                &type_code,const object &shape=list(),const object
+                &chunk=list(),const object &filter=object())
         
         {
             FieldCreator<field_type> creator(name,
-                    List2Shape(list(shape)),List2Shape(list(chunk)));
+                    List2Shape(list(shape)),List2Shape(list(chunk)),filter);
             return creator.create(this->_object,type_code);
         }
 
@@ -198,7 +199,7 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
         .def("__getitem__",&NXGroupWrapper<GType>::open_by_name)
         .def("create_group",&NXGroupWrapper<GType>::create_group,("n",arg("nxclass")=String()))
         .def("create_field",&NXGroupWrapper<GType>::create_field_nofilter,
-                ("name","type_code",arg("shape")=list(),arg("chunk")=list()))
+                ("name","type_code",arg("shape")=list(),arg("chunk")=list(),arg("filter")=object()))
         .def("exists",&NXGroupWrapper<GType>::exists)
         .def("link",&NXGroupWrapper<GType>::link)
         .add_property("nchilds",&NXGroupWrapper<GType>::nchilds)   

@@ -108,6 +108,14 @@ void NXSelectionError_translator(pni::nx::NXSelectionError const &error)
 }
 
 //-----------------------------------------------------------------------------
+void NXFilterError_translator(pni::nx::NXFilterError const &error)
+{
+    std::stringstream estr;
+    estr<<error;
+    PyErr_SetString(PyExc_TypeError,error.description().c_str());
+}
+
+//-----------------------------------------------------------------------------
 void IndexError_translator(pni::utils::IndexError const &error)
 {
     std::stringstream estr;
@@ -220,5 +228,18 @@ BOOST_PYTHON_MODULE(nxh5)
     wrap_nxfile<pni::nx::h5::NXFile>("NXFile");
     wrap_childiterator<NXGroupWrapper<pni::nx::h5::NXFile>
         >("NXFileChildIterator");
+
+    //create wrapper for NXDefalteFilter
+
+    UInt32 (NXDeflateFilter::*get_compression_rate)() const =
+        &NXDeflateFilter::compression_rate;
+    void (NXDeflateFilter::*set_compression_rate)(UInt32) =
+        &NXDeflateFilter::compression_rate;
+    bool (NXDeflateFilter::*get_shuffle)() const = &NXDeflateFilter::shuffle;
+    void (NXDeflateFilter::*set_shuffle)(bool) = &NXDeflateFilter::shuffle;
+    class_<NXDeflateFilter>("NXDeflateFilter")
+        .add_property("rate",get_compression_rate,set_compression_rate)
+        .add_property("shuffle",get_shuffle,set_shuffle)
+        ;
 
 }
