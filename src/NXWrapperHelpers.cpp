@@ -1,8 +1,34 @@
+/*
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of libpninx-python.
+ *
+ * libpninx is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * libpninx is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
+ *
+ * Definition and implementation of helper functions and classes for wrappers.
+ *
+ * Created on: Feb 17, 2012
+ *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+ */
+
 //helper functions to create wrappers
 
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
 #include "NXWrapperHelpers.hpp"
+#include "NXWrapperErrors.hpp"
 
 //-----------------------------------------------------------------------------
 String typeid2str(const TypeID &tid)
@@ -98,7 +124,6 @@ NXSelection create_selection(const tuple &t,const NXField &field)
     -> there is no ellipse and the rank of the field is larger than the size of
        the tuple passed. In this case an IndexError will occur. In this case we 
        know immediately that a shape error occured.
-    -> 
     */
     for(size_t i=0,j=0;i<selection.rank();i++,j++){
         //manage a single index
@@ -150,8 +175,12 @@ NXSelection create_selection(const tuple &t,const NXField &field)
         const object &o = t[j];
         if(Py_Ellipsis != o.ptr())
         {
-            std::cerr<<"not an ellipsis ..."<<std::endl;
-            //raise an exception here
+            TypeError error;
+            error.issuer("NXSelection create_selection(const tuple &t,const "
+                "NXField &field)");
+            error.description("Object must be either an index, a slice,"
+                    " or an ellipsis!");
+            throw(error);
         }
         //assume here that the object is an ellipsis - this is a bit difficult
         //to handle as we do not know over how many 
@@ -163,8 +192,11 @@ NXSelection create_selection(const tuple &t,const NXField &field)
                 i++;
             }
         }else{
-            std::cerr<<"only one ellipsis is allowed per selection!"<<std::endl;
-            //raise an exception here
+            IndexError error;
+            error.issuer("NXSelection create_selection(const tuple &t,const "
+                "NXField &field)");
+            error.description("Only one ellipsis is allowed!");
+            throw(error);
         }
     }
 

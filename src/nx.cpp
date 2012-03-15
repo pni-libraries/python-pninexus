@@ -31,6 +31,7 @@ using namespace pni::nx::h5;
 #include "NXFieldWrapper.hpp"
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
+#include "NXWrapperErrors.hpp"
 
 template<> class NXObjectMap<pni::nx::h5::NXObject>{
     public:
@@ -67,135 +68,18 @@ template<> class NXObjectMap<pni::nx::h5::NXFile>{
         typedef pni::nx::h5::NXAttribute AttributeType;
 };
 
-//===============exception translators=========================================
-void NXFileError_translator(pni::nx::NXFileError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void NXGroupError_translator(pni::nx::NXGroupError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void NXAttributeError_translator(pni::nx::NXAttributeError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void NXFieldError_translator(pni::nx::NXFieldError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void NXSelectionError_translator(pni::nx::NXSelectionError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_UserWarning,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void NXFilterError_translator(pni::nx::NXFilterError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_TypeError,error.description().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void IndexError_translator(pni::utils::IndexError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_IndexError,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void MemoryAccessError_translator(pni::utils::MemoryAccessError const &error)
-{
-    std::stringstream estr;
-    estr << error;
-    std::cerr<<error<<std::endl;
-    PyErr_SetString(PyExc_MemoryError,"from me");
-}
-
-//-----------------------------------------------------------------------------
-void MemoryAllocationError_translator(pni::utils::MemoryAllocationError const
-        &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    std::cerr<<error<<std::endl;
-    PyErr_SetString(PyExc_MemoryError,"from me");
-}
-
-//-----------------------------------------------------------------------------
-void SizeMissmatchError_translator(pni::utils::SizeMissmatchError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_IndexError,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void TypeError_translator(pni::utils::TypeError const &error)
-{
-    std::stringstream estr;
-    estr<<error;
-    PyErr_SetString(PyExc_TypeError,estr.str().c_str());
-}
-
-//-----------------------------------------------------------------------------
-void ChildIteratorStop_translator(ChildIteratorStop const &error)
-{
-    PyErr_SetString(PyExc_StopIteration,"iteration stop");
-}
-
-void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
-{
-    PyErr_SetString(PyExc_StopIteration,"iteration stop");
-}
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(nxh5)
 {
-    register_exception_translator<pni::nx::NXFileError>
-        (NXFileError_translator);
-    register_exception_translator<pni::nx::NXGroupError>
-        (NXGroupError_translator);
-    register_exception_translator<pni::nx::NXAttributeError>
-        (NXAttributeError_translator);
-    register_exception_translator<pni::nx::NXFieldError>
-        (NXFieldError_translator);
-    register_exception_translator<pni::utils::IndexError>
-        (IndexError_translator);
-    register_exception_translator<pni::utils::MemoryAccessError>
-        (MemoryAccessError_translator);
-    register_exception_translator<pni::utils::MemoryAllocationError>
-        (MemoryAllocationError_translator);
-    register_exception_translator<pni::utils::SizeMissmatchError>
-        (SizeMissmatchError_translator);
-    register_exception_translator<pni::nx::NXSelectionError>
-        (NXSelectionError_translator);
-    register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
-    register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
-
+    
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     import_array();
+
+
+    //register exception translators
+    exception_registration();
    
     //wrap NX-attribute object
     wrap_nxattribute<pni::nx::h5::NXAttribute>();

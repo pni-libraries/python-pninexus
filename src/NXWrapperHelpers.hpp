@@ -1,3 +1,28 @@
+/*
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of libpninx-python.
+ *
+ * libpninx is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * libpninx is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
+ *
+ * Declearation of helper functions and classes for wrappers.
+ *
+ * Created on: Feb 17, 2012
+ *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+ */
+
 #ifndef __NXWRAPPERHELPERS_HPP__
 #define __NXWRAPPERHELPERS_HPP__
 
@@ -123,6 +148,7 @@ Helper function that creatds a numpy type code string from a pni::utils::TypeID.
 */
 String typeid2str(const TypeID &tid);
 
+//-----------------------------------------------------------------------------
 /*! \brief create list from shape
 
 Creates a Python list from a Shape object. The length of the list corresponds to
@@ -133,6 +159,7 @@ of elements along each dimension.
 */
 list Shape2List(const Shape &s);
 
+//-----------------------------------------------------------------------------
 /*! \brief list to Shape conversion
 
 Converts a Python list to a Shape object. The length of the list is interpreted
@@ -143,6 +170,7 @@ elements along a particular dimension.
 */
 Shape List2Shape(const list &l);
 
+//-----------------------------------------------------------------------------
 /*! \brief tuple to Shape conversion
 
 Converts a Python tuple to a Shape object. The length of the tuple determines
@@ -153,6 +181,7 @@ dimension.
 */
 Shape Tuple2Shape(const tuple &t);
 
+//-----------------------------------------------------------------------------
 /*! \brief create reference array from numpy array
 
 This template method creates a reference array to the data held by a numpy
@@ -172,6 +201,7 @@ template<typename T> Array<T,RefBuffer> Numpy2RefArray(const object &o)
     return Array<T,RefBuffer>(s,rbuffer);
 }
 
+//-----------------------------------------------------------------------------
 /*! \brief create a numpy array 
 
 This template function creates a new numpy array from shape and type
@@ -188,15 +218,21 @@ template<typename T> PyObject *CreateNumpyArray(const Shape &s)
     return ptr;
 }
 
+//-----------------------------------------------------------------------------
 /*! \brief selection from tuple 
 
 Adopts the selection of a field according to a tuple with indices and slices.
+In order to succeed the tuple passed to this function must contain only indices,
+slices, and a single ellipsis.
+\throws TypeError if one of typle element is from an unsupported type
+\throws IndexError if more than one ellipsis is contained in the tuple or if an
+Index exceeds the number of elements along the correpsonding field dimension.
+\throws ShapeMissmatchError if the size of the tuple exceeds the rank of the
+field from which the selection should be drawn.
 \param t tuple with indices and slices
 \param s reference to the selection to create
 */
 NXSelection create_selection(const tuple &t,const NXField &f);
-
-
 
 
 #endif

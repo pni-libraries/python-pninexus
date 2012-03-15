@@ -26,12 +26,7 @@
 #ifndef __CHILDITERATOR_HPP__
 #define __CHILDITERATOR_HPP__
 
-//! \brief exception to stop iteration
-class ChildIteratorStop:public std::exception
-{
-
-};
-
+#include "NXWrapperErrors.hpp"
 
 //! \brief child iterator
 
@@ -46,9 +41,8 @@ template<typename IterableT,typename ItemT> class ChildIterator
         ItemT      _item;   //!< the actual object to which the 
                             //!< interator referes
     public:
-        typedef ItemT&    reference;
-        typedef ItemT     value_type;
-        typedef IterableT iterable_type;
+        typedef ItemT     value_type;    //!< type of the elements
+        typedef IterableT iterable_type; //!< container type
         //=======================constructors and destructor====================
         //! default constructor
         ChildIterator():
@@ -132,6 +126,10 @@ template<typename IterableT,typename ItemT> class ChildIterator
 
 
         //---------------------------------------------------------------------
+        /*! \brief increment iterator
+
+        Set the iterator to the next element in the container.
+        */
         void increment(){
             _index++;
             if(_index < _nlinks){
@@ -140,6 +138,11 @@ template<typename IterableT,typename ItemT> class ChildIterator
         }
 
         //---------------------------------------------------------------------
+        /*! \brief return current element
+
+        Return the current element the iterator points to.
+        \return intance of ItemT
+        */
         ItemT next()
         {
             //check if iteration is still possible
@@ -156,6 +159,7 @@ template<typename IterableT,typename ItemT> class ChildIterator
         }
 
         //----------------------------------------------------------------------
+        //! \brief required by the python wrapper
         object __iter__()
         {
             return object(this);
@@ -163,6 +167,12 @@ template<typename IterableT,typename ItemT> class ChildIterator
 
 };
 
+/*! \brief creates Python object
+
+Function creates a Python object for a ChildIterator. The type of the container
+is determined by the Iterable template parameter.
+\param class_name name of the created class
+*/
 template<typename Iterable> void wrap_childiterator(const String &class_name)
 {
     class_<ChildIterator<Iterable,object> >(class_name.c_str())

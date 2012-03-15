@@ -141,6 +141,7 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 
         }
 
+        //---------------------------------------------------------------------
         /*! \brief open object by index
 
         Opens a child of the group by its index.

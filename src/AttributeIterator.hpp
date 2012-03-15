@@ -17,7 +17,7 @@
  * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************
  *
- * Iterator for childs linked to a group or file object
+ * Iterator for attributes attached to an  object.
  *
  * Created on: March 14, 2012
  *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
@@ -26,17 +26,15 @@
 #ifndef __ATTRIBUTEITERATOR_HPP__
 #define __ATTRIBUTEITERATOR_HPP__
 
-//! \brief exception to stop iteration
-class AttributeIteratorStop:public std::exception
-{
 
-};
+#include "NXWrapperErrors.hpp"
 
 
-//! \brief child iterator
+/*! \brief child iterator
 
-//! This is a forward iterator that runs through all the objects
-//! linked below a group. 
+This is a forward iterator that runs through all the objects
+linked below a group. 
+*/
 template<typename IterableT,typename ItemT> class AttributeIterator
 {
     private:
@@ -46,9 +44,8 @@ template<typename IterableT,typename ItemT> class AttributeIterator
         ItemT      _item;   //!< the actual object to which the 
                             //!< interator referes
     public:
-        typedef ItemT&    reference;
-        typedef ItemT     value_type;
-        typedef IterableT iterable_type;
+        typedef ItemT     value_type;    //!< type of the elements 
+        typedef IterableT iterable_type; //!< type of the iterable
         //=======================constructors and destructor====================
         //! default constructor
         AttributeIterator():
@@ -81,7 +78,12 @@ template<typename IterableT,typename ItemT> class AttributeIterator
         }
 
         //---------------------------------------------------------------------
-        //! constructor from group object
+        /*! \brief constructor from group object
+
+        \param g iterable object 
+        \param start_index index of the first element the iterator should point
+        to
+        */
         explicit AttributeIterator(const IterableT &g,size_t start_index=0):
             _parent(&g),
             _nattrs(g.nattrs()),
@@ -131,8 +133,11 @@ template<typename IterableT,typename ItemT> class AttributeIterator
             return *this;
         }
 
-
         //---------------------------------------------------------------------
+        /*! \brief increment iterator
+
+        Moves the iterator to the next element.
+        */
         void increment(){
             _index++;
             if(_index < _nattrs){
@@ -141,6 +146,11 @@ template<typename IterableT,typename ItemT> class AttributeIterator
         }
 
         //---------------------------------------------------------------------
+        /*! \brief return next element
+
+        This method returns the next element of the container. 
+        \return instance of ItemT with the next element
+        */
         ItemT next()
         {
             //check if iteration is still possible
@@ -150,13 +160,16 @@ template<typename IterableT,typename ItemT> class AttributeIterator
                 return(ItemT());
             }
 
+            //return the current object 
             ItemT item(_item);
+            //increment the iterator
             this->increment();
 
             return item;
         }
 
         //----------------------------------------------------------------------
+        //! \brief required by Python
         object __iter__()
         {
             return object(this);
@@ -164,7 +177,14 @@ template<typename IterableT,typename ItemT> class AttributeIterator
 
 };
 
-template<typename Iterable,typename ItemT> void wrap_attributeiterator(const String &class_name)
+//-----------------------------------------------------------------------------
+/*! \brief AttributeIterator wrapper generator
+
+This function creates the Python code for AttributeIterator objects. 
+\param class_name name of the created Python class
+*/
+template<typename Iterable,typename ItemT> 
+void wrap_attributeiterator(const String &class_name)
 {
     class_<AttributeIterator<Iterable,ItemT> >(class_name.c_str())
         .def(init<>())

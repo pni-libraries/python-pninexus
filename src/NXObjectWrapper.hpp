@@ -9,7 +9,10 @@
 #include "AttributeCreator.hpp"
 
 
+/*! \brief template wrapps NXObject classes
 
+This class-template provides a wrapper for NXObject types.
+*/
 template<typename OType> class NXObjectWrapper
 {   
     protected:
@@ -70,7 +73,7 @@ template<typename OType> class NXObjectWrapper
         }
 
         //---------------------------------------------------------------------
-        //move assignment
+        //!move assignment
         NXObjectWrapper<OType> &operator=(NXObjectWrapper<OType> &&o)
         {
             if(this != &o) _object = std::move(o._object);
@@ -78,7 +81,7 @@ template<typename OType> class NXObjectWrapper
         }
 
         //---------------------------------------------------------------------
-        //copy assignment
+        //!copy assignment
         NXObjectWrapper<OType> &operator=(const NXObjectWrapper<OType> &o)
         {
             if(this != &o) _object = o._object;
@@ -122,7 +125,16 @@ template<typename OType> class NXObjectWrapper
         }
 
         //---------------------------------------------------------------------
+        /*! \brief create attribute
 
+        Create an attribute attached to this object. By default attributes are
+        overwritten if they already exist.
+        \throws TypeError if the type_code cannot be handled
+        \throws NXAttributeError in case of other attribute errors
+        \param name name of the attribute
+        \param type_code numpy type code for the attribute
+        \param shape list or tuple with shape information.
+        */
         attribute_type create_attribute(const String &name,const String
                 &type_code,const object &shape=list())
             const
@@ -137,24 +149,41 @@ template<typename OType> class NXObjectWrapper
         }
 
         //---------------------------------------------------------------------
+        /*! \brief opens attribute by name
+
+        \param n name of the attribute
+        \return attribute instance
+        */
         attribute_type open_attr(const String &n) const
         {
             return attribute_type(this->_object.attr(n));
         }
 
         //---------------------------------------------------------------------
+        //! return number of attributes
         size_t nattrs() const
         {
             return this->_object.nattr();
         }
 
         //---------------------------------------------------------------------
+        /*! \brief return attribute by index
+
+        Returns the attribute by its index rather than by its name.
+        \param i attribute index
+        \return attribute instance
+        */
         attribute_type open_attr_by_id(size_t i) const
         {
             return attribute_type(this->_object.attr(i));
         }
 
         //---------------------------------------------------------------------
+        /*! \brief return attribute iterator
+
+        Method returns an iterator over the attributes attached to this object.
+        \return attribute iterator
+        */
         AttributeIterator<NXObjectWrapper<OType>,attribute_type> 
             get_attribute_iterator() const
         {
@@ -163,24 +192,84 @@ template<typename OType> class NXObjectWrapper
         }
 };
 
+//----------------------docstrings for the wrapped objects----------------------
+static const char __object_name_docstr[] =
+"Read only property providing the name of the object as a string. As all\n"
+"objects can be identified by a UNIX like path this is the very last part\n"
+"of the path (on a file-system this would be the file or the directory name\n"
+"the path is pointing to.";
 
-//template function wrapping a single NXObject 
-//type. 
+static const char __object_path_docstr[] = 
+"Read only property providing the full path of the object within the\n"
+"file.";
 
+static const char __object_base_docstr[] = 
+"Read only property providing the base name (the path without its very \n"
+"last element) of the object.";
+
+static const char __object_valid_docstr[] = 
+"Read only property of a boolean value. If true the object is valid and \n"
+"can safely be used. Otherwise (when wrong) something went wrong and \n"
+"each operation on the object will fail.";
+
+static const char __object_nattrs_docstr[] =
+"Read only property with the number of attributes attached to this object.";
+
+static const char __object_attr_create_docstr[] = 
+"Creates a new attribute on this object. An attribute can either be a scalar\n"
+"or a multidimensional array. The latter can be created if the \n"
+"keyword-argument shape is used.\n\n"
+"Required positional arguments:\n"
+"\tnamei...............the name of the attribute\n"
+"\ttype_code...........the numpy type-code of the attribute\n\n"
+"Optional keyword arguments:\n"
+"\tshape\t\ta list or tuple with the shape of the attribute\n\n"
+"Return value:\n"
+"\tattribute instance";
+
+static const char __object_attr_open_docstr[] = 
+"Open an existing attribute.\n\n"
+"Required positional arguments:\n"
+"\tname................name of the attribute\n\n"
+"Return value:\n"
+"\tattribute instance.";
+
+static const char __object_close_docstr[] = "Closes an open object.";
+static const char __object_attributes_docstr[] = 
+"Read only property providing an sequence object to iterate over all\n"
+"attributes attached to this object.";
+
+
+/*! \brief tempalte function for NXObject wrappers
+
+Template function to create NXObject wrappers. The template parameter determines
+the type to be wrapped.
+\param class_name name of the new Python class
+*/
 template<typename OType> void wrap_nxobject(const String &class_name)
 {
     class_<NXObjectWrapper<OType> >(class_name.c_str())
         .def(init<>())
-        .add_property("name",&NXObjectWrapper<OType>::name)
-        .add_property("path",&NXObjectWrapper<OType>::path)
-        .add_property("base",&NXObjectWrapper<OType>::base)
-        .add_property("is_valid",&NXObjectWrapper<OType>::is_valid)
-        .add_property("nattrs",&NXObjectWrapper<OType>::nattrs)
-        .def("attr",&NXObjectWrapper<OType>::create_attribute,("name","type_code",
-                    arg("shape")=list()))
-        .def("attr",&NXObjectWrapper<OType>::open_attr)
-        .def("close",&NXObjectWrapper<OType>::close)
-        .add_property("attributes",&NXObjectWrapper<OType>::get_attribute_iterator)
+        .add_property("name",
+                &NXObjectWrapper<OType>::name,__object_name_docstr)
+        .add_property("path",
+                &NXObjectWrapper<OType>::path,__object_path_docstr)
+        .add_property("base",
+                &NXObjectWrapper<OType>::base,__object_base_docstr)
+        .add_property("valid",
+                &NXObjectWrapper<OType>::is_valid,__object_valid_docstr)
+        .add_property("nattrs",
+                &NXObjectWrapper<OType>::nattrs,__object_nattrs_docstr)
+        .def("attr",
+                &NXObjectWrapper<OType>::create_attribute,("name","type_code",
+                    arg("shape")=list()),__object_attr_create_docstr)
+        .def("attr",
+                &NXObjectWrapper<OType>::open_attr,__object_attr_open_docstr)
+        .def("close",
+                &NXObjectWrapper<OType>::close,__object_close_docstr)
+        .add_property("attributes",
+                &NXObjectWrapper<OType>::get_attribute_iterator,
+                __object_attributes_docstr)
         ;
 }
 

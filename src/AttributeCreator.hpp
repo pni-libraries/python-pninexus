@@ -1,3 +1,27 @@
+/*
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of libpninx-python.
+ *
+ * libpninx is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * libpninx is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
+ *
+ * Class-template for attribute creators
+ *
+ * Created on: March 14, 2012
+ *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+ */
 #ifndef __ATTRIBUTECREATOR_HPP__
 #define __ATTRIBUTECREATOR_HPP__
 
@@ -9,6 +33,7 @@ using namespace pni::utils;
 /*! \brief attribute creator class
 
 This class creates attribute objects according to the configuration of the class.
+The created attributes are instances of the template parameter AttrT. 
 */
 template<typename AttrT> class AttributeCreator{
     private:
@@ -16,18 +41,44 @@ template<typename AttrT> class AttributeCreator{
         Shape __s;  //!< shape of the field
     public:
         //---------------------------------------------------------------------
+        /*! \brief constructor
+
+        \param n name of the attribute
+        */
         AttributeCreator(const String &n):
             __n(n),__s(){}
 
         //---------------------------------------------------------------------
+        /*! \brief constructor
+
+        \param n name of the attribute
+        \param s shape of the attribute
+        */
         AttributeCreator(const String &n,const Shape &s):
             __n(n),__s(s){}
 
         //---------------------------------------------------------------------
-        template<typename T,typename OType> 
-            AttrT create(const OType &o) const;
+        /*! \brief attribute creation
+        
+        Create an attribute by o. The data-type used for the attribute is 
+        determined by the template parameter T. OType is the type of the object
+        responsible for attribute creation.
+        \throws NXAttributeError in case of errors
+        \param o attribute creating object.
+        \return instance of AttrT
+        */
+        template<typename T,typename OType> AttrT create(const OType &o) const;
 
         //---------------------------------------------------------------------
+        /*! \brief create attribute from type string
+        
+        Creates an attribute below o of a data-type determined by type_str.
+        \throws TypeError if type_str cannot be interpreted (unknown type-code)
+        \throws NXAttributeError in case of errors during attribute creation
+        \param o parent object (creating object)
+        \param type_str string determining the data-type to use
+        \return instance of AttrT 
+        */
         template<typename OType> 
             AttrT create(const OType &o,const String &type_str) const;
 };
