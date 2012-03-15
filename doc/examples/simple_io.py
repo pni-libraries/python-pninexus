@@ -26,7 +26,7 @@ def read_data(fname):
     nxfile = nx.open_file(fname,readonly=False);
     field = nxfile["/scan_1/instrument/detector/data"];
 
-    data = numpy.zeros(field.shape[1:],dtype=field.type_id)
+    data = numpy.zeros(field.shape[1:],dtype=field.dtype)
    
     for i in range(field.shape[0]):
         data = field[i,...]
