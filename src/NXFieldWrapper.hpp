@@ -213,8 +213,14 @@ template<typename FieldT> class NXFieldWrapper:
         //---------------------------------------------------------------------
         /*! \brief __getitem__ entry method
 
+        This method is called when a user invokes the __getitem__ method on a
+        NXField object in python. The method converts the object that is passed
+        as input argument to a tuple if necessary and than passes this to the 
+        __getitem__tuple method. 
+        \param o Python object describing the selection
+        \return Python object with the data from the selection
         */
-        object __getitem__object(const object &o)
+        object __getitem__(const object &o)
         {
             //need to check here if o is already a tuple 
             if(PyTuple_Check(o.ptr()))
@@ -224,19 +230,16 @@ template<typename FieldT> class NXFieldWrapper:
         }
 
         //---------------------------------------------------------------------
-        /*
-        object __getitem__index(size_t i){
-            return __getitem__tuple(make_tuple<size_t>(i));
-        }*/
+        /*! \brief __setitem__ implementation
 
-        //---------------------------------------------------------------------
-        /*
-        object __getitem__slice(const slice &o){
-            return __getitem__tuple(make_tuple<slice>(o));
-        }*/
-
-        //---------------------------------------------------------------------
-        void __setitem__object(const object &o,const object &d)
+        As for __getitem__ this method is called if a user invokes the
+        __setitem__ method on an NXField object in Python. The method converts
+        the object passed as input argument to a tuple if necessary and then
+        moves on to __setitem__tuple.
+        \param o selection object
+        \param d Python object holding the data
+        */
+        void __setitem__(const object &o,const object &d)
         {
             //need to check here if o is already a tuple 
             if(PyTuple_Check(o.ptr()))
@@ -245,6 +248,12 @@ template<typename FieldT> class NXFieldWrapper:
                 __setitem__tuple(make_tuple<object>(o),d);
         }
         //---------------------------------------------------------------------
+        /*! \brief write data according to a selection
+
+        Write data from a selection defined by tuple t. 
+        \param t tuple with selection information
+        \param o object with data to write.
+        */
         void __setitem__tuple(const tuple &t,const object &o){
             
             NXSelection selection = create_selection(t,this->_object);
@@ -270,20 +279,13 @@ template<typename FieldT> class NXFieldWrapper:
             }
         }
 
-        //---------------------------------------------------------------------
-        /*
-        void __setitem__index(size_t i,const object &o){
-            __setitem__tuple(make_tuple<size_t>(i),o);
-        }*/
-
-        //---------------------------------------------------------------------
-        /*
-        void __setitem__slice(const slice &s,const object &o){
-             __setitem__tuple(make_tuple<slice>(s),o);
-        }*/
-        
         //--------------------------------------------------------------------------
+        /*! \brief grow field object
 
+        Grow a field object along dimension d by s elements.
+        \param d dimension index
+        \param s extend by which to grow the field
+        */
         void grow(size_t d=0,size_t s=1)
         {
             this->_object.grow(d,s);
@@ -291,27 +293,31 @@ template<typename FieldT> class NXFieldWrapper:
         
 };
 
-static const char __grow_docstr[]=
-"hello world ";
+static const char __field_dtype_docstr[] = 
+"Read only property providing the datatype of the field as numpy type code";
+
+static const char __field_shape_docstr[] = 
+"Read only property providing the shape of the field as tuple";
+
+static const char __field_grow_docstr[]=
+"Grow the field along dimension 'dim' by 'ext' elements.\n\n"
+"Required input arguments:\n"
+"\tdim .............. dimension along which to grow\n"
+"\text .............. number of elements by which to grow\n"
+;
 
 template<typename FType> void wrap_nxfield(const String &class_name)
 {
 
     class_<NXFieldWrapper<FType>,bases<NXObjectWrapper<FType> > >(class_name.c_str())
         .def(init<>())
-        .add_property("dtype",&NXFieldWrapper<FType>::type_id)
-        .add_property("shape",&NXFieldWrapper<FType>::shape)
+        .add_property("dtype",&NXFieldWrapper<FType>::type_id,__field_dtype_docstr)
+        .add_property("shape",&NXFieldWrapper<FType>::shape,__field_shape_docstr)
         .def("write",&NXFieldWrapper<FType>::write)
         .def("read",&NXFieldWrapper<FType>::read)
-        //.def("__getitem__",&NXFieldWrapper<FType>::__getitem__index)
-        //.def("__getitem__",&NXFieldWrapper<FType>::__getitem__slice)
-        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__tuple)
-        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__object)
-        //.def("__setitem__",&NXFieldWrapper<FType>::__setitem__index)
-        //.def("__setitem__",&NXFieldWrapper<FType>::__setitem__slice)
-        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__tuple)
-        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__object)
-        .def("grow",&NXFieldWrapper<FType>::grow,(arg("dim")=0,arg("ext")=1),__grow_docstr)
+        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__)
+        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__)
+        .def("grow",&NXFieldWrapper<FType>::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
         ;
 }
 
