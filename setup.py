@@ -44,7 +44,7 @@ include_dirs.append(get_python_inc())
 
 
 libs = ["boost_python","pniutils","pninx","hdf5"]
-compile_args = ["-std=c++0x","-g"]
+compile_args = ["-std=c++0x","-g","-O0"]
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
 nxh5 = Extension("nxh5",files,

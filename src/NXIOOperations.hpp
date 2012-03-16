@@ -97,12 +97,25 @@ class ScalarWriter{
         /*! \brief write scalar data
 
         Writes scalar data from object o to writable.
+        \throws ShapeMissmatchError if o is not a scalar object
+        \throws TypeError if type conversion fails
         \param writeable object where to store data
         \param o object form which to write data
         */
         template<typename T,typename WType>
             void write(const WType &writeable,const object &o)
         {
+            if(PyArray_CheckExact(o.ptr()))
+            {
+                ShapeMissmatchError error;
+                error.issuer(" template<typename T,typename WType> void "
+                        "ScalarWriter::write(const WType &writeable,"
+                        "const object &o)");
+                error.description("Object is not a scalar!");
+                throw(error);
+            }
+            
+            
             T value = extract<T>(o);
             writeable.write(value);
         }

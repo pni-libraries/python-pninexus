@@ -175,6 +175,9 @@ template<typename AttrType> class NXAttributeWrapper{
         cannot write data from the object. For the time being the object must
         either be a numpy array or a simple Python scalar.
         \throws NXAttributeError in case of problems
+        \throws TypeError if type conversion fails
+        \throws ShapeMissmatchError if attribute and object shape cannot be
+        converted
         \param o object from which to write data
         */
         void write(object o) const
@@ -182,18 +185,18 @@ template<typename AttrType> class NXAttributeWrapper{
             //before we can write an object we need to find out what 
             //it really i
             if(this->_attribute.shape().rank() == 0){
+                //write to a scalar attribute
                 io_write<ScalarWriter>(this->_attribute,o);
-            }else if(PyArray_CheckExact(o.ptr())){
-
-                ArrayWriter::write(this->_attribute,o);
-
             }else{
-                //throw an exception here
-                pni::nx::NXAttributeError error;
-                error.issuer("template<typename AttrType> void"
-                        "NXAttributeWrapper<AttrType>::write(object o)");
-                error.description("Found no procedure to write this data!");
-                throw(error);
+                //the attribute is an array attribute
+                if(PyArray_CheckExact(o.ptr())){
+                    //write array to array
+                    ArrayWriter::write(this->_attribute,o);
+                }else{
+                    //write a single attribute to all array elements
+                    ArrayBroadcastWriter::write(this->_attribute,o);
+                }
+
             }
 
         }

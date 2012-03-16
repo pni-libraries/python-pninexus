@@ -34,7 +34,11 @@ class NXFieldTest(unittest.TestCase):
         #what if chunk shape and data shape do not have same rank
         self.assertRaises(ShapeMissmatchError,self.gf.create_field,
                 "data2","float32",shape=(256,412),chunk=(256,))
+        #check for unkown data type
+        self.assertRaises(TypeError,self.gf.create_field,
+                "data2","hallo")
 
-        
+    def test_io(self):
+        pass
     
         

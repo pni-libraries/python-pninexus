@@ -3,6 +3,7 @@ import unittest
 from pni.nx.h5 import NXFile
 from pni.nx.h5 import create_file
 from pni.nx.h5 import open_file
+from pni.nx.h5 import NXFileError
 
 
 #implementing test fixture
@@ -18,7 +19,7 @@ class NXFileTest(unittest.TestCase):
         self.assertTrue(f.valid)
         f.close()
     
-        self.assertRaises(IOError,create_file,"test.h5",False)
+        self.assertRaises(NXFileError,create_file,"test.h5",False)
         f = open_file("test.h5",readonly=False)
 
     def test_attributes(self):
