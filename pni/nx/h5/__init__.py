@@ -5,6 +5,8 @@ from nxh5 import NXFile
 from nxh5 import NXDeflateFilter
 from nxh5 import NXField
 
+from nxh5 import ShapeMissmatchError
+
 #import helper methods
 from nxh5 import __create_file
 from nxh5 import __open_file

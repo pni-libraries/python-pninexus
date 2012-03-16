@@ -26,6 +26,7 @@
 extern "C"{
 #include<Python.h>
 }
+#include <pni/utils/Exceptions.hpp>
 #include <boost/python.hpp>
 #include <pni/nx/NX.hpp>
 
@@ -120,6 +121,7 @@ void SizeMissmatchError_translator(pni::utils::SizeMissmatchError const &error)
     PyErr_SetString(PyExc_IndexError,estr.str().c_str());
 }
 
+
 //-----------------------------------------------------------------------------
 void TypeError_translator(pni::utils::TypeError const &error)
 {
@@ -134,14 +136,51 @@ void ChildIteratorStop_translator(ChildIteratorStop const &error)
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
 
+//-----------------------------------------------------------------------------
 void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
 
+PyObject *PyShapeMissmatchErrorPtr = nullptr;
+PyObject &PyIndexErrorPtr = nullptr;
+
+//-----------------------------------------------------------------------------
+void ShapeMissmatchError_translator(pni::utils::ShapeMissmatchError const
+        &error)
+{
+    assert(PyShapeMissmatchErrorPtr != nullptr);
+    object exception(error);
+    PyErr_SetObject(PyShapeMissmatchErrorPtr,exception.ptr());
+}
+
 
 //-----------------------------------------------------------------------------
 void exception_registration(){
+
+    const String &(Exception::*exception_get_issuer)() const = &Exception::issuer;
+    const String &(Exception::*exception_get_description)() const =
+        &Exception::description;
+    class_<Exception>("Exception")
+        .def(init<>())
+        .add_property("issuer",make_function(exception_get_issuer,return_internal_reference<1>()))
+        .add_property("description",make_function(exception_get_description,return_internal_reference<1>()))
+        ;
+
+    object PyShapeMissmatchError = (
+            class_<ShapeMissmatchError,bases<Exception> >("ShapeMissmatchError")
+                .def(init<>())
+            );
+
+    object PyIndexError = (
+            class_<IndexError,bases<Exception> >("IndexError")
+                .def(init<>())
+            );
+
+    PyShapeMissmatchErrorPtr = PyShapeMissmatchError.ptr();
+
+
+
     register_exception_translator<pni::nx::NXFileError>
         (NXFileError_translator);
     register_exception_translator<pni::nx::NXGroupError>
@@ -160,6 +199,8 @@ void exception_registration(){
         (SizeMissmatchError_translator);
     register_exception_translator<pni::nx::NXSelectionError>
         (NXSelectionError_translator);
+    register_exception_translator<pni::utils::ShapeMissmatchError>
+        (ShapeMissmatchError_translator);
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
     register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
 

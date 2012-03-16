@@ -15,4 +15,12 @@ class NXGroupTest(unittest.TestCase):
         self.gf.close()
 
     def test_creation(self):
-        pass
+        g = self.gf.create_group("metadata")
+        g = self.gf.create_group("scan_1",nxclass="NXentry")
+        self.assertTrue(g.attr("NX_class").value == "NXentry")
+
+        g = g.create_group("instrument/detector")
+        self.assertTrue(g.path == "/scan_1/instrument/detector")
+        self.assertTrue(g.name == "detector")
+        self.assertTrue(g.base == "/scan_1/instrument")
+
