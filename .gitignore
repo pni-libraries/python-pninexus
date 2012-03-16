@@ -2,4 +2,6 @@
 *.dblite
 *.log
 build
+dist
+MANIFEST
 

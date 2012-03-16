@@ -13,7 +13,9 @@ using namespace pni::utils;
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
 
-/*! \brief template class to wrap attributes
+/*! 
+\ingroup wrappers  
+\brief template class to wrap attributes
 
 This template provides a wrapper for attribute types.
 */
@@ -198,11 +200,6 @@ template<typename AttrType> class NXAttributeWrapper{
 
 };
 
-/*! \brief template to create attribute wrappers
-
-This template creates a wrapper for an attirbute type AType. 
-The resulting Python object consists mostly of properties. 
-*/
 static const char __attribute_shape_docstr[] =
 "Read only property providing the shape of the attribute as tuple.\n"
 "The length of the tuple corresponds to the number of dimensions of the\n"
@@ -223,6 +220,13 @@ static const char __attribute_close_docstr[] =
 "Class method to close an open attribute. Although, attributes are \n"
 "closed automatically when they are no longer referenced. This method\n"
 "can be used to force the closeing an attribute.";
+
+/*! 
+\ingroup wrappers
+\brief create new NXAttribute wrapper
+
+Template function to create a new wrapper for the NXAttribute type AType.
+*/
 template<typename AType> void wrap_nxattribute()
 {
     class_<NXAttributeWrapper<AType> >("NXAttribute")

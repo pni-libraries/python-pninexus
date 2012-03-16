@@ -61,6 +61,7 @@ setup(name="libpninx-python",
         ext_package="pni.nx.h5",
         ext_modules=[nxh5],
         packages = ["pni","pni.nx","pni.nx.h5"],
+        url="https://sourceforge.net/projects/libpninxpython/",
         script_args = args
         )
 

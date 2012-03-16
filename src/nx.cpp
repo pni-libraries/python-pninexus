@@ -33,6 +33,7 @@ using namespace pni::nx::h5;
 #include "AttributeIterator.hpp"
 #include "NXWrapperErrors.hpp"
 
+//! \cond NO_API_DOC
 template<> class NXObjectMap<pni::nx::h5::NXObject>{
     public:
         typedef pni::nx::h5::NXObject ObjectType;
@@ -67,6 +68,8 @@ template<> class NXObjectMap<pni::nx::h5::NXFile>{
         typedef pni::nx::h5::NXSelection SelectionType;
         typedef pni::nx::h5::NXAttribute AttributeType;
 };
+
+//! \endcond
 
 
 //=================implementation of the python extension======================

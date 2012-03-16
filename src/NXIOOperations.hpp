@@ -30,7 +30,9 @@
 
 
 //-----------------------------------------------------------------------------
-/*! \brief reads a single scalar
+/*! 
+\ingroup ioclasses  
+\brief reads a single scalar
 
 ScalarReader reads a single scalar form a readable object. For now only fields,
 selections, and attributes expose the appropriate interface. The class provides
@@ -57,7 +59,9 @@ class ScalarReader{
 };
 
 //-----------------------------------------------------------------------------
-/*! \brief reads a single array 
+/*! 
+\ingroup ioclasses  
+\brief reads a single array 
 
 Reads a single array from a readable object which might be either a selection,
 a field, or an attribute object. The result is returned as a numpy array.
@@ -82,7 +86,9 @@ class ArrayReader{
 };
 
 //-----------------------------------------------------------------------------
-/*! \breif write scalar data
+/*! 
+\ingroup ioclasses
+\brief write scalar data
 
 Writes a scalar value from a Python object to a writeable object. 
 */
@@ -91,7 +97,7 @@ class ScalarWriter{
         /*! \brief write scalar data
 
         Writes scalar data from object o to writable.
-        \param writable object where to store data
+        \param writeable object where to store data
         \param o object form which to write data
         */
         template<typename T,typename WType>
@@ -104,7 +110,9 @@ class ScalarWriter{
 
 
 //-----------------------------------------------------------------------------
-/*! \brief write array data
+/*! 
+\ingroup ioclasses  
+\brief write array data
 
 Write array data to a writeable.
 */
@@ -173,7 +181,9 @@ class ArrayWriter{
 };
 
 //-----------------------------------------------------------------------------
-/*! \brief broadcast array writer
+/*! 
+\ingroup ioclasses  
+\brief broadcast array writer
 
 Writes a single scalar value to all positions of a multidimensional writeable.
 The actual implementation of this writer is not very efficient as it requires 
@@ -238,7 +248,9 @@ class ArrayBroadcastWriter{
 
 
 //-----------------------------------------------------------------------------
-/*! \brief read all possible scalars from a readable
+/*! 
+\ingroup ioclasses  
+\brief read all possible scalars from a readable
 
 Function reads data from an readable object and returns a Python object with the 
 result. The template parameter IOOp must be a type that implements the readable 
@@ -294,11 +306,13 @@ template<typename IOOp,typename OType> object io_read(const OType &readable)
 }
 
 //-----------------------------------------------------------------------------
-/*! \brief write data 
+/*! 
+\ingroup ioclasses  
+\brief write data 
 
 Write data from a Python object to a writable object.
 \throws TypeError if type of the writable cannot be handled
-\param writable object to which data will be written
+\param writeable object to which data will be written
 \param obj Python object form which data will be written
 */
 template<typename IOOp,typename OType> 

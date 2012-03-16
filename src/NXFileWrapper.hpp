@@ -29,7 +29,9 @@
 #include "NXObjectWrapper.hpp"
 #include "NXGroupWrapper.hpp"
 
-/*! \brief NXFile wrapper template
+/*! 
+\ingroup wrappers
+\brief NXFile wrapper template
 
 This template can be used to create NXFile wrappers.
 */
@@ -98,7 +100,9 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
 };
 
 //-----------------------------------------------------------------------------
-/*! \brief create a file
+/*! 
+\ingroup wrappers  
+\brief create a file
 
 This template wraps the static create_file method of FType. 
 \param n name of the new file
@@ -114,7 +118,9 @@ template<typename FType> NXFileWrapper<FType> create_file(const String &n,
 }
 
 //------------------------------------------------------------------------------
-/*! \brief open a file
+/*! 
+\ingroup wrappers  
+\brief open a file
 
 Template wraps the static open_file method of NXFile. 
 \param n name of the file
@@ -128,9 +134,15 @@ template<typename FType> NXFileWrapper<FType> open_file(const String &n,
 }
 
 //------------------------------------------------------------------------------
+/*! 
+\ingroup wrappers
+\brief create NXFile wrapper 
+
+Tempalte function creates a wrappers for the NXFile type FType. 
+\param class_name name of the newly created type in Python
+*/
 template<typename FType> void wrap_nxfile(const String &class_name)
 {
-    
     class_<NXFileWrapper<FType>,bases<NXGroupWrapper<FType> > >(class_name.c_str())
         .def(init<>())
         ;

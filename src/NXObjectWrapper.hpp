@@ -34,7 +34,9 @@
 #include "AttributeCreator.hpp"
 
 
-/*! \brief template wrapps NXObject classes
+/*! 
+\ingroup wrappers  
+\brief template wrapps NXObject classes
 
 This class-template provides a wrapper for NXObject types.
 */
@@ -265,7 +267,9 @@ static const char __object_attributes_docstr[] =
 "attributes attached to this object.";
 
 
-/*! \brief tempalte function for NXObject wrappers
+/*! 
+\ingroup wrappers  
+\brief tempalte function for NXObject wrappers
 
 Template function to create NXObject wrappers. The template parameter determines
 the type to be wrapped.

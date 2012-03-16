@@ -33,7 +33,9 @@
 
 using namespace pni::utils;
 
-/*! \brief field creator class-template
+/*! 
+\ingroup utils  
+\brief field creator class-template
 
 This template generats classes whose instance are responsible for creating
 NXField instances. The instance is of type FieldT. 

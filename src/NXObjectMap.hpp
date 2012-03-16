@@ -1,7 +1,9 @@
 #ifndef __NXOBJECTMAP_HPP__
 #define __NXOBJECTMAP_HPP__
 
-/*! \brief object map for wrapped types
+/*! 
+\ingroup utils  
+\brief object map for wrapped types
 
 This map provides a type-map from a particular implementation type to all other
 related types. So for instance if you wrap a particular NXGroup object this

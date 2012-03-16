@@ -27,7 +27,9 @@
 #define __NXWRAPPERERRORS_HPP__
 
 
-/*! \brief exception to stop iteration
+/*! 
+\ingroup errors
+\brief exception to stop iteration
 
 This C++ exception will be translated to StopIteration which is expected by the
 Python interpreter when an iterator reaches the last element in the container.
@@ -35,7 +37,9 @@ Python interpreter when an iterator reaches the last element in the container.
 class ChildIteratorStop:public std::exception
 { };
 
-/*! \brief exception to stop iteration
+/*! 
+\ingroup errors  
+\brief exception to stop iteration
 
 This C++ exception will be translated to the StopIteration Python exception
 expected by the Python interpreter if an iterator reaches its last position.
@@ -43,7 +47,9 @@ expected by the Python interpreter if an iterator reaches its last position.
 class AttributeIteratorStop:public std::exception
 { };
 
-/*! \brief register exception translators
+/*! 
+\ingroup errors  
+\brief register exception translators
 
 This function is called by the module in order to register all exception
 translators.

@@ -1,0 +1,2 @@
+recursive-include src *.hpp *.cpp
+include doc/examples/*.py

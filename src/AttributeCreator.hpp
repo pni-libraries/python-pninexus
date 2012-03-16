@@ -30,7 +30,9 @@
 
 using namespace pni::utils;
 
-/*! \brief attribute creator class
+/*! 
+\ingroup utils
+\brief attribute creator class
 
 This class creates attribute objects according to the configuration of the class.
 The created attributes are instances of the template parameter AttrT. 

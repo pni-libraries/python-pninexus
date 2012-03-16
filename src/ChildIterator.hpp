@@ -28,10 +28,13 @@
 
 #include "NXWrapperErrors.hpp"
 
-//! \brief child iterator
+/*! 
+\ingroup iterators  
+\brief child iterator
 
-//! This is a forward iterator that runs through all the objects
-//! linked below a group. 
+This is a forward iterator that runs through all the objects
+linked below a group. 
+*/
 template<typename IterableT,typename ItemT> class ChildIterator
 {
     private:

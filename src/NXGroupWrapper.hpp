@@ -36,7 +36,9 @@
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
 
-/*! \brief class tempalte for NXGroup wrapper
+/*! 
+\ingroup wrappers  
+\brief class tempalte for NXGroup wrapper
 
 Class template to create wrappers for NXGroup types.
 */
@@ -338,6 +340,13 @@ static const char __group_childs_docstr[] =
 "Read only property providing a sequence object which can be used to iterate\n"
 "over all childs linked below this group.";
 
+/*!
+\ingroup wrappers
+\brief create NXGroup wrapper
+
+Template function to create a new wrapper for an NXGroup type GType.
+\param class_name name for the Python class
+*/
 template<typename GType> void wrap_nxgroup(const String &class_name)
 {
 

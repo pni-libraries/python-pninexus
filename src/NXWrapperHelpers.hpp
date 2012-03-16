@@ -42,7 +42,9 @@ extern "C"{
 using namespace pni::utils;
 using namespace boost::python;
 using namespace pni::nx::h5;
-/*! \brief type mape for numpy types
+/*! 
+\ingroup utils  
+\brief type mape for numpy types
 
 This type-map maps PNI types as defines in pni/utils/Types.hpp to 
 NumPy type numbers.
@@ -50,6 +52,7 @@ NumPy type numbers.
 template<typename T> class PNI2NumpyType;
 
 //-----------------------------------------------------------------------------
+//! \cond NO_API_DOC
 template<> class PNI2NumpyType<UInt8>{
     public:
         static const int typenum = NPY_UBYTE;
@@ -138,9 +141,12 @@ template<> class PNI2NumpyType<String>{
     public:
         static const int typenum = NPY_STRING;
 };
+//! \endcond
 
 //=============================================================================
-/*! \brief create string from type id
+/*! 
+\ingroup utils  
+\brief create string from type id
 
 Helper function that creatds a numpy type code string from a pni::utils::TypeID.
 \param tid type id from pniutils
@@ -149,7 +155,9 @@ Helper function that creatds a numpy type code string from a pni::utils::TypeID.
 String typeid2str(const TypeID &tid);
 
 //-----------------------------------------------------------------------------
-/*! \brief create list from shape
+/*! 
+\ingroup utils  
+\brief create list from shape
 
 Creates a Python list from a Shape object. The length of the list corresponds to
 the number of dimension in the Shape object. The lists elements are the numbers
@@ -160,7 +168,9 @@ of elements along each dimension.
 list Shape2List(const Shape &s);
 
 //-----------------------------------------------------------------------------
-/*! \brief list to Shape conversion
+/*! 
+\ingroup utils  
+\brief list to Shape conversion
 
 Converts a Python list to a Shape object. The length of the list is interpreted
 as the number of dimensions and each element of the list as the number of
@@ -171,7 +181,9 @@ elements along a particular dimension.
 Shape List2Shape(const list &l);
 
 //-----------------------------------------------------------------------------
-/*! \brief tuple to Shape conversion
+/*! 
+\ingroup utils  
+\brief tuple to Shape conversion
 
 Converts a Python tuple to a Shape object. The length of the tuple determines
 the rank of the Shape and its elements the number of elements along each
@@ -182,7 +194,9 @@ dimension.
 Shape Tuple2Shape(const tuple &t);
 
 //-----------------------------------------------------------------------------
-/*! \brief create reference array from numpy array
+/*! 
+\ingroup utils  
+\brief create reference array from numpy array
 
 This template method creates a reference array to the data held by a numpy
 array. The method for this purpose assumes that the object passed to it referes
@@ -202,7 +216,9 @@ template<typename T> Array<T,RefBuffer> Numpy2RefArray(const object &o)
 }
 
 //-----------------------------------------------------------------------------
-/*! \brief create a numpy array 
+/*! 
+\ingroup utils  
+\brief create a numpy array 
 
 This template function creates a new numpy array from shape and type
 information. This should be a rather simple thing.
@@ -219,7 +235,9 @@ template<typename T> PyObject *CreateNumpyArray(const Shape &s)
 }
 
 //-----------------------------------------------------------------------------
-/*! \brief selection from tuple 
+/*! 
+\ingroup utils  
+\brief selection from tuple 
 
 Adopts the selection of a field according to a tuple with indices and slices.
 In order to succeed the tuple passed to this function must contain only indices,
@@ -230,7 +248,7 @@ Index exceeds the number of elements along the correpsonding field dimension.
 \throws ShapeMissmatchError if the size of the tuple exceeds the rank of the
 field from which the selection should be drawn.
 \param t tuple with indices and slices
-\param s reference to the selection to create
+\param f reference to the field for which to create the selection
 */
 NXSelection create_selection(const tuple &t,const NXField &f);
 

@@ -30,7 +30,9 @@
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
 
-/*! \brief NXField wrapper template
+/*!
+\ingroup wrappers
+\brief NXField wrapper template
 
 Template to produce wrappers for NXField types.
 */
@@ -155,7 +157,7 @@ template<typename FieldT> class NXFieldWrapper:
         Reading data from a field. The method returns a Python object and tries
         to figure out by itself which kind of object and datatype to use. 
         If this fails an exception will be thrown.
-        \param TypeError if return type determination fails
+        \throws TypeError if return type determination fails
         \return Python object with the read data
         */
         object read() const
@@ -306,6 +308,13 @@ static const char __field_grow_docstr[]=
 "\text .............. number of elements by which to grow\n"
 ;
 
+/*! 
+\ingroup wrappers
+\brief create new NXField wrapper
+
+Template function to create a wrapper for NXField type FType. 
+\param class_name Python name of the new class
+*/
 template<typename FType> void wrap_nxfield(const String &class_name)
 {
 
