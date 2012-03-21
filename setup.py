@@ -62,13 +62,16 @@ except:
     print "no nullptr support!"
     compile_args.append("-Dnullptr=NULL")
 
+try:
+    print "run compiler check for foreach loops ..."
+    cc.compile(['ccheck/foreach_check.cpp'],extra_preargs=compile_args)
+    print "compiler supports foreach loops!"
+except:
+    print "no support for foreach loops!"
+    compile_args.append("-DNOFOREACH")
+
 libs = ["boost_python","pniutils","pninx","hdf5"]
 
-try:
-    if opts.noforeach: pass
-    compile_args.append("-DNOFOREACH")
-except:
-    pass
 
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
