@@ -23,6 +23,7 @@ where to find headers and libraries
 --utlibdir .......... installation path of libpniutils library files
 --nxlibdir .......... installation path of libpninx library files
 --nxincdir .......... installation path of libpninx header files
+--numpyincdir ....... installation path of numpy header files
 
 So if you have installed HDF5 under /opt/hdf5 the above command changes to 
 
