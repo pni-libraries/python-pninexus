@@ -51,7 +51,11 @@ except:pass
 include_dirs.append(get_python_inc())
 
 cc = new_compiler()
-cc.set_executables(compiler_so = os.environ['CC'])
+try:
+    cc.set_executables(compiler_so = os.environ['CC'])
+except:
+    print "Environment variable CC not found!"
+
 compile_args = ["-std=c++0x","-g","-O0"]
 #now we try to compile the test code
 try:
