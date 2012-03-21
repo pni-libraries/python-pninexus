@@ -14,6 +14,9 @@ cliopts.append(("nxlibdir=",None,"PNI NX library path"))
 cliopts.append(("nxincdir=",None,"PNI NX include path"))
 cliopts.append(("utlibdir=",None,"PNI utilities library path"))
 cliopts.append(("utincdir=",None,"PNI utilities include path"))
+cliopts.append(("numpyincdir=",None,"Numpy include path"))
+cliopts.append(("nullptr",None,"Set nullptr define"))
+cliopts.append(("noforeach",None,"Set noforeach option for C++"))
 
 op = FancyGetopt(option_table=cliopts)
 args,opts = op.getopt()
@@ -39,12 +42,27 @@ except: pass
 try: library_dirs.append(opts.utlibdir)
 except: pass
 
+try: include_dirs.append(opts.numpyincdir)
+except:pass
+
 #in the end we need to add the Python include directory
 include_dirs.append(get_python_inc())
 
 
 libs = ["boost_python","pniutils","pninx","hdf5"]
 compile_args = ["-std=c++0x","-g","-O0"]
+try:
+    if opts.nullptr: pass
+    compile_args.append("-Dnullptr=NULL")
+except:
+    pass
+
+try:
+    if opts.noforeach: pass
+    compile_args.append("-DNOFOREACH")
+except:
+    pass
+
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
 nxh5 = Extension("nxh5",files,
