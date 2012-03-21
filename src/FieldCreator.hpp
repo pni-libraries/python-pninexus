@@ -101,7 +101,7 @@ template<typename T,typename OType>
             return FieldT(o.template create_field<T>(__n,__s,deflate));
         else
             return FieldT(o.template create_field<T>(__n,__s,__cs,deflate));
-    }else if(__filter.is_none()){
+    }else if(__filter.ptr() == Py_None){
         return FieldT(o.template create_field<T>(__n,__s,__cs));
     }else{
         //raise an exception here
