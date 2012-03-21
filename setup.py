@@ -1,10 +1,13 @@
 #setup script for libpninx-python package
 import sys
+import os
 from distutils.core import setup
 from distutils.extension import Extension
 from distutils.sysconfig import get_python_inc
 from distutils.fancy_getopt import FancyGetopt
 from distutils.fancy_getopt import fancy_getopt
+from distutils.ccompiler import new_compiler
+from distutils.unixccompiler import UnixCCompiler
 
 #add here some options to handle additional compiler parameters
 cliopts =[]
@@ -15,7 +18,6 @@ cliopts.append(("nxincdir=",None,"PNI NX include path"))
 cliopts.append(("utlibdir=",None,"PNI utilities library path"))
 cliopts.append(("utincdir=",None,"PNI utilities include path"))
 cliopts.append(("numpyincdir=",None,"Numpy include path"))
-cliopts.append(("nullptr",None,"Set nullptr define"))
 cliopts.append(("noforeach",None,"Set noforeach option for C++"))
 
 op = FancyGetopt(option_table=cliopts)
@@ -48,14 +50,19 @@ except:pass
 #in the end we need to add the Python include directory
 include_dirs.append(get_python_inc())
 
+cc = new_compiler()
+cc.set_executables(compiler_so = os.environ['CC'])
+compile_args = ["-std=c++0x","-g","-O0"]
+#now we try to compile the test code
+try:
+    print "run compiler test for nullptr ..."
+    cc.compile(['ccheck/nullptr_check.cpp'],extra_preargs=compile_args)
+    print "compiler supports nullptr - passed!"
+except:
+    print "no nullptr support!"
+    compile_args.append("-Dnullptr=NULL")
 
 libs = ["boost_python","pniutils","pninx","hdf5"]
-compile_args = ["-std=c++0x","-g","-O0"]
-try:
-    if opts.nullptr: pass
-    compile_args.append("-Dnullptr=NULL")
-except:
-    pass
 
 try:
     if opts.noforeach: pass
