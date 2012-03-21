@@ -73,7 +73,7 @@ Shape List2Shape(const list &l){
 
     Shape s(size);
 
-    for(ssize_t i=0;i<size;i++){
+    for(boost::python::ssize_t i=0;i<size;i++){
         s.dim(i,extract<size_t>(l[i]));
     }
 
@@ -141,22 +141,22 @@ NXSelection create_selection(const tuple &t,const NXField &field)
         if(s.check()){
             //now we have to investigate the components of the 
             //slice
-            ssize_t start;
+            boost::python::ssize_t start;
             extract<size_t> __start(s().start());
             if(__start.check())
                 start = __start();
             else
                 start = 0;
            
-            ssize_t step;
+            boost::python::ssize_t step;
             extract<size_t> __step(s().step());
             if(__step.check())
                 step = __step();
             else
                 step = 1;
 
-            ssize_t stop;
-            extract<ssize_t> __stop(s().stop());
+            boost::python::ssize_t stop;
+            extract<boost::python::ssize_t> __stop(s().stop());
             if(__stop.check())
                 stop = __stop();
             else
@@ -166,7 +166,7 @@ NXSelection create_selection(const tuple &t,const NXField &field)
             selection.offset(i,start);
             selection.stride(i,step);
             
-            ssize_t res = (stop-start)%step;
+            boost::python::ssize_t res = (stop-start)%step;
             selection.shape(i,(stop-start-res)/step);
             continue;
         }

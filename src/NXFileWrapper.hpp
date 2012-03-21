@@ -111,7 +111,7 @@ This template wraps the static create_file method of FType.
 \return new instance of NXFileWrapper
 */
 template<typename FType> NXFileWrapper<FType> create_file(const String &n,
-        bool ov=true,ssize_t s=0)
+        bool ov=true,size_t s=0)
 {
     NXFileWrapper<FType> file(FType::create_file(n,ov,s));
     return file;
