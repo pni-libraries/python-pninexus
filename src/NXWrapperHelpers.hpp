@@ -32,6 +32,7 @@ extern "C"{
 
 #include<pni/utils/Types.hpp>
 #include<pni/utils/Shape.hpp>
+#include<pni/utils/ArrayFactory.hpp>
 #include<pni/utils/Array.hpp>
 #include<pni/utils/RefBuffer.hpp>
 
@@ -207,12 +208,13 @@ template<typename T> Array<T,RefBuffer> Numpy2RefArray(const object &o)
 {
     const PyArrayObject *py_array = (const PyArrayObject *)o.ptr();
 
-    Shape s(py_array->nd);
-    for(size_t i=0;i<s.rank();i++)
-        s.dim(i,(size_t)PyArray_DIM(o.ptr(),i));
+    std::vector<size_t> dims(py_array->nd);
+    for(size_t i=0;i<dims.size();i++) dims[i] = (size_t)PyArray_DIM(o.ptr(),i);
+
+    Shape s(dims);
 
     RefBuffer<T> rbuffer(PyArray_SIZE(o.ptr()),(T *)PyArray_DATA(o.ptr()));
-    return Array<T,RefBuffer>(s,rbuffer);
+    return ArrayFactory<T,RefBuffer>::create(s,(T *)PyArray_DATA(o.ptr()));
 }
 
 //-----------------------------------------------------------------------------

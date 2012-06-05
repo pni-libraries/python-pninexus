@@ -212,7 +212,7 @@ class ArrayBroadcastWriter{
         template<typename T,typename WType>  static
             void __write(const WType &w,const object &o)
         {
-            Array<T,Buffer> a(w.shape());
+            Array<T,Buffer> a = ArrayFactory<T>::create(w.shape());
             const T &value = extract<T>(o);
             a = value;
             w.write(a);

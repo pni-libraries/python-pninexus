@@ -71,11 +71,11 @@ Shape List2Shape(const list &l){
     long size = len(l);
     if(size==0) return Shape();
 
-    Shape s(size);
+    std::vector<size_t> dims(size);
+    for(boost::python::ssize_t i=0;i<size;i++)
+        dims[i] = extract<size_t>(l[i]);
 
-    for(boost::python::ssize_t i=0;i<size;i++){
-        s.dim(i,extract<size_t>(l[i]));
-    }
+    Shape s(dims);
 
     return s;
 }
@@ -84,11 +84,13 @@ Shape List2Shape(const list &l){
 Shape Tuple2Shape(const tuple &t)
 {
     long size = len(t);
-    Shape s(size);
 
-    for(size_t i=0;i<size;i++){
-        s.dim(i,extract<size_t>(t[i]));
-    }
+    std::vector<size_t> dims(size);
+    for(boost::python::ssize_t i=0;i<size;i++)
+        dims[i] = extract<size_t>(t[i]);
+
+    Shape s(dims);
+
     return s;
 }
 
