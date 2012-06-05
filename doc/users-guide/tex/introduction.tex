@@ -1,0 +1,17 @@
+%%%introduction to the python bindings to pninx
+
+This document describes the usage of the Python bindings to \pninx. 
+The bindings try to behave as pythonic as possible. 
+\pninx\ uses numpy arrays for reading and writing multidimensional data from and
+to a file. If you are not familiar with numpy read its documentation first (at
+least the chapters describing the basics of array creation and handling). 
+
+Before you can use the Python bindings you need to import the proper package. 
+Actually only one physical file format for storing Nexus data is supported:
+HDF5.
+To import the package use something like this
+\begin{verbatim}
+import pni.nx.h5 as nx
+\end{verbatim}
+After this all classes and functions of the \pninx-Python binding are available
+under the {\tt nx} namespace.

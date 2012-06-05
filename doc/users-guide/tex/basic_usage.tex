@@ -1,0 +1,128 @@
+%%%basic usage of the python bindings for libpninx
+
+In this chapter the basic useage of the pninx python bindings will be discussed.
+The code snippets shown in this chapter are taken from the examples directory of
+the \pninx-Python directory.
+
+\nxgroup and \nxfield\ objects have a couple of read only attributes that can be used to obtain
+basic information about an object. For the next considerations it is not of
+importance whether we deal with a field or a group object.
+Let us assume that  {\tt object} can be addressed with the path 
+{\tt /scan\_1/detector/data}. The meaning of the three attributes 
+{\tt name}, {\tt base}, and {\tt path} of {\tt object} should be obvious from
+the next short code snippet:
+\begin{verbatim}
+>> print object.name
+data
+>> print object.base
+/scan_1/detector
+>> print object.path
+/scan_1/detector/data
+\end{verbatim}
+
+%%%============================================================================
+\section{Handling files}
+To create a new or open an existing nexus file the Python package provides two
+factory functions {\tt create\_file} and {\tt open\_file}. For both functions
+the first positional argument is mandatory. It is a string with the name (path)
+of the file top create or open.
+\inputminted[linenos=true]{python}{../examples/nxfile_ex1.py}
+{\tt create\_group} can take also an optional keyword argument name {\tt class}
+which describes the Nexus class the new group should refer too. 
+In addition to the filename {\tt create\_file} takes two optional keyword
+arguments:
+\begin{description}
+ \item[{\tt overwrite}] a boolean value. If {\tt True} an already existing 
+ file with the same name will be truncated (its content will be deleted). 
+ If {\tt False} an exception will be thrown.
+ \item[{\tt splitsize}] NOT IMPLEMENTED YET.
+\end{description}
+{\tt open\_file} has only one additional keyword argument: {\tt readonly}.
+If set to {\tt True} the file will be opened in read-only mode.
+
+The Nexus standard defines a couple of attributes that must be attached to the
+root group of a file. You do not have to take care about these attributes. They
+are managed automatically by the library. 
+
+%%%============================================================================
+\section{Groups and attributes}
+Groups can be created by instances of \nxgroup\ or \nxfile\ using their 
+{\tt create\_group} method.
+There are several possibilities how the name of a new group can influence where
+the group will be created. For the next examples we assume that {\tt g} is an
+instance of \nxgroup\ with path {\tt /scan\_1/instrument}. 
+Consider now the following code snippet
+\begin{verbatim}
+g.create_group("tth")
+\end{verbatim}
+which will create a new group with path {\tt /scan\_1/instrument/tth}.
+Intermediate groups will be created automatically. So for instance 
+\begin{verbatim}
+g.create_group("monochromator/positioner")
+\end{verbatim}
+will create a new group with path {\tt
+/scan\_1/instrument/monochromator/positioner}. The group {\tt monochromator} 
+does not have to exist at the time the above line of code is called. 
+By using an absolute path for the name the new group will be created wherever
+the path of the new group points to. 
+\begin{verbatim}
+g.create_group("/scan_1/sample/omega")
+\end{verbatim}
+{\tt create\_group} takes also an optional keyword argument {\tt nxclass} which
+describes the Nexus object the newly created group shall belong too. This is
+typically a Nexus base class. See the Nexus reference manual for more
+information on base classes.
+
+The following example shows how to create groups using instances of \nxgroup\
+and \nxfile.
+\inputminted[linenos=true]{python}{../examples/nxgroup_ex1.py}
+Lines 8-11 show the creation of new groups. To open an existing group one can
+either use the {\tt open} method belonging to each instance of \nxgroup\ and 
+\nxfile. Alternatively one can use the {\tt []} operator along with the path of
+the object one wants to open. Lines 14, 15, and 18 show code where existing
+groups are opened.
+
+\section{Handling attributes}
+
+To each object of type \nxgroup, \nxfile, and \nxfield\ attributes can be
+attached. Attributes are objects of type \nxattribute. 
+Objects of type \nxattribute\ are extremely simple things. All IO as well as
+information about an attribute object can be done or obtained via the attributes
+of such an object. 
+Each attribute has three read only attributes name {\tt name}, {\tt dtype}, and
+{\tt shape}. The first one returns the name of the attribute. The second one the
+type of the attribute as numpy typecode. The last attribute {\tt shape}
+represents the shape of an attribute as a tuple.
+Reading and writing data to an attribute can be done via {\tt value} attribute.
+
+To create an attribute use the {\tt attr} method provided by all objects. 
+This method requires to positional arguments: the name of the attribute and its 
+typecode. To create for instance a string attribute with name {\tt text} use
+\begin{verbatim}
+a = obj.attr("text","string")
+\end{verbatim}
+The additional keyword argument {\tt shape} can be used to create
+multidimensional attributes
+\begin{verbatim}
+a = obj.attr("cij","float32",shape=(6,6))
+\end{verbatim}
+where {\tt shape} is a tuple determining the number of dimensions as well as the
+number of elements along each dimension.
+Data can be written or read from an attribute using the {\tt value} member
+attribute of the attribute object
+\begin{verbatim}
+a.value = "hello world"
+\end{verbatim}
+If the dimensionality or data type does not match an exception will be thrown. 
+
+
+In the next example we will have a look how to handle attributes.
+\inputminted[linenos=true]{python}{../examples/nxgroup_ex2.py}
+\inputminted[linenos=true]{python}{../examples/nxgroup_ex3.py}
+
+%%%============================================================================
+\section{Creating fields}
+
+%%%============================================================================
+\section{A simple example}
+\inputminted[linenos=true]{python}{../examples/simple_io.py}
