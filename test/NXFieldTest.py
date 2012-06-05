@@ -39,6 +39,10 @@ class NXFieldTest(unittest.TestCase):
                 "data2","hallo")
 
     def test_io(self):
-        pass
-    
-        
+        f = self.gf.create_field("log","string")
+        f.write("hello world this is a text")
+        f.write("another text")
+        f[0] = "yet another text"
+
+        #try to write unicode
+        f.write(u"unicode text")
