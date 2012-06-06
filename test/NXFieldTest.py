@@ -60,6 +60,14 @@ class NXFieldTest(unittest.TestCase):
         a = f2[...]
         self.assertTrue(a.shape == (3,))
 
+    def test_negative_index(self):
+        f1 = self.gf.create_field("data1","uint16",shape=(20,))
+
+        f1[...] = numpy.arange(0,20,dtype="uint16")
+        self.assertTrue(f1[-1] == 19)
+        self.assertTrue(f1[-2] == 18)
+        self.assertTrue(f1[-20] == 0)
+
 
             
 

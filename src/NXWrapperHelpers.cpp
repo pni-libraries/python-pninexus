@@ -129,10 +129,14 @@ NXSelection create_selection(const tuple &t,const NXField &field)
     */
     for(size_t i=0,j=0;i<selection.rank();i++,j++){
         //manage a single index
-        extract<size_t> index(t[j]);
+        extract<boost::python::ssize_t> index(t[j]);
 
         if(index.check()){
-            selection.offset(i,index);
+            if(index<0)
+                selection.offset(i,field.shape()[i]+index);
+            else
+                selection.offset(i,index);
+
             selection.shape(i,1);
             selection.stride(i,1);
             continue;
