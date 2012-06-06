@@ -260,7 +260,7 @@ template<typename FieldT> class NXFieldWrapper:
             
             NXSelection selection = create_selection(t,this->_object);
 
-            if(selection.shape().size() == 1){
+            if((selection.shape().size() == 1)&& !(PyArray_CheckExact(o.ptr()))){
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value
                 io_write<ScalarWriter>(selection,o);

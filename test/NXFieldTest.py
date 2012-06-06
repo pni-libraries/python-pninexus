@@ -1,4 +1,5 @@
 import unittest
+import numpy
 
 from pni.nx.h5 import NXFile
 from pni.nx.h5 import NXGroup
@@ -38,11 +39,37 @@ class NXFieldTest(unittest.TestCase):
         self.assertRaises(TypeError,self.gf.create_field,
                 "data2","hallo")
 
-    def test_io(self):
-        f = self.gf.create_field("log","string")
-        f.write("hello world this is a text")
-        f.write("another text")
-        f[0] = "yet another text"
+    def test_numeric_io(self):
+        f1 = self.gf.create_field("data1","float64",shape=(3,1))
 
-        #try to write unicode
-        f.write(u"unicode text")
+        for i in range(len(f1.shape)):
+            f1[i,:] = float(i)
+            a = numpy.array([float(i)])
+            f1[i,:] = a[:]
+            f1[i,:] = a
+
+        for i in range(len(f1.shape)):
+            self.assertTrue(float(i)==f1[i,0])
+
+        a = f1[...]
+        self.assertTrue(a.shape == (3,1))
+
+        f2 = self.gf.create_field("data2","float64",shape=(3,))
+        self.assertTrue(f2.shape == (3,))
+        f2[...] = 10.
+        a = f2[...]
+        self.assertTrue(a.shape == (3,))
+
+
+            
+
+        
+    
+#    def test_io(self):
+#        f = self.gf.create_field("log","string")
+#        f.write("hello world this is a text")
+#        f.write("another text")
+#        f[0] = "yet another text"
+#
+#        #try to write unicode
+#        f.write(u"unicode text")
