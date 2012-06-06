@@ -106,7 +106,8 @@ NXSelection create_selection(const tuple &t,const NXField &field)
 
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
-    if(len(t) > selection.rank()){
+    if(len(t) > boost::python::ssize_t(selection.rank()))
+    {
         //with or without ellipsis something went wrong here
         ShapeMissmatchError error;
         error.issuer("NXSelection create_selection(const tuple &t,"
@@ -116,7 +117,7 @@ NXSelection create_selection(const tuple &t,const NXField &field)
                 "here");
         throw(error);
     }
-    else if(len(t) != selection.rank())
+    else if(len(t) != boost::python::ssize_t(selection.rank()))
     {
         //here we have to fix the size of an ellipsis
         ellipsis_size = selection.rank()-(len(t)-1);
@@ -148,14 +149,17 @@ NXSelection create_selection(const tuple &t,const NXField &field)
             //now we have to investigate the components of the 
             //slice
             boost::python::ssize_t start;
-            extract<size_t> __start(s().start());
+            extract<boost::python::ssize_t> __start(s().start());
             if(__start.check())
+            {
                 start = __start();
+                if(start < 0) start = field.shape()[i]+start;
+            }
             else
                 start = 0;
            
             boost::python::ssize_t step;
-            extract<size_t> __step(s().step());
+            extract<boost::python::ssize_t> __step(s().step());
             if(__step.check())
                 step = __step();
             else
@@ -164,7 +168,10 @@ NXSelection create_selection(const tuple &t,const NXField &field)
             boost::python::ssize_t stop;
             extract<boost::python::ssize_t> __stop(s().stop());
             if(__stop.check())
+            {
                 stop = __stop();
+                if(stop < 0) stop = field.shape()[i]+stop;
+            }
             else
                 stop = field.shape().dim(i);
 
