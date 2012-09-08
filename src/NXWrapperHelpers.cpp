@@ -54,45 +54,6 @@ String typeid2str(const TypeID &tid)
     return "none";
 }
 
-//-----------------------------------------------------------------------------
-list Shape2List(const Shape &s){
-    list l;
-
-    if(s.rank() == 0) return l;
-
-    for(size_t i=0;i<s.rank();i++) l.append(s[i]);
-
-    return l;
-
-}
-
-//-----------------------------------------------------------------------------
-Shape List2Shape(const list &l){
-    long size = len(l);
-    if(size==0) return Shape();
-
-    std::vector<size_t> dims(size);
-    for(boost::python::ssize_t i=0;i<size;i++)
-        dims[i] = extract<size_t>(l[i]);
-
-    Shape s(dims);
-
-    return s;
-}
-
-//------------------------------------------------------------------------------
-Shape Tuple2Shape(const tuple &t)
-{
-    long size = len(t);
-
-    std::vector<size_t> dims(size);
-    for(boost::python::ssize_t i=0;i<size;i++)
-        dims[i] = extract<size_t>(t[i]);
-
-    Shape s(dims);
-
-    return s;
-}
 
 //------------------------------------------------------------------------------
 NXSelection create_selection(const tuple &t,const NXField &field)
