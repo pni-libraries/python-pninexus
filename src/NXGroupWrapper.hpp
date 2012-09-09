@@ -53,8 +53,8 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         //---------------------------------------------------------------------
         //! copy constructor
         NXGroupWrapper(const NXGroupWrapper<GType> &o):
-            NXObjectWrapper<GType>(o){
-        }
+            NXObjectWrapper<GType>(o)
+        { }
 
         //----------------------------------------------------------------------
         //! move constructor
@@ -155,7 +155,9 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
                 &chunk=list(),const object &filter=object()) const
         {
             FieldCreator<field_type> creator(name,
-                    List2Shape(list(shape)),List2Shape(list(chunk)),filter);
+                                             List2Container<shape_t>(list(shape)),
+                                             List2Container<shape_t>(list(chunk)),
+                                             filter);
             return creator.create(this->_object,type_code);
         }
 
@@ -198,11 +200,8 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             }
 
             //should raise an exception here
-            TypeError error;
-            error.issuer("template<typename GType> object NXGroupWrapper"
-                    "<GType>::open_by_name(const String &n) const");
-            error.description("Cannot determine return type!");
-            throw(error);
+            throw TypeError(EXCEPTION_RECORD,
+                    "Cannot determine return type!");
 
             //this here is to avoid compiler warnings
             return object();
@@ -349,8 +348,10 @@ Template function to create a new wrapper for an NXGroup type GType.
 */
 template<typename GType> void wrap_nxgroup(const String &class_name)
 {
+    typedef class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > > group_class;
 
-    class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > >(class_name.c_str())
+    
+    group_class object = group_class(class_name.c_str())
         .def(init<>())
         .def("open",&NXGroupWrapper<GType>::open_by_name,__group_open_docstr)
         .def("__getitem__",&NXGroupWrapper<GType>::open)

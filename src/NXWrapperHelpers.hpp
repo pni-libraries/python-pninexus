@@ -251,7 +251,8 @@ template<typename T,typename CTYPE> PyObject *CreateNumpyArray(const CTYPE &s)
     DBuffer<npy_intp> dims(s.size());
     std::copy(s.begin(),s.end(),dims.begin());
 
-    ptr = PyArray_SimpleNew(s.size(),dims.ptr(),PNI2NumpyType<T>::typenum);
+    ptr = PyArray_SimpleNew(s.size(),const_cast<npy_intp*>(dims.ptr()),
+                            PNI2NumpyType<T>::typenum);
 
     return ptr;
 }
@@ -272,7 +273,7 @@ field from which the selection should be drawn.
 \param t tuple with indices and slices
 \param f reference to the field for which to create the selection
 */
-NXSelection create_selection(const tuple &t,const NXField &f);
+std::vector<Slice> create_selection(const tuple &t,const NXField &f);
 
 
 #endif

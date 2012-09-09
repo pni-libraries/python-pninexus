@@ -28,6 +28,7 @@
 
 #include<pni/utils/Types.hpp>
 #include<pni/utils/Exceptions.hpp>
+#include<pni/utils/Array.hpp>
 
 #include<pni/nx/NX.hpp>
 
@@ -43,8 +44,8 @@ NXField instances. The instance is of type FieldT.
 template<typename FieldT> class FieldCreator{
     private:
         String __n;      //!< name of the field
-        Shape __s;       //!< shape of the field
-        Shape __cs;      //!< chunk shape of the field
+        shape_t __s;       //!< shape of the field
+        shape_t __cs;      //!< chunk shape of the field
         object __filter; //!< name of the filter to use
     public:
         //---------------------------------------------------------------------
@@ -56,7 +57,7 @@ template<typename FieldT> class FieldCreator{
         \param cs chunk shape
         \param filter filter object to use for compression
         */
-        FieldCreator(const String &n,const Shape &s,const Shape &cs,const object
+        FieldCreator(const String &n,const shape_t &s,const shape_t &cs,const object
                 &filter):
             __n(n),__s(s),__cs(cs),__filter(filter){}
        
@@ -95,23 +96,19 @@ template<typename T,typename OType>
     FieldT FieldCreator<FieldT>::create(const OType &o) const
 {
     extract<NXDeflateFilter> deflate_obj(__filter);
-    if(deflate_obj.check()){
+    if(deflate_obj.check())
+    {
         NXDeflateFilter deflate = deflate_obj();
-        if(__cs.rank()==0)
+        if(__cs.size()==0)
             return FieldT(o.template create_field<T>(__n,__s,deflate));
         else
             return FieldT(o.template create_field<T>(__n,__s,__cs,deflate));
-    }else if(__filter.ptr() == Py_None){
-        return FieldT(o.template create_field<T>(__n,__s,__cs));
-    }else{
-        //raise an exception here
-        pni::nx::NXFilterError error;
-        error.issuer("template<typename FieldT> template<typename T,"
-                "typename OType> FieldT FieldCreator<FieldT>::create(const "
-                "OType &o) const");
-        error.description("Invalid filter object!");
-        throw(error);
     }
+    else if(__filter.ptr() == Py_None)
+        return FieldT(o.template create_field<T>(__n,__s,__cs));
+    else
+        throw pni::nx::NXFilterError(EXCEPTION_RECORD,
+                "Invalid filter object!");
 }
 
 //------------------------------------------------------------------------------
@@ -139,12 +136,8 @@ FieldCreator<FieldT>::create(const OType &o,const String &type_code) const
     if(type_code == "string") return this->create<String>(o);
 
     //raise an exception here
-    TypeError error;
-    error.issuer("template<typename FieldT> template<typename OType> FieldT "
-                 "FieldCreator<FieldT>::create(const OType &o,const String &"
-                 "type_code) const");
-    error.description("Cannot create field with type-code ("+type_code+")!");
-    throw(error);
+    throw TypeError(EXCEPTION_RECORD, 
+            "Cannot create field with type-code ("+type_code+")!");
 }
 
 #endif

@@ -170,7 +170,7 @@ template<typename OType> class NXObjectWrapper
             //attribute
             list shape_list(shape);
             AttributeCreator<attribute_type>
-                creator(name,List2Shape(list(shape)));
+                creator(name,List2Container<std::vector<size_t> >(list(shape)));
 
             return creator.create(this->_object,type_code);
         }
@@ -277,28 +277,20 @@ the type to be wrapped.
 */
 template<typename OType> void wrap_nxobject(const String &class_name)
 {
-    class_<NXObjectWrapper<OType> >(class_name.c_str())
+    typedef NXObjectWrapper<OType> wrapper;
+    typedef class_<NXObjectWrapper<OType> > wrapper_class;
+
+    wrapper_class(class_name.c_str())
         .def(init<>())
-        .add_property("name",
-                &NXObjectWrapper<OType>::name,__object_name_docstr)
-        .add_property("path",
-                &NXObjectWrapper<OType>::path,__object_path_docstr)
-        .add_property("base",
-                &NXObjectWrapper<OType>::base,__object_base_docstr)
-        .add_property("valid",
-                &NXObjectWrapper<OType>::is_valid,__object_valid_docstr)
-        .add_property("nattrs",
-                &NXObjectWrapper<OType>::nattrs,__object_nattrs_docstr)
-        .def("attr",
-                &NXObjectWrapper<OType>::create_attribute,("name","type_code",
-                    arg("shape")=list()),__object_attr_create_docstr)
-        .def("attr",
-                &NXObjectWrapper<OType>::open_attr,__object_attr_open_docstr)
-        .def("close",
-                &NXObjectWrapper<OType>::close,__object_close_docstr)
-        .add_property("attributes",
-                &NXObjectWrapper<OType>::get_attribute_iterator,
-                __object_attributes_docstr)
+        .add_property("name", &wrapper::name,__object_name_docstr)
+        .add_property("path", &wrapper::path,__object_path_docstr)
+        .add_property("base", &wrapper::base,__object_base_docstr)
+        .add_property("valid", &wrapper::is_valid,__object_valid_docstr)
+        .add_property("nattrs", &wrapper::nattrs,__object_nattrs_docstr)
+        .def("attr", &wrapper::create_attribute,("name","type_code", arg("shape")=list()),__object_attr_create_docstr)
+        .def("attr", &wrapper::open_attr,__object_attr_open_docstr)
+        .def("close", &wrapper::close,__object_close_docstr)
+        .add_property("attributes",&wrapper::get_attribute_iterator,__object_attributes_docstr)
         ;
 }
 

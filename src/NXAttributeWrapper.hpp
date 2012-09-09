@@ -6,7 +6,6 @@ extern "C"{
 }
 
 #include <pni/utils/Types.hpp>
-#include <pni/utils/Shape.hpp>
 #include <pni/utils/Array.hpp>
 using namespace pni::utils;
 
@@ -85,7 +84,7 @@ template<typename AttrType> class NXAttributeWrapper{
         */
         tuple shape() const
         {
-            return tuple(Shape2List(this->_attribute.shape()));
+            return tuple(Container2List(this->_attribute.template shape<shape_t>()));
         }
 
         //---------------------------------------------------------------------
@@ -149,18 +148,14 @@ template<typename AttrType> class NXAttributeWrapper{
         */
         object read() const
         {
-            if(this->_attribute.shape().rank() == 0){
+            if(this->_attribute.template shape<shape_t>().size() == 0)
                 return io_read<ScalarReader>(this->_attribute);
-            }else{
+            else
                 return io_read<ArrayReader>(this->_attribute);
-            }
 
             //should raise an exception here
-            pni::nx::NXAttributeError error;
-            error.issuer("template<typename AttrType> object "
-                         "NXAttributeWrapper<AttrType>::read() const");
-            error.description("Found no appropriate procedure to read this"
-                              "attribute!");
+            throw pni::nx::NXAttributeError(EXCEPTION_RECORD,
+            "Found no appropriate procedure to read this attribute!");
 
             //this is only to avoid compiler warnings
             return object();
@@ -184,19 +179,18 @@ template<typename AttrType> class NXAttributeWrapper{
         {
             //before we can write an object we need to find out what 
             //it really i
-            if(this->_attribute.shape().rank() == 0){
+            if(this->_attribute.template shape<shape_t>().size() == 0)
                 //write to a scalar attribute
                 io_write<ScalarWriter>(this->_attribute,o);
-            }else{
+            else
+            {
                 //the attribute is an array attribute
-                if(PyArray_CheckExact(o.ptr())){
+                if(PyArray_CheckExact(o.ptr()))
                     //write array to array
                     ArrayWriter::write(this->_attribute,o);
-                }else{
+                else
                     //write a single attribute to all array elements
                     ArrayBroadcastWriter::write(this->_attribute,o);
-                }
-
             }
 
         }

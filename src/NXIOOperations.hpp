@@ -76,10 +76,10 @@ class ArrayReader{
         */
         template<typename T,typename OType> object read(const OType &readable)
         {
-            PyObject *ptr = CreateNumpyArray<T>(readable.shape());
+            PyObject *ptr = CreateNumpyArray<T>(readable.template shape<shape_t>());
             handle<> h(ptr);
             object o(h);
-            Array<T,RefBuffer> rarray = Numpy2RefArray<T>(o);
+            DArray<T,RBuffer<T> > rarray = Numpy2RefArray<T>(o);
             readable.read(rarray);
             return o;
         }
@@ -106,14 +106,8 @@ class ScalarWriter{
             void write(const WType &writeable,const object &o)
         {
             if(PyArray_CheckExact(o.ptr()))
-            {
-                ShapeMissmatchError error;
-                error.issuer(" template<typename T,typename WType> void "
-                        "ScalarWriter::write(const WType &writeable,"
-                        "const object &o)");
-                error.description("Object is not a scalar!");
-                throw(error);
-            }
+                throw ShapeMissmatchError(EXCEPTION_RECORD,
+                        "Object is not a scalar!");
             
             
             T value = extract<T>(o);
@@ -143,14 +137,9 @@ class ArrayWriter{
             void write(const WType &w,const object &o)
         {
             
-            if(!PyArray_CheckExact(o.ptr())){
-                TypeError error;
-                error.issuer("template<typename WType> static void "
-                        "ArrayWriter::write(const WType &w,const "
-                        "object &o)");
-                error.description("Python object is not a numpy array!");
-                throw error;
-            }
+            if(!PyArray_CheckExact(o.ptr()))
+                throw TypeError(EXCEPTION_RECORD,
+                        "Python object is not a numpy array!");
 
             switch(PyArray_TYPE(o.ptr())){
                 case NPY_UBYTE:
@@ -182,13 +171,8 @@ class ArrayWriter{
                 case NPY_CLONGDOUBLE:
                     w.write(Numpy2RefArray<Complex128>(o));break;
                 default:
-                    TypeError error;
-                    error.issuer("template<typename WType> static void "
-                            "ArrayWriter::write(const WType &w,const "
-                            "object &o)");
-                    error.description("Type of numpy array cannot be "
-                            "handled!");
-                    throw error;
+                    throw TypeError(EXCEPTION_RECORD,
+                    "Type of numpy array cannot be handled!");
             };
         }
 };
@@ -203,7 +187,8 @@ The actual implementation of this writer is not very efficient as it requires
 the allocation of an intermediate Array object. 
 This should be changed in future.
 */
-class ArrayBroadcastWriter{
+class ArrayBroadcastWriter
+{
     private:
         /*! \brief write data to writeable
     
@@ -212,9 +197,9 @@ class ArrayBroadcastWriter{
         template<typename T,typename WType>  static
             void __write(const WType &w,const object &o)
         {
-            Array<T,Buffer> a = ArrayFactory<T>::create(w.shape());
+            DArray<T,DBuffer<T> > a(w.template shape<shape_t>());
             const T &value = extract<T>(o);
-            a = value;
+            std::fill(a.begin(),a.end(),value);
             w.write(a);
         }
     public:
@@ -250,12 +235,8 @@ class ArrayBroadcastWriter{
 
             //need here a string type
 
-            TypeError error;
-            error.issuer("template<typename WType> static void "
-                    "ArrayBroadcastWriter::write(const WType &w,"
-                    "const object &o)");
-            error.description("Python object is of unknown type!");
-            throw(error);
+            throw TypeError(EXCEPTION_RECORD,
+                    "Python object is of unknown type!");
         }
 };
 
@@ -309,11 +290,7 @@ template<typename IOOp,typename OType> object io_read(const OType &readable)
     if(readable.type_id() == TypeID::STRING) 
         return operation.template read<String>(readable);
 
-    TypeError error;
-    error.issuer("template<typename IOOp,typename OType> object "
-            "io_read(const OType &readable)");
-    error.description("Cannot handle field datatype!");
-    throw(error);
+    throw TypeError(EXCEPTION_RECORD,"Cannot handle field datatype!");
    
     return object();
 }
@@ -423,11 +400,7 @@ void io_write(const OType &writeable,const object &obj)
     }
 
     //raise an exception here if the datatype cannot be managed
-    TypeError error;
-    error.issuer("template<typename IOOp,typename OType> void io_write"
-            "(const OType &writeable,const object &obj)");
-    error.description("Datatype of writabel is unknown!");
-    throw(error);
+    throw TypeError(EXCEPTION_RECORD,"Datatype of writabel is unknown!");
 
 }
 

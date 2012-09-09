@@ -113,7 +113,6 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 PyObject *PyShapeMissmatchErrorPtr = nullptr;
 PyObject *PyIndexErrorPtr = nullptr;
 PyObject *PySizeMissmatchErrorPtr = nullptr;
-PyObject *PyMemoryAccessErrorPtr = nullptr;
 PyObject *PyMemoryAllocationErrorPtr = nullptr;
 
 //-----------------------------------------------------------------------------
@@ -142,18 +141,12 @@ void SizeMissmatchError_translator(pni::utils::SizeMissmatchError const &error)
 }
 
 //-----------------------------------------------------------------------------
-void MemoryAccessError_translator(pni::utils::MemoryAccessError const &error)
-{
-    assert(PyMemoryAccessErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyMemoryAccessErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
 void MemoryAllocationError_translator(pni::utils::MemoryAllocationError const
         &error)
 {
-    assert(PyMemoryAllocationErrorPtr != nullptr); object exception(error); PyErr_SetObject(PyMemoryAllocationErrorPtr,exception.ptr()); }
+    assert(PyMemoryAllocationErrorPtr != nullptr); object exception(error); 
+    PyErr_SetObject(PyMemoryAllocationErrorPtr,exception.ptr()); 
+}
 
 //-----------------------------------------------------------------------------
 void TypeError_translator(pni::utils::TypeError const &error)
@@ -163,15 +156,15 @@ void TypeError_translator(pni::utils::TypeError const &error)
 }
 
 
-//-----------------------------------------------------------------------------
-void exception_registration(){
 
-    const String &(Exception::*exception_get_issuer)() const = &Exception::issuer;
+//-----------------------------------------------------------------------------
+void exception_registration()
+{
+
     const String &(Exception::*exception_get_description)() const =
         &Exception::description;
     class_<Exception>("Exception")
         .def(init<>())
-        .add_property("issuer",make_function(exception_get_issuer,return_value_policy<copy_const_reference>()))
         .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
         ;
 
@@ -190,11 +183,6 @@ void exception_registration(){
                 .def(init<>())
             );
     
-    object PyMemoryAccessError = (
-            class_<MemoryAccessError,bases<Exception> >("MemoryAccessError")
-                .def(init<>())
-            );
-    
     object PyMemoryAllocationError = (
             class_<MemoryAllocationError,bases<Exception> >("MemoryAllocationError")
                 .def(init<>())
@@ -207,7 +195,6 @@ void exception_registration(){
     PyShapeMissmatchErrorPtr = PyShapeMissmatchError.ptr();
     PyIndexErrorPtr = PyIndexError.ptr();
     PySizeMissmatchErrorPtr = PySizeMissmatchError.ptr();
-    PyMemoryAccessErrorPtr = PyMemoryAccessError.ptr();
     PyMemoryAllocationErrorPtr = PyMemoryAllocationError.ptr();
 
 
@@ -260,8 +247,6 @@ void exception_registration(){
         (NXFieldError_translator);
     register_exception_translator<pni::utils::IndexError>
         (IndexError_translator);
-    register_exception_translator<pni::utils::MemoryAccessError>
-        (MemoryAccessError_translator);
     register_exception_translator<pni::utils::MemoryAllocationError>
         (MemoryAllocationError_translator);
     register_exception_translator<pni::utils::SizeMissmatchError>

@@ -40,7 +40,7 @@ The created attributes are instances of the template parameter AttrT.
 template<typename AttrT> class AttributeCreator{
     private:
         String __n; //!< name of the field
-        Shape __s;  //!< shape of the field
+        std::vector<size_t> __s;  //!< shape of the field
     public:
         //---------------------------------------------------------------------
         /*! \brief constructor
@@ -56,7 +56,8 @@ template<typename AttrT> class AttributeCreator{
         \param n name of the attribute
         \param s shape of the attribute
         */
-        AttributeCreator(const String &n,const Shape &s):
+        template<typename CTYPE>
+            AttributeCreator(const String &n,const CTYPE &s):
             __n(n),__s(s){}
 
         //---------------------------------------------------------------------
@@ -90,7 +91,7 @@ template<typename AttrT>
 template<typename T,typename OType> 
     AttrT AttributeCreator<AttrT>::create(const OType &o) const
 {
-    if(__s.rank() == 0){
+    if(__s.size() == 0){
         //create a scalar attribute
         return AttrT(o.template attr<T>(__n,true));
     }else{
@@ -124,12 +125,8 @@ AttributeCreator<AttrT>::create(const OType &o,const String &type_code) const
     if(type_code == "string") return this->create<String>(o);
 
     //raise an exception here
-    TypeError error;
-    error.issuer("template<typename FieldT> template<typename OType> FieldT "
-                 "FieldCreator<FieldT>::create(const OType &o,const String &"
-                 "type_code) const");
-    error.description("Cannot create field with type-code ("+type_code+")!");
-    throw(error);
+    throw TypeError(EXCEPTION_RECORD,
+        "Cannot create field with type-code ("+type_code+")!");
 }
 
 #endif

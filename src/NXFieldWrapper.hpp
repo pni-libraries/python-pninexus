@@ -126,7 +126,7 @@ template<typename FieldT> class NXFieldWrapper:
         */
         tuple shape() const
         {
-            return tuple(Shape2List(this->_object.shape()));
+            return tuple(Container2List(this->_object.template shape<shape_t>()));
         }
 
         //---------------------------------------------------------------------
@@ -139,7 +139,7 @@ template<typename FieldT> class NXFieldWrapper:
         */
         void write(const object &o) const
         {
-            if(this->_object.shape().size() == 1){
+            if(this->_object.template shape<shape_t>().size() == 1){
                 //scalar field - here we can use any scalar type to write data
                 io_write<ScalarWriter>(this->_object,o);
             }else{
@@ -162,7 +162,7 @@ template<typename FieldT> class NXFieldWrapper:
         */
         object read() const
         {
-            if(this->_object.shape().size() == 1){
+            if(this->_object.template shape<shape_t>().size() == 1){
                 //the field contains only a single value - can return a
                 //primitive python object
                 return io_read<ScalarReader>(this->_object);                
@@ -173,12 +173,7 @@ template<typename FieldT> class NXFieldWrapper:
                 return io_read<ArrayReader>(this->_object);
             }
 
-            TypeError error;
-            error.issuer("template<typename FielT> object NXFieldWrapper"
-                    "<FieldT>::read() const");
-            error.description("Cannot determine return type!");
-            throw(error);
-
+            throw TypeError(EXCEPTION_RECORD,"Cannot determine return type!");
 
             //this is only to avoid compiler warnings
             return object();
@@ -196,17 +191,16 @@ template<typename FieldT> class NXFieldWrapper:
         object __getitem__tuple(const tuple &t){
 
             //first we need to create a selection
-            NXSelection selection = create_selection(t,this->_object);
+            std::vector<Slice> selection = create_selection(t,this->_object);
 
             //once the selection is build we can start to create the 
             //return value
-            if(selection.size()==1){
+            if(selection.size()==1)
                 //in this case we return a primitive python value
-                return io_read<ScalarReader>(selection);
-            }else{
+                return io_read<ScalarReader>(this->_object(selection));
+            else
                 //a numpy array will be returned
-                return io_read<ArrayReader>(selection);
-            }
+                return io_read<ArrayReader>(this->_object(selection));
 
 
             return object();
@@ -258,13 +252,18 @@ template<typename FieldT> class NXFieldWrapper:
         */
         void __setitem__tuple(const tuple &t,const object &o){
             
-            NXSelection selection = create_selection(t,this->_object);
+            std::vector<Slice> selection = create_selection(t,this->_object);
+            size_t tsize = 1;
+            for(auto v: selection) tsize *= pni::utils::size(v);
 
-            if((selection.shape().size() == 1)&& !(PyArray_CheckExact(o.ptr()))){
+            if((tsize == 1)&& !(PyArray_CheckExact(o.ptr())))
+            {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value
-                io_write<ScalarWriter>(selection,o);
-            }else{
+                io_write<ScalarWriter>(this->_object(selection),o);
+            }
+            else
+            {
                 //here we have two possibl: 
                 //1.) object referes to a scalar => all positions marked by the 
                 //    selection will be set to this scalar value
@@ -273,11 +272,10 @@ template<typename FieldT> class NXFieldWrapper:
                 //    data.
 
                 //let us assume here that we only do broadcast
-                if(!PyArray_CheckExact(o.ptr())){
-                    ArrayBroadcastWriter::write(selection,o);
-                }else{
-                    ArrayWriter::write(selection,o);
-                }
+                if(!PyArray_CheckExact(o.ptr()))
+                    ArrayBroadcastWriter::write(this->_object(selection),o);
+                else
+                    ArrayWriter::write(this->_object(selection),o);
             }
         }
 
