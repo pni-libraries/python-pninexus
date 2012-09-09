@@ -2,9 +2,6 @@
 
 import sys
 import numpy
-
-sys.path.append("lib/python")
-
 import pni.nx.h5 as nx
 
 f = nx.create_file("test.h5",True,0);

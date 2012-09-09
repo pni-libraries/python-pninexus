@@ -8,14 +8,12 @@ from nxh5 import NXField
 from nxh5 import ShapeMissmatchError
 from nxh5 import PNITypeError
 from nxh5 import MemoryAllocationError
-from nxh5 import MemoryAccessError
 from nxh5 import IndexError
 
 from nxh5 import NXFileError
 from nxh5 import NXGroupError
 from nxh5 import NXFieldError
 from nxh5 import NXAttributeError
-from nxh5 import NXSelectionError
 from nxh5 import NXFilterError
 
 

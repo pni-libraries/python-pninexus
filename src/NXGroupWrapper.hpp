@@ -351,7 +351,7 @@ template<typename GType> void wrap_nxgroup(const String &class_name)
     typedef class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > > group_class;
 
     
-    group_class object = group_class(class_name.c_str())
+    group_class(class_name.c_str())
         .def(init<>())
         .def("open",&NXGroupWrapper<GType>::open_by_name,__group_open_docstr)
         .def("__getitem__",&NXGroupWrapper<GType>::open)
