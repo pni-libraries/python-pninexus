@@ -62,9 +62,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
 
         //----------------------------------------------------------------------
         //! destructor
-        ~NXFileWrapper()
-        {
-        }
+        ~NXFileWrapper() { }
 
         //=======================assignment operators===========================
         //! move conversion assignment from wrapped object
@@ -96,6 +94,19 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
         {
             if(this != &f) NXGroupWrapper<FType>::operator=(std::move(f));
             return *this;
+        }
+
+        //-------------------------------------------------------------------------
+        //! check read only status
+        int is_readonly() const
+        {
+            return this->_object.is_readonly();
+        }
+
+        //! flush data to disk
+        void flush() const  
+        {
+            this->_object.flush();
         }
 };
 
@@ -141,15 +152,17 @@ template<typename FType> NXFileWrapper<FType> open_file(const String &n,
 Tempalte function creates a wrappers for the NXFile type FType. 
 \param class_name name of the newly created type in Python
 */
-template<typename FType> void wrap_nxfile(const String &class_name)
+template<typename FTYPE> void wrap_nxfile(const String &class_name)
 {
-    class_<NXFileWrapper<FType>,bases<NXGroupWrapper<FType> > >(class_name.c_str())
+    class_<NXFileWrapper<FTYPE>,bases<NXGroupWrapper<FTYPE> > >(class_name.c_str())
         .def(init<>())
+        .add_property("readonly",&NXFileWrapper<FTYPE>::is_readonly)
+        .def("flush",&NXFileWrapper<FTYPE>::flush)
         ;
 
     //need some functions
-    def("__create_file",&create_file<FType>);
-    def("__open_file",&open_file<FType>);
+    def("__create_file",&create_file<FTYPE>);
+    def("__open_file",&open_file<FTYPE>);
 }
 
 #endif

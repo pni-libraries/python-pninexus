@@ -11,22 +11,6 @@ from distutils.unixccompiler import UnixCCompiler
 
 import commands
 
-def pkgconfig(*packages, **kw):
-    flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l': 'libraries'}
-    for token in commands.getoutput("pkg-config --libs --cflags %s" % ' '.join(packages)).split():
-        kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
-
-    kw["libraries"].append("boost_python")
-    return kw
-
-#setup(
-#    name = "myPackage",
-#    ext_modules=[
-#        Extension("extension", ["extension_main.c"], ),
-#    ],
-#)
-
-#add here some options to handle additional compiler parameters
 cliopts =[]
 cliopts.append(("h5libdir=",None,"HDF5 library path"))
 cliopts.append(("h5incdir=",None,"HDF5 include path"))
@@ -37,72 +21,39 @@ cliopts.append(("utlibdir=",None,"PNI utilities library path"))
 cliopts.append(("utincdir=",None,"PNI utilities include path"))
 cliopts.append(("numpyincdir=",None,"Numpy include path"))
 cliopts.append(("noforeach",None,"Set noforeach option for C++"))
+cliopts.append(("debug",None,"append debuging options"))
 
 op = FancyGetopt(option_table=cliopts)
 args,opts = op.getopt()
 
-include_dirs = ["/usr/include/pni/hdf5"]
-library_dirs = []
+debug = False
+for o,v in op.get_option_order():
+    if o == "debug":
+        debug = True
 
-try: include_dirs.append(opts.h5incdir)
-except: pass
 
-try: include_dirs.append(opts.nxincdir)
-except: pass
+def pkgconfig(debug=False,*packages, **kw):
+    flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l':
+                'libraries','-D':'extra_compile_args'}
+    for token in commands.getoutput("pkg-config --libs --cflags %s" % ' '.join(packages)).split():
+        if(token[:2]=="-D"):
+            kw.setdefault(flag_map.get(token[:2]),[]).append(token)
+        else:
+            kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
 
-try: include_dirs.append(opts.utincdir)
-except: pass
+    kw["libraries"].append("boost_python")
+    kw["extra_compile_args"].append('-std=c++0x')
 
-try: library_dirs.append(opts.h5libdir)
-except: pass
-
-try: library_dirs.append(opts.nxlibdir)
-except: pass
-
-try: library_dirs.append(opts.utlibdir)
-except: pass
-
-try: include_dirs.append(opts.numpyincdir)
-except:pass
-
-#in the end we need to add the Python include directory
-include_dirs.append(get_python_inc())
-
-cc = new_compiler()
-try:
-    cc.set_executables(compiler_so = os.environ['CC'])
-except:
-    print "Environment variable CC not found!"
-
-compile_args = ["-std=c++0x","-g","-O0"]
-#now we try to compile the test code
-try:
-    print "run compiler test for nullptr ..."
-    cc.compile(['ccheck/nullptr_check.cpp'],extra_preargs=compile_args)
-    print "compiler supports nullptr - passed!"
-except:
-    print "no nullptr support!"
-    compile_args.append("-Dnullptr=NULL")
-
-try:
-    print "run compiler check for foreach loops ..."
-    cc.compile(['ccheck/foreach_check.cpp'],extra_preargs=compile_args)
-    print "compiler supports foreach loops!"
-except:
-    print "no support for foreach loops!"
-    compile_args.append("-DNOFOREACH")
-
-libs = ["boost_python","pniutils","pninx","pnihdf5"]
+    if debug:
+        kw["extra_compile_args"].append('-O0')
+        kw["extra_compile_args"].append('-g')
+    return kw
 
 
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
 nxh5 = Extension("nxh5",files,
-                 extra_compile_args = compile_args,
-                 **pkgconfig('pninx'))
-#                 libraries=libs,
-#                 library_dirs=library_dirs,
-#                 include_dirs=include_dirs)
+                 **pkgconfig(debug,'pninx'))
 
 setup(name="libpninx-python",
         author="Eugen Wintersberger",
