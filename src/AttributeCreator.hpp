@@ -37,7 +37,8 @@ using namespace pni::utils;
 This class creates attribute objects according to the configuration of the class.
 The created attributes are instances of the template parameter AttrT. 
 */
-template<typename AttrT> class AttributeCreator{
+template<typename ATTRT> class AttributeCreator
+{
     private:
         String __n; //!< name of the field
         std::vector<size_t> __s;  //!< shape of the field
@@ -47,8 +48,7 @@ template<typename AttrT> class AttributeCreator{
 
         \param n name of the attribute
         */
-        AttributeCreator(const String &n):
-            __n(n),__s(){}
+        AttributeCreator(const String &n):__n(n),__s(){}
 
         //---------------------------------------------------------------------
         /*! \brief constructor
@@ -57,8 +57,7 @@ template<typename AttrT> class AttributeCreator{
         \param s shape of the attribute
         */
         template<typename CTYPE>
-            AttributeCreator(const String &n,const CTYPE &s):
-            __n(n),__s(s){}
+            AttributeCreator(const String &n,const CTYPE &s): __n(n),__s(s){}
 
         //---------------------------------------------------------------------
         /*! \brief attribute creation
@@ -70,7 +69,7 @@ template<typename AttrT> class AttributeCreator{
         \param o attribute creating object.
         \return instance of AttrT
         */
-        template<typename T,typename OType> AttrT create(const OType &o) const;
+        template<typename T,typename OType> ATTRT create(const OType &o) const;
 
         //---------------------------------------------------------------------
         /*! \brief create attribute from type string
@@ -82,28 +81,28 @@ template<typename AttrT> class AttributeCreator{
         \param type_str string determining the data-type to use
         \return instance of AttrT 
         */
-        template<typename OType> 
-            AttrT create(const OType &o,const String &type_str) const;
+        template<typename OTYPE> 
+            ATTRT create(const OTYPE &o,const String &type_str) const;
 };
 
 //-----------------------------------------------------------------------------
-template<typename AttrT>
-template<typename T,typename OType> 
-    AttrT AttributeCreator<AttrT>::create(const OType &o) const
+template<typename ATTRT>
+template<typename T,typename OTYPE> 
+    ATTRT AttributeCreator<ATTRT>::create(const OTYPE &o) const
 {
-    if(__s.size() == 0){
+    if(__s.size() == 0)
         //create a scalar attribute
-        return AttrT(o.template attr<T>(__n,true));
-    }else{
+        return ATTRT(o.template attr<T>(__n,true));
+    else
         //create a field with custom chunk 
-        return AttrT(o.template attr<T>(__n,__s,true));
-    }
+        return ATTRT(o.template attr<T>(__n,__s,true));
+    
 }
 
 //------------------------------------------------------------------------------
-template<typename AttrT> 
-template<typename OType> AttrT 
-AttributeCreator<AttrT>::create(const OType &o,const String &type_code) const
+template<typename ATTRT> 
+template<typename OTYPE> ATTRT 
+AttributeCreator<ATTRT>::create(const OTYPE &o,const String &type_code) const
 {
     if(type_code == "uint8") return this->create<UInt8>(o);
     if(type_code == "int8")  return this->create<Int8>(o);

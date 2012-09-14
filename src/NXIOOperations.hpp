@@ -28,7 +28,6 @@
 
 #include "NXWrapperHelpers.hpp"
 
-
 //-----------------------------------------------------------------------------
 /*! 
 \ingroup ioclasses  
@@ -39,21 +38,25 @@ selections, and attributes expose the appropriate interface. The class provides
 a static template method which reads the data and returns the result as a 
 Python object.
 */
-class ScalarReader{
+class ScalarReader
+{
     public:
         /*! \brief read scalar data
 
-        Reads scalar data of type T (first template parameter) and returns a 
-        native Python object as result. The type of the readable is determined 
-        by the second template parameter.
-        \param readable an object of type OType with readable interface
+        Reads scalar data of type T from a readable object and returns a native
+        Python object as result.
+
+        \tparam T data type to read
+        \tparam OTYPE object type where to read data from
+        \param readable instance of OTYPE from which to read data 
         \return native Python object
         */
-        template<typename T,typename OType> object read(const OType &readable)
+        template<typename T,typename OTYPE> static 
+            object read(const OTYPE &readable)
         {
-            T value;
-            readable.read(value);
-            object o(value);
+            T value; //create a new instance where to store the data
+            readable.read(value); //read data
+            object o(value); //create python object
             return o;
         }
 };
@@ -66,20 +69,28 @@ class ScalarReader{
 Reads a single array from a readable object which might be either a selection,
 a field, or an attribute object. The result is returned as a numpy array.
 */
-class ArrayReader{
+class ArrayReader
+{
     public:
         /*! \brief read array 
 
         Read a single array from the field.
-        \param readable an object of type OType with readable interface
-        \return nyumpy array as Python object.
+        \tparam T data type to read
+        \tparam OTYPE object type from which to read data
+        \param readable instance of OTYPE from which to read data
+        \return numpy array as Python object.
         */
-        template<typename T,typename OType> object read(const OType &readable)
+        template<typename T,typename OTYPE> static 
+            object read(const OTYPE &readable)
         {
+            //create the numpy array which will store the data
             PyObject *ptr = CreateNumpyArray<T>(readable.template shape<shape_t>());
             handle<> h(ptr);
             object o(h);
+
+            //create a reference array to the numpy arrays buffer 
             DArray<T,RBuffer<T> > rarray = Numpy2RefArray<T>(o);
+            //read data to the numpy buffer
             readable.read(rarray);
             return o;
         }
@@ -92,29 +103,34 @@ class ArrayReader{
 
 Writes a scalar value from a Python object to a writeable object. 
 */
-class ScalarWriter{
+class ScalarWriter
+{
     public:
         /*! \brief write scalar data
 
         Writes scalar data from object o to writable.
         \throws ShapeMissmatchError if o is not a scalar object
         \throws TypeError if type conversion fails
-        \param writeable object where to store data
+        \tparam T data type to write
+        \tparam WTYPE writeable type
+        \param writeable instance of WTYPE where to store data
         \param o object form which to write data
         */
-        template<typename T,typename WType>
-            void write(const WType &writeable,const object &o)
+        template<typename T,typename WTYPE> static
+            void write(const WTYPE &writeable,const object &o)
         {
+            //check if the data object is a numpy array and throw an exception
+            //in this case
             if(PyArray_CheckExact(o.ptr()))
                 throw ShapeMissmatchError(EXCEPTION_RECORD,
                         "Object is not a scalar!");
-            
-            
+           
+            //extract the value to write - this will throw an exception if 
+            //the operation fails.
             T value = extract<T>(o);
             writeable.write(value);
         }
 };
-
 
 //-----------------------------------------------------------------------------
 /*! 
@@ -123,25 +139,30 @@ class ScalarWriter{
 
 Write array data to a writeable.
 */
-class ArrayWriter{
+class ArrayWriter
+{
     public:
         /*! \brief write array data
 
         Writes array data o to writeable w.
         \throws TypeError if o is not a numpy array or the datatype cannot be
         handled
-        \param w writeable object
+        \tparam WTYPE writeable type
+        \param w instance of WTYPE where to store data
         \param o numpy array object
         */
-        template<typename WType> static
-            void write(const WType &w,const object &o)
+        template<typename T,typename WTYPE> static
+            void write(const WTYPE &w,const object &o)
         {
-            
+           
+            //check if the object from which to read data is an array
             if(!PyArray_CheckExact(o.ptr()))
                 throw TypeError(EXCEPTION_RECORD,
                         "Python object is not a numpy array!");
 
-            switch(PyArray_TYPE(o.ptr())){
+            //select the data type to use for writing the array data
+            switch(PyArray_TYPE(o.ptr()))
+            {
                 case NPY_UBYTE:
                     w.write(Numpy2RefArray<UInt8>(o));break;
                 case NPY_BYTE:
@@ -177,68 +198,6 @@ class ArrayWriter{
         }
 };
 
-//-----------------------------------------------------------------------------
-/*! 
-\ingroup ioclasses  
-\brief broadcast array writer
-
-Writes a single scalar value to all positions of a multidimensional writeable.
-The actual implementation of this writer is not very efficient as it requires 
-the allocation of an intermediate Array object. 
-This should be changed in future.
-*/
-class ArrayBroadcastWriter
-{
-    private:
-        /*! \brief write data to writeable
-    
-        Write data to the field. 
-        */
-        template<typename T,typename WType>  static
-            void __write(const WType &w,const object &o)
-        {
-            DArray<T,DBuffer<T> > a(w.template shape<shape_t>());
-            const T &value = extract<T>(o);
-            std::fill(a.begin(),a.end(),value);
-            w.write(a);
-        }
-    public:
-        /*! \brief write data
-
-        Write scalar data from o to the writable w.
-        throws TypeError if o is of unknown type
-        \param w writeable object
-        \param o scalar Python object from which to write data
-        */
-        template<typename WType> static
-            void write(const WType &w,const object &o)
-        {
-            //need to figure out the datatype used for o
-            //Python does not support that many types. Thus the check can be
-            //short.
-            if(PyInt_Check(o.ptr())){
-                __write<Int64>(w,o);
-                return;
-            }
-            if(PyLong_Check(o.ptr())){
-                __write<Int64>(w,o);
-                return;
-            }
-            if(PyFloat_Check(o.ptr())){
-                __write<Float64>(w,o);
-                return;
-            }
-            if(PyComplex_Check(o.ptr())){
-                __write<Complex64>(w,o);
-                return;
-            }
-
-            //need here a string type
-
-            throw TypeError(EXCEPTION_RECORD,
-                    "Python object is of unknown type!");
-        }
-};
 
 
 //-----------------------------------------------------------------------------
@@ -253,42 +212,41 @@ interface.
 \param readable object from which to read data
 \return a Python object with the data
 */
-template<typename IOOp,typename OType> object io_read(const OType &readable)
+template<typename IOOP,typename OType> object io_read(const OType &readable)
 {
-    IOOp operation;
     if(readable.type_id() == TypeID::UINT8) 
-        return operation.template read<UInt8>(readable);
+        return IOOP::template read<UInt8>(readable);
     if(readable.type_id() == TypeID::INT8)  
-        return operation.template read<Int8>(readable);
+        return IOOP::template read<Int8>(readable);
     if(readable.type_id() == TypeID::UINT16) 
-        return operation.template read<UInt16>(readable);
+        return IOOP::template read<UInt16>(readable);
     if(readable.type_id() == TypeID::INT16)  
-        return operation.template read<Int16>(readable);
+        return IOOP::template read<Int16>(readable);
     if(readable.type_id() == TypeID::UINT32) 
-        return operation.template read<UInt32>(readable);
+        return IOOP::template read<UInt32>(readable);
     if(readable.type_id() == TypeID::INT32)  
-        return operation.template read<Int32>(readable);
+        return IOOP::template read<Int32>(readable);
     if(readable.type_id() == TypeID::UINT64) 
-        return operation.template read<UInt64>(readable);
+        return IOOP::template read<UInt64>(readable);
     if(readable.type_id() == TypeID::INT64)  
-        return operation.template read<Int64>(readable);
+        return IOOP::template read<Int64>(readable);
 
     if(readable.type_id() == TypeID::FLOAT32) 
-        return operation.template read<Float32>(readable);
+        return IOOP::template read<Float32>(readable);
     if(readable.type_id() == TypeID::FLOAT64) 
-        return operation.template read<Float64>(readable);
+        return IOOP::template read<Float64>(readable);
     if(readable.type_id() == TypeID::FLOAT128) 
-        return operation.template read<Float128>(readable);
+        return IOOP::template read<Float128>(readable);
 
     if(readable.type_id() == TypeID::COMPLEX32) 
-        return operation.template read<Complex32>(readable);
+        return IOOP::template read<Complex32>(readable);
     if(readable.type_id() == TypeID::COMPLEX64) 
-        return operation.template read<Complex64>(readable);
+        return IOOP::template read<Complex64>(readable);
     if(readable.type_id() == TypeID::COMPLEX128) 
-        return operation.template read<Complex128>(readable);
+        return IOOP::template read<Complex128>(readable);
 
     if(readable.type_id() == TypeID::STRING) 
-        return operation.template read<String>(readable);
+        return IOOP::template read<String>(readable);
 
     throw TypeError(EXCEPTION_RECORD,"Cannot handle field datatype!");
    
@@ -302,101 +260,87 @@ template<typename IOOp,typename OType> object io_read(const OType &readable)
 
 Write data from a Python object to a writable object.
 \throws TypeError if type of the writable cannot be handled
+\tparam IOOP IO operation to use
+\tparam OTYPE writeable type
 \param writeable object to which data will be written
 \param obj Python object form which data will be written
 */
-template<typename IOOp,typename OType> 
-void io_write(const OType &writeable,const object &obj)
+template<typename IOOP,typename OTYPE> 
+void io_write(const OTYPE &writeable,const object &obj)
 {
-    IOOp operation;
     if(writeable.type_id() == TypeID::UINT8)
     {
-        operation.template write<UInt8>(writeable,obj);
-        return;
+        IOOP::template write<UInt8>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::INT8) 
     {
-        operation.template write<Int8>(writeable,obj);
-        return;
+        IOOP::template write<Int8>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::UINT16)
     {
-        operation.template write<UInt16>(writeable,obj);
-        return;
+        IOOP::template write<UInt16>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::INT16) 
     {
-        operation.template write<Int16>(writeable,obj);
-        return;
+        IOOP::template write<Int16>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::UINT32) 
     {
-        operation.template write<UInt32>(writeable,obj);
-        return;
+        IOOP::template write<UInt32>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::INT32) 
     {
-        operation.template write<Int32>(writeable,obj);
-        return;
+        IOOP::template write<Int32>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::UINT64) 
     {
-        operation.template write<UInt64>(writeable,obj);
-        return;
+        IOOP::template write<UInt64>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::INT64)
     {
-        operation.template write<Int64>(writeable,obj);
-        return;
+        IOOP::template write<Int64>(writeable,obj); return;
     }
     
     if(writeable.type_id() == TypeID::FLOAT32) 
     {
-        operation.template write<Float32>(writeable,obj);
-        return;
+        IOOP::template write<Float32>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::FLOAT64)
     {
-        operation.template write<Float64>(writeable,obj);
-        return;
+        IOOP::template write<Float64>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::FLOAT128) 
     {
-        operation.template write<Float128>(writeable,obj);
-        return;
+        IOOP::template write<Float128>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::COMPLEX32) 
     {
-        operation.template write<Complex32>(writeable,obj);
-        return;
+        IOOP::template write<Complex32>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::COMPLEX64)
     { 
-        operation.template write<Complex64>(writeable,obj);
-        return;
+        IOOP::template write<Complex64>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::COMPLEX128)
     {
-        operation.template write<Complex128>(writeable,obj);
-        return;
+        IOOP::template write<Complex128>(writeable,obj); return;
     }
 
     if(writeable.type_id() == TypeID::STRING)
     {    
-        operation.template write<String>(writeable,obj);
-        return;
+        IOOP::template write<String>(writeable,obj); return;
     }
 
     //raise an exception here if the datatype cannot be managed

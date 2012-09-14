@@ -168,7 +168,6 @@ template<typename OType> class NXObjectWrapper
         {
             //first we need to decide wether we need a scalar or an array 
             //attribute
-            list shape_list(shape);
             AttributeCreator<attribute_type>
                 creator(name,List2Container<std::vector<size_t> >(list(shape)));
 

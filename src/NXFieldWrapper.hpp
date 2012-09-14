@@ -145,8 +145,7 @@ template<typename FieldT> class NXFieldWrapper:
             }else{
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
-
-                ArrayWriter::write(this->_object,o);
+                io_write<ArrayWriter>(this->_object,o);
 
             }
         }
@@ -272,10 +271,7 @@ template<typename FieldT> class NXFieldWrapper:
                 //    data.
 
                 //let us assume here that we only do broadcast
-                if(!PyArray_CheckExact(o.ptr()))
-                    ArrayBroadcastWriter::write(this->_object(selection),o);
-                else
-                    ArrayWriter::write(this->_object(selection),o);
+                io_write<ArrayWriter>(this->_object(selection),o);
             }
         }
 

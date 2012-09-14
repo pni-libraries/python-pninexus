@@ -18,36 +18,37 @@ using namespace pni::utils;
 
 This template provides a wrapper for attribute types.
 */
-template<typename AttrType> class NXAttributeWrapper{
+template<typename AttrType> class NXAttributeWrapper
+{
     private:
         AttrType _attribute; //!< instance of the attribute type to wrap
     public:
+        //====================public types=====================================
+        //! wrapper type
+        typedef NXAttributeWrapper<AttrType> wrapper_t;
         //===============constructors and destructor===========================
         //! default constructor
         NXAttributeWrapper():_attribute(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXAttributeWrapper(const NXAttributeWrapper<AttrType> &a):
+        NXAttributeWrapper(const wrapper_t &a):
             _attribute(a._attribute)
         {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXAttributeWrapper(NXAttributeWrapper<AttrType> &&a):
-            _attribute(std::move(a._attribute))
+        NXAttributeWrapper(wrapper_t &&a):_attribute(std::move(a._attribute))
         {}
 
         //---------------------------------------------------------------------
         //! copy constructor from implementation
-        explicit NXAttributeWrapper(const AttrType &a):
-            _attribute(a)
+        explicit NXAttributeWrapper(const AttrType &a): _attribute(a)
         {}
 
         //---------------------------------------------------------------------
         //! move constructor from implementation
-        explicit NXAttributeWrapper(AttrType &&a):
-            _attribute(std::move(a))
+        explicit NXAttributeWrapper(AttrType &&a): _attribute(std::move(a))
         {}
 
         //---------------------------------------------------------------------
@@ -56,8 +57,7 @@ template<typename AttrType> class NXAttributeWrapper{
 
         //=====================assignment operator=============================
         //! copy assignment
-        NXAttributeWrapper<AttrType> &operator=
-            (const NXAttributeWrapper<AttrType> &a)
+        wrapper_t &operator=(const wrapper_t &a)
         {
             if(this != &a) _attribute = a._attribute;
             return *this;
@@ -65,8 +65,7 @@ template<typename AttrType> class NXAttributeWrapper{
 
         //---------------------------------------------------------------------
         //! move assignment
-        NXAttributeWrapper<AttrType> &operator=
-            (NXAttributeWrapper<AttrType> &&a)
+        wrapper_t &operator= (wrapper_t &&a)
         {
             if(this != &a) _attribute = std::move(a._attribute);
             return *this;
@@ -105,10 +104,7 @@ template<typename AttrType> class NXAttributeWrapper{
 
         //---------------------------------------------------------------------
         //! close the attribute
-        void close()
-        {
-            this->_attribute.close();
-        }
+        void close() { this->_attribute.close(); }
 
         //----------------------------------------------------------------------
         /*! \brief query validity status
@@ -117,10 +113,7 @@ template<typename AttrType> class NXAttributeWrapper{
         to this value via a read-only property names valid. 
         \return true of attribute is valid, false otherwise
         */
-        bool is_valid() const
-        {
-            return this->_attribute.is_valid();
-        }
+        bool is_valid() const { return this->_attribute.is_valid(); }
 
         //----------------------------------------------------------------------
         /*! \brief get attribute name
@@ -129,10 +122,7 @@ template<typename AttrType> class NXAttributeWrapper{
         read-only property "name". 
         \return attribute name
         */
-        String name() const
-        {
-            return this->_attribute.name();
-        }
+        String name() const { return this->_attribute.name(); }
 
         //=========================read methods================================
         /*! \brief read attribute data
@@ -187,16 +177,13 @@ template<typename AttrType> class NXAttributeWrapper{
                 //the attribute is an array attribute
                 if(PyArray_CheckExact(o.ptr()))
                     //write array to array
-                    ArrayWriter::write(this->_attribute,o);
-                else
-                    //write a single attribute to all array elements
-                    ArrayBroadcastWriter::write(this->_attribute,o);
+                    io_write<ArrayWriter>(this->_attribute,o);
             }
-
         }
 
 };
 
+//=============================================================================
 static const char __attribute_shape_docstr[] =
 "Read only property providing the shape of the attribute as tuple.\n"
 "The length of the tuple corresponds to the number of dimensions of the\n"
@@ -224,16 +211,18 @@ static const char __attribute_close_docstr[] =
 
 Template function to create a new wrapper for the NXAttribute type AType.
 */
-template<typename AType> void wrap_nxattribute()
+template<typename ATYPE> void wrap_nxattribute()
 {
-    class_<NXAttributeWrapper<AType> >("NXAttribute")
-        .add_property("shape",&NXAttributeWrapper<AType>::shape,__attribute_shape_docstr)
-        .add_property("dtype",&NXAttributeWrapper<AType>::type_id,__attribute_dtype_docstr)
-        .add_property("valid",&NXAttributeWrapper<AType>::is_valid,__attribute_valid_docstr)
-        .add_property("name",&NXAttributeWrapper<AType>::name,__attribute_name_docstr)
-        .add_property("value",&NXAttributeWrapper<AType>::read,
-                              &NXAttributeWrapper<AType>::write,__attribute_value_docstr)
-        .def("close",&NXAttributeWrapper<AType>::close,__attribute_close_docstr)
+    typedef NXAttributeWrapper<ATYPE> wrapper_t;
+
+    class_<wrapper_t>("NXAttribute")
+        .add_property("shape",&wrapper_t::shape,__attribute_shape_docstr)
+        .add_property("dtype",&wrapper_t::type_id,__attribute_dtype_docstr)
+        .add_property("valid",&wrapper_t::is_valid,__attribute_valid_docstr)
+        .add_property("name",&wrapper_t::name,__attribute_name_docstr)
+        .add_property("value",&wrapper_t::read,
+                              &wrapper_t::write,__attribute_value_docstr)
+        .def("close",&wrapper_t::close,__attribute_close_docstr)
         ;
 
 }
