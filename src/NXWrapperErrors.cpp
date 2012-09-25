@@ -65,7 +65,7 @@ void NXGroupError_translator(pni::nx::NXGroupError const &error)
 //-----------------------------------------------------------------------------
 void NXAttributeError_translator(pni::nx::NXAttributeError const &error)
 {
-    assert(PyNXAttributeError != nullptr);
+    assert(PyNXAttributeErrorPtr != nullptr);
     object exception(error);
     PyErr_SetObject(PyNXAttributeErrorPtr,exception.ptr());
 }

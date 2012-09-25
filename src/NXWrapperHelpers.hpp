@@ -27,6 +27,7 @@
 #define __NXWRAPPERHELPERS_HPP__
 
 extern "C"{
+#include<Python.h>
 #include<numpy/arrayobject.h>
 }
 

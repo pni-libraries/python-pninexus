@@ -1,9 +1,15 @@
 #build the unit test
+import os
+import sysconfig
 
 env = Environment()
+env["ENV"]["PKG_CONFIG_PATH"] = os.environ["PKG_CONFIG_PATH"]
+env.ParseConfig('pkg-config --libs --cflags pninx')
+(config_h_path,config_h_file) = os.path.split(sysconfig.get_config_h_filename())
+env.AppendUnique(CPPPATH=[config_h_path,'../src'])
+env.AppendUnique(CPPFLAGS=['-std=c++0x','-fPIC','-pthread','-fno-strict-aliasing','-fwrapv'])
 
 conf = Configure(env)
-
 
 #do some configuration
 if not conf.CheckCXXHeader("cppunit/extensions/HelperMacros.h") or \
@@ -12,14 +18,37 @@ if not conf.CheckCXXHeader("cppunit/extensions/HelperMacros.h") or \
     not conf.CheckCXXHeader("cppunit/TestRunner.h") or \
     not conf.CheckCXXHeader("cppunit/TextTestProgressListener.h") or \
     not conf.CheckCXXHeader("cppunit/ui/text/TextTestRunner.h") or  \
-    not conf.CheckCXXHeader("cppunit/extensinos/TestFactoryRegistry.h"):
+    not conf.CheckCXXHeader("cppunit/extensions/TestFactoryRegistry.h"):
     print "CPPUnit headers not installed ..."
+    Exit(1)
+
+
+if not conf.CheckCHeader(config_h_file):
+    print "Cannot find python configuration header!"
+    Exit(1)
+
+if not conf.CheckCXXHeader('boost/python.hpp'):
+    print "Python BOOST headers not installed ..."
     Exit(1)
 
 if not conf.CheckLib('cppunit',language="c++"):
     print "CPPUnit library not instlaled ..."
     Exit(1)
 
-env = conf.Finish()
+if not conf.CheckLib("python2.7"):
+    print "Python library not installed ..."
+    Exit(1)
 
-env.Program("pypninxtest",source='pypninxtest.cpp')
+if not conf.CheckLib("boost_python",language='c++'):
+    print "BOOST Python library not installed ..."
+    Exit(1)
+
+env = conf.Finish()
+env.Append(CPPPATH=["src","../src"])
+
+sources = []
+sources.extend(Glob("src/*.cpp"))
+sources.extend(Glob("../src/NX*.cpp"))
+sources.append('pypninxtest.cpp')
+
+env.Program("pypninxtest",source=sources)
