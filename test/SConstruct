@@ -1,0 +1,25 @@
+#build the unit test
+
+env = Environment()
+
+conf = Configure(env)
+
+
+#do some configuration
+if not conf.CheckCXXHeader("cppunit/extensions/HelperMacros.h") or \
+    not conf.CheckCXXHeader("cppunit/TestCaller.h") or \
+    not conf.CheckCXXHeader("cppunit/TestResult.h") or \
+    not conf.CheckCXXHeader("cppunit/TestRunner.h") or \
+    not conf.CheckCXXHeader("cppunit/TextTestProgressListener.h") or \
+    not conf.CheckCXXHeader("cppunit/ui/text/TextTestRunner.h") or  \
+    not conf.CheckCXXHeader("cppunit/extensinos/TestFactoryRegistry.h"):
+    print "CPPUnit headers not installed ..."
+    Exit(1)
+
+if not conf.CheckLib('cppunit',language="c++"):
+    print "CPPUnit library not instlaled ..."
+    Exit(1)
+
+env = conf.Finish()
+
+env.Program("pypninxtest",source='pypninxtest.cpp')
