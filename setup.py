@@ -42,7 +42,10 @@ def pkgconfig(debug=False,*packages, **kw):
             kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
 
     kw["libraries"].append("boost_python")
-    kw["extra_compile_args"].append('-std=c++0x')
+    try:
+        kw["extra_compile_args"].append('-std=c++0x')
+    except:
+        kw["extra_compile_args"] = ["-std=c++0x"]
 
     if debug:
         kw["extra_compile_args"].append('-O0')

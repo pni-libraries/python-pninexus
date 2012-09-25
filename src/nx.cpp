@@ -33,44 +33,6 @@ using namespace pni::nx::h5;
 #include "AttributeIterator.hpp"
 #include "NXWrapperErrors.hpp"
 
-//! \cond NO_API_DOC
-template<> class NXObjectMap<pni::nx::h5::NXObject>
-{
-    public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
-};
-
-template<> class NXObjectMap<pni::nx::h5::NXGroup>
-{
-    public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
-};
-
-template<> class NXObjectMap<pni::nx::h5::NXField>
-{
-    public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
-};
-
-template<> class NXObjectMap<pni::nx::h5::NXFile>
-{
-    public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
-};
-
-//! \endcond
 
 
 //=================implementation of the python extension======================

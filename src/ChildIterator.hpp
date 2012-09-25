@@ -133,11 +133,11 @@ template<typename IterableT,typename ItemT> class ChildIterator
 
         Set the iterator to the next element in the container.
         */
-        void increment(){
+        void increment()
+        {
             _index++;
-            if(_index < _nlinks){
+            if(_index < _nlinks)
                 _item = _parent->open(_index);
-            }
         }
 
         //---------------------------------------------------------------------

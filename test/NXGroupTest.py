@@ -9,13 +9,16 @@ from pni.nx.h5 import NXGroupError
 from pni.nx.h5 import NXAttributeError
 from pni.nx.h5 import ShapeMissmatchError
 
+from AttributesTest import AttributeTest
+
 def write_attribute(a,v):
     a.value = v
     return a
 
-
 #implementing test fixture
 class NXGroupTest(unittest.TestCase):
+    attr_tester = AttributeTest()
+
     def setUp(self):
         self.gf = create_file("NXGroupTest.h5",overwrite=True)
 
@@ -37,47 +40,13 @@ class NXGroupTest(unittest.TestCase):
         self.assertRaises(NXGroupError,self.gf.open,"/data")
 
     def test_simple_attributes(self):
-        #try to open an attribute that does not exist
-        self.assertRaises(NXAttributeError,self.gf.attr,"bla")
-
-        g = self.gf.create_group("metdata")
-        a = g.attr("date","string")
-        a.value = "12.4.1029"
-        self.assertTrue(a.value == "12.4.1029")
-        self.assertTrue(a.dtype == "string")
-        self.assertTrue(a.shape == ())
-
-        a = g.attr("counter","uint8")
-        a.value = 10
-        self.assertTrue(a.value == 10)
-        self.assertTrue(a.dtype == "uint8")
-
-        #try to write a numpy array to a scalar attribute
-        d = numpy.zeros((10,10),"uint8")
-        self.assertRaises(ShapeMissmatchError,write_attribute,a,d)
-
-        #create an attribute of unknow type
-        self.assertRaises(TypeError,g.attr,"hello","bla")
-
+        g = self.gf.create_group("dgroup")
+        self.attr_tester.test_scalar_attribute(self,g)
 
     def test_array_attributes(self):
-        a1 = self.gf.attr("att1","float32",shape=[1,2,3])
-        a2 = self.gf.attr("att2","int32",shape=(4,5))
-       
-        #perform broadcast write operations
-        a2.value = 15
-        #check for proper return type
-        self.assertTrue(isinstance(a2.value,numpy.ndarray))
-        self.assertTrue(all(v == 15 for v in a2.value.flat))
+        g = self.gf.create_group("dgroup")
+        self.attr_tester.test_array_attribute(self,g)
 
-        d = numpy.zeros((10,10))
-        self.assertRaises(ShapeMissmatchError,write_attribute,a2,d)
-
-
-
-
-        
-
-        
-
+    def test_group_iteration(self):
+        pass
 

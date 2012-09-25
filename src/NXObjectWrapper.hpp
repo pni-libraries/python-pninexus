@@ -79,8 +79,9 @@ template<typename OType> class NXObjectWrapper
         //! destructor
         virtual ~NXObjectWrapper()
         {
+            std::cout<<"Destory object wrapper!"<<std::endl;
             //close the object on wrapper destruction
-            this->close();
+            this->_object.close();
         }
 
         //==================assignment operators===============================
@@ -148,7 +149,8 @@ template<typename OType> class NXObjectWrapper
         //! close the object
         void close()
         {
-            _object.close();
+            std::cout<<"Close wrapper object!"<<std::endl;
+            this->_object.close();
         }
 
         //---------------------------------------------------------------------

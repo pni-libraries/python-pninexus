@@ -121,10 +121,21 @@ This template wraps the static create_file method of FType.
 \param s split size (feature not implemented yet)
 \return new instance of NXFileWrapper
 */
-template<typename FType> NXFileWrapper<FType> create_file(const String &n,
+template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const String &n,
         bool ov=true,size_t s=0)
 {
-    NXFileWrapper<FType> file(FType::create_file(n,ov,s));
+    NXFileWrapper<FTYPE> file;
+    try
+    {
+        file = NXFileWrapper<FTYPE>(FTYPE::create_file(n,ov,s));
+    }
+    catch(pni::nx::NXFileError &error)
+    {
+        std::cerr<<error<<std::endl;
+        error.append(EXCEPTION_RECORD);
+        throw error;
+    }
+
     return file;
 }
 

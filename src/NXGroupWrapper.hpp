@@ -27,6 +27,7 @@
 #define __NXGROUPWRAPPER_HPP__
 
 #include <pni/nx/NXObjectType.hpp>
+#include <pni/utils/service.hpp>
 
 #include "NXWrapperHelpers.hpp"
 #include "NXObjectMap.hpp"
@@ -179,32 +180,25 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             typedef typename NXObjectMap<GType>::ObjectType ObjectType;
             typedef typename NXObjectMap<GType>::GroupType GroupType;
             typedef typename NXObjectMap<GType>::FieldType FieldType;
+            typedef NXFieldWrapper<FieldType> field_wrapper;
+            typedef NXGroupWrapper<GroupType> group_wrapper;
            
             //open the NXObject 
             ObjectType nxobject = this->_object.open(n);
 
+            object o;
+
+            //we use here copy construction thus we do not have to care
+            //of the original nxobject goes out of scope and gets destroyed.
             if(nxobject.object_type() == pni::nx::NXObjectType::NXFIELD)
-            {
-                NXFieldWrapper<FieldType> *ptr = new
-                    NXFieldWrapper<FieldType>(FieldType(nxobject));
-                return object(ptr);
-            }
+                o = object(new field_wrapper(FieldType(nxobject)));
 
             if(nxobject.object_type() == pni::nx::NXObjectType::NXGROUP)
-            {
-                //we use here copy construction thus we do not have to care
-                //of the original nxobject goes out of scope and gets destroyed.
-                NXGroupWrapper<GroupType> *ptr = new
-                    NXGroupWrapper<GroupType>(GroupType(nxobject));
-                return object(ptr);
-            }
+                o = object(new group_wrapper(GroupType(nxobject)));
 
-            //should raise an exception here
-            throw TypeError(EXCEPTION_RECORD,
-                    "Cannot determine return type!");
-
+            nxobject.close();
             //this here is to avoid compiler warnings
-            return object();
+            return o;
 
         }
 
@@ -346,25 +340,26 @@ static const char __group_childs_docstr[] =
 Template function to create a new wrapper for an NXGroup type GType.
 \param class_name name for the Python class
 */
-template<typename GType> void wrap_nxgroup(const String &class_name)
+template<typename GTYPE> void wrap_nxgroup(const String &class_name)
 {
-    typedef class_<NXGroupWrapper<GType>,bases<NXObjectWrapper<GType> > > group_class;
+    typedef NXGroupWrapper<GTYPE> group_wrapper;
+    typedef class_<group_wrapper,bases<NXObjectWrapper<GTYPE> > > group_class;
 
     
     group_class(class_name.c_str())
         .def(init<>())
-        .def("open",&NXGroupWrapper<GType>::open_by_name,__group_open_docstr)
-        .def("__getitem__",&NXGroupWrapper<GType>::open)
-        .def("__getitem__",&NXGroupWrapper<GType>::open_by_name)
-        .def("create_group",&NXGroupWrapper<GType>::create_group,
+        .def("open",&group_wrapper::open_by_name,__group_open_docstr)
+        .def("__getitem__",&group_wrapper::open)
+        .def("__getitem__",&group_wrapper::open_by_name)
+        .def("create_group",&group_wrapper::create_group,
                 ("n",arg("nxclass")=String()),__group_create_group_docstr)
-        .def("create_field",&NXGroupWrapper<GType>::create_field_nofilter,
+        .def("create_field",&group_wrapper::create_field_nofilter,
                 ("name","type_code",arg("shape")=list(),arg("chunk")=list(),
                  arg("filter")=object()),__group_create_field_docstr)
-        .def("exists",&NXGroupWrapper<GType>::exists,__group_exists_docstr)
-        .def("link",&NXGroupWrapper<GType>::link,__group_link_docstr)
-        .add_property("nchilds",&NXGroupWrapper<GType>::nchilds,__group_nchilds_docstr)   
-        .add_property("childs",&NXGroupWrapper<GType>::get_child_iterator,__group_childs_docstr)
+        .def("exists",&group_wrapper::exists,__group_exists_docstr)
+        .def("link",&group_wrapper::link,__group_link_docstr)
+        .add_property("nchilds",&group_wrapper::nchilds,__group_nchilds_docstr)   
+        .add_property("childs",&group_wrapper::get_child_iterator,__group_childs_docstr)
         ;
 }
 

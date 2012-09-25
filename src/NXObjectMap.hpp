@@ -1,6 +1,8 @@
 #ifndef __NXOBJECTMAP_HPP__
 #define __NXOBJECTMAP_HPP__
 
+#include <pni/nx/NX.hpp>
+
 /*! 
 \ingroup utils  
 \brief object map for wrapped types
@@ -16,8 +18,46 @@ template<typename GType> class NXObjectMap{
         typedef void ObjectType;    //!< wrapped object type
         typedef void GroupType;     //!< wrapped group type
         typedef void FieldType;     //!< wrapped field type
-        typedef void SelectionType; //!< wrapped selection type
         typedef void AttributeType; //!< wrapped attribute type
 };
 
+
+//! \cond NO_API_DOC
+template<> class NXObjectMap<pni::nx::h5::NXObject>
+{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
+
+template<> class NXObjectMap<pni::nx::h5::NXGroup>
+{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
+
+template<> class NXObjectMap<pni::nx::h5::NXField>
+{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
+
+template<> class NXObjectMap<pni::nx::h5::NXFile>
+{
+    public:
+        typedef pni::nx::h5::NXObject ObjectType;
+        typedef pni::nx::h5::NXGroup GroupType;
+        typedef pni::nx::h5::NXField FieldType;
+        typedef pni::nx::h5::NXAttribute AttributeType;
+};
+
+//! \endcond
 #endif
