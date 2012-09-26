@@ -7,7 +7,7 @@ env["ENV"]["PKG_CONFIG_PATH"] = os.environ["PKG_CONFIG_PATH"]
 env.ParseConfig('pkg-config --libs --cflags pninx')
 (config_h_path,config_h_file) = os.path.split(sysconfig.get_config_h_filename())
 env.AppendUnique(CPPPATH=[config_h_path,'../src'])
-env.AppendUnique(CPPFLAGS=['-std=c++0x','-fPIC','-pthread','-fno-strict-aliasing','-fwrapv'])
+env.AppendUnique(CPPFLAGS=['-std=c++0x','-fPIC','-pthread','-fno-strict-aliasing','-fwrapv','-O0','-g'])
 
 conf = Configure(env)
 

@@ -31,8 +31,17 @@
 #include<cppunit/ui/text/TextTestRunner.h>
 #include<cppunit/extensions/TestFactoryRegistry.h>
 
+#include<boost/python.hpp>
+extern "C"{
+#include<Python.h>
+}
+
 
 int main(int argc,char **argv){
+
+    //need to start python - this is important as all other python functions
+    //wont work if Python is not loaded.
+    Py_Initialize();
 
     //setup the test runner
     CppUnit::TextTestRunner runner;
