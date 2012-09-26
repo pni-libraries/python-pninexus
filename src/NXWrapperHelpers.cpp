@@ -51,6 +51,8 @@ String typeid2str(const TypeID &tid)
     if(tid == TypeID::COMPLEX64) return "complex128";
     if(tid == TypeID::COMPLEX128) return "complex256";
 
+    if(tid == TypeID::BOOL) return "bool";
+
     return "none";
 }
 

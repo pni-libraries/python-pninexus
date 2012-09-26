@@ -29,6 +29,7 @@ class UtilityFunctionTest:public CppUnit::TestFixture
     CPPUNIT_TEST(test_container2list<CREATE_CTYPE(std::vector)>);
     CPPUNIT_TEST(test_container2list<CREATE_CTYPE(std::list)>);
     CPPUNIT_TEST(test_container2list<CREATE_CTYPE(DBuffer)>);
+    CPPUNIT_TEST(test_typeid2str);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void setUp();
@@ -36,6 +37,7 @@ public:
 
     template<typename CTYPE> void test_list2container();
     template<typename CTYPE> void test_container2list();
+    void test_typeid2str();
 
 };
 
