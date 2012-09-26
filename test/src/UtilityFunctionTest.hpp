@@ -4,6 +4,9 @@
 
 #include <boost/current_function.hpp>
 
+#include <list>
+#include <vector>
+#include <pni/utils/DBuffer.hpp>
 #include <iostream>
 #include <sstream>
 #include <pni/nx/NX.hpp>
@@ -21,7 +24,11 @@ class UtilityFunctionTest:public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(UtilityFunctionTest);
 	CPPUNIT_TEST(test_list2container<CREATE_CTYPE(std::vector)>);
+    CPPUNIT_TEST(test_list2container<CREATE_CTYPE(std::list)>);
+    CPPUNIT_TEST(test_list2container<CREATE_CTYPE(DBuffer)>);
     CPPUNIT_TEST(test_container2list<CREATE_CTYPE(std::vector)>);
+    CPPUNIT_TEST(test_container2list<CREATE_CTYPE(std::list)>);
+    CPPUNIT_TEST(test_container2list<CREATE_CTYPE(DBuffer)>);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void setUp();
@@ -46,7 +53,13 @@ template<typename CTYPE> void UtilityFunctionTest::test_list2container()
         l.append(String(ss.str()));
     }
 
+    //convert the list to the C++ container
     auto c = List2Container<CTYPE>(l);
+
+    //check container content
+    size_t index=0;
+    for(auto v: c) 
+        CPPUNIT_ASSERT(v==String(extract<String>(l[index++])));
 
     
 }
@@ -55,5 +68,21 @@ template<typename CTYPE> void UtilityFunctionTest::test_list2container()
 template<typename CTYPE> void UtilityFunctionTest::test_container2list()
 {
     std::cout<<BOOST_CURRENT_FUNCTION<<std::endl;
+    
+    //create container
+    CTYPE c(10);
+    std::stringstream ss;
+    size_t index=0;
+    for(typename CTYPE::value_type &v: c) 
+    {
+        ss<<index++;
+        v = ss.str();
+    }
+
+    list l=Container2List(c);
+    index=0;
+    for(auto v: c)
+        CPPUNIT_ASSERT(v==String(extract<String>(l[index++])));
+     
 }
 #endif
