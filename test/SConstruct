@@ -6,7 +6,7 @@ env = Environment()
 env["ENV"]["PKG_CONFIG_PATH"] = os.environ["PKG_CONFIG_PATH"]
 env.ParseConfig('pkg-config --libs --cflags pninx')
 (config_h_path,config_h_file) = os.path.split(sysconfig.get_config_h_filename())
-env.AppendUnique(CPPPATH=[config_h_path,'../src'])
+env.AppendUnique(CPPPATH=[config_h_path,'../src','testutils/src'])
 env.AppendUnique(CPPFLAGS=['-std=c++0x','-fPIC','-pthread','-fno-strict-aliasing','-fwrapv','-O0','-g'])
 
 conf = Configure(env)
@@ -22,6 +22,11 @@ if not conf.CheckCXXHeader("cppunit/extensions/HelperMacros.h") or \
     print "CPPUnit headers not installed ..."
     Exit(1)
 
+if not conf.CheckCXXHeader("RandomNumberGenerator.hpp") or \
+    not conf.CheckCXXHeader("EqualityCheck.hpp"):
+    print "testutils submodule not present in the source tree!"
+    Exit(1)
+
 
 if not conf.CheckCHeader(config_h_file):
     print "Cannot find python configuration header!"
@@ -32,7 +37,7 @@ if not conf.CheckCXXHeader('boost/python.hpp'):
     Exit(1)
 
 if not conf.CheckLib('cppunit',language="c++"):
-    print "CPPUnit library not instlaled ..."
+    print "CPPUnit library not installed ..."
     Exit(1)
 
 if not conf.CheckLib("python2.7"):

@@ -26,12 +26,20 @@
 #ifndef __NXOBJECTWRAPPER_HPP__
 #define __NXOBJECTWRAPPER_HPP__
 
+extern "C"{
+#include<Python.h>
+}
+
+#include <boost/python.hpp>
 #include <pni/utils/Types.hpp>
 
 #include "NXObjectMap.hpp"
 #include "NXAttributeWrapper.hpp"
 #include "AttributeIterator.hpp"
 #include "AttributeCreator.hpp"
+
+using namespace pni::utils;
+using namespace boost::python;
 
 
 /*! 

@@ -122,6 +122,7 @@ AttributeCreator<ATTRT>::create(const OTYPE &o,const String &type_code) const
     if(type_code == "complex256") return this->create<Complex128>(o);
 
     if(type_code == "string") return this->create<String>(o);
+    if(type_code == "bool") return this->create<Bool>(o);
 
     //raise an exception here
     throw TypeError(EXCEPTION_RECORD,

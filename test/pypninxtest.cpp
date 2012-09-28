@@ -19,6 +19,12 @@
  * along with libpninxpython.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************/
 
+extern "C"
+{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
 #include<iostream>
 #include<string>
 #include<vector>
@@ -32,17 +38,16 @@
 #include<cppunit/extensions/TestFactoryRegistry.h>
 
 #include<boost/python.hpp>
-extern "C"{
-#include<Python.h>
-}
 
 
-int main(int argc,char **argv){
+int main(int argc,char **argv)
+{
 
     //need to start python - this is important as all other python functions
     //wont work if Python is not loaded.
     Py_Initialize();
 
+    _import_array();
     //setup the test runner
     CppUnit::TextTestRunner runner;
     CppUnit::TextTestProgressListener progress;

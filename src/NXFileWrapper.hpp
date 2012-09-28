@@ -52,11 +52,11 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
         NXFileWrapper(NXFileWrapper<FType> &&f):
             NXGroupWrapper<FType>(std::move(f)){}
 
-        //-----------------------------------------------------------------------
+        //----------------------------------------------------------------------
         //! move conversion constructor from wrapped object
         explicit NXFileWrapper(FType &&f):NXGroupWrapper<FType>(std::move(f)){}
 
-        //-----------------------------------------------------------------------
+        //----------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
         explicit NXFileWrapper(const FType &f):NXGroupWrapper<FType>(f){}
 
@@ -72,7 +72,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
-        //-----------------------------------------------------------------------
+        //----------------------------------------------------------------------
         //! copy conversion assignment from wrapped object
         NXFileWrapper<FType> &operator=(const FType &f)
         {
@@ -80,7 +80,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
-        //------------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! copy assignment
         NXFileWrapper<FType> &operator=(const NXFileWrapper<FType> &f)
         {
@@ -88,7 +88,7 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
-        //-------------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! move assignment
         NXFileWrapper<FType> &operator=(NXFileWrapper<FType> &&f)
         {
@@ -96,18 +96,13 @@ template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
             return *this;
         }
 
-        //-------------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! check read only status
-        int is_readonly() const
-        {
-            return this->_object.is_readonly();
-        }
+        int is_readonly() const { return this->_object.is_readonly(); }
 
+        //---------------------------------------------------------------------
         //! flush data to disk
-        void flush() const  
-        {
-            this->_object.flush();
-        }
+        void flush() const  { this->_object.flush(); }
 };
 
 //-----------------------------------------------------------------------------

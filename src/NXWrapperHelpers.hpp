@@ -43,6 +43,14 @@ extern "C"{
 using namespace pni::utils;
 using namespace boost::python;
 using namespace pni::nx::h5;
+
+#define CREATE_PNI2NUMPY_TYPE(type,nptype)\
+    template<> class PNI2NumpyType<type>\
+    {\
+        public:\
+               static const int typenum = nptype;\
+    };
+
 /*! 
 \ingroup utils  
 \brief type mape for numpy types
@@ -52,97 +60,22 @@ NumPy type numbers.
 */
 template<typename T> class PNI2NumpyType;
 
-//-----------------------------------------------------------------------------
-//! \cond NO_API_DOC
-template<> class PNI2NumpyType<UInt8>{
-    public:
-        static const int typenum = NPY_UBYTE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Int8>{
-    public:
-        static const int typenum = NPY_BYTE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<UInt16>{
-    public:
-        static const int typenum = NPY_USHORT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Int16>{
-    public:
-        static const int typenum = NPY_SHORT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<UInt32>{
-    public:
-        static const int typenum = NPY_UINT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Int32>{
-    public:
-        static const int typenum = NPY_INT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<UInt64>{
-    public:
-        static const int typenum = NPY_ULONG;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Int64>{
-    public:
-        static const int typenum = NPY_LONG;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Float32>{
-    public:
-        static const int typenum = NPY_FLOAT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Float64>{
-    public:
-        static const int typenum = NPY_DOUBLE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Float128>{
-    public:
-        static const int typenum = NPY_LONGDOUBLE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Complex32>{
-    public:
-        static const int typenum = NPY_CFLOAT;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Complex64>{
-    public:
-        static const int typenum = NPY_CDOUBLE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<Complex128>{
-    public:
-        static const int typenum = NPY_CLONGDOUBLE;
-};
-
-//-----------------------------------------------------------------------------
-template<> class PNI2NumpyType<String>{
-    public:
-        static const int typenum = NPY_STRING;
-};
-//! \endcond
+CREATE_PNI2NUMPY_TYPE(UInt8,NPY_UBYTE);
+CREATE_PNI2NUMPY_TYPE(Int8,NPY_BYTE);
+CREATE_PNI2NUMPY_TYPE(UInt16,NPY_USHORT);
+CREATE_PNI2NUMPY_TYPE(Int16,NPY_SHORT);
+CREATE_PNI2NUMPY_TYPE(UInt32,NPY_UINT);
+CREATE_PNI2NUMPY_TYPE(Int32,NPY_INT);
+CREATE_PNI2NUMPY_TYPE(UInt64,NPY_ULONG);
+CREATE_PNI2NUMPY_TYPE(Int64,NPY_LONG);
+CREATE_PNI2NUMPY_TYPE(Float32,NPY_FLOAT);
+CREATE_PNI2NUMPY_TYPE(Float64,NPY_DOUBLE);
+CREATE_PNI2NUMPY_TYPE(Float128,NPY_LONGDOUBLE);
+CREATE_PNI2NUMPY_TYPE(Complex32,NPY_CFLOAT);
+CREATE_PNI2NUMPY_TYPE(Complex64,NPY_CDOUBLE);
+CREATE_PNI2NUMPY_TYPE(Complex128,NPY_CLONGDOUBLE);
+CREATE_PNI2NUMPY_TYPE(String,NPY_STRING);
+CREATE_PNI2NUMPY_TYPE(Bool,NPY_BOOL);
 
 //=============================================================================
 /*! 

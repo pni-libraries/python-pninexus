@@ -121,10 +121,11 @@ class ScalarWriter
         {
             //check if the data object is a numpy array and throw an exception
             //in this case
+            /*
             if(PyArray_CheckExact(o.ptr()))
                 throw ShapeMissmatchError(EXCEPTION_RECORD,
                         "Object is not a scalar!");
-           
+            */ 
             //extract the value to write - this will throw an exception if 
             //the operation fails.
             T value = extract<T>(o);
@@ -191,6 +192,8 @@ class ArrayWriter
                     w.write(Numpy2RefArray<Complex64>(o)); break;
                 case NPY_CLONGDOUBLE:
                     w.write(Numpy2RefArray<Complex128>(o));break;
+                case NPY_BOOL:
+                    w.write(Numpy2RefArray<Bool>(o)); break;
                 default:
                     throw TypeError(EXCEPTION_RECORD,
                     "Type of numpy array cannot be handled!");
@@ -247,6 +250,8 @@ template<typename IOOP,typename OType> object io_read(const OType &readable)
 
     if(readable.type_id() == TypeID::STRING) 
         return IOOP::template read<String>(readable);
+    if(readable.type_id() == TypeID::BOOL)
+        return IOOP::template read<Bool>(readable);
 
     throw TypeError(EXCEPTION_RECORD,"Cannot handle field datatype!");
    
@@ -341,6 +346,11 @@ void io_write(const OTYPE &writeable,const object &obj)
     if(writeable.type_id() == TypeID::STRING)
     {    
         IOOP::template write<String>(writeable,obj); return;
+    }
+
+    if(writeable.type_id() == TypeID::BOOL)
+    {
+        IOOP::template write<Bool>(writeable,obj); return;
     }
 
     //raise an exception here if the datatype cannot be managed
