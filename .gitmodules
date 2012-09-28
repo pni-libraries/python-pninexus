@@ -1,0 +1,3 @@
+[submodule "test/testutils"]
+	path = test/testutils
+	url = ssh://localhost/home/eugen/GIT/testutils.git
