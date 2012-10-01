@@ -42,4 +42,41 @@ void UtilityFunctionTest::test_typeid2str()
 
 }
 
+//-----------------------------------------------------------------------------
+void UtilityFunctionTest::test_nested_list_rank()
+{
+    std::cout<<BOOST_CURRENT_FUNCTION<<std::endl;
+
+    //create a nested list
+    list l;
+    CPPUNIT_ASSERT(nested_list_rank(l) == 1);
+    list l2;
+    l.append(l2);
+    CPPUNIT_ASSERT(nested_list_rank(l) == 2);
+
+    list l3;
+    extract<list>(l[0])().append(l3);
+    CPPUNIT_ASSERT(nested_list_rank(l) == 3);
+}
+
+//-----------------------------------------------------------------------------
+void UtilityFunctionTest::test_nested_list_shape()
+{
+    std::cout<<BOOST_CURRENT_FUNCTION<<std::endl;
+
+    list l;
+    list l1;
+    list l3;
+    l1.append(l3);
+    l.append(l1);
+
+    shape_t shape;
+    CPPUNIT_ASSERT_NO_THROW(shape = nested_list_shape<shape_t>(l));
+    shape_t tshape({1,1,0});
+    CPPUNIT_ASSERT(shape.size() == tshape.size());
+    CPPUNIT_ASSERT(std::equal(shape.begin(),shape.end(),tshape.begin()));
+
+    
+}
+
 

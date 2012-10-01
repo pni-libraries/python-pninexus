@@ -179,7 +179,7 @@ template<typename T> DArray<T,RBuffer<T> > Numpy2RefArray(const object &o)
 This template function creates a new numpy array from shape and type
 information. This should be a rather simple thing.
 */
-template<typename T,typename CTYPE> PyObject *CreateNumpyArray(const CTYPE &s)
+template<typename T,typename CTYPE> object CreateNumpyArray(const CTYPE &s)
 {
     PyObject *ptr = nullptr;
     //create the buffer for with the shape information
@@ -189,7 +189,41 @@ template<typename T,typename CTYPE> PyObject *CreateNumpyArray(const CTYPE &s)
     ptr = PyArray_SimpleNew(s.size(),const_cast<npy_intp*>(dims.ptr()),
                             PNI2NumpyType<T>::typenum);
 
-    return ptr;
+    handle<> h(ptr);
+
+    return object(h);
+}
+
+//-----------------------------------------------------------------------------
+/*!
+\ingroup utils
+\brief get array information from nested lists
+
+Though arrays of data are usually represented by numpy-arrays in Python the fact
+that libpninx supports arrays of variable length strings causes some problems. 
+Numpy does not support arrays of variable length strings. Thus we use nested
+lists to represent such structures. 
+This function determines the rank (the number of dimensions) for an array that
+should represent the data stored in the list. 
+\param o object with the nested list
+\return rank of the array
+*/
+size_t  nested_list_rank(const object &o);
+
+//-----------------------------------------------------------------------------
+template<typename CTYPE> CTYPE nested_list_shape(const object &o)
+{
+    size_t rank = nested_list_rank(o);
+    CTYPE c(rank);
+    object lo(o);
+    for(auto iter=c.begin();iter!=c.end()-1;++iter)
+    {
+        list l = extract<list>(lo)();
+        *iter = len(l);
+        lo = l[0];
+    }
+
+    return c;
 }
 
 //-----------------------------------------------------------------------------

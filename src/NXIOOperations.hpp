@@ -84,15 +84,13 @@ class ArrayReader
             object read(const OTYPE &readable)
         {
             //create the numpy array which will store the data
-            PyObject *ptr = CreateNumpyArray<T>(readable.template shape<shape_t>());
-            handle<> h(ptr);
-            object o(h);
+            object narray = CreateNumpyArray<T>(readable.template shape<shape_t>());
 
             //create a reference array to the numpy arrays buffer 
-            DArray<T,RBuffer<T> > rarray = Numpy2RefArray<T>(o);
+            DArray<T,RBuffer<T> > rarray = Numpy2RefArray<T>(narray);
             //read data to the numpy buffer
             readable.read(rarray);
-            return o;
+            return narray;
         }
 };
 

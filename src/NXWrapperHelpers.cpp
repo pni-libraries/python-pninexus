@@ -162,3 +162,24 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
     return selection;
 
 }
+
+//-----------------------------------------------------------------------------
+size_t nested_list_rank(const object &o)
+{
+    size_t rank = 0;
+    extract<list> l(o);
+
+    //check if conversion was successful
+    if(l.check())
+    {
+        //if the list has an element
+        if(len(l))
+            rank = 1 + nested_list_rank(l()[0]);
+        else 
+            rank = 1; //list has no element
+    }
+    else
+        rank = 0; //object is not a list
+
+    return rank;
+}

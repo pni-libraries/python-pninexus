@@ -80,6 +80,52 @@ class NXObjectWrapperTest
             std::cout<<BOOST_CURRENT_FUNCTION<<std::endl;
             _import_array();
 
+            typedef typename NXObjectWrapper<OTYPE>::attribute_type attr_t;
+            //generate the type code for the attribute
+            TypeID tid = TypeIDMap<T>::type_id;
+            String type_code = typeid2str(tid);
+
+            //create attribute name from type a name for the attribute
+
+            String attr_name = String("attr_") + type_code + String("_")+
+                               demangle_cpp_name(typeid(T).name());
+                               
+            //create the attribute of type NXAttributeWrapper
+            attr_t attr;
+            CPPUNIT_ASSERT_NO_THROW(attr =
+                    o.create_attribute(attr_name,type_code,Container2List(_shape)));
+            CPPUNIT_ASSERT(attr.is_valid());
+            CPPUNIT_ASSERT(attr.name() == attr_name);
+            CPPUNIT_ASSERT(attr.type_id() == type_code);
+            auto ashape = Tuple2Container<shape_t>(attr.shape());
+            CPPUNIT_ASSERT(std::equal(ashape.begin(),ashape.end(),_shape.begin()));
+
+            //create data value to write
+            object write = CreateNumpyArray<T>(_shape);
+            auto warray = Numpy2RefArray<T>(write);
+            RandomNumberGenerator<T> rand;
+            fill_random(warray,rand);
+            CPPUNIT_ASSERT_NO_THROW(attr.write(write));
+
+            //close the attribute 
+            CPPUNIT_ASSERT_NO_THROW(attr.close());
+            CPPUNIT_ASSERT(!attr.is_valid());
+
+            //reopen the attribute to read data
+            CPPUNIT_ASSERT_NO_THROW(attr = o.open_attr(attr_name));
+            CPPUNIT_ASSERT(attr.is_valid());
+            CPPUNIT_ASSERT(attr.name() == attr_name);
+            CPPUNIT_ASSERT(attr.type_id() == type_code);
+            ashape = Tuple2Container<shape_t>(attr.shape());
+            CPPUNIT_ASSERT(std::equal(ashape.begin(),ashape.end(),_shape.begin()));
+
+            //read data from the attribute
+            object read;
+            CPPUNIT_ASSERT_NO_THROW(read = attr.read());
+            auto rarray = Numpy2RefArray<T>(read);
+
+            for(size_t i=0;i<rarray.size();i++)
+                check_equality(rarray[i],warray[i]);
 
         }
     public:
@@ -135,11 +181,11 @@ class NXObjectWrapperTest
             
             test_scalar_attribute<Float32>(o);
             test_scalar_attribute<Float64>(o);
-            //test_scalar_attribute<Float128>(o);
+            test_scalar_attribute<Float128>(o);
 
             test_scalar_attribute<Complex32>(o);
             test_scalar_attribute<Complex64>(o);
-            //test_scalar_attribute<Complex128>(o);
+            test_scalar_attribute<Complex128>(o);
             
             test_scalar_attribute<String>(o);
             test_scalar_attribute<Bool>(o);
@@ -168,8 +214,10 @@ class NXObjectWrapperTest
             test_array_attribute<Complex32>(o);
             test_array_attribute<Complex64>(o);
             test_array_attribute<Complex128>(o);
-            
-            test_array_attribute<String>(o);
+           
+            //we cannot test strings here as they require a nested list as a
+            //container and not a numpy array.
+            //test_array_attribute<String>(o);
             test_array_attribute<Bool>(o);
         }
 
