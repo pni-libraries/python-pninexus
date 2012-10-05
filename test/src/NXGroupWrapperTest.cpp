@@ -30,8 +30,8 @@ void NXGroupWrapperTest::test_open()
 }
 
 //-----------------------------------------------------------------------------
-void NXFileWrapperTest::test_attributes()
+void NXGroupWrapperTest::test_attributes()
 {
     group_wrapper_t g = _file.create_group("test");
-    NXObjectWrapperTest::test_attribute(g);
+    NXObjectWrapperTest::test_attributes(g);
 }

@@ -13,6 +13,7 @@
 #include <pni/nx/NX.hpp>
 #include <pni/utils/service.hpp>
 #include "../src/NXWrapperHelpers.hpp"
+#include "../src/NXObjectWrapper.hpp"
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -26,7 +27,7 @@ using namespace pni::nx::h5;
 class NXObjectWrapperTest
 {
     private:
-        static shape_t _shape; //!< local shape for array attributes
+        static const shape_t _shape; //!< local shape for array attributes
         
         //---------------------------------------------------------------------
         template<typename T,typename OTYPE>
@@ -232,10 +233,7 @@ class NXObjectWrapperTest
             test_array_attributes(o);
         }
 
-
 };
 
-//initialize the static shape attribute
-shape_t NXObjectWrapperTest::_shape=shape_t{4,6};
 
 #endif
