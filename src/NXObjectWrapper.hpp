@@ -80,8 +80,7 @@ template<typename OType> class NXObjectWrapper
 
         //---------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit NXObjectWrapper(OType &&o):_object(std::move(o)){
-        }
+        explicit NXObjectWrapper(OType &&o):_object(std::move(o)){ }
 
         //---------------------------------------------------------------------
         //! destructor

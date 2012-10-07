@@ -120,12 +120,11 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         \param nxclass optional argument with the Nexus class
         \return new instance of NXGroupWrapper
         */
-        NXGroupWrapper<typename NXObjectMap<GType>::GroupType >
-            create_group(const String &n,const String &nxclass=String()) const
+        object create_group(const String &n,const String &nxclass=String()) const
         {
             typedef typename NXObjectMap<GType>::GroupType GroupType;
-            NXGroupWrapper<GroupType> g(this->_object.create_group(n,nxclass));
-            return g;
+            
+            return object(new NXGroupWrapper<GroupType>(this->_object.create_group(n,nxclass)));
         }
 
         //-------------------------------------------------------------------------
@@ -186,19 +185,18 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
             //open the NXObject 
             ObjectType nxobject = this->_object.open(n);
 
-            object o;
 
             //we use here copy construction thus we do not have to care
             //of the original nxobject goes out of scope and gets destroyed.
             if(nxobject.object_type() == pni::nx::NXObjectType::NXFIELD)
-                o = object(new field_wrapper(FieldType(nxobject)));
+               return object(new field_wrapper(FieldType(nxobject)));
 
             if(nxobject.object_type() == pni::nx::NXObjectType::NXGROUP)
-                o = object(new group_wrapper(GroupType(nxobject)));
+                return object(new group_wrapper(GroupType(nxobject)));
 
             nxobject.close();
             //this here is to avoid compiler warnings
-            return o;
+            return object();
 
         }
 

@@ -27,10 +27,12 @@ class NXGroupTest(unittest.TestCase):
 
     def test_creation(self):
         g = self.gf.create_group("metadata")
+        self.assertTrue(g.valid)
         g = self.gf.create_group("scan_1",nxclass="NXentry")
         self.assertTrue(g.attr("NX_class").value == "NXentry")
 
         g = g.create_group("instrument/detector")
+        self.assertTrue(g.valid)
         self.assertTrue(g.path == "/scan_1/instrument/detector")
         self.assertTrue(g.name == "detector")
         self.assertTrue(g.base == "/scan_1/instrument")
@@ -41,10 +43,12 @@ class NXGroupTest(unittest.TestCase):
 
     def test_simple_attributes(self):
         g = self.gf.create_group("dgroup")
+        self.assertTrue(g.valid)
         self.attr_tester.test_scalar_attribute(self,g)
 
     def test_array_attributes(self):
         g = self.gf.create_group("dgroup")
+        self.assertTrue(g.valid)
         self.attr_tester.test_array_attribute(self,g)
 
     def test_group_iteration(self):
