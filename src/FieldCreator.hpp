@@ -41,11 +41,12 @@ using namespace pni::utils;
 This template generats classes whose instance are responsible for creating
 NXField instances. The instance is of type FieldT. 
 */
-template<typename FieldT> class FieldCreator{
+template<typename FieldT> class FieldCreator
+{
     private:
         String __n;      //!< name of the field
-        shape_t __s;       //!< shape of the field
-        shape_t __cs;      //!< chunk shape of the field
+        shape_t __s;     //!< shape of the field
+        shape_t __cs;    //!< chunk shape of the field
         object __filter; //!< name of the filter to use
     public:
         //---------------------------------------------------------------------
@@ -134,6 +135,7 @@ FieldCreator<FieldT>::create(const OType &o,const String &type_code) const
     if(type_code == "complex256") return this->create<Complex128>(o);
 
     if(type_code == "string") return this->create<String>(o);
+    if(type_code == "bool")   return this->create<Bool>(o);
 
     //raise an exception here
     throw TypeError(EXCEPTION_RECORD, 

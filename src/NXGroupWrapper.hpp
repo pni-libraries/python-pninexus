@@ -73,8 +73,7 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
 
         //----------------------------------------------------------------------
         //! destructor
-        virtual ~NXGroupWrapper()
-        { }
+        virtual ~NXGroupWrapper() { }
 
         //====================assignment operators==============================
         //! conversion copy assignment from wrapped object
@@ -144,15 +143,17 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         field.
         \throws NXFieldError in case of general problems with object creation
         \throws TypeError if the type_code argument contains an invalid string
+        \throws ShapeMissmatchError if the rank of the chunk shape does not
+        match the rank of the fields shape
         \param name name of the new field
         \param type_code numpy type code 
         \param shape sequence object with the shape of the field
         \param chunk sequence object for the chunk shape
         \param filter a filter object for data compression
         */
-        field_type create_field_nofilter(const String &name,const String
-                &type_code,const object &shape=list(),const object
-                &chunk=list(),const object &filter=object()) const
+        field_type create_field(const String &name,const String &type_code,
+                                const object &shape=list(),const object
+                                &chunk=list(),const object &filter=object()) const
         {
             FieldCreator<field_type> creator(name,
                                              List2Container<shape_t>(list(shape)),
@@ -351,7 +352,7 @@ template<typename GTYPE> void wrap_nxgroup(const String &class_name)
         .def("__getitem__",&group_wrapper::open_by_name)
         .def("create_group",&group_wrapper::create_group,
                 ("n",arg("nxclass")=String()),__group_create_group_docstr)
-        .def("create_field",&group_wrapper::create_field_nofilter,
+        .def("create_field",&group_wrapper::create_field,
                 ("name","type_code",arg("shape")=list(),arg("chunk")=list(),
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&group_wrapper::exists,__group_exists_docstr)
