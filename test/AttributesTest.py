@@ -61,6 +61,7 @@ class AttributeTest(object):
         self.scalar_attribute_test(ts,parent,"complex128_attr","complex256",1+123.j)
 
         self.scalar_attribute_test(ts,parent,"text","string","hello world this is a text")
+        self.scalar_attribute_test(ts,parent,"flag","bool",True)
 
     def test_array_attribute(self,ts,parent):
 
@@ -98,6 +99,9 @@ class AttributeTest(object):
         self.array_attribute_test(ts,parent,"complex64_attr","complex128",shape,data)
         data = numpy.ones(shape,dtype="complex256")
         self.array_attribute_test(ts,parent,"complex128_attr","complex256",shape,data)
+
+        data = numpy.ones(shape,dtype="bool")
+        self.array_attribute_test(ts,parent,"flag_attr","bool",shape,data)
         
 
 

@@ -52,5 +52,16 @@ class NXGroupTest(unittest.TestCase):
         self.attr_tester.test_array_attribute(self,g)
 
     def test_group_iteration(self):
-        pass
+        g = self.gf.create_group("/scan_1/instrument/detector");
+        g.create_group("module_1")
+        g.create_group("module_2")
+        g.create_group("module_3")
 
+        self.assertTrue(g.nchilds==3)
+
+        i = 1 
+        for m in g.childs:
+            self.assertTrue(m.name == "module_%i" %(i))
+            i += 1
+
+        
