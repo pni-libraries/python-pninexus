@@ -36,35 +36,42 @@
 
 Template to produce wrappers for NXField types.
 */
-template<typename FieldT> class NXFieldWrapper:
-    public NXObjectWrapper<FieldT>
+template<typename FIELDT> class NXFieldWrapper:
+    public NXObjectWrapper<FIELDT>
 {
     public:
+        //====================public types=====================================
+        //! field type
+        typedef FIELDT field_t;
+        //! field wrapper type
+        typedef NXFieldWrapper<field_t> field_wrapper_t;
+        //! object wrapper belonging to the field wrapper
+        typedef NXObjectWrapper<field_t> object_wrapper_t;
         //=============constrcutors and destructor=============================
         //! default constructor
-        NXFieldWrapper():NXObjectWrapper<FieldT>(){}
+        NXFieldWrapper():NXObjectWrapper<field_t>(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXFieldWrapper(const NXFieldWrapper<FieldT> &f):
-            NXObjectWrapper<FieldT>(f)
+        NXFieldWrapper(const field_wrapper_t &f):
+            NXObjectWrapper<field_t>(f)
         {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXFieldWrapper(NXFieldWrapper<FieldT> &&f):
-            NXObjectWrapper<FieldT>(std::move(f))
+        NXFieldWrapper(field_wrapper_t &&f):
+            NXObjectWrapper<field_t>(std::move(f))
         {}
 
         //--------------------------------------------------------------------
         //! copy constructor from wrapped type
-        explicit NXFieldWrapper(const FieldT &o):NXObjectWrapper<FieldT>(o)
+        explicit NXFieldWrapper(const field_t &o):NXObjectWrapper<field_t>(o)
         {}
 
         //!-------------------------------------------------------------------
         //! move constructor from wrapped type
-        explicit NXFieldWrapper(FieldT &&o):
-            NXObjectWrapper<FieldT>(std::move(o))
+        explicit NXFieldWrapper(field_t &&o):
+            NXObjectWrapper<field_t>(std::move(o))
         {}
 
         //---------------------------------------------------------------------
@@ -73,34 +80,18 @@ template<typename FieldT> class NXFieldWrapper:
             
 
         //=========================assignment operators========================
-        //! copy assignment from wrapped type
-        NXFieldWrapper<FieldT> &operator=(const FieldT &f)
-        {
-            NXObjectWrapper<FieldT>::operator=(f);
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
-        //! move assignment from wrapped type
-        NXFieldWrapper<FieldT> &operator=(FieldT &&f)
-        {
-            NXObjectWrapper<FieldT>::operator=(std::move(f));
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
         //! copy assignment operator
-        NXFieldWrapper<FieldT> &operator=(const NXFieldWrapper<FieldT> &o)
+        field_wrapper_t &operator=(const field_wrapper_t &o)
         {
-            if(this != &o) NXObjectWrapper<FieldT>::operator=(o);
+            if(this != &o) object_wrapper_t::operator=(o);
             return *this;
         }
 
         //---------------------------------------------------------------------
         //! move assignment
-        NXFieldWrapper<FieldT> &operator=(NXFieldWrapper<FieldT> &&o)
+        field_wrapper_t &operator=(field_wrapper_t &&o)
         {
-            if(this != &o) NXObjectWrapper<FieldT>::operator=(std::move(o));
+            if(this != &o) object_wrapper_t::operator=(std::move(o));
             return *this;
         }
 
@@ -321,19 +312,21 @@ static const char __field_size_docstr[] = "total number of elements in the field
 Template function to create a wrapper for NXField type FType. 
 \param class_name Python name of the new class
 */
-template<typename FType> void wrap_nxfield(const String &class_name)
+template<typename FIELDT> void wrap_nxfield(const String &class_name)
 {
+    typedef typename NXFieldWrapper<FIELDT>::field_wrapper_t field_wrapper_t; 
+    typedef typename NXFieldWrapper<FIELDT>::object_wrapper_t object_wrapper_t;
 
-    class_<NXFieldWrapper<FType>,bases<NXObjectWrapper<FType> > >(class_name.c_str())
+    class_<field_wrapper_t,bases<object_wrapper_t > >(class_name.c_str())
         .def(init<>())
-        .add_property("dtype",&NXFieldWrapper<FType>::type_id,__field_dtype_docstr)
-        .add_property("shape",&NXFieldWrapper<FType>::shape,__field_shape_docstr)
-        .add_property("size",&NXFieldWrapper<FType>::size,__field_size_docstr)
-        .def("write",&NXFieldWrapper<FType>::write)
-        .def("read",&NXFieldWrapper<FType>::read)
-        .def("__getitem__",&NXFieldWrapper<FType>::__getitem__)
-        .def("__setitem__",&NXFieldWrapper<FType>::__setitem__)
-        .def("grow",&NXFieldWrapper<FType>::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
+        .add_property("dtype",&field_wrapper_t::type_id,__field_dtype_docstr)
+        .add_property("shape",&field_wrapper_t::shape,__field_shape_docstr)
+        .add_property("size",&field_wrapper_t::size,__field_size_docstr)
+        .def("write",&field_wrapper_t::write)
+        .def("read",&field_wrapper_t::read)
+        .def("__getitem__",&field_wrapper_t::__getitem__)
+        .def("__setitem__",&field_wrapper_t::__setitem__)
+        .def("grow",&field_wrapper_t::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
         ;
 }
 

@@ -92,22 +92,6 @@ template<typename OType> class NXObjectWrapper
         }
 
         //==================assignment operators===============================
-        //! copy conversion assignment from wrapped type
-        NXObjectWrapper<OType> &operator=(const OType &o)
-        {
-            if(&_object != &o) _object = o;
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
-        //! move conversion assignment from wrapped type
-        NXObjectWrapper<OType> &operator=(OType &&o)
-        {
-            if(&_object != &o) _object = std::move(o);
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
         //!move assignment
         NXObjectWrapper<OType> &operator=(NXObjectWrapper<OType> &&o)
         {
@@ -126,39 +110,23 @@ template<typename OType> class NXObjectWrapper
 
         //======================object methods=================================
         //! obtain base name
-        String base() const
-        {
-            return _object.base();
-        }
+        String base() const { return _object.base(); }
 
         //----------------------------------------------------------------------
         //! obtain name
-        String name() const
-        {
-            return _object.name();
-        }
+        String name() const { return _object.name(); }
 
         //----------------------------------------------------------------------
         //! obtain path
-        String path() const
-        {
-            return _object.path();
-        }
+        String path() const { return _object.path(); }
 
         //----------------------------------------------------------------------
         //! get validity status
-        bool is_valid() const
-        {
-            return _object.is_valid();
-        }
+        bool is_valid() const { return _object.is_valid(); }
 
         //----------------------------------------------------------------------
         //! close the object
-        void close()
-        {
-            std::cout<<"Close wrapper object!"<<std::endl;
-            this->_object.close();
-        }
+        void close() { this->_object.close(); }
 
         //---------------------------------------------------------------------
         /*! \brief create attribute

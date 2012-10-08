@@ -76,22 +76,6 @@ template<typename GType> class NXGroupWrapper:public NXObjectWrapper<GType>
         virtual ~NXGroupWrapper() { }
 
         //====================assignment operators==============================
-        //! conversion copy assignment from wrapped object
-        NXGroupWrapper<GType> &operator=(const GType &g)
-        {
-            NXObjectWrapper<GType>::operator=(g);
-            return *this;
-        }
-
-        //-----------------------------------------------------------------------
-        //! conversion move assignment from wrapped object
-        NXGroupWrapper<GType> &operator=(GType &&g)
-        {
-            NXObjectWrapper<GType>::operator=(std::move(g));
-            return *this;
-        }
-
-        //-----------------------------------------------------------------------
         //copy assignment 
         NXGroupWrapper<GType> &operator=(const NXGroupWrapper<GType> &o)
         {
