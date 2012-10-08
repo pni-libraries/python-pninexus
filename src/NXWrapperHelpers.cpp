@@ -69,12 +69,12 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
 
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
-    if(len(t) > boost::python::ssize_t(field.size()))
+    if(len(t) > boost::python::ssize_t(field.rank()))
         throw ShapeMissmatchError(EXCEPTION_RECORD,
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");
-    else if(len(t) != boost::python::ssize_t(field.size()))
+    else if(len(t) != boost::python::ssize_t(field.rank()))
         //here we have to fix the size of an ellipsis
         ellipsis_size = selection.size()-(len(t)-1);
 
@@ -83,7 +83,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
        the tuple passed. In this case an IndexError will occur. In this case we 
        know immediately that a shape error occured.
     */
-    for(size_t i=0,j=0;i<field.size();i++,j++)
+    for(size_t i=0,j=0;i<field.rank();i++,j++)
     {
         //manage a single index
         extract<boost::python::ssize_t> index(t[j]);

@@ -43,14 +43,17 @@ class NXFieldTest(unittest.TestCase):
 
     def test_numeric_io(self):
         f1 = self.gf.create_field("data1","float64",shape=(3,1))
+        self.assertTrue(f1.valid)
 
-        for i in range(len(f1.shape)):
-            f1[i,:] = float(i)
+        #write data
+        for i in range(f1.shape[0]):
+            f1[i,:] = float(i) # broadcast a single value
             a = numpy.array([float(i)])
-            f1[i,:] = a[:]
-            f1[i,:] = a
+            f1[i,:] = a[:] #broadcast an array slice
+            f1[i,:] = a  #broadcast an entire array
 
-        for i in range(len(f1.shape)):
+        #read data back
+        for i in range(f1.shape[0]):
             self.assertTrue(float(i)==f1[i,0])
 
         a = f1[...]

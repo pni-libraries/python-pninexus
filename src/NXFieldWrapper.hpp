@@ -187,7 +187,8 @@ template<typename FieldT> class NXFieldWrapper:
         implementations simply call this method.
         \param t tuple with 
         */
-        object __getitem__tuple(const tuple &t){
+        object __getitem__tuple(const tuple &t)
+        {
 
             //first we need to create a selection
             std::vector<Slice> selection = create_selection(t,this->_object);
