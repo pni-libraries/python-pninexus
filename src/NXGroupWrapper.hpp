@@ -325,24 +325,23 @@ Template function to create a new wrapper for an NXGroup type GType.
 */
 template<typename GTYPE> void wrap_nxgroup(const String &class_name)
 {
-    typedef NXGroupWrapper<GTYPE> group_wrapper;
-    typedef class_<group_wrapper,bases<NXObjectWrapper<GTYPE> > > group_class;
-
+    typedef typename NXGroupWrapper<GTYPE>::group_wrapper_t group_wrapper_t;
+    typedef typename NXObjectWrapper<GTYPE>::object_wrapper_t object_wrapper_t;
     
-    group_class(class_name.c_str())
+    class_<group_wrapper_t,bases<object_wrapper_t> >(class_name.c_str())
         .def(init<>())
-        .def("open",&group_wrapper::open_by_name,__group_open_docstr)
-        .def("__getitem__",&group_wrapper::open)
-        .def("__getitem__",&group_wrapper::open_by_name)
-        .def("create_group",&group_wrapper::create_group,
+        .def("open",&group_wrapper_t::open_by_name,__group_open_docstr)
+        .def("__getitem__",&group_wrapper_t::open)
+        .def("__getitem__",&group_wrapper_t::open_by_name)
+        .def("create_group",&group_wrapper_t::create_group,
                 ("n",arg("nxclass")=String()),__group_create_group_docstr)
-        .def("create_field",&group_wrapper::create_field,
+        .def("create_field",&group_wrapper_t::create_field,
                 ("name","type_code",arg("shape")=list(),arg("chunk")=list(),
                  arg("filter")=object()),__group_create_field_docstr)
-        .def("exists",&group_wrapper::exists,__group_exists_docstr)
-        .def("link",&group_wrapper::link,__group_link_docstr)
-        .add_property("nchilds",&group_wrapper::nchilds,__group_nchilds_docstr)   
-        .add_property("childs",&group_wrapper::get_child_iterator,__group_childs_docstr)
+        .def("exists",&group_wrapper_t::exists,__group_exists_docstr)
+        .def("link",&group_wrapper_t::link,__group_link_docstr)
+        .add_property("nchilds",&group_wrapper_t::nchilds,__group_nchilds_docstr)   
+        .add_property("childs",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
         ;
 }
 

@@ -37,7 +37,7 @@
 #include "NXFieldWrapper.hpp"
 
 using namespace pni::utils;
-using namespace boost;
+using namespace boost::python;
 
 /*! 
 \ingroup utils  
