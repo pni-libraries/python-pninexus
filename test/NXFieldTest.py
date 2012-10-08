@@ -23,6 +23,7 @@ class NXFieldTest(unittest.TestCase):
         self.assertTrue(f.valid)
         self.assertTrue(f.dtype=="uint16")
         self.assertTrue(f.shape==(1,))
+        self.assertTrue(f.size == 1)
 
         f = self.gf.create_field("/scan_1/instrument/detector/data",
                 "int32",shape=(0,1024,1024))
@@ -32,6 +33,7 @@ class NXFieldTest(unittest.TestCase):
         self.assertTrue(f.name == "data")
         self.assertTrue(f.base == "/scan_1/instrument/detector")
         self.assertTrue(f.path == "/scan_1/instrument/detector/data")
+        self.assertTrue(f.size == 0)
 
         #check for some errors
         #what if chunk shape and data shape do not have same rank
@@ -44,6 +46,8 @@ class NXFieldTest(unittest.TestCase):
     def test_numeric_io(self):
         f1 = self.gf.create_field("data1","float64",shape=(3,1))
         self.assertTrue(f1.valid)
+        self.assertTrue(len(f1.shape) == 2)
+        self.assertTrue(f1.size == 3)
 
         #write data
         for i in range(f1.shape[0]):

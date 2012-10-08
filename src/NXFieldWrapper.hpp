@@ -287,6 +287,15 @@ template<typename FieldT> class NXFieldWrapper:
         {
             this->_object.grow(d,s);
         }
+
+        //--------------------------------------------------------------------------
+        /*!
+        \brief get size
+
+        Return the total number of elements of the field.
+        \return total number of elements.
+        */
+        size_t size() const { return this->_object.size(); }
         
 };
 
@@ -303,6 +312,8 @@ static const char __field_grow_docstr[]=
 "\text .............. number of elements by which to grow\n"
 ;
 
+static const char __field_size_docstr[] = "total number of elements in the field\n";
+
 /*! 
 \ingroup wrappers
 \brief create new NXField wrapper
@@ -317,6 +328,7 @@ template<typename FType> void wrap_nxfield(const String &class_name)
         .def(init<>())
         .add_property("dtype",&NXFieldWrapper<FType>::type_id,__field_dtype_docstr)
         .add_property("shape",&NXFieldWrapper<FType>::shape,__field_shape_docstr)
+        .add_property("size",&NXFieldWrapper<FType>::size,__field_size_docstr)
         .def("write",&NXFieldWrapper<FType>::write)
         .def("read",&NXFieldWrapper<FType>::read)
         .def("__getitem__",&NXFieldWrapper<FType>::__getitem__)

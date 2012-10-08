@@ -26,6 +26,8 @@
 #ifndef __FIELDCREATOR_HPP__
 #define __FIELDCREATOR_HPP__
 
+#include<boost/python.hpp>
+
 #include<pni/utils/Types.hpp>
 #include<pni/utils/Exceptions.hpp>
 #include<pni/utils/Array.hpp>
@@ -33,6 +35,7 @@
 #include<pni/nx/NX.hpp>
 
 using namespace pni::utils;
+using namespace boost;
 
 /*! 
 \ingroup utils  
