@@ -35,64 +35,51 @@
 
 This template can be used to create NXFile wrappers.
 */
-template<typename FType> class NXFileWrapper:public NXGroupWrapper<FType>
+template<typename FTYPE> class NXFileWrapper:public NXGroupWrapper<FTYPE>
 {
     public:
+        //=========================public types================================
+        typedef FTYPE type_t;
+        typedef NXFileWrapper<type_t> file_wrapper_t;
+        typedef NXGroupWrapper<type_t> group_wrapper_t;
+        typedef NXObjectWrapper<type_t> object_wrapper_t;
         //==================constructor and destructor=========================
         //! default constructor
-        NXFileWrapper():NXGroupWrapper<FType>(){}
+        NXFileWrapper():NXGroupWrapper<type_t>(){}
 
         //----------------------------------------------------------------------
         //! copy constructor
-        NXFileWrapper(const NXFileWrapper<FType> &o):
-            NXGroupWrapper<FType>(o){}
+        NXFileWrapper(const file_wrapper_t &o):NXGroupWrapper<type_t>(o){}
 
         //----------------------------------------------------------------------
         //! move constructor
-        NXFileWrapper(NXFileWrapper<FType> &&f):
-            NXGroupWrapper<FType>(std::move(f)){}
+        NXFileWrapper(file_wrapper_t &&f):NXGroupWrapper<type_t>(std::move(f)){}
 
         //----------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit NXFileWrapper(FType &&f):NXGroupWrapper<FType>(std::move(f)){}
+        explicit NXFileWrapper(type_t &&f):NXGroupWrapper<type_t>(std::move(f)){}
 
         //----------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
-        explicit NXFileWrapper(const FType &f):NXGroupWrapper<FType>(f){}
+        explicit NXFileWrapper(const type_t &f):NXGroupWrapper<type_t>(f){}
 
         //----------------------------------------------------------------------
         //! destructor
         ~NXFileWrapper() { }
 
         //=======================assignment operators===========================
-        //! move conversion assignment from wrapped object
-        NXFileWrapper<FType> &operator=(FType &&f)
-        {
-            NXGroupWrapper<FType>::operator=(f);
-            return *this;
-        }
-
-        //----------------------------------------------------------------------
-        //! copy conversion assignment from wrapped object
-        NXFileWrapper<FType> &operator=(const FType &f)
-        {
-            NXGroupWrapper<FType>::operator=(f);
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
         //! copy assignment
-        NXFileWrapper<FType> &operator=(const NXFileWrapper<FType> &f)
+        file_wrapper_t &operator=(const file_wrapper_t &f)
         {
-            if(this != &f) NXGroupWrapper<FType>::operator=(f);
+            if(this != &f) group_wrapper_t::operator=(f);
             return *this;
         }
 
         //---------------------------------------------------------------------
         //! move assignment
-        NXFileWrapper<FType> &operator=(NXFileWrapper<FType> &&f)
+        file_wrapper_t &operator=(file_wrapper_t &&f)
         {
-            if(this != &f) NXGroupWrapper<FType>::operator=(std::move(f));
+            if(this != &f) group_wrapper_t::operator=(std::move(f));
             return *this;
         }
 

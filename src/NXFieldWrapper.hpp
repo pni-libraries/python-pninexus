@@ -36,42 +36,41 @@
 
 Template to produce wrappers for NXField types.
 */
-template<typename FIELDT> class NXFieldWrapper:
-    public NXObjectWrapper<FIELDT>
+template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
 {
     public:
         //====================public types=====================================
         //! field type
-        typedef FIELDT field_t;
+        typedef FIELDT type_t;
         //! field wrapper type
-        typedef NXFieldWrapper<field_t> field_wrapper_t;
+        typedef NXFieldWrapper<type_t> field_wrapper_t;
         //! object wrapper belonging to the field wrapper
-        typedef NXObjectWrapper<field_t> object_wrapper_t;
+        typedef NXObjectWrapper<type_t> object_wrapper_t;
         //=============constrcutors and destructor=============================
         //! default constructor
-        NXFieldWrapper():NXObjectWrapper<field_t>(){}
+        NXFieldWrapper():NXObjectWrapper<type_t>(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
         NXFieldWrapper(const field_wrapper_t &f):
-            NXObjectWrapper<field_t>(f)
+            NXObjectWrapper<type_t>(f)
         {}
 
         //---------------------------------------------------------------------
         //! move constructor
         NXFieldWrapper(field_wrapper_t &&f):
-            NXObjectWrapper<field_t>(std::move(f))
+            NXObjectWrapper<type_t>(std::move(f))
         {}
 
         //--------------------------------------------------------------------
         //! copy constructor from wrapped type
-        explicit NXFieldWrapper(const field_t &o):NXObjectWrapper<field_t>(o)
+        explicit NXFieldWrapper(const type_t &o):NXObjectWrapper<type_t>(o)
         {}
 
         //!-------------------------------------------------------------------
         //! move constructor from wrapped type
-        explicit NXFieldWrapper(field_t &&o):
-            NXObjectWrapper<field_t>(std::move(o))
+        explicit NXFieldWrapper(type_t &&o):
+            NXObjectWrapper<type_t>(std::move(o))
         {}
 
         //---------------------------------------------------------------------

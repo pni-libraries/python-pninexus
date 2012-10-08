@@ -48,39 +48,45 @@ using namespace boost::python;
 
 This class-template provides a wrapper for NXObject types.
 */
-template<typename OType> class NXObjectWrapper
+template<typename OTYPE> class NXObjectWrapper
 {   
     protected:
         //object is not defined private here. The intention of this class is 
         //not encapsulation but rather reducing the writing effort for the 
         //child classes by collecting here all common methods. 
-        OType _object; //!< original object that shall be wrapped
+        OTYPE _object; //!< original object that shall be wrapped
     public:
-        typedef NXAttributeWrapper<typename NXObjectMap<OType>::AttributeType>
-            attribute_type; //!< type for attributes
+        //=================public types========================================
+        //! wrapped type
+        typedef OTYPE type_t;
+        //! object wrapper type
+        typedef NXObjectWrapper<type_t> object_wrapper_t;
+        //! attribute type
+        typedef NXAttributeWrapper<typename NXObjectMap<type_t>::AttributeType>
+            attribute_type; 
         //================constructors and destructor==========================
         //! default constructor
         NXObjectWrapper():_object(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXObjectWrapper(const NXObjectWrapper<OType> &o):
+        NXObjectWrapper(const object_wrapper_t &o):
             _object(o._object)
         { }
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXObjectWrapper(NXObjectWrapper<OType> &&o):
+        NXObjectWrapper(object_wrapper_t &&o):
             _object(std::move(o._object)) 
         { }
 
         //---------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
-        explicit NXObjectWrapper(const OType &o):_object(o){}
+        explicit NXObjectWrapper(const type_t &o):_object(o){}
 
         //---------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit NXObjectWrapper(OType &&o):_object(std::move(o)){ }
+        explicit NXObjectWrapper(type_t &&o):_object(std::move(o)){ }
 
         //---------------------------------------------------------------------
         //! destructor
@@ -93,7 +99,7 @@ template<typename OType> class NXObjectWrapper
 
         //==================assignment operators===============================
         //!move assignment
-        NXObjectWrapper<OType> &operator=(NXObjectWrapper<OType> &&o)
+        object_wrapper_t &operator=(object_wrapper_t &&o)
         {
             if(this != &o) _object = std::move(o._object);
             return *this;
@@ -101,7 +107,7 @@ template<typename OType> class NXObjectWrapper
 
         //---------------------------------------------------------------------
         //!copy assignment
-        NXObjectWrapper<OType> &operator=(const NXObjectWrapper<OType> &o)
+        object_wrapper_t &operator=(const object_wrapper_t &o)
         {
             if(this != &o) _object = o._object;
             return *this;
@@ -187,11 +193,11 @@ template<typename OType> class NXObjectWrapper
         Method returns an iterator over the attributes attached to this object.
         \return attribute iterator
         */
-        AttributeIterator<NXObjectWrapper<OType>,attribute_type> 
+        AttributeIterator<object_wrapper_t,attribute_type> 
             get_attribute_iterator() const
         {
             return
-                AttributeIterator<NXObjectWrapper<OType>,attribute_type>(*this);
+                AttributeIterator<object_wrapper_t,attribute_type>(*this);
         }
 };
 
@@ -251,22 +257,22 @@ Template function to create NXObject wrappers. The template parameter determines
 the type to be wrapped.
 \param class_name name of the new Python class
 */
-template<typename OType> void wrap_nxobject(const String &class_name)
+template<typename OTYPE> void wrap_nxobject(const String &class_name)
 {
-    typedef NXObjectWrapper<OType> wrapper;
-    typedef class_<NXObjectWrapper<OType> > wrapper_class;
+    typedef typename NXObjectWrapper<OTYPE>::object_wrapper_t object_wrapper_t;
+    typedef class_<object_wrapper_t> wrapper_class;
 
     wrapper_class(class_name.c_str())
         .def(init<>())
-        .add_property("name", &wrapper::name,__object_name_docstr)
-        .add_property("path", &wrapper::path,__object_path_docstr)
-        .add_property("base", &wrapper::base,__object_base_docstr)
-        .add_property("valid", &wrapper::is_valid,__object_valid_docstr)
-        .add_property("nattrs", &wrapper::nattrs,__object_nattrs_docstr)
-        .def("attr", &wrapper::create_attribute,("name","type_code", arg("shape")=list()),__object_attr_create_docstr)
-        .def("attr", &wrapper::open_attr,__object_attr_open_docstr)
-        .def("close", &wrapper::close,__object_close_docstr)
-        .add_property("attributes",&wrapper::get_attribute_iterator,__object_attributes_docstr)
+        .add_property("name", &object_wrapper_t::name,__object_name_docstr)
+        .add_property("path", &object_wrapper_t::path,__object_path_docstr)
+        .add_property("base", &object_wrapper_t::base,__object_base_docstr)
+        .add_property("valid", &object_wrapper_t::is_valid,__object_valid_docstr)
+        .add_property("nattrs", &object_wrapper_t::nattrs,__object_nattrs_docstr)
+        .def("attr", &object_wrapper_t::create_attribute,("name","type_code", arg("shape")=list()),__object_attr_create_docstr)
+        .def("attr", &object_wrapper_t::open_attr,__object_attr_open_docstr)
+        .def("close", &object_wrapper_t::close,__object_close_docstr)
+        .add_property("attributes",&object_wrapper_t::get_attribute_iterator,__object_attributes_docstr)
         ;
 }
 

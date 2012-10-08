@@ -34,6 +34,8 @@
 
 #include<pni/nx/NX.hpp>
 
+#include "NXFieldWrapper.hpp"
+
 using namespace pni::utils;
 using namespace boost;
 
@@ -43,16 +45,27 @@ using namespace boost;
 
 This template generats classes whose instance are responsible for creating
 NXField instances. The instance is of type FieldT. 
+\tparam GTYPE group type responsible for field creation
 */
-template<typename FieldT> class FieldCreator
+template<typename GTYPE> class FieldCreator
 {
     private:
         String __n;      //!< name of the field
         shape_t __s;     //!< shape of the field
         shape_t __cs;    //!< chunk shape of the field
         object __filter; //!< name of the filter to use
+
+        //====================private methods==================================
+
     public:
-        //---------------------------------------------------------------------
+        //===================public types======================================
+        //! group type
+        typedef GTYPE group_t;
+        //! field type
+        typedef typename NXObjectMap<group_t>::FieldType field_t;
+        //! field wrapper type
+        typedef NXFieldWrapper<field_t> field_wrapper_t;
+        //====================constructor======================================
         /*! \brief constructor
        
         The standard constructor for this class.
@@ -73,11 +86,11 @@ template<typename FieldT> class FieldCreator
         parent object of the field.
         \throws NXFieldError in case of field related problems
         \throws NXFilterError in case of filter related errors
-        \param o parent below which the field should be created
-        \return instance of a NXField class
+        \tparam T data type for which to create a field
+        \param parent parent group
+        \return instance of a python object
         */
-        template<typename T,typename OType> 
-            FieldT create(const OType &o) const;
+        template<typename T> object create(const group_t &parent) const;
 
         //---------------------------------------------------------------------
         /*! \brief create field using a type string
@@ -87,58 +100,62 @@ template<typename FieldT> class FieldCreator
         \throws TypeError if the datatype given by the user could no be handled
         \throws NXFieldError if field creation fails
         \throws NXFilterError if the filter object is invalid
-        \param o parent object 
+        \param parent parent object 
         \param type_str string representing the data-type to use
         */
-        template<typename OType> 
-            FieldT create(const OType &o,const String &type_str) const;
+        object create(const group_t &parent,const String &type_str) const;
 };
 
 //-----------------------------------------------------------------------------
-template<typename FieldT>
-template<typename T,typename OType> 
-    FieldT FieldCreator<FieldT>::create(const OType &o) const
+template<typename GTYPE>
+template<typename T> 
+    object FieldCreator<GTYPE>::create(const group_t &parent) const
 {
     extract<NXDeflateFilter> deflate_obj(__filter);
+
+    //check if the filter is a valid deflate filter object
     if(deflate_obj.check())
     {
         NXDeflateFilter deflate = deflate_obj();
         if(__cs.size()==0)
-            return FieldT(o.template create_field<T>(__n,__s,deflate));
+            return object(new field_wrapper_t(
+                        parent.template create_field<T>(__n,__s,deflate)));
         else
-            return FieldT(o.template create_field<T>(__n,__s,__cs,deflate));
+            return object(new field_wrapper_t(
+                        parent.template create_field<T>(__n,__s,__cs,deflate)));
     }
+    //if the filter object is a NONE a field without filter is created
     else if(__filter.ptr() == Py_None)
-        return FieldT(o.template create_field<T>(__n,__s,__cs));
+        return object(new field_wrapper_t(
+                    parent.template create_field<T>(__n,__s,__cs)));
     else
         throw pni::nx::NXFilterError(EXCEPTION_RECORD,
                 "Invalid filter object!");
 }
 
 //------------------------------------------------------------------------------
-template<typename FieldT> 
-template<typename OType> FieldT 
-FieldCreator<FieldT>::create(const OType &o,const String &type_code) const
+template<typename GTYPE> object 
+FieldCreator<GTYPE>::create(const group_t &parent,const String &type_code) const
 {
-    if(type_code == "uint8") return this->create<UInt8>(o);
-    if(type_code == "int8")  return this->create<Int8>(o);
-    if(type_code == "uint16") return this->create<UInt16>(o);
-    if(type_code == "int16")  return this->create<Int16>(o);
-    if(type_code == "uint32") return this->create<UInt32>(o);
-    if(type_code == "int32")  return this->create<Int32>(o);
-    if(type_code == "uint64") return this->create<UInt64>(o);
-    if(type_code == "int64")  return this->create<Int64>(o);
+    if(type_code == "uint8") return this->create<UInt8>(parent);
+    if(type_code == "int8")  return this->create<Int8>(parent);
+    if(type_code == "uint16") return this->create<UInt16>(parent);
+    if(type_code == "int16")  return this->create<Int16>(parent);
+    if(type_code == "uint32") return this->create<UInt32>(parent);
+    if(type_code == "int32")  return this->create<Int32>(parent);
+    if(type_code == "uint64") return this->create<UInt64>(parent);
+    if(type_code == "int64")  return this->create<Int64>(parent);
 
-    if(type_code == "float32") return this->create<Float32>(o);
-    if(type_code == "float64") return this->create<Float64>(o);
-    if(type_code == "float128") return this->create<Float128>(o);
+    if(type_code == "float32") return this->create<Float32>(parent);
+    if(type_code == "float64") return this->create<Float64>(parent);
+    if(type_code == "float128") return this->create<Float128>(parent);
     
-    if(type_code == "complex64") return this->create<Complex32>(o);
-    if(type_code == "complex128") return this->create<Complex64>(o);
-    if(type_code == "complex256") return this->create<Complex128>(o);
+    if(type_code == "complex64") return this->create<Complex32>(parent);
+    if(type_code == "complex128") return this->create<Complex64>(parent);
+    if(type_code == "complex256") return this->create<Complex128>(parent);
 
-    if(type_code == "string") return this->create<String>(o);
-    if(type_code == "bool")   return this->create<Bool>(o);
+    if(type_code == "string") return this->create<String>(parent);
+    if(type_code == "bool")   return this->create<Bool>(parent);
 
     //raise an exception here
     throw TypeError(EXCEPTION_RECORD, 
