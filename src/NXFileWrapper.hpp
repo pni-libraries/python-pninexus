@@ -90,6 +90,11 @@ template<typename FTYPE> class NXFileWrapper:public NXGroupWrapper<FTYPE>
         //---------------------------------------------------------------------
         //! flush data to disk
         void flush() const  { this->_object.flush(); }
+
+        //---------------------------------------------------------------------
+        size_t open_fields() const { return this->_object.open_fields(); }
+
+        size_t open_groups() const { return this->_object.open_groups(); }
 };
 
 //-----------------------------------------------------------------------------
@@ -150,6 +155,8 @@ template<typename FTYPE> void wrap_nxfile(const String &class_name)
     class_<NXFileWrapper<FTYPE>,bases<NXGroupWrapper<FTYPE> > >(class_name.c_str())
         .def(init<>())
         .add_property("readonly",&NXFileWrapper<FTYPE>::is_readonly)
+        .add_property("open_fields",&NXFileWrapper<FTYPE>::open_fields)
+        .add_property("open_groups",&NXFileWrapper<FTYPE>::open_groups)
         .def("flush",&NXFileWrapper<FTYPE>::flush)
         ;
 

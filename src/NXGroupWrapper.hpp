@@ -143,14 +143,19 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \param chunk sequence object for the chunk shape
         \param filter a filter object for data compression
         */
-        object create_field(const String &name,const String &type_code,
-                                const object &shape=list(),const object
-                                &chunk=list(),const object &filter=object()) const
+        typename field_creator_t::field_wrapper_t
+         create_field(const String &name,const String &type_code,
+                         const object &shape=list(),const object
+                         &chunk=list(),const object &filter=object()) const
         {
+            typedef typename field_creator_t::field_wrapper_t field_wrapper_t;
             field_creator_t creator(name,List2Container<shape_t>(list(shape)),
                                     List2Container<shape_t>(list(chunk)),filter);
 
-            return creator.create(this->_object,type_code);
+            field_wrapper_t wrapper = creator.create(this->_object,type_code);
+            field_wrapper_t w2 = wrapper;
+            field_wrapper_t w3 = std::move(w2);
+            return wrapper;
         }
 
         //-------------------------------------------------------------------------

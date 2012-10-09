@@ -52,9 +52,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXFieldWrapper(const field_wrapper_t &f):
-            NXObjectWrapper<type_t>(f)
-        {}
+        NXFieldWrapper(const field_wrapper_t &f):NXObjectWrapper<type_t>(f) {}
 
         //---------------------------------------------------------------------
         //! move constructor
@@ -75,8 +73,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
 
         //---------------------------------------------------------------------
         //! destructor
-        ~NXFieldWrapper(){}
-            
+        ~NXFieldWrapper() { } 
 
         //=========================assignment operators========================
         //! copy assignment operator
@@ -101,10 +98,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         string. The type-code will be exposed as a read-only property.
         \return numpy type string
         */
-        String type_id() const
-        {
-            return typeid2str(this->_object.type_id());
-        }
+        String type_id() const { return typeid2str(this->_object.type_id()); }
 
         //---------------------------------------------------------------------
         /*! \brief get field shape
@@ -129,14 +123,16 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void write(const object &o) const
         {
-            if(this->_object.template shape<shape_t>().size() == 1){
+            if(this->_object.template shape<shape_t>().size() == 1)
+            {
                 //scalar field - here we can use any scalar type to write data
                 io_write<ScalarWriter>(this->_object,o);
-            }else{
+            }
+            else
+            {
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
                 io_write<ArrayWriter>(this->_object,o);
-
             }
         }
 
@@ -151,12 +147,15 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         object read() const
         {
-            if(this->_object.template shape<shape_t>().size() == 1){
+            if(this->_object.template shape<shape_t>().size() == 1)
+            {
                 //the field contains only a single value - can return a
                 //primitive python object
                 return io_read<ScalarReader>(this->_object);                
 
-            }else{
+            }
+            else
+            {
                 //the field contains multidimensional data  - we return a numpy
                 //array
                 return io_read<ArrayReader>(this->_object);
@@ -266,19 +265,16 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             }
         }
 
-        //--------------------------------------------------------------------------
+        //----------------------------------------------------------------------
         /*! \brief grow field object
 
         Grow a field object along dimension d by s elements.
         \param d dimension index
         \param s extend by which to grow the field
         */
-        void grow(size_t d=0,size_t s=1)
-        {
-            this->_object.grow(d,s);
-        }
+        void grow(size_t d=0,size_t s=1) { this->_object.grow(d,s); }
 
-        //--------------------------------------------------------------------------
+        //-----------------------------------------------------------------------
         /*!
         \brief get size
 
@@ -289,6 +285,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         
 };
 
+//-------------------------------documentation strings-------------------------
 static const char __field_dtype_docstr[] = 
 "Read only property providing the datatype of the field as numpy type code";
 

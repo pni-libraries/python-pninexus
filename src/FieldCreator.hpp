@@ -90,7 +90,7 @@ template<typename GTYPE> class FieldCreator
         \param parent parent group
         \return instance of a python object
         */
-        template<typename T> object create(const group_t &parent) const;
+        template<typename T> field_wrapper_t create(const group_t &parent) const;
 
         //---------------------------------------------------------------------
         /*! \brief create field using a type string
@@ -103,38 +103,38 @@ template<typename GTYPE> class FieldCreator
         \param parent parent object 
         \param type_str string representing the data-type to use
         */
-        object create(const group_t &parent,const String &type_str) const;
+        field_wrapper_t create(const group_t &parent,const String &type_str) const;
 };
 
 //-----------------------------------------------------------------------------
 template<typename GTYPE>
-template<typename T> 
-    object FieldCreator<GTYPE>::create(const group_t &parent) const
+template<typename T> typename FieldCreator<GTYPE>::field_wrapper_t
+FieldCreator<GTYPE>::create(const group_t &parent) const
 {
     extract<NXDeflateFilter> deflate_obj(__filter);
 
     //check if the filter is a valid deflate filter object
+    field_wrapper_t wrapper;
     if(deflate_obj.check())
     {
         NXDeflateFilter deflate = deflate_obj();
         if(__cs.size()==0)
-            return object(new field_wrapper_t(
-                        parent.template create_field<T>(__n,__s,deflate)));
+            wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,deflate));
         else
-            return object(new field_wrapper_t(
-                        parent.template create_field<T>(__n,__s,__cs,deflate)));
+            wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,__cs,deflate)); 
     }
     //if the filter object is a NONE a field without filter is created
     else if(__filter.ptr() == Py_None)
-        return object(new field_wrapper_t(
-                    parent.template create_field<T>(__n,__s,__cs)));
+        wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,__cs));
     else
         throw pni::nx::NXFilterError(EXCEPTION_RECORD,
                 "Invalid filter object!");
+
+    return wrapper;
 }
 
 //------------------------------------------------------------------------------
-template<typename GTYPE> object 
+template<typename GTYPE> typename FieldCreator<GTYPE>::field_wrapper_t
 FieldCreator<GTYPE>::create(const group_t &parent,const String &type_code) const
 {
     if(type_code == "uint8") return this->create<UInt8>(parent);

@@ -46,13 +46,20 @@ using namespace boost::python;
 \ingroup wrappers  
 \brief template wrapps NXObject classes
 
-This class-template provides a wrapper for NXObject types.
+This class-template provides a wrapper for NXObject types. It collates all
+methods common to all basic Nexus classes. Most of the methods are just
+delegates. They should return only types that can be converted into the
+appropriate Python type. A type that should be wrapped by this class has to
+satisfy several requierements
+\li it must be copyable
+\li and it must be moveable
+
 */
 template<typename OTYPE> class NXObjectWrapper
 {   
     protected:
         //object is not defined private here. The intention of this class is 
-        //not encapsulation but rather reducing the writing effort for the 
+        //not encapsulation but rather reducing the typing effort for the 
         //child classes by collecting here all common methods. 
         OTYPE _object; //!< original object that shall be wrapped
     public:
@@ -70,15 +77,11 @@ template<typename OTYPE> class NXObjectWrapper
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXObjectWrapper(const object_wrapper_t &o):
-            _object(o._object)
-        { }
+        NXObjectWrapper(const object_wrapper_t &o):_object(o._object) {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXObjectWrapper(object_wrapper_t &&o):
-            _object(std::move(o._object)) 
-        { }
+        NXObjectWrapper(object_wrapper_t &&o):_object(std::move(o._object)) {}
 
         //---------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
@@ -92,8 +95,8 @@ template<typename OTYPE> class NXObjectWrapper
         //! destructor
         virtual ~NXObjectWrapper()
         {
-            std::cout<<"Destory object wrapper!"<<std::endl;
-            //close the object on wrapper destruction
+            //close the object on wrapper destruction - we can use the close
+            //method here as it is not virtual
             this->_object.close();
         }
 
@@ -101,7 +104,7 @@ template<typename OTYPE> class NXObjectWrapper
         //!move assignment
         object_wrapper_t &operator=(object_wrapper_t &&o)
         {
-            if(this != &o) _object = std::move(o._object);
+            if(this != &o) this->_object = std::move(o._object);
             return *this;
         }
 
@@ -109,7 +112,7 @@ template<typename OTYPE> class NXObjectWrapper
         //!copy assignment
         object_wrapper_t &operator=(const object_wrapper_t &o)
         {
-            if(this != &o) _object = o._object;
+            if(this != &o) this->_object = o._object;
             return *this;
         }
 
@@ -170,10 +173,7 @@ template<typename OTYPE> class NXObjectWrapper
 
         //---------------------------------------------------------------------
         //! return number of attributes
-        size_t nattrs() const
-        {
-            return this->_object.nattr();
-        }
+        size_t nattrs() const { return this->_object.nattr(); }
 
         //---------------------------------------------------------------------
         /*! \brief return attribute by index

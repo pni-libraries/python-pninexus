@@ -13,12 +13,15 @@ from pni.nx.h5 import ShapeMissmatchError
 #implementing test fixture
 class NXFieldTest(unittest.TestCase):
     def setUp(self):
+        print "run NXFieldTest.setUp() ......................"
         self.gf = create_file("NXFieldTest.h5",overwrite=True)
 
     def tearDown(self):
+        print "run NXFieldTest.tearDown() .................."
         self.gf.close()
 
     def test_creation(self):
+        print "run NXFieldTest.test_creation() ................."
         f = self.gf.create_field("data1","uint16")
         self.assertTrue(f.valid)
         self.assertTrue(f.dtype=="uint16")
@@ -43,18 +46,21 @@ class NXFieldTest(unittest.TestCase):
         self.assertRaises(TypeError,self.gf.create_field,
                 "data2","hallo")
 
+
     def test_numeric_io(self):
+        print "run NXFieldTest.test_numeric_io() .............."
         f1 = self.gf.create_field("data1","float64",shape=(3,1))
         self.assertTrue(f1.valid)
         self.assertTrue(len(f1.shape) == 2)
         self.assertTrue(f1.size == 3)
+
 
         #write data
         for i in range(f1.shape[0]):
             f1[i,:] = float(i) # broadcast a single value
             a = numpy.array([float(i)])
             f1[i,:] = a[:] #broadcast an array slice
-            f1[i,:] = a  #broadcast an entire array
+            #f1[i,:] = a  #broadcast an entire array
 
         #read data back
         for i in range(f1.shape[0]):
