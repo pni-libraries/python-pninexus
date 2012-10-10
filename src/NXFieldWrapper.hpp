@@ -182,14 +182,17 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             //first we need to create a selection
             std::vector<Slice> selection = create_selection(t,this->_object);
 
+            //apply the selection
+            this->_object(selection);
+
             //once the selection is build we can start to create the 
             //return value
-            if(selection.size()==1)
+            if(this->_object.size()==1)
                 //in this case we return a primitive python value
-                return io_read<ScalarReader>(this->_object(selection));
+                return io_read<ScalarReader>(this->_object);
             else
                 //a numpy array will be returned
-                return io_read<ArrayReader>(this->_object(selection));
+                return io_read<ArrayReader>(this->_object);
 
 
             return object();
