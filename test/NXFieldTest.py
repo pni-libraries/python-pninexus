@@ -78,25 +78,25 @@ class NXFieldTest(unittest.TestCase):
         f2[...] = 10.
         a = f2[...]
         self.assertTrue(a.shape == (3,))
-#
-#    def test_negative_index(self):
-#        f1 = self.gf.create_field("data1","uint16",shape=(20,))
-#
-#        f1[...] = numpy.arange(0,20,dtype="uint16")
-#
-#        #test for a single negative index
-#        self.assertTrue(f1[-1] == 19)
-#        self.assertTrue(f1[-2] == 18)
-#        self.assertTrue(f1[-20] == 0)
-#
-#        #check for slices with negative indices
-#        a = f1[-10:-2]
-#        self.assertTrue(a[0] == 10)
-#        self.assertTrue(a[-1] == 17)
-#
-#        f1[-10:-5] = numpy.arange(100,105)
-#        self.assertTrue(f1[-10] == f1[10])
-#        self.assertTrue(f1[10] == 100)
+
+    def test_negative_index(self):
+        f1 = self.gf.create_field("data1","uint16",shape=(20,))
+
+        f1[...] = numpy.arange(0,20,dtype="uint16")
+
+        #test for a single negative index
+        self.assertTrue(f1[-1] == 19)
+        self.assertTrue(f1[-2] == 18)
+        self.assertTrue(f1[-20] == 0)
+
+        #check for slices with negative indices
+        a = f1[-10:-2]
+        self.assertTrue(a[0] == 10)
+        self.assertTrue(a[-1] == 17)
+
+        f1[-10:-5] = numpy.arange(100,105)
+        self.assertTrue(f1[-10] == f1[10])
+        self.assertTrue(f1[10] == 100)
 
 
 
