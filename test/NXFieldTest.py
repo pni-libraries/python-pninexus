@@ -8,6 +8,7 @@ from pni.nx.h5 import create_file
 from pni.nx.h5 import open_file
 
 from pni.nx.h5 import ShapeMissmatchError
+from pni.nx.h5 import NXFieldError
 
 
 #implementing test fixture
@@ -60,17 +61,20 @@ class NXFieldTest(unittest.TestCase):
             f1[i,:] = float(i) # broadcast a single value
             a = numpy.array([float(i)])
             f1[i,:] = a[:] #broadcast an array slice
-            #f1[i,:] = a  #broadcast an entire array
+            f1[i,:] = a  #broadcast an entire array
 
         #read data back
         for i in range(f1.shape[0]):
             self.assertTrue(float(i)==f1[i,0])
 
         a = f1[...]
-        self.assertTrue(a.shape == (3,1))
+        self.assertTrue(a.shape == (3,))
 
-        f2 = self.gf.create_field("data2","float64",shape=(3,))
-        self.assertTrue(f2.shape == (3,))
+        f2 = self.gf.create_field("data2","float64",shape=(3,1))
+        self.assertTrue(f2.shape == (3,1))
+        self.assertTrue(f2.size == 3)
+        self.assertTrue(len(f2.shape) == 2)
+
         f2[...] = 10.
         a = f2[...]
         self.assertTrue(a.shape == (3,))

@@ -140,25 +140,16 @@ Write array data to a writeable.
 */
 class ArrayWriter
 {
-    public:
-        /*! \brief write array data
-
-        Writes array data o to writeable w.
-        \throws TypeError if o is not a numpy array or the datatype cannot be
-        handled
-        \tparam WTYPE writeable type
-        \param w instance of WTYPE where to store data
-        \param o numpy array object
+    private:
+        /*!
+        \brief write a numpy array to the writable object
+        \tparam WTYPE writable type
+        \param w instance of WTYPE
+        \param o object representing a numpy array
         */
-        template<typename T,typename WTYPE> static
-            void write(const WTYPE &w,const object &o)
+        template<typename WTYPE>
+        static void _write_numpy_array(const WTYPE &w,const object &o)
         {
-           
-            //check if the object from which to read data is an array
-            if(!PyArray_CheckExact(o.ptr()))
-                throw TypeError(EXCEPTION_RECORD,
-                        "Python object is not a numpy array!");
-
             //select the data type to use for writing the array data
             switch(PyArray_TYPE(o.ptr()))
             {
@@ -196,6 +187,50 @@ class ArrayWriter
                     throw TypeError(EXCEPTION_RECORD,
                     "Type of numpy array cannot be handled!");
             };
+
+        }
+
+        //---------------------------------------------------------------------
+        /*!
+        \brief broadcast a scalar to a field
+
+        Broadcast a scalar value to the field.
+        \tparam T type of the scalar
+        \tparam WTYPE writable type
+        \param w instance of WTYPE
+        \param o object representing a scalar
+        */
+        template<typename T,typename WTYPE>
+        static void _write_scalar(const WTYPE &w,const object &o)
+        {
+            //get writable parameters
+            auto shape = w.template shape<shape_t>();
+
+            T value = extract<T>(o)();
+            DArray<T> data(shape);
+            std::fill(data.begin(),data.end(),value);
+            w.write(data);
+        }
+    public:
+        /*! \brief write array data
+
+        Writes array data o to writeable w.
+        \throws TypeError if o is not a numpy array or the datatype cannot be
+        handled
+        \tparam WTYPE writeable type
+        \param w instance of WTYPE where to store data
+        \param o numpy array object
+        */
+        template<typename T,typename WTYPE> static
+            void write(const WTYPE &w,const object &o)
+        {
+           
+            //check if the object from which to read data is an array
+            if(!PyArray_CheckExact(o.ptr()))
+                _write_scalar<T>(w,o);
+            else
+                _write_numpy_array(w,o);
+
         }
 };
 

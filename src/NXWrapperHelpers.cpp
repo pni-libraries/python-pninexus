@@ -74,9 +74,9 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");
-    else if(len(t) != boost::python::ssize_t(field.rank()))
+    else //if(len(t) != boost::python::ssize_t(field.rank()))
         //here we have to fix the size of an ellipsis
-        ellipsis_size = selection.size()-(len(t)-1);
+        ellipsis_size = field.rank()-(len(t)-1);
 
     /*this loop has tow possibilities:
     -> there is no ellipse and the rank of the field is larger than the size of
@@ -155,9 +155,11 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
 
     //once we are done with looping over all elemnts in the tuple we need 
     //to adjust the selection to take into account an ellipsis
+    /*
     if((ellipsis_size) && (!has_ellipsis))
         throw ShapeMissmatchError(EXCEPTION_RECORD,
               "Selection rank does not match field rank");
+    */
 
     return selection;
 

@@ -242,17 +242,17 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         \param t tuple with selection information
         \param o object with data to write.
         */
-        void __setitem__tuple(const tuple &t,const object &o){
+        void __setitem__tuple(const tuple &t,const object &o)
+        {
             
             std::vector<Slice> selection = create_selection(t,this->_object);
-            size_t tsize = 1;
-            for(auto v: selection) tsize *= pni::utils::size(v);
+            this->_object(selection);
 
-            if((tsize == 1)&& !(PyArray_CheckExact(o.ptr())))
+            if((this->_object.size() == 1) && !(PyArray_CheckExact(o.ptr())))
             {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value
-                io_write<ScalarWriter>(this->_object(selection),o);
+                io_write<ScalarWriter>(this->_object,o);
             }
             else
             {
@@ -264,7 +264,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 //    data.
 
                 //let us assume here that we only do broadcast
-                io_write<ArrayWriter>(this->_object(selection),o);
+                io_write<ArrayWriter>(this->_object,o);
             }
         }
 
