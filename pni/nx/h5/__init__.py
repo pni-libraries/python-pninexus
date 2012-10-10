@@ -6,7 +6,7 @@ from nxh5 import NXDeflateFilter
 from nxh5 import NXField
 
 from nxh5 import ShapeMissmatchError
-from nxh5 import PNITypeError
+from nxh5 import TypeError
 from nxh5 import MemoryAllocationError
 from nxh5 import IndexError
 

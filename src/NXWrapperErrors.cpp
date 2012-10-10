@@ -38,63 +38,12 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::nx::h5;
 
-PyObject *PyNXFileErrorPtr = nullptr;
-PyObject *PyNXGroupErrorPtr =  nullptr;
-PyObject *PyNXFieldErrorPtr = nullptr;
-PyObject *PyNXAttributeErrorPtr = nullptr;
-PyObject *PyNXSelectionErrorPtr = nullptr;
-PyObject *PyNXFilterErrorPtr = nullptr;
-
-
-//===============exception translators=========================================
-void NXFileError_translator(pni::nx::NXFileError const &error)
-{
-    assert(PyNXFileErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXFileErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void NXGroupError_translator(pni::nx::NXGroupError const &error)
-{
-    assert(PyNXGroupErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXGroupErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void NXAttributeError_translator(pni::nx::NXAttributeError const &error)
-{
-    assert(PyNXAttributeErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXAttributeErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void NXFieldError_translator(pni::nx::NXFieldError const &error)
-{
-    assert(PyNXFieldErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXFieldErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void NXSelectionError_translator(pni::nx::NXSelectionError const &error)
-{
-    assert(PyNXSelectionErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXSelectionErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void NXFilterError_translator(pni::nx::NXFilterError const &error)
-{
-    assert(PyNXFilterErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyNXFilterErrorPtr,exception.ptr());
-}
-
-
+ERR_TRANSLATOR(pni::nx,NXFileError);
+ERR_TRANSLATOR(pni::nx,NXGroupError);
+ERR_TRANSLATOR(pni::nx,NXFieldError);
+ERR_TRANSLATOR(pni::nx,NXAttributeError);
+ERR_TRANSLATOR(pni::nx,NXSelectionError);
+ERR_TRANSLATOR(pni::nx,NXFilterError);
 
 //-----------------------------------------------------------------------------
 void ChildIteratorStop_translator(ChildIteratorStop const &error)
@@ -110,57 +59,18 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 
 
 //====================General purpose exceptions===============================
-PyObject *PyShapeMissmatchErrorPtr = nullptr;
-PyObject *PyIndexErrorPtr = nullptr;
-PyObject *PySizeMissmatchErrorPtr = nullptr;
-PyObject *PyMemoryAllocationErrorPtr = nullptr;
-
-//-----------------------------------------------------------------------------
-void ShapeMissmatchError_translator(pni::utils::ShapeMissmatchError const
-        &error)
-{
-    assert(PyShapeMissmatchErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyShapeMissmatchErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void IndexError_translator(pni::utils::IndexError const &error)
-{
-    assert(PyIndexErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PyIndexErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void SizeMissmatchError_translator(pni::utils::SizeMissmatchError const &error)
-{
-    assert(PySizeMissmatchErrorPtr != nullptr);
-    object exception(error);
-    PyErr_SetObject(PySizeMissmatchErrorPtr,exception.ptr());
-}
-
-//-----------------------------------------------------------------------------
-void MemoryAllocationError_translator(pni::utils::MemoryAllocationError const
-        &error)
-{
-    assert(PyMemoryAllocationErrorPtr != nullptr); object exception(error); 
-    PyErr_SetObject(PyMemoryAllocationErrorPtr,exception.ptr()); 
-}
-
-//-----------------------------------------------------------------------------
-void TypeError_translator(pni::utils::TypeError const &error)
-{
-    object exception(error);
-    PyErr_SetObject(PyExc_TypeError,exception.ptr());
-}
+ERR_TRANSLATOR(pni::utils,ShapeMissmatchError);
+ERR_TRANSLATOR(pni::utils,IndexError);
+ERR_TRANSLATOR(pni::utils,SizeMissmatchError);
+ERR_TRANSLATOR(pni::utils,MemoryAllocationError);
+ERR_TRANSLATOR(pni::utils,TypeError);
 
 
 
 //-----------------------------------------------------------------------------
 void exception_registration()
 {
-
+    //define the base class for all exceptions
     const String &(Exception::*exception_get_description)() const =
         &Exception::description;
     class_<Exception>("Exception")
@@ -168,94 +78,32 @@ void exception_registration()
         .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
         ;
 
-    object PyShapeMissmatchError = (
-            class_<ShapeMissmatchError,bases<Exception> >("ShapeMissmatchError")
-                .def(init<>())
-            );
+    ERR_OBJECT_DECL(pni::nx,NXFileError);
+    ERR_OBJECT_DECL(pni::nx,NXFieldError);
+    ERR_OBJECT_DECL(pni::nx,NXGroupError);
+    ERR_OBJECT_DECL(pni::nx,NXAttributeError);
+    ERR_OBJECT_DECL(pni::nx,NXSelectionError);
+    ERR_OBJECT_DECL(pni::nx,NXFilterError);
+    ERR_OBJECT_DECL(pni::utils,ShapeMissmatchError);
+    ERR_OBJECT_DECL(pni::utils,IndexError);
+    ERR_OBJECT_DECL(pni::utils,SizeMissmatchError);
+    ERR_OBJECT_DECL(pni::utils,MemoryAllocationError);
+    ERR_OBJECT_DECL(pni::utils,TypeError);
 
-    object PyIndexError = (
-            class_<IndexError,bases<Exception> >("IndexError")
-                .def(init<>())
-            );
     
-    object PySizeMissmatchError = (
-            class_<SizeMissmatchError,bases<Exception> >("SizeMissmatchError")
-                .def(init<>())
-            );
-    
-    object PyMemoryAllocationError = (
-            class_<MemoryAllocationError,bases<Exception> >("MemoryAllocationError")
-                .def(init<>())
-            );
-    
-    class_<TypeError,bases<Exception> >("PNITypeError")
-        .def(init<>())
-        ;
-
-    PyShapeMissmatchErrorPtr = PyShapeMissmatchError.ptr();
-    PyIndexErrorPtr = PyIndexError.ptr();
-    PySizeMissmatchErrorPtr = PySizeMissmatchError.ptr();
-    PyMemoryAllocationErrorPtr = PyMemoryAllocationError.ptr();
+    ERR_REGISTRATION(pni::nx,NXFileError);
+    ERR_REGISTRATION(pni::nx,NXFieldError);
+    ERR_REGISTRATION(pni::nx,NXGroupError);
+    ERR_REGISTRATION(pni::nx,NXAttributeError);
+    ERR_REGISTRATION(pni::nx,NXSelectionError);
+    ERR_REGISTRATION(pni::nx,NXFilterError);
+    ERR_REGISTRATION(pni::utils,ShapeMissmatchError);
+    ERR_REGISTRATION(pni::utils,IndexError);
+    ERR_REGISTRATION(pni::utils,SizeMissmatchError);
+    ERR_REGISTRATION(pni::utils,MemoryAllocationError);
+    ERR_REGISTRATION(pni::utils,TypeError);
 
 
-    object PyNXFileError = (
-            class_<pni::nx::NXFileError,bases<Exception> >("NXFileError")
-                .def(init<>())
-            );
-
-    object PyNXGroupError = (
-            class_<pni::nx::NXGroupError,bases<Exception> >("NXGroupError")
-                .def(init<>())
-            );
-
-    object PyNXFilterError = (
-            class_<pni::nx::NXFilterError,bases<Exception> >("NXFilterError")
-                .def(init<>())
-            );
-
-    object PyNXFieldError = (
-            class_<pni::nx::NXFieldError,bases<Exception> >("NXFieldError")
-                .def(init<>())
-            );
-    
-    object PyNXAttributeError = (
-            class_<pni::nx::NXAttributeError,bases<Exception> >("NXAttributeError")
-                .def(init<>())
-            );
-    
-    object PyNXSelectionError = (
-            class_<pni::nx::NXSelectionError,bases<Exception> >("NXSelectionError")
-                .def(init<>())
-            );
-
-    PyNXFileErrorPtr        = PyNXFileError.ptr();
-    PyNXGroupErrorPtr       = PyNXGroupError.ptr();
-    PyNXFieldErrorPtr       = PyNXFieldError.ptr();
-    PyNXAttributeErrorPtr   = PyNXAttributeError.ptr();
-    PyNXSelectionErrorPtr   = PyNXSelectionError.ptr();
-    PyNXFilterErrorPtr      = PyNXFilterError.ptr();
-
-
-
-    register_exception_translator<pni::nx::NXFileError>
-        (NXFileError_translator);
-    register_exception_translator<pni::nx::NXGroupError>
-        (NXGroupError_translator);
-    register_exception_translator<pni::nx::NXAttributeError>
-        (NXAttributeError_translator);
-    register_exception_translator<pni::nx::NXFieldError>
-        (NXFieldError_translator);
-    register_exception_translator<pni::utils::IndexError>
-        (IndexError_translator);
-    register_exception_translator<pni::utils::MemoryAllocationError>
-        (MemoryAllocationError_translator);
-    register_exception_translator<pni::utils::SizeMissmatchError>
-        (SizeMissmatchError_translator);
-    register_exception_translator<pni::nx::NXSelectionError>
-        (NXSelectionError_translator);
-    register_exception_translator<pni::utils::ShapeMissmatchError>
-        (ShapeMissmatchError_translator);
-    register_exception_translator<pni::utils::TypeError>(TypeError_translator);
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
     register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
 

@@ -26,6 +26,63 @@
 #ifndef __NXWRAPPERERRORS_HPP__
 #define __NXWRAPPERERRORS_HPP__
 
+/*!
+\ingroup errors
+\brief generate translator name
+
+*/
+#define ERR_TRANSLATOR_NAME(ETYPE) ETYPE ## _translator
+
+/*!
+\ingroup errors
+\brief generate exception pointer name
+
+*/
+#define ERR_PTR_NAME(ETYPE) Py ## ETYPE ## Ptr
+
+/*!
+\ingroup errors
+\brief generate exception object name
+
+*/
+#define ERR_OBJ_NAME(ETYPE) Py ## ETYPE
+
+/*!
+\ingroup errors
+\brief generate the error translator
+
+This macro creates the error translator function along with the corresponding
+pointer to the exception object.
+*/
+#define ERR_TRANSLATOR(NS,ETYPE)\
+    PyObject *ERR_PTR_NAME(ETYPE) = nullptr;\
+    void ERR_TRANSLATOR_NAME(ETYPE)(const NS::ETYPE &error)\
+    {\
+        assert(ERR_PTR_NAME(ETYPE) != nullptr);\
+        object exception(error);\
+        PyErr_SetObject(ERR_PTR_NAME(ETYPE),exception.ptr());\
+    }
+
+/*! 
+\ingroup errors
+\brief generats the python exception wrapper
+
+Generates the wrapper code for the python exception.
+*/
+#define ERR_OBJECT_DECL(NS,ETYPE)\
+    object ERR_OBJ_NAME(ETYPE) = (\
+            class_<NS::ETYPE,bases<Exception> >(# ETYPE ));\
+    ERR_PTR_NAME(ETYPE) = ERR_OBJ_NAME(ETYPE).ptr();
+
+/*!
+\ingroup errors
+\brief generate registration code
+
+Macro generates the code to register an exception at the module.
+*/
+#define ERR_REGISTRATION(NS,ETYPE)\
+    register_exception_translator<NS::ETYPE>(ERR_TRANSLATOR_NAME(ETYPE)); 
+
 
 /*! 
 \ingroup errors
@@ -55,5 +112,13 @@ This function is called by the module in order to register all exception
 translators.
 */
 void exception_registration();
+
+//-----------------------------------------------------------------------------
+void throw_NXFileError(const String &message);
+void throw_NXGroupError(const String &message);
+void throw_NXFieldError(const String &message);
+void throw_NXAttributeError(const String &message);
+void throw_NXSelectionError(const String &message);
+void throw_NXFilterError(const String &message);
 
 #endif

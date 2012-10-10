@@ -1,15 +1,12 @@
 import unittest
 import numpy
 
+import pni.nx.h5 as nx
 from pni.nx.h5 import NXFile
 from pni.nx.h5 import NXGroup
 from pni.nx.h5 import NXField
 from pni.nx.h5 import create_file
 from pni.nx.h5 import open_file
-
-from pni.nx.h5 import ShapeMissmatchError
-from pni.nx.h5 import NXFieldError
-
 
 #implementing test fixture
 class NXFieldTest(unittest.TestCase):
@@ -41,10 +38,10 @@ class NXFieldTest(unittest.TestCase):
 
         #check for some errors
         #what if chunk shape and data shape do not have same rank
-        self.assertRaises(ShapeMissmatchError,self.gf.create_field,
+        self.assertRaises(nx.ShapeMissmatchError,self.gf.create_field,
                 "data2","float32",shape=(256,412),chunk=(256,))
         #check for unkown data type
-        self.assertRaises(TypeError,self.gf.create_field,
+        self.assertRaises(nx.TypeError,self.gf.create_field,
                 "data2","hallo")
 
 
@@ -97,19 +94,12 @@ class NXFieldTest(unittest.TestCase):
         f1[-10:-5] = numpy.arange(100,105)
         self.assertTrue(f1[-10] == f1[10])
         self.assertTrue(f1[10] == 100)
-
-
-
-
-            
-
-        
     
-#    def test_io(self):
-#        f = self.gf.create_field("log","string")
-#        f.write("hello world this is a text")
-#        f.write("another text")
-#        f[0] = "yet another text"
-#
-#        #try to write unicode
-#        f.write(u"unicode text")
+    def test_io(self):
+        f = self.gf.create_field("log","string")
+        f.write("hello world this is a text")
+        f.write("another text")
+        f[0] = "yet another text"
+
+        #try to write unicode
+        f.write(u"unicode text")
