@@ -176,3 +176,17 @@ size_t nested_list_rank(const object &o)
 
     return rank;
 }
+
+//-----------------------------------------------------------------------------
+bool is_unicode(const object &o)
+{
+    if(PyUnicode_Check(o.ptr())) return true;
+    return false;
+}
+
+//-----------------------------------------------------------------------------
+object unicode2str(const object &o)
+{
+    PyObject *ptr = PyUnicode_AsUTF8String(o.ptr());
+    return object(handle<>(ptr));
+}

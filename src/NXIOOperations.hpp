@@ -377,8 +377,15 @@ void io_write(const OTYPE &writeable,const object &obj)
     }
 
     if(writeable.type_id() == TypeID::STRING)
-    {    
-        IOOP::template write<String>(writeable,obj); return;
+    {   
+        //need to check if the object represents a unicode string
+        object data;
+        if(is_unicode(obj))
+            data = unicode2str(obj);
+        else    
+            data = obj;
+
+        IOOP::template write<String>(writeable,data); return;
     }
 
     if(writeable.type_id() == TypeID::BOOL)

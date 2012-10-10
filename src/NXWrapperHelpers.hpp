@@ -245,5 +245,28 @@ field from which the selection should be drawn.
 */
 std::vector<Slice> create_selection(const tuple &t,const NXField &f);
 
+//-----------------------------------------------------------------------------
+/*!
+\ingroup utils
+\brief check if unicode
+
+Check if the instance of objec represents a unicode object. 
+\param o instance to check
+\return true if o is a unicode object, false otherwise
+*/
+bool is_unicode(const object &o);
+
+//-----------------------------------------------------------------------------
+/*!
+\ingroup utils
+\brief convert unicode to string
+
+Converts a Python unicode object to a common Python String object using 
+UTF8 encoding.
+\param o python unicode object
+\return python string object
+*/
+object unicode2str(const object &o);
+
 
 #endif
