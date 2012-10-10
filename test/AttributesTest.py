@@ -61,6 +61,7 @@ class AttributeTest(object):
         self.scalar_attribute_test(ts,parent,"complex128_attr","complex256",1+123.j)
 
         self.scalar_attribute_test(ts,parent,"text","string","hello world this is a text")
+        self.scalar_attribute_test(ts,parent,"unicode","string",u"hello world")
         self.scalar_attribute_test(ts,parent,"flag","bool",True)
 
     def test_array_attribute(self,ts,parent):
