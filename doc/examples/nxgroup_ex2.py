@@ -23,4 +23,6 @@ wa[...] = 10
 g.attr("vectors","uint8",wa.shape).value = wa
 print g.attr("vectors").value[...]
 
+g.close()
+attr.close()
 nxfile.close()

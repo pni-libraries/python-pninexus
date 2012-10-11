@@ -75,8 +75,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 
         //----------------------------------------------------------------------
         //! conversion move constructor
-        explicit NXGroupWrapper(type_t &&g):
-            NXObjectWrapper<type_t>(std::move(g))
+        explicit NXGroupWrapper(type_t &&g):NXObjectWrapper<type_t>(std::move(g))
         {}
 
         //----------------------------------------------------------------------
@@ -84,7 +83,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         virtual ~NXGroupWrapper() { }
 
         //====================assignment operators==============================
-        //copy assignment 
+        //!copy assignment 
         group_wrapper_t &operator=(const group_wrapper_t &o)
         {
             if(this != &o) object_wrapper_t::operator=(o);
@@ -92,7 +91,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         }
 
         //-----------------------------------------------------------------------
-        //move assignment
+        //!move assignment
         group_wrapper_t &operator=(group_wrapper_t &&o)
         {
             if(this != &o) object_wrapper_t::operator=(std::move(o));
@@ -111,11 +110,14 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \param nxclass optional argument with the Nexus class
         \return new instance of NXGroupWrapper
         */
-        object create_group(const String &n,const String &nxclass=String()) const
+        NXGroupWrapper<typename NXObjectMap<type_t>::GroupType>
+        create_group(const String &n,const String &nxclass=String()) const
         {
             typedef typename NXObjectMap<type_t>::GroupType l_group_t;
             typedef NXGroupWrapper<l_group_t> l_group_wrapper_t;
-            return object(new l_group_wrapper_t(this->_object.create_group(n,nxclass)));
+
+            l_group_wrapper_t group(this->_object.create_group(n,nxclass));
+            return group;
         }
 
         //-------------------------------------------------------------------------
@@ -142,6 +144,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \param shape sequence object with the shape of the field
         \param chunk sequence object for the chunk shape
         \param filter a filter object for data compression
+        \return instance of a field wrapper
         */
         typename field_creator_t::field_wrapper_t
          create_field(const String &name,const String &type_code,
@@ -153,8 +156,6 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
                                     List2Container<shape_t>(list(chunk)),filter);
 
             field_wrapper_t wrapper = creator.create(this->_object,type_code);
-            field_wrapper_t w2 = wrapper;
-            field_wrapper_t w3 = std::move(w2);
             return wrapper;
         }
 
@@ -185,10 +186,10 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
             //we use here copy construction thus we do not have to care
             //of the original nxobject goes out of scope and gets destroyed.
             if(nxobject.object_type() == pni::nx::NXObjectType::NXFIELD)
-               return object(new field_wrapper_t(field_t(nxobject)));
+               return object(field_wrapper_t(field_t(nxobject)));
 
             if(nxobject.object_type() == pni::nx::NXObjectType::NXGROUP)
-                return object(new l_group_wrapper_t(l_group_t(nxobject)));
+                return object(l_group_wrapper_t(l_group_t(nxobject)));
 
             nxobject.close();
             //this here is to avoid compiler warnings

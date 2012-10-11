@@ -77,6 +77,7 @@ class NXFieldTest(unittest.TestCase):
         self.assertTrue(a.shape == (3,))
 
     def test_negative_index(self):
+        print "run NXFieldTest.test_negative_index() ............."
         f1 = self.gf.create_field("data1","uint16",shape=(20,))
 
         f1[...] = numpy.arange(0,20,dtype="uint16")
@@ -96,6 +97,7 @@ class NXFieldTest(unittest.TestCase):
         self.assertTrue(f1[10] == 100)
     
     def test_io(self):
+        print "run NXFieldTest.test_io() ........................."
         f = self.gf.create_field("log","string")
         f.write("hello world this is a text")
         f.write("another text")

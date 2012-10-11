@@ -95,9 +95,9 @@ template<typename OTYPE> class NXObjectWrapper
         //! destructor
         virtual ~NXObjectWrapper()
         {
-            //close the object on wrapper destruction - we can use the close
-            //method here as it is not virtual
-            this->_object.close();
+            //there is nothing we have to do here. As the wrapped objects are
+            //all first class objects they will be destroyed automatically when
+            //their wrapper object gets destroyed.
         }
 
         //==================assignment operators===============================

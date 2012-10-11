@@ -26,6 +26,7 @@ class NXGroupTest(unittest.TestCase):
         self.gf.close()
 
     def test_creation(self):
+        print "NXGroupTest.test_creation() ........................"
         g = self.gf.create_group("metadata")
         self.assertTrue(g.valid)
         g = self.gf.create_group("scan_1",nxclass="NXentry")
@@ -38,20 +39,24 @@ class NXGroupTest(unittest.TestCase):
         self.assertTrue(g.base == "/scan_1/instrument")
 
     def test_open(self):
+        print "NXGroupTest.test_open() ............................"
         #try to open a group that does not exist
         self.assertRaises(NXGroupError,self.gf.open,"/data")
 
     def test_simple_attributes(self):
+        print "NXGroupTest.test_simple_attributes() ..............."
         g = self.gf.create_group("dgroup")
         self.assertTrue(g.valid)
         self.attr_tester.test_scalar_attribute(self,g)
 
     def test_array_attributes(self):
+        print "NXGroupTest.test_array_attributes() ................."
         g = self.gf.create_group("dgroup")
         self.assertTrue(g.valid)
         self.attr_tester.test_array_attribute(self,g)
 
     def test_group_iteration(self):
+        print "NXGroupTest.test_group_iteration() ................."
         g = self.gf.create_group("/scan_1/instrument/detector");
         g.create_group("module_1")
         g.create_group("module_2")

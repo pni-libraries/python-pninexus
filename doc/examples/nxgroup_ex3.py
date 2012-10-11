@@ -28,4 +28,3 @@ for c in g.childs:
     for a in c.attributes:
         print a.name,": ",a.value
 
-nxfile.close()

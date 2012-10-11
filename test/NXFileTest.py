@@ -23,7 +23,7 @@ class NXFileTest(unittest.TestCase):
         self._file.close()
 
     def test_creation(self):
-        print "test_creation ..."
+        print "NXFileTest.test_creation() ............................"
         f = create_file("test.h5",overwrite=True)
         self.assertTrue(f.valid)
         self.assertFalse(f.readonly)
@@ -34,19 +34,22 @@ class NXFileTest(unittest.TestCase):
         f.close()
 
     def test_scalar_attribute(self):
-        print "test_scalar_attribute ..."
+        print "NXFileTest.test_scalar_attributes() ...................."
         self.attr_tester.test_scalar_attribute(self,self._file)
 
     def test_array_attribute(self):
-        print "test_array_attribute ..."
+        print "NXFileTest.test_array_attribute() ......................"
         self.attr_tester.test_array_attribute(self,self._file)
 
     def test_group_iteration(self):
-        print "test_group_iteration ..."
+        print "NXFileTest.test_group_iteration() ......................"
         g=self._file.create_group("data1")
+        self.assertTrue(g.valid)
         g=self._file.create_group("data2")
+        self.assertTrue(g.valid)
         g=self._file.create_group("data3")
-        g=self.assertTrue(self._file.nchilds == 3)
+        self.assertTrue(g.valid)
+        self.assertTrue(self._file.nchilds == 3)
 
         for g in self._file.childs:
             self.assertTrue(isinstance(g,NXGroup))

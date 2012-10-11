@@ -149,7 +149,8 @@ template<typename IterableT,typename ItemT> class ChildIterator
         ItemT next()
         {
             //check if iteration is still possible
-            if(_index == _nlinks){
+            if(_index == _nlinks)
+            {
                 //raise exception here
                 throw(ChildIteratorStop());
                 return(ItemT());
