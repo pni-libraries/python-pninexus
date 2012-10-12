@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+#file: nxgroup_ex2.py
+
 import pni.nx.h5 as nx
 
-nxfile = nx.create_file("nxgroup_ex1.h5",overwrite=True)
+nxfile = nx.create_file("nxgroup_ex2.h5",overwrite=True)
 
 #create groups
 nxfile.create_group("scan_1","NXentry")
@@ -11,7 +13,7 @@ nxfile.create_group("scan_1/monitor","NXmonitor")
 
 #iterate over groups
 scan = nxfile["scan_1"]
-for g in scan.childs:
+for g in scan.children:
     print g.path
 
 

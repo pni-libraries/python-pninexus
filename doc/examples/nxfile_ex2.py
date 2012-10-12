@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#file: nxfile_ex2.py
 
 import pni.nx.h5 as nx
 

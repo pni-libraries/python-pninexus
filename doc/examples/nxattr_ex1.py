@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-#File: nxgroup_ex2.py
+#File: nxattr_ex1.py
 
 import numpy
 import pni.nx.h5 as nx
 
-nxfile = nx.create_file("nxgroup_ex2.h5",overwrite=True)
+nxfile = nx.create_file("nxattr_ex1.h5",overwrite=True)
 g = nxfile.create_group("data");
 
 #string attributes
@@ -21,8 +21,6 @@ print attr.value
 wa = numpy.zeros((10,3),dtype="uint8")
 wa[...] = 10
 g.attr("vectors","uint8",wa.shape).value = wa
-print g.attr("vectors").value[...]
+print g.attr("vectors").value
 
-g.close()
-attr.close()
 nxfile.close()

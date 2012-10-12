@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#file: nxgroup_ex1.py
+
 import pni.nx.h5 as nx
 
 nxfile = nx.create_file("nxgroup_ex1.h5",overwrite=True)
