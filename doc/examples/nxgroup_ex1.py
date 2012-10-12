@@ -1,20 +1,14 @@
 #!/usr/bin/env python
-#File: nxgroup_ex1.py
 import pni.nx.h5 as nx
 
 nxfile = nx.create_file("nxgroup_ex1.h5",overwrite=True)
 
 #create groups
-group = nxfile.create_group("data1")
-group = group.create_group("dir")
-group = nxfile.create_group("data2","NXentry")
-group = nxfile.create_group("data3/detector/data","NXdata")
+nxfile.create_group("scan_1","NXentry")
+inst = nxfile.create_group("scan_1/instrument","NXinstrument")
 
-#open existing groups
-group = nxfile.open("data1")
-group = group.open("dir")
-
-#open an existing group using [] operator
-group = nxfile["/data3/detector/data"]
+print "group name: ",inst.name
+print "group path: ",inst.path
+print "group base: ",inst.base
 
 nxfile.close()

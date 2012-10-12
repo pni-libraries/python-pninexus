@@ -29,6 +29,10 @@ arguments:
 
 \c open_file has only one additional keyword argument: \c readonly.
 If set to \c true the file will be opened in read-only mode.
+In the following example the script tries to open a file. If this fails an
+exception of type \c nx.NXFileError will be thrown, caught by the except
+statement and the file is newly created.
+\includelineno nxfile_ex2.py
 
 The Nexus standard defines a couple of attributes that must be attached to the
 root group of a file. You do not have to take care about these attributes. They
@@ -36,17 +40,21 @@ are managed automatically by the library.
 
 \section userdoc_groups Groups 
 
-Groups can be created by instances of \c NXGroup or \c NXFile using their 
-\c create_group method.
-There are several possibilities how the name of a new group can influence where
-the group will be created. For the next examples we assume that \c g is an
-instance of \c NXGroup with path \c /scan_1/instrument. 
-Consider now the following code snippet
+Groups are the fundamental organizational entity within a Nexus file. 
+They can be created by instances of \c NXGroup or \c NXFile using their 
+\c create_group method. This method takes basically one argument: the name or
+path of the group to create.
+It is important to understand how its name determines where the newly created
+group will be located within the file. For the following examples we assume that
+\c g in the code snippets is an instance of \c NXGroup representing a group 
+with the absolute path \c /scan_1/instrument. 
+In the simplest case a group can be created with
 \code
 g.create_group("tth")
 \endcode
-which will create a new group with path \c /scan\_1/instrument/tth.
-Intermediate groups will be created automatically. So for instance 
+which will creates a new group with path \c /scan\_1/instrument/tth (the new
+group thus resides directly below \c g). 
+Intermediate groups are created automatically. So for instance 
 \code
 g.create_group("monochromator/positioner")
 \endcode
@@ -57,14 +65,24 @@ the path of the new group points to.
 \code
 g.create_group("/scan_1/sample/omega")
 \endcode
-\c create_group takes also an optional keyword argument \c nxclass} which
-describes the Nexus object the newly created group shall belong too. This is
+The \c create_group method accepts also the optional keyword argument \c nxclass which
+describes the Nexus object the newly created group shall represent. This is
 typically a Nexus base class. See the Nexus reference manual for more
 information on base classes.
 
-The following example shows how to create groups using instances of \c NXGroup
-and \c NXFile.
+The next examples shows how the basic parameters of a group can be obtained from
+several properties related with an instance of \c NXGroup. 
 \includelineno nxgroup_ex1.py
+the output of the program reads
+\code
+group name:  instrument
+group path:  /scan_1/instrument
+group base:  /scan_1
+\endcode
+The name property returns the name of a group. The name is the last element of
+the full path of a group. The full path can be obtained from the \c path
+attribute. Finally, the \c base property returns the path of the groups parent. 
+
 
 Lines 8-11 show the creation of new groups. To open an existing group one can
 either use the \c open method provided by \c NXGroup and \c NXFile. 
