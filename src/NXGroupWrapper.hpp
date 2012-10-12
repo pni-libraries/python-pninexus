@@ -346,8 +346,8 @@ template<typename GTYPE> void wrap_nxgroup(const String &class_name)
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&group_wrapper_t::exists,__group_exists_docstr)
         .def("link",&group_wrapper_t::link,__group_link_docstr)
-        .add_property("nchilds",&group_wrapper_t::nchilds,__group_nchilds_docstr)   
-        .add_property("childs",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
+        .add_property("nchildren",&group_wrapper_t::nchilds,__group_nchilds_docstr)   
+        .add_property("children",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
         ;
 }
 

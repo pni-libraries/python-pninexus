@@ -82,6 +82,8 @@ group base:  /scan_1
 The name property returns the name of a group. The name is the last element of
 the full path of a group. The full path can be obtained from the \c path
 attribute. Finally, the \c base property returns the path of the groups parent. 
+Groups posses a property named \c childs which can be used to iterate over the
+child objects (groups and fields) located 
 
 
 Lines 8-11 show the creation of new groups. To open an existing group one can

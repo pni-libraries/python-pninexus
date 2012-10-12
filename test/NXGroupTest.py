@@ -62,10 +62,10 @@ class NXGroupTest(unittest.TestCase):
         g.create_group("module_2")
         g.create_group("module_3")
 
-        self.assertTrue(g.nchilds==3)
+        self.assertTrue(g.nchildren==3)
 
         i = 1 
-        for m in g.childs:
+        for m in g.children:
             self.assertTrue(m.name == "module_%i" %(i))
             i += 1
 

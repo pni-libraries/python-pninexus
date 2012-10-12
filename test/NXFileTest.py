@@ -49,9 +49,9 @@ class NXFileTest(unittest.TestCase):
         self.assertTrue(g.valid)
         g=self._file.create_group("data3")
         self.assertTrue(g.valid)
-        self.assertTrue(self._file.nchilds == 3)
+        self.assertTrue(self._file.nchildren == 3)
 
-        for g in self._file.childs:
+        for g in self._file.children:
             self.assertTrue(isinstance(g,NXGroup))
 
 
