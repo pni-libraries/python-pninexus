@@ -1,0 +1,115 @@
+/*! \page userdoc User Documentation
+
+This part of the documentation is intended for developers who simply want to use
+the Python bindings to write Nexus files from within their applications.
+To use the binding you need to import the appropriate package. 
+This can be done with
+\code
+import pni.nx.h5 
+\endcode
+
+
+
+\section userdoc_files Handling files
+
+To create a new or open an existing nexus file the Python package provides two
+utility functions \c create_file and \c open_file. For both functions
+the first positional argument is mandatory. It is a string with the name (path)
+of the file top create or open.
+The following example shows the basic usage of \c create_file
+\includelineno nxfile_ex1.py 
+
+In addition to the filename \c create_file takes two optional keyword
+arguments:
+
+ - \c overwrite which is a boolean value. If \c true an already existing 
+ file with the same name will be truncated (its content will be deleted). 
+ If \c false the original file remains untouched and an exception will be thrown.
+ - \c splitsize NOT IMPLEMENTED YET.
+
+\c open_file has only one additional keyword argument: \c readonly.
+If set to \c true the file will be opened in read-only mode.
+
+The Nexus standard defines a couple of attributes that must be attached to the
+root group of a file. You do not have to take care about these attributes. They
+are managed automatically by the library. 
+
+\section userdoc_groups Groups 
+
+Groups can be created by instances of \c NXGroup or \c NXFile using their 
+\c create_group method.
+There are several possibilities how the name of a new group can influence where
+the group will be created. For the next examples we assume that \c g is an
+instance of \c NXGroup with path \c /scan_1/instrument. 
+Consider now the following code snippet
+\code
+g.create_group("tth")
+\endcode
+which will create a new group with path \c /scan\_1/instrument/tth.
+Intermediate groups will be created automatically. So for instance 
+\code
+g.create_group("monochromator/positioner")
+\endcode
+will create a new group with path \c /scan_1/instrument/monochromator/positioner. 
+The group \c monochromator does not have to exist prior to the above call.
+By using an absolute path for the name the new group will be created wherever
+the path of the new group points to. 
+\code
+g.create_group("/scan_1/sample/omega")
+\endcode
+\c create_group takes also an optional keyword argument \c nxclass} which
+describes the Nexus object the newly created group shall belong too. This is
+typically a Nexus base class. See the Nexus reference manual for more
+information on base classes.
+
+The following example shows how to create groups using instances of \c NXGroup
+and \c NXFile.
+\includelineno nxgroup_ex1.py
+
+Lines 8-11 show the creation of new groups. To open an existing group one can
+either use the \c open method provided by \c NXGroup and \c NXFile. 
+Alternatively one can use the \c [] operator along with the path of
+the object one wants to open. Lines 14, 15, and 18 show code where existing
+groups are opened.
+
+\section userdoc_attributes Attributes
+
+To each object of type \c NXGroup, \c NXFile, and \c NXField attributes can be
+attached. Attributes are objects of type \c NXAttribute which are virtually very
+similar to \c NXField though they do not posses all their capabilities. 
+ All IO as well as information about an attribute object can be done or 
+ obtained via the attributes of such an object. 
+Each attribute has three read only attributes name \c name, \c dtype, and
+\c shape. The first one returns the name of the attribute. The second one the
+type of the attribute as numpy typecode. The last attribute \c shape
+represents the shape of an attribute as a tuple.
+Reading and writing data to an attribute can be done via \c value attribute.
+
+To create an attribute use the \c attr method provided by all objects. 
+This method requires to positional arguments: the name of the attribute and its 
+typecode. To create for instance a string attribute with name \c "text" use
+\code
+a = obj.attr("text","string")
+\endcode
+An additional keyword argument \c shape can be passed to this method in order to create
+multidimensional attributes
+\code
+a = obj.attr("cij","float32",shape=(6,6))
+\endcode
+where \c shape is a tuple determining the number of dimensions as well as the
+number of elements along each dimension.
+Data can be written or read from an attribute using the \c value member
+attribute of the attribute object
+\code
+a.value = "hello world"
+\endcode
+If the dimensionality or data type does not match an exception will be thrown. 
+
+In the next example we will have a look how to handle attributes.
+\includelineno nxgroup_ex2.py
+\includelineno nxgroup_ex3.py
+
+\section userdoc_fields Storing data into fields
+\includelineno simple_io.py
+
+*/

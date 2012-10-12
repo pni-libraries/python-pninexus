@@ -84,7 +84,13 @@ template<typename OTYPE> class NXObjectWrapper
         NXObjectWrapper(object_wrapper_t &&o):_object(std::move(o._object)) {}
 
         //---------------------------------------------------------------------
-        //! copy conversion constructor from wrapped object
+        /*! 
+        \brief construct from type_t
+
+        Construct the object from an instance of type_t (the wrapped type). 
+        In this case the original instance of type_t will be copied. 
+        \param o reference to instance of type_t
+        */
         explicit NXObjectWrapper(const type_t &o):_object(o){}
 
         //---------------------------------------------------------------------

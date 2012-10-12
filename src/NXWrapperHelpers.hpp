@@ -96,7 +96,7 @@ String typeid2str(const TypeID &tid);
 
 Creates a Python list from a C++ container.
 \tparam CTYPE containerr type
-\param s instance of CTYPE
+\param c instance of CTYPE
 \return python list with 
 */
 template<typename CTYPE> list Container2List(const CTYPE &c)
