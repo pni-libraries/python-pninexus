@@ -24,7 +24,10 @@ class AttributeTest(object):
             
         #test data io
         attr.value = value
-        ts.assertAlmostEqual(attr.value,value)
+        if tc=="string":
+            ts.assertEqual(attr.value,value)
+        else:
+            ts.assertAlmostEqual(attr.value,value)
 
     def array_attribute_test(self,ts,parent,name,tc,shape,value):
         #create the attribute
