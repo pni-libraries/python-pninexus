@@ -73,22 +73,22 @@ class AttributeTest(object):
         data = numpy.ones(shape,dtype="uint8")
         self.array_attribute_test(ts,parent,"uint8_attr","uint8",shape,data)
         data = numpy.ones(shape,dtype="int8")
-        self.array_attribute_test(ts,parent,"int8_attr","uint8",shape,data)
+        self.array_attribute_test(ts,parent,"int8_attr","int8",shape,data)
         
         data = numpy.ones(shape,dtype="uint16")
         self.array_attribute_test(ts,parent,"uint16_attr","uint16",shape,data)
         data = numpy.ones(shape,dtype="int16")
-        self.array_attribute_test(ts,parent,"int16_attr","uint16",shape,data)
+        self.array_attribute_test(ts,parent,"int16_attr","int16",shape,data)
         
         data = numpy.ones(shape,dtype="uint32")
         self.array_attribute_test(ts,parent,"uint32_attr","uint32",shape,data)
         data = numpy.ones(shape,dtype="int32")
-        self.array_attribute_test(ts,parent,"int32_attr","uint32",shape,data)
+        self.array_attribute_test(ts,parent,"int32_attr","int32",shape,data)
         
         data = numpy.ones(shape,dtype="uint64")
         self.array_attribute_test(ts,parent,"uint64_attr","uint64",shape,data)
         data = numpy.ones(shape,dtype="int64")
-        self.array_attribute_test(ts,parent,"int64_attr","uint64",shape,data)
+        self.array_attribute_test(ts,parent,"int64_attr","int64",shape,data)
 
         data = numpy.ones(shape,dtype="float32")
         self.array_attribute_test(ts,parent,"float32_attr","float32",shape,data)

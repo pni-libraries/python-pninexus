@@ -8,6 +8,7 @@ from distutils.fancy_getopt import FancyGetopt
 from distutils.fancy_getopt import fancy_getopt
 from distutils.ccompiler import new_compiler
 from distutils.unixccompiler import UnixCCompiler
+from numpy.distutils import misc_util
 
 import commands
 
@@ -42,6 +43,7 @@ def pkgconfig(debug=False,*packages, **kw):
             kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
 
     kw["libraries"].append("boost_python")
+    kw["include_dirs"].append(misc_util.get_numpy_include_dirs()[0])
     try:
         kw["extra_compile_args"].append('-std=c++0x')
     except:
