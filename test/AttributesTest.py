@@ -1,4 +1,5 @@
 import numpy
+import platform
 
 class AttributeTest(object):
 
@@ -85,24 +86,29 @@ class AttributeTest(object):
         data = numpy.ones(shape,dtype="int32")
         self.array_attribute_test(ts,parent,"int32_attr","int32",shape,data)
         
-        data = numpy.ones(shape,dtype="uint64")
-        self.array_attribute_test(ts,parent,"uint64_attr","uint64",shape,data)
-        data = numpy.ones(shape,dtype="int64")
-        self.array_attribute_test(ts,parent,"int64_attr","int64",shape,data)
+        if platform.architecture()[0] != '32bit':
+            data = numpy.ones(shape,dtype="uint64")
+            self.array_attribute_test(ts,parent,"uint64_attr","uint64",shape,data)
+            data = numpy.ones(shape,dtype="int64")
+            self.array_attribute_test(ts,parent,"int64_attr","int64",shape,data)
 
         data = numpy.ones(shape,dtype="float32")
         self.array_attribute_test(ts,parent,"float32_attr","float32",shape,data)
         data = numpy.ones(shape,dtype="float64")
         self.array_attribute_test(ts,parent,"float64_attr","float64",shape,data)
-        data = numpy.ones(shape,dtype="float128")
-        self.array_attribute_test(ts,parent,"float128_attr","float128",shape,data)
+
+        if platform.architecture()[0] != '32bit':
+            data = numpy.ones(shape,dtype="float128")
+            self.array_attribute_test(ts,parent,"float128_attr","float128",shape,data)
         
         data = numpy.ones(shape,dtype="complex64")
         self.array_attribute_test(ts,parent,"complex32_attr","complex64",shape,data)
         data = numpy.ones(shape,dtype="complex128")
         self.array_attribute_test(ts,parent,"complex64_attr","complex128",shape,data)
-        data = numpy.ones(shape,dtype="complex256")
-        self.array_attribute_test(ts,parent,"complex128_attr","complex256",shape,data)
+
+        if platform.architecture()[0] != '32bit':
+            data = numpy.ones(shape,dtype="complex256")
+            self.array_attribute_test(ts,parent,"complex128_attr","complex256",shape,data)
 
         data = numpy.ones(shape,dtype="bool")
         self.array_attribute_test(ts,parent,"flag_attr","bool",shape,data)
