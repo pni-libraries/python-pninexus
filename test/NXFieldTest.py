@@ -67,14 +67,15 @@ class NXFieldTest(unittest.TestCase):
         a = f1[...]
         self.assertTrue(a.shape == (3,))
 
-        f2 = self.gf.create_field("data2","float64",shape=(3,1))
-        self.assertTrue(f2.shape == (3,1))
+        f2 = self.gf.create_field("data2","float64",shape=(3,))
+        self.assertTrue(f2.shape == (3,))
         self.assertTrue(f2.size == 3)
-        self.assertTrue(len(f2.shape) == 2)
+        self.assertTrue(len(f2.shape) == 1)
 
         f2[...] = 10.
         a = f2[...]
         self.assertTrue(a.shape == (3,))
+        print f2.read()
 
     def test_negative_index(self):
         print "run NXFieldTest.test_negative_index() ............."

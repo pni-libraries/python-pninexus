@@ -123,7 +123,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void write(const object &o) const
         {
-            if(this->_object.template shape<shape_t>().size() == 1)
+            if(this->_object.size() == 1)
             {
                 //scalar field - here we can use any scalar type to write data
                 io_write<ScalarWriter>(this->_object,o);
@@ -147,7 +147,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         object read() const
         {
-            if(this->_object.template shape<shape_t>().size() == 1)
+            if(this->_object.size() == 1)
             {
                 //the field contains only a single value - can return a
                 //primitive python object
