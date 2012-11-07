@@ -7,7 +7,7 @@ import pni.nx.h5 as nx
 f = nx.create_file("test.h5",True,0);
 d = f.attr("runnumber","int32")
 d.value = 1209
-print d.value
+print d.value," shoule be 1209"
 
 g = f.create_group("scan_1/detector/data")
 

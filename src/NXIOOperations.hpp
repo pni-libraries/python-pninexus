@@ -153,27 +153,27 @@ class ArrayWriter
             //select the data type to use for writing the array data
             switch(PyArray_TYPE(o.ptr()))
             {
-                case NPY_UBYTE:
+                case PyArray_UINT8:
                     w.write(Numpy2RefArray<UInt8>(o));break;
-                case NPY_BYTE:
+                case PyArray_INT8:
                     w.write(Numpy2RefArray<Int8>(o));break;
-                case NPY_USHORT:
+                case PyArray_UINT16:
                     w.write(Numpy2RefArray<UInt16>(o));break;
-                case NPY_SHORT:
+                case PyArray_INT16:
                     w.write(Numpy2RefArray<Int16>(o));break;
-                case NPY_UINT:
+                case PyArray_UINT32:
                     w.write(Numpy2RefArray<UInt32>(o)); break;
-                case NPY_INT:
+                case PyArray_INT32:
                     w.write(Numpy2RefArray<Int32>(o));break;
-                case NPY_ULONG:
+                case PyArray_UINT64:
                     w.write(Numpy2RefArray<UInt64>(o)); break;
-                case NPY_LONG:
+                case PyArray_INT64:
                     w.write(Numpy2RefArray<Int64>(o)); break;
-                case NPY_FLOAT:
+                case PyArray_FLOAT32:
                     w.write(Numpy2RefArray<Float32>(o)); break;
-                case NPY_DOUBLE:
+                case PyArray_FLOAT64:
                     w.write(Numpy2RefArray<Float64>(o)); break;
-                case NPY_LONGDOUBLE:
+                case PyArray_LONGDOUBLE:
                     w.write(Numpy2RefArray<Float128>(o));break;
                 case NPY_CFLOAT:
                     w.write(Numpy2RefArray<Complex32>(o));break;
