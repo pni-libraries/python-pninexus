@@ -58,16 +58,16 @@ def pkgconfig(debug=False,*packages, **kw):
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
 nxh5 = Extension("nxh5",files,
-                 **pkgconfig(debug,'pninx'))
+                 **pkgconfig(debug,'pniio'))
 
 setup(name="libpninx-python",
         author="Eugen Wintersberger",
         author_email="eugen.wintersberger@desy.de",
         description="Python wrapper for libpninx",
         version = "0.1.2",
-        ext_package="pni.nx.h5",
+        ext_package="pni.io.nx.h5",
         ext_modules=[nxh5],
-        packages = ["pni","pni.nx","pni.nx.h5"],
+        packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],
         url="https://sourceforge.net/projects/libpninxpython/",
         script_args = args
         )

@@ -1,7 +1,30 @@
-#ifndef __NXOBJECTMAP_HPP__
-#define __NXOBJECTMAP_HPP__
+/*
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of python-pniio.
+ *
+ * python-pniio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * python-pniio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
+ *
+ * Class-template for field creators.
+ *
+ * Created on: Feb 17, 2012
+ *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+ */
+#pragma once
 
-#include <pni/nx/NX.hpp>
+#include <pni/io/nx/NX.hpp>
 
 /*! 
 \ingroup utils  
@@ -23,41 +46,40 @@ template<typename GType> class NXObjectMap{
 
 
 //! \cond NO_API_DOC
-template<> class NXObjectMap<pni::nx::h5::NXObject>
+template<> class NXObjectMap<pni::io::nx::h5::NXObject>
 {
     public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::NXObject ObjectType;
+        typedef pni::io::nx::h5::NXGroup GroupType;
+        typedef pni::io::nx::h5::NXField FieldType;
+        typedef pni::io::nx::h5::NXAttribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::nx::h5::NXGroup>
+template<> class NXObjectMap<pni::io::nx::h5::NXGroup>
 {
     public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::NXObject ObjectType;
+        typedef pni::io::nx::h5::NXGroup GroupType;
+        typedef pni::io::nx::h5::NXField FieldType;
+        typedef pni::io::nx::h5::NXAttribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::nx::h5::NXField>
+template<> class NXObjectMap<pni::io::nx::h5::NXField>
 {
     public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::NXObject ObjectType;
+        typedef pni::io::nx::h5::NXGroup GroupType;
+        typedef pni::io::nx::h5::NXField FieldType;
+        typedef pni::io::nx::h5::NXAttribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::nx::h5::NXFile>
+template<> class NXObjectMap<pni::io::nx::h5::NXFile>
 {
     public:
-        typedef pni::nx::h5::NXObject ObjectType;
-        typedef pni::nx::h5::NXGroup GroupType;
-        typedef pni::nx::h5::NXField FieldType;
-        typedef pni::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::NXObject ObjectType;
+        typedef pni::io::nx::h5::NXGroup GroupType;
+        typedef pni::io::nx::h5::NXField FieldType;
+        typedef pni::io::nx::h5::NXAttribute AttributeType;
 };
 
 //! \endcond
-#endif

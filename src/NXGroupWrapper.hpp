@@ -1,20 +1,20 @@
 /*
  * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
  *
- * This file is part of libpninx-python.
+ * This file is part of python-pniio.
  *
- * libpninx is free software: you can redistribute it and/or modify
+ * python-pniio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
- * libpninx is distributed in the hope that it will be useful,
+ * python-pniio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ * along with pyton-pniio.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************
  *
  * Definition of the NXGroupWrapper template.
@@ -23,11 +23,10 @@
  *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
  */
 
-#ifndef __NXGROUPWRAPPER_HPP__
-#define __NXGROUPWRAPPER_HPP__
+#pragma once
 
-#include <pni/nx/NXObjectType.hpp>
-#include <pni/utils/service.hpp>
+#include <pni/io/nx/NXObjectType.hpp>
+#include <pni/core/service.hpp>
 
 #include "NXWrapperHelpers.hpp"
 #include "NXObjectMap.hpp"
@@ -185,10 +184,10 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 
             //we use here copy construction thus we do not have to care
             //of the original nxobject goes out of scope and gets destroyed.
-            if(nxobject.object_type() == pni::nx::NXObjectType::NXFIELD)
+            if(nxobject.object_type() == pni::io::nx::NXObjectType::NXFIELD)
                return object(field_wrapper_t(field_t(nxobject)));
 
-            if(nxobject.object_type() == pni::nx::NXObjectType::NXGROUP)
+            if(nxobject.object_type() == pni::io::nx::NXObjectType::NXGROUP)
                 return object(l_group_wrapper_t(l_group_t(nxobject)));
 
             nxobject.close();
@@ -351,5 +350,3 @@ template<typename GTYPE> void wrap_nxgroup(const String &class_name)
         ;
 }
 
-
-#endif

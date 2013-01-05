@@ -4,7 +4,7 @@ import sys
 import numpy
 
 
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 
 f = nx.create_file("test2.h5",overwrite = True)

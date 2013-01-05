@@ -1,13 +1,13 @@
 import unittest
 import numpy
 
-from pni.nx.h5 import NXFile
-from pni.nx.h5 import NXGroup
-from pni.nx.h5 import create_file
-from pni.nx.h5 import open_file
-from pni.nx.h5 import NXGroupError
-from pni.nx.h5 import NXAttributeError
-from pni.nx.h5 import ShapeMissmatchError
+from pni.io.nx.h5 import NXFile
+from pni.io.nx.h5 import NXGroup
+from pni.io.nx.h5 import create_file
+from pni.io.nx.h5 import open_file
+from pni.io.nx.h5 import NXGroupError
+from pni.io.nx.h5 import NXAttributeError
+from pni.io.nx.h5 import ShapeMissmatchError
 
 from AttributesTest import AttributeTest
 

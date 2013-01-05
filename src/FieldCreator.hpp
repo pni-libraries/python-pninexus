@@ -1,20 +1,20 @@
 /*
  * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
  *
- * This file is part of libpninx-python.
+ * This file is part of python-pniio.
  *
- * libpninx is free software: you can redistribute it and/or modify
+ * python-pniio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
- * libpninx is distributed in the hope that it will be useful,
+ * python-pniio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************
  *
  * Class-template for field creators.
@@ -23,20 +23,19 @@
  *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
  */
 
-#ifndef __FIELDCREATOR_HPP__
-#define __FIELDCREATOR_HPP__
+#pragma once
 
 #include<boost/python.hpp>
 
-#include<pni/utils/Types.hpp>
-#include<pni/utils/Exceptions.hpp>
-#include<pni/utils/Array.hpp>
+#include<pni/core/Types.hpp>
+#include<pni/core/Exceptions.hpp>
+#include<pni/core/Array.hpp>
 
-#include<pni/nx/NX.hpp>
+#include<pni/io/nx/NX.hpp>
 
 #include "NXFieldWrapper.hpp"
 
-using namespace pni::utils;
+using namespace pni::core;
 using namespace boost::python;
 
 /*! 
@@ -127,7 +126,7 @@ FieldCreator<GTYPE>::create(const group_t &parent) const
     else if(__filter.ptr() == Py_None)
         wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,__cs));
     else
-        throw pni::nx::NXFilterError(EXCEPTION_RECORD,
+        throw pni::io::nx::NXFilterError(EXCEPTION_RECORD,
                 "Invalid filter object!");
 
     return wrapper;
@@ -162,4 +161,3 @@ FieldCreator<GTYPE>::create(const group_t &parent,const String &type_code) const
             "Cannot create field with type-code ("+type_code+")!");
 }
 
-#endif

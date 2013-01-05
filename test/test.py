@@ -2,7 +2,7 @@
 
 import sys
 import numpy
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 f = nx.create_file("test.h5",True,0);
 d = f.attr("runnumber","int32")

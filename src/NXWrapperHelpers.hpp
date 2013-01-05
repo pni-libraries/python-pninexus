@@ -1,20 +1,20 @@
 /*
  * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
  *
- * This file is part of libpninx-python.
+ * This file is part of python-pniio.
  *
- * libpninx is free software: you can redistribute it and/or modify
+ * python-pniio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
- * libpninx is distributed in the hope that it will be useful,
+ * python-pniio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************
  *
  * Declearation of helper functions and classes for wrappers.
@@ -23,27 +23,26 @@
  *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
  */
 
-#ifndef __NXWRAPPERHELPERS_HPP__
-#define __NXWRAPPERHELPERS_HPP__
+#pragma once
 
 extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
 }
 
-#include<pni/utils/Types.hpp>
-#include<pni/utils/Array.hpp>
-#include<pni/utils/RBuffer.hpp>
+#include<pni/core/Types.hpp>
+#include<pni/core/Array.hpp>
+#include<pni/core/RBuffer.hpp>
 
-#include<pni/nx/NX.hpp>
+#include<pni/io/nx/NX.hpp>
 
 #include<boost/python/extract.hpp>
 #include<boost/python/list.hpp>
 #include<boost/python/tuple.hpp>
 
-using namespace pni::utils;
+using namespace pni::core;
 using namespace boost::python;
-using namespace pni::nx::h5;
+using namespace pni::io::nx::h5;
 
 #define CREATE_PNI2NUMPY_TYPE(type,nptype)\
     template<> class PNI2NumpyType<type>\
@@ -268,5 +267,3 @@ UTF8 encoding.
 */
 object unicode2str(const object &o);
 
-
-#endif

@@ -1,20 +1,20 @@
 /*
  * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
  *
- * This file is part of libpninx-python.
+ * This file is part of python-pniio.
  *
- * libpninx is free software: you can redistribute it and/or modify
+ * python-pniio is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
- * libpninx is distributed in the hope that it will be useful,
+ * python-pniio is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with libpninx.  If not, see <http://www.gnu.org/licenses/>.
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************
  *
  * Declearation of exception classes and translation functions.
@@ -23,8 +23,7 @@
  *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
  */
 
-#ifndef __NXWRAPPERERRORS_HPP__
-#define __NXWRAPPERERRORS_HPP__
+#pragma once
 
 /*!
 \ingroup errors
@@ -121,4 +120,3 @@ void throw_NXAttributeError(const String &message);
 void throw_NXSelectionError(const String &message);
 void throw_NXFilterError(const String &message);
 
-#endif

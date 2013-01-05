@@ -1,5 +1,21 @@
 /*
- * nx.cpp
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of python-pniio.
+ *
+ * python-pniio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * python-pniio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
  *
  *  Created on: Jan 5, 2012
  *      Author: Eugen Wintersberger
@@ -14,14 +30,14 @@ extern "C"{
 #include <iostream>
 #include <sstream>
 
-#include <pni/nx/NX.hpp>
-#include <pni/nx/NXExceptions.hpp>
+#include <pni/io/nx/NX.hpp>
+#include <pni/io/nx/NXExceptions.hpp>
 
-using namespace pni::utils;
+using namespace pni::core;
 using namespace boost::python;
 
 //import here the namespace for the nxh5 module
-using namespace pni::nx::h5;
+using namespace pni::io::nx::h5;
 
 #include "NXObjectWrapper.hpp"
 #include "NXGroupWrapper.hpp"
@@ -48,35 +64,35 @@ BOOST_PYTHON_MODULE(nxh5)
     exception_registration();
    
     //wrap NX-attribute object
-    wrap_nxattribute<pni::nx::h5::NXAttribute>();
+    wrap_nxattribute<pni::io::nx::h5::NXAttribute>();
 
     //wrap NX-object
-    wrap_nxobject<pni::nx::h5::NXObject>("NXObject");
+    wrap_nxobject<pni::io::nx::h5::NXObject>("NXObject");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::nx::h5::NXGroup>,
-         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXGroupAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::NXGroup>,
+         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXGroupAttributeIterator");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::nx::h5::NXField>,
-         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXFieldAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::NXField>,
+         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXFieldAttributeIterator");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::nx::h5::NXFile>,
-         NXAttributeWrapper<pni::nx::h5::NXAttribute> >("NXFiledAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::NXFile>,
+         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXFiledAttributeIterator");
 
     //wrap NX-group
-    wrap_nxobject<pni::nx::h5::NXGroup>("NXObject_GroupInstance");
-    wrap_nxgroup<pni::nx::h5::NXGroup>("NXGroup");
-    wrap_childiterator<NXGroupWrapper<pni::nx::h5::NXGroup>
+    wrap_nxobject<pni::io::nx::h5::NXGroup>("NXObject_GroupInstance");
+    wrap_nxgroup<pni::io::nx::h5::NXGroup>("NXGroup");
+    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::NXGroup>
         >("NXGroupChildIterator");
 
     //wrap NX-field
-    wrap_nxobject<pni::nx::h5::NXField>("NXObject_FieldInstance");
-    wrap_nxfield<pni::nx::h5::NXField>("NXField");
+    wrap_nxobject<pni::io::nx::h5::NXField>("NXObject_FieldInstance");
+    wrap_nxfield<pni::io::nx::h5::NXField>("NXField");
 
     //wrap NX-file
-    wrap_nxobject<pni::nx::h5::NXFile>("NXObject_FileInstance");
-    wrap_nxgroup<pni::nx::h5::NXFile>("NXGroup_FileInstance");
-    wrap_nxfile<pni::nx::h5::NXFile>("NXFile");
-    wrap_childiterator<NXGroupWrapper<pni::nx::h5::NXFile>
+    wrap_nxobject<pni::io::nx::h5::NXFile>("NXObject_FileInstance");
+    wrap_nxgroup<pni::io::nx::h5::NXFile>("NXGroup_FileInstance");
+    wrap_nxfile<pni::io::nx::h5::NXFile>("NXFile");
+    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::NXFile>
         >("NXFileChildIterator");
 
     //create wrapper for NXDefalteFilter

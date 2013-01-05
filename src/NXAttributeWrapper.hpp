@@ -1,13 +1,36 @@
-#ifndef __NXATTRIBUTEWRAPPER_HPP__
-#define __NXATTRIBUTEWRAPPER_HPP__
+/*
+ * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+ *
+ * This file is part of python-pniio.
+ *
+ * python-pniio is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * python-pniio is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+ *************************************************************************
+ *
+ * Class-template for field creators.
+ *
+ * Created on: Feb 17, 2012
+ *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+ */
+#pragma once
 
 extern "C"{
 #include<numpy/arrayobject.h>
 }
 
-#include <pni/utils/Types.hpp>
-#include <pni/utils/Array.hpp>
-using namespace pni::utils;
+#include <pni/core/Types.hpp>
+#include <pni/core/Array.hpp>
+using namespace pni::core;
 
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
@@ -144,7 +167,7 @@ template<typename AttrType> class NXAttributeWrapper
                 return io_read<ArrayReader>(this->_attribute);
 
             //should raise an exception here
-            throw pni::nx::NXAttributeError(EXCEPTION_RECORD,
+            throw pni::io::nx::NXAttributeError(EXCEPTION_RECORD,
             "Found no appropriate procedure to read this attribute!");
 
             //this is only to avoid compiler warnings
@@ -227,4 +250,3 @@ template<typename ATYPE> void wrap_nxattribute()
 
 }
 
-#endif

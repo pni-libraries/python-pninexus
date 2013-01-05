@@ -1,10 +1,10 @@
 import unittest
 
-from pni.nx.h5 import NXFile
-from pni.nx.h5 import create_file
-from pni.nx.h5 import open_file
-from pni.nx.h5 import NXFileError
-from pni.nx.h5 import NXGroup
+from pni.io.nx.h5 import NXFile
+from pni.io.nx.h5 import create_file
+from pni.io.nx.h5 import open_file
+from pni.io.nx.h5 import NXFileError
+from pni.io.nx.h5 import NXGroup
 
 from AttributesTest import AttributeTest
 

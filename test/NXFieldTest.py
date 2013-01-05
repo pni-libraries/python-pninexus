@@ -1,12 +1,12 @@
 import unittest
 import numpy
 
-import pni.nx.h5 as nx
-from pni.nx.h5 import NXFile
-from pni.nx.h5 import NXGroup
-from pni.nx.h5 import NXField
-from pni.nx.h5 import create_file
-from pni.nx.h5 import open_file
+import pni.io.nx.h5 as nx
+from pni.io.nx.h5 import NXFile
+from pni.io.nx.h5 import NXGroup
+from pni.io.nx.h5 import NXField
+from pni.io.nx.h5 import create_file
+from pni.io.nx.h5 import open_file
 
 #implementing test fixture
 class NXFieldTest(unittest.TestCase):
