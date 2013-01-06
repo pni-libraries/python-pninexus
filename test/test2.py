@@ -41,7 +41,7 @@ print field[...]
 
 field[...] = numpy.ones(field.shape,dtype=field.dtype)
 print field[...]
-field[1,:] = 10.
+field[1,:] = 10
 print field[...]
 
 field2 = f.open("data2")
