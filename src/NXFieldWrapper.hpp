@@ -182,16 +182,19 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             std::vector<Slice> selection = create_selection(t,this->_object);
 
             //apply the selection
-            this->_object(selection);
+            //this->_object(selection);
 
             //once the selection is build we can start to create the 
             //return value
-            if(this->_object.size()==1)
+            if(this->_object(selection).size()==1)
                 //in this case we return a primitive python value
-                return io_read<ScalarReader>(this->_object);
+                return io_read<ScalarReader>(this->_object(selection));
             else
                 //a numpy array will be returned
-                return io_read<ArrayReader>(this->_object);
+                return io_read<ArrayReader>(this->_object(selection));
+
+            //throw an exception if we cannot handle the user request
+            throw_NXFieldError("cannot handle user request");
 
 
             return object();
@@ -245,13 +248,13 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         {
             
             std::vector<Slice> selection = create_selection(t,this->_object);
-            this->_object(selection);
+            //this->_object(selection);
 
-            if((this->_object.size() == 1) && !(PyArray_CheckExact(o.ptr())))
+            if((this->_object(selection).size() == 1) && !(PyArray_CheckExact(o.ptr())))
             {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value
-                io_write<ScalarWriter>(this->_object,o);
+                io_write<ScalarWriter>(this->_object(selection),o);
             }
             else
             {
@@ -263,8 +266,10 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 //    data.
 
                 //let us assume here that we only do broadcast
-                io_write<ArrayWriter>(this->_object,o);
+                io_write<ArrayWriter>(this->_object(selection),o);
             }
+
+            //throw_NXFieldError("could not handle user request!");
         }
 
         //----------------------------------------------------------------------
