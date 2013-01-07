@@ -5,6 +5,7 @@ import numpy
 
 
 import pni.io.nx.h5 as nx
+from pni.io.nx.h5 import NXFieldError
 
 
 f = nx.create_file("test2.h5",overwrite = True)
@@ -22,8 +23,13 @@ a = numpy.zeros(field.shape,dtype=field.dtype)
 a[...] = 1.421e-1+34.2334j
 field.write(a)
 print "read from ellipsis"
+
+try:
+    print field[...,1]
+except NXFieldError as error:
+    print error
+
 print field[0,...]
-print field[...,1]
 print field[...]
 print field[1:5,:]
 print field[:,0]

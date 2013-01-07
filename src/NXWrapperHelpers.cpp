@@ -81,12 +81,14 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
     -> there is no ellipse and the rank of the field is larger than the size of
        the tuple passed. In this case an IndexError will occur. In this case we 
        know immediately that a shape error occured.
+
+    i - runs over all dimensions of the input field. 
+    j - runs over all values of the tuple
     */
     for(size_t i=0,j=0;i<field.rank();i++,j++)
     {
-        //manage a single index
+        //-------------------manage a single index-----------------------------
         extract<boost::python::ssize_t> index(t[j]);
-
         if(index.check())
         {
             if(index<0)
@@ -97,7 +99,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
             continue;
         }
 
-        //manage a slice
+        //----------------------------manage a slice---------------------------
         extract<slice> s(t[j]);
         if(s.check())
         {
@@ -134,8 +136,11 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
             continue;
         }
 
-        //manage an ellipse
+        //------------------------manage an ellipse----------------------------
+        //if we have arrived here the only possible object the tuple entry can
+        //be is an ellipsis
         const object &o = t[j];
+        //throw an exception if the object is not an ellipsis
         if(Py_Ellipsis != o.ptr())
             throw TypeError(EXCEPTION_RECORD,
                             "Object must be either an index, a slice,"
@@ -147,6 +152,12 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
             has_ellipsis = true;
             while(i<j+ellipsis_size)
                 selection.push_back(Slice(0,field.shape<shape_t>()[i++]));
+
+            //here we have to do some magic: as the value of i is already
+            //increased to the next position simply continueing the loop would
+            //add an additional increment of i. Thus we have to remove the
+            //additional increment
+            i--;
         }
         else
             throw IndexError(EXCEPTION_RECORD,"Only one ellipsis is allowed!");

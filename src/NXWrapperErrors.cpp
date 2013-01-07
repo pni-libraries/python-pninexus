@@ -76,6 +76,7 @@ void exception_registration()
     class_<Exception>("Exception")
         .def(init<>())
         .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
+        .def(self_ns::str(self_ns::self))
         ;
 
     ERR_OBJECT_DECL(pni::io::nx,NXFileError);

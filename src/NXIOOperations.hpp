@@ -27,7 +27,7 @@
 
 #include "NXWrapperHelpers.hpp"
 
-//-----------------------------------------------------------------------------
+
 /*! 
 \ingroup ioclasses  
 \brief reads a single scalar
