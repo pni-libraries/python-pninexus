@@ -26,9 +26,9 @@
 extern "C"{
 #include<Python.h>
 }
-#include <pni/core/Exceptions.hpp>
+#include <pni/core/exceptions.hpp>
 #include <boost/python.hpp>
-#include <pni/io/nx/NX.hpp>
+#include <pni/io/nx/nx.hpp>
 
 #include "NXWrapperErrors.hpp"
 
@@ -38,12 +38,12 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::io::nx::h5;
 
-ERR_TRANSLATOR(pni::io::nx,NXFileError);
-ERR_TRANSLATOR(pni::io::nx,NXGroupError);
-ERR_TRANSLATOR(pni::io::nx,NXFieldError);
-ERR_TRANSLATOR(pni::io::nx,NXAttributeError);
-ERR_TRANSLATOR(pni::io::nx,NXSelectionError);
-ERR_TRANSLATOR(pni::io::nx,NXFilterError);
+ERR_TRANSLATOR(pni::io::nx,nxfile_error);
+ERR_TRANSLATOR(pni::io::nx,nxgroup_error);
+ERR_TRANSLATOR(pni::io::nx,nxfield_error);
+ERR_TRANSLATOR(pni::io::nx,nxattribute_error);
+ERR_TRANSLATOR(pni::io::nx,nxselection_error);
+ERR_TRANSLATOR(pni::io::nx,nxfilter_error);
 
 //-----------------------------------------------------------------------------
 void ChildIteratorStop_translator(ChildIteratorStop const &error)
@@ -59,11 +59,12 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 
 
 //====================General purpose exceptions===============================
-ERR_TRANSLATOR(pni::core,ShapeMissmatchError);
-ERR_TRANSLATOR(pni::core,IndexError);
-ERR_TRANSLATOR(pni::core,SizeMissmatchError);
-ERR_TRANSLATOR(pni::core,MemoryAllocationError);
-ERR_TRANSLATOR(pni::core,TypeError);
+ERR_TRANSLATOR(pni::core,shape_missmatch_error);
+ERR_TRANSLATOR(pni::core,index_error);
+ERR_TRANSLATOR(pni::core,size_missmatch_error);
+ERR_TRANSLATOR(pni::core,memory_not_allocated_error);
+ERR_TRANSLATOR(pni::core,memory_allocation_error);
+ERR_TRANSLATOR(pni::core,type_error);
 
 
 
@@ -71,38 +72,40 @@ ERR_TRANSLATOR(pni::core,TypeError);
 void exception_registration()
 {
     //define the base class for all exceptions
-    const String &(Exception::*exception_get_description)() const =
-        &Exception::description;
-    class_<Exception>("Exception")
+    const string &(exception::*exception_get_description)() const =
+        &exception::description;
+    class_<exception>("Exception")
         .def(init<>())
         .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
         .def(self_ns::str(self_ns::self))
         ;
 
-    ERR_OBJECT_DECL(pni::io::nx,NXFileError);
-    ERR_OBJECT_DECL(pni::io::nx,NXFieldError);
-    ERR_OBJECT_DECL(pni::io::nx,NXGroupError);
-    ERR_OBJECT_DECL(pni::io::nx,NXAttributeError);
-    ERR_OBJECT_DECL(pni::io::nx,NXSelectionError);
-    ERR_OBJECT_DECL(pni::io::nx,NXFilterError);
-    ERR_OBJECT_DECL(pni::core,ShapeMissmatchError);
-    ERR_OBJECT_DECL(pni::core,IndexError);
-    ERR_OBJECT_DECL(pni::core,SizeMissmatchError);
-    ERR_OBJECT_DECL(pni::core,MemoryAllocationError);
-    ERR_OBJECT_DECL(pni::core,TypeError);
+    ERR_OBJECT_DECL(pni::io::nx,nxfile_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxfield_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxgroup_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxattribute_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxselection_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxfilter_error)
+    ERR_OBJECT_DECL(pni::core,shape_missmatch_error);
+    ERR_OBJECT_DECL(pni::core,index_error);
+    ERR_OBJECT_DECL(pni::core,size_missmatch_error);
+    ERR_OBJECT_DECL(pni::core,memory_allocation_error);
+    ERR_OBJECT_DECL(pni::core,memory_not_allocated_error);
+    ERR_OBJECT_DECL(pni::core,type_error);
 
     
-    ERR_REGISTRATION(pni::io::nx,NXFileError);
-    ERR_REGISTRATION(pni::io::nx,NXFieldError);
-    ERR_REGISTRATION(pni::io::nx,NXGroupError);
-    ERR_REGISTRATION(pni::io::nx,NXAttributeError);
-    ERR_REGISTRATION(pni::io::nx,NXSelectionError);
-    ERR_REGISTRATION(pni::io::nx,NXFilterError);
-    ERR_REGISTRATION(pni::core,ShapeMissmatchError);
-    ERR_REGISTRATION(pni::core,IndexError);
-    ERR_REGISTRATION(pni::core,SizeMissmatchError);
-    ERR_REGISTRATION(pni::core,MemoryAllocationError);
-    ERR_REGISTRATION(pni::core,TypeError);
+    ERR_REGISTRATION(pni::io::nx,nxfile_error);
+    ERR_REGISTRATION(pni::io::nx,nxfield_error);
+    ERR_REGISTRATION(pni::io::nx,nxgroup_error);
+    ERR_REGISTRATION(pni::io::nx,nxattribute_error);
+    ERR_REGISTRATION(pni::io::nx,nxselection_error);
+    ERR_REGISTRATION(pni::io::nx,nxfilter_error);
+    ERR_REGISTRATION(pni::core,shape_missmatch_error);
+    ERR_REGISTRATION(pni::core,index_error);
+    ERR_REGISTRATION(pni::core,size_missmatch_error);
+    ERR_REGISTRATION(pni::core,memory_allocation_error);
+    ERR_REGISTRATION(pni::core,memory_not_allocated_error);
+    ERR_REGISTRATION(pni::core,type_error);
 
 
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);

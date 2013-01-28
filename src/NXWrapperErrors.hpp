@@ -70,7 +70,7 @@ Generates the wrapper code for the python exception.
 */
 #define ERR_OBJECT_DECL(NS,ETYPE)\
     object ERR_OBJ_NAME(ETYPE) = (\
-            class_<NS::ETYPE,bases<Exception> >(# ETYPE ));\
+            class_<NS::ETYPE,bases<exception> >(# ETYPE ));\
     ERR_PTR_NAME(ETYPE) = ERR_OBJ_NAME(ETYPE).ptr();
 
 /*!
@@ -113,10 +113,10 @@ translators.
 void exception_registration();
 
 //-----------------------------------------------------------------------------
-void throw_NXFileError(const String &message);
-void throw_NXGroupError(const String &message);
-void throw_NXFieldError(const String &message);
-void throw_NXAttributeError(const String &message);
-void throw_NXSelectionError(const String &message);
-void throw_NXFilterError(const String &message);
+void throw_NXFileError(const string &message);
+void throw_NXGroupError(const string &message);
+void throw_NXFieldError(const string &message);
+void throw_NXAttributeError(const string &message);
+void throw_NXSelectionError(const string &message);
+void throw_NXFilterError(const string &message);
 

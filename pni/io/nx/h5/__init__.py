@@ -5,16 +5,16 @@ from nxh5 import NXFile
 from nxh5 import NXDeflateFilter
 from nxh5 import NXField
 
-from nxh5 import ShapeMissmatchError
-from nxh5 import TypeError
-from nxh5 import MemoryAllocationError
-from nxh5 import IndexError
+from nxh5 import shape_missmatch_error as  ShapeMissmatchError
+from nxh5 import type_error as TypeError
+from nxh5 import memory_allocation_error as MemoryAllocationError
+from nxh5 import index_error as IndexError
 
-from nxh5 import NXFileError
-from nxh5 import NXGroupError
-from nxh5 import NXFieldError
-from nxh5 import NXAttributeError
-from nxh5 import NXFilterError
+from nxh5 import nxfile_error as NXFileError
+from nxh5 import nxgroup_error as NXGroupError
+from nxh5 import nxfield_error as NXFieldError
+from nxh5 import nxattribute_error as NXAttributeError
+from nxh5 import nxfilter_error as NXFilterError
 
 
 #import helper methods

@@ -176,7 +176,7 @@ Function creates a Python object for a ChildIterator. The type of the container
 is determined by the Iterable template parameter.
 \param class_name name of the created class
 */
-template<typename Iterable> void wrap_childiterator(const String &class_name)
+template<typename Iterable> void wrap_childiterator(const string &class_name)
 {
     class_<ChildIterator<Iterable,object> >(class_name.c_str())
         .def(init<>())

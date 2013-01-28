@@ -24,7 +24,7 @@
  */
 #pragma once
 
-#include <pni/io/nx/NX.hpp>
+#include <pni/io/nx/nx.hpp>
 
 /*! 
 \ingroup utils  
@@ -46,40 +46,40 @@ template<typename GType> class NXObjectMap{
 
 
 //! \cond NO_API_DOC
-template<> class NXObjectMap<pni::io::nx::h5::NXObject>
+template<> class NXObjectMap<pni::io::nx::h5::nxobject>
 {
     public:
-        typedef pni::io::nx::h5::NXObject ObjectType;
-        typedef pni::io::nx::h5::NXGroup GroupType;
-        typedef pni::io::nx::h5::NXField FieldType;
-        typedef pni::io::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::nxobject ObjectType;
+        typedef pni::io::nx::h5::nxgroup GroupType;
+        typedef pni::io::nx::h5::nxfield FieldType;
+        typedef pni::io::nx::h5::nxattribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::io::nx::h5::NXGroup>
+template<> class NXObjectMap<pni::io::nx::h5::nxgroup>
 {
     public:
-        typedef pni::io::nx::h5::NXObject ObjectType;
-        typedef pni::io::nx::h5::NXGroup GroupType;
-        typedef pni::io::nx::h5::NXField FieldType;
-        typedef pni::io::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::nxobject ObjectType;
+        typedef pni::io::nx::h5::nxgroup GroupType;
+        typedef pni::io::nx::h5::nxfield FieldType;
+        typedef pni::io::nx::h5::nxattribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::io::nx::h5::NXField>
+template<> class NXObjectMap<pni::io::nx::h5::nxfield>
 {
     public:
-        typedef pni::io::nx::h5::NXObject ObjectType;
-        typedef pni::io::nx::h5::NXGroup GroupType;
-        typedef pni::io::nx::h5::NXField FieldType;
-        typedef pni::io::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::nxobject ObjectType;
+        typedef pni::io::nx::h5::nxgroup GroupType;
+        typedef pni::io::nx::h5::nxfield FieldType;
+        typedef pni::io::nx::h5::nxattribute AttributeType;
 };
 
-template<> class NXObjectMap<pni::io::nx::h5::NXFile>
+template<> class NXObjectMap<pni::io::nx::h5::nxfile>
 {
     public:
-        typedef pni::io::nx::h5::NXObject ObjectType;
-        typedef pni::io::nx::h5::NXGroup GroupType;
-        typedef pni::io::nx::h5::NXField FieldType;
-        typedef pni::io::nx::h5::NXAttribute AttributeType;
+        typedef pni::io::nx::h5::nxobject ObjectType;
+        typedef pni::io::nx::h5::nxgroup GroupType;
+        typedef pni::io::nx::h5::nxfield FieldType;
+        typedef pni::io::nx::h5::nxattribute AttributeType;
 };
 
 //! \endcond

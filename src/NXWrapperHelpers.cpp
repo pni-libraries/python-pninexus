@@ -31,37 +31,37 @@
 #include "NXWrapperErrors.hpp"
 
 //-----------------------------------------------------------------------------
-String typeid2str(const TypeID &tid)
+string typeid2str(const type_id_t &tid)
 {
-    if(tid == TypeID::STRING) return "string";
-    if(tid == TypeID::UINT8) return "uint8";
-    if(tid == TypeID::INT8)  return "int8";
-    if(tid == TypeID::UINT16) return "uint16";
-    if(tid == TypeID::INT16)  return "int16";
-    if(tid == TypeID::UINT32) return "uint32";
-    if(tid == TypeID::INT32)  return "int32";
-    if(tid == TypeID::UINT64) return "uint64";
-    if(tid == TypeID::INT64) return "int64";
+    if(tid == type_id_t::STRING) return "string";
+    if(tid == type_id_t::UINT8) return "uint8";
+    if(tid == type_id_t::INT8)  return "int8";
+    if(tid == type_id_t::UINT16) return "uint16";
+    if(tid == type_id_t::INT16)  return "int16";
+    if(tid == type_id_t::UINT32) return "uint32";
+    if(tid == type_id_t::INT32)  return "int32";
+    if(tid == type_id_t::UINT64) return "uint64";
+    if(tid == type_id_t::INT64) return "int64";
 
-    if(tid == TypeID::FLOAT32) return "float32";
-    if(tid == TypeID::FLOAT64) return "float64";
-    if(tid == TypeID::FLOAT128) return "float128";
+    if(tid == type_id_t::FLOAT32) return "float32";
+    if(tid == type_id_t::FLOAT64) return "float64";
+    if(tid == type_id_t::FLOAT128) return "float128";
 
-    if(tid == TypeID::COMPLEX32) return "complex64";
-    if(tid == TypeID::COMPLEX64) return "complex128";
-    if(tid == TypeID::COMPLEX128) return "complex256";
+    if(tid == type_id_t::COMPLEX32) return "complex64";
+    if(tid == type_id_t::COMPLEX64) return "complex128";
+    if(tid == type_id_t::COMPLEX128) return "complex256";
 
-    if(tid == TypeID::BOOL) return "bool";
+    if(tid == type_id_t::BOOL) return "bool";
 
     return "none";
 }
 
 
 //------------------------------------------------------------------------------
-std::vector<Slice> create_selection(const tuple &t,const NXField &field)
+std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &field)
 {
     //obtain a selection object
-    std::vector<Slice> selection;
+    std::vector<pni::core::slice> selection;
 
     //the number of elements in the tuple must not be equal to the 
     //rank of the field. This is due to the fact that the tuple can contain
@@ -70,7 +70,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
     if(len(t) > boost::python::ssize_t(field.rank()))
-        throw ShapeMissmatchError(EXCEPTION_RECORD,
+        throw shape_missmatch_error(EXCEPTION_RECORD,
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");
@@ -92,15 +92,15 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
         if(index.check())
         {
             if(index<0)
-                selection.push_back(Slice(field.shape<shape_t>()[i]+index));
+                selection.push_back(pni::core::slice(field.shape<shape_t>()[i]+index));
             else
-                selection.push_back(Slice(index));
+                selection.push_back(pni::core::slice(index));
 
             continue;
         }
 
         //----------------------------manage a slice---------------------------
-        extract<slice> s(t[j]);
+        extract<boost::python::slice> s(t[j]);
         if(s.check())
         {
             //now we have to investigate the components of the 
@@ -132,7 +132,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
             else
                 stop = field.shape<shape_t>()[i];
 
-            selection.push_back(Slice(start,stop,step));
+            selection.push_back(pni::core::slice(start,stop,step));
             continue;
         }
 
@@ -142,7 +142,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
         const object &o = t[j];
         //throw an exception if the object is not an ellipsis
         if(Py_Ellipsis != o.ptr())
-            throw TypeError(EXCEPTION_RECORD,
+            throw type_error(EXCEPTION_RECORD,
                             "Object must be either an index, a slice,"
                             " or an ellipsis!");
         //assume here that the object is an ellipsis - this is a bit difficult
@@ -151,7 +151,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
         {
             has_ellipsis = true;
             while(i<j+ellipsis_size)
-                selection.push_back(Slice(0,field.shape<shape_t>()[i++]));
+                selection.push_back(pni::core::slice(0,field.shape<shape_t>()[i++]));
 
             //here we have to do some magic: as the value of i is already
             //increased to the next position simply continueing the loop would
@@ -160,7 +160,7 @@ std::vector<Slice> create_selection(const tuple &t,const NXField &field)
             i--;
         }
         else
-            throw IndexError(EXCEPTION_RECORD,"Only one ellipsis is allowed!");
+            throw index_error(EXCEPTION_RECORD,"Only one ellipsis is allowed!");
     }
 
     return selection;

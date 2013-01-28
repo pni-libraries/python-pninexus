@@ -185,7 +185,7 @@ This function creates the Python code for AttributeIterator objects.
 \param class_name name of the created Python class
 */
 template<typename Iterable,typename ItemT> 
-void wrap_attributeiterator(const String &class_name)
+void wrap_attributeiterator(const string &class_name)
 {
     class_<AttributeIterator<Iterable,ItemT> >(class_name.c_str())
         .def(init<>())

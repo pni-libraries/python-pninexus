@@ -30,8 +30,8 @@ extern "C"{
 #include <iostream>
 #include <sstream>
 
-#include <pni/io/nx/NX.hpp>
-#include <pni/io/nx/NXExceptions.hpp>
+#include <pni/io/nx/nx.hpp>
+#include <pni/io/nx/nxexceptions.hpp>
 
 using namespace pni::core;
 using namespace boost::python;
@@ -64,46 +64,46 @@ BOOST_PYTHON_MODULE(nxh5)
     exception_registration();
    
     //wrap NX-attribute object
-    wrap_nxattribute<pni::io::nx::h5::NXAttribute>();
+    wrap_nxattribute<pni::io::nx::h5::nxattribute>();
 
     //wrap NX-object
-    wrap_nxobject<pni::io::nx::h5::NXObject>("NXObject");
+    wrap_nxobject<pni::io::nx::h5::nxobject>("NXObject");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::NXGroup>,
-         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXGroupAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::nxgroup>,
+         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXGroupAttributeIterator");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::NXField>,
-         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXFieldAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::nxfield>,
+         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFieldAttributeIterator");
     wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::NXFile>,
-         NXAttributeWrapper<pni::io::nx::h5::NXAttribute> >("NXFiledAttributeIterator");
+        <NXObjectWrapper<pni::io::nx::h5::nxfile>,
+         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFiledAttributeIterator");
 
     //wrap NX-group
-    wrap_nxobject<pni::io::nx::h5::NXGroup>("NXObject_GroupInstance");
-    wrap_nxgroup<pni::io::nx::h5::NXGroup>("NXGroup");
-    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::NXGroup>
+    wrap_nxobject<pni::io::nx::h5::nxgroup>("NXObject_GroupInstance");
+    wrap_nxgroup<pni::io::nx::h5::nxgroup>("NXGroup");
+    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxgroup>
         >("NXGroupChildIterator");
 
     //wrap NX-field
-    wrap_nxobject<pni::io::nx::h5::NXField>("NXObject_FieldInstance");
-    wrap_nxfield<pni::io::nx::h5::NXField>("NXField");
+    wrap_nxobject<pni::io::nx::h5::nxfield>("NXObject_FieldInstance");
+    wrap_nxfield<pni::io::nx::h5::nxfield>("NXField");
 
     //wrap NX-file
-    wrap_nxobject<pni::io::nx::h5::NXFile>("NXObject_FileInstance");
-    wrap_nxgroup<pni::io::nx::h5::NXFile>("NXGroup_FileInstance");
-    wrap_nxfile<pni::io::nx::h5::NXFile>("NXFile");
-    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::NXFile>
+    wrap_nxobject<pni::io::nx::h5::nxfile>("NXObject_FileInstance");
+    wrap_nxgroup<pni::io::nx::h5::nxfile>("NXGroup_FileInstance");
+    wrap_nxfile<pni::io::nx::h5::nxfile>("NXFile");
+    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxfile>
         >("NXFileChildIterator");
 
     //create wrapper for NXDefalteFilter
 
-    UInt32 (NXDeflateFilter::*get_compression_rate)() const =
-        &NXDeflateFilter::compression_rate;
-    void (NXDeflateFilter::*set_compression_rate)(UInt32) =
-        &NXDeflateFilter::compression_rate;
-    bool (NXDeflateFilter::*get_shuffle)() const = &NXDeflateFilter::shuffle;
-    void (NXDeflateFilter::*set_shuffle)(bool) = &NXDeflateFilter::shuffle;
-    class_<NXDeflateFilter>("NXDeflateFilter")
+    uint32 (nxdeflate_filter::*get_compression_rate)() const =
+        &nxdeflate_filter::compression_rate;
+    void (nxdeflate_filter::*set_compression_rate)(uint32) =
+        &nxdeflate_filter::compression_rate;
+    bool (nxdeflate_filter::*get_shuffle)() const = &nxdeflate_filter::shuffle;
+    void (nxdeflate_filter::*set_shuffle)(bool) = &nxdeflate_filter::shuffle;
+    class_<nxdeflate_filter>("NXDeflateFilter")
         .add_property("rate",get_compression_rate,set_compression_rate)
         .add_property("shuffle",get_shuffle,set_shuffle)
         ;

@@ -30,7 +30,7 @@ extern "C"{
 }
 
 #include <boost/python.hpp>
-#include <pni/core/Types.hpp>
+#include <pni/core/types.hpp>
 
 #include "NXObjectMap.hpp"
 #include "NXAttributeWrapper.hpp"
@@ -124,15 +124,15 @@ template<typename OTYPE> class NXObjectWrapper
 
         //======================object methods=================================
         //! obtain base name
-        String base() const { return _object.base(); }
+        string base() const { return _object.base(); }
 
         //----------------------------------------------------------------------
         //! obtain name
-        String name() const { return _object.name(); }
+        string name() const { return _object.name(); }
 
         //----------------------------------------------------------------------
         //! obtain path
-        String path() const { return _object.path(); }
+        string path() const { return _object.path(); }
 
         //----------------------------------------------------------------------
         //! get validity status
@@ -153,7 +153,7 @@ template<typename OTYPE> class NXObjectWrapper
         \param type_code numpy type code for the attribute
         \param shape list or tuple with shape information.
         */
-        attribute_type create_attribute(const String &name,const String
+        attribute_type create_attribute(const string &name,const string
                 &type_code,const object &shape=list())
             const
         {
@@ -171,7 +171,7 @@ template<typename OTYPE> class NXObjectWrapper
         \param n name of the attribute
         \return attribute instance
         */
-        attribute_type open_attr(const String &n) const
+        attribute_type open_attr(const string &n) const
         {
             return attribute_type(this->_object.attr(n));
         }
@@ -262,7 +262,7 @@ Template function to create NXObject wrappers. The template parameter determines
 the type to be wrapped.
 \param class_name name of the new Python class
 */
-template<typename OTYPE> void wrap_nxobject(const String &class_name)
+template<typename OTYPE> void wrap_nxobject(const string &class_name)
 {
     typedef typename NXObjectWrapper<OTYPE>::object_wrapper_t object_wrapper_t;
     typedef class_<object_wrapper_t> wrapper_class;

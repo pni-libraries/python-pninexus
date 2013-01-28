@@ -28,8 +28,8 @@ extern "C"{
 #include<numpy/arrayobject.h>
 }
 
-#include <pni/core/Types.hpp>
-#include <pni/core/Array.hpp>
+#include <pni/core/types.hpp>
+#include <pni/core/arrays.hpp>
 using namespace pni::core;
 
 #include "NXWrapperHelpers.hpp"
@@ -120,7 +120,7 @@ template<typename AttrType> class NXAttributeWrapper
         name dtype (as in numpy).
         \return numpy typecode
         */
-        String type_id() const
+        string type_id() const
         {
             return typeid2str(this->_attribute.type_id()); 
         }
@@ -145,7 +145,7 @@ template<typename AttrType> class NXAttributeWrapper
         read-only property "name". 
         \return attribute name
         */
-        String name() const { return this->_attribute.name(); }
+        string name() const { return this->_attribute.name(); }
 
         //=========================read methods================================
         /*! \brief read attribute data
@@ -156,7 +156,7 @@ template<typename AttrType> class NXAttributeWrapper
         The return value is either a simple scalar Python type or a numpy array. 
         This method is the reading part of the "value" property which provides
         access to the data of an attribuite.
-        \throws NXAttributeError in case of problems
+        \throws nxattribute_error in case of problems
         \return Python object with attribute data
         */
         object read() const
@@ -167,7 +167,7 @@ template<typename AttrType> class NXAttributeWrapper
                 return io_read<ArrayReader>(this->_attribute);
 
             //should raise an exception here
-            throw pni::io::nx::NXAttributeError(EXCEPTION_RECORD,
+            throw pni::io::nx::nxattribute_error(EXCEPTION_RECORD,
             "Found no appropriate procedure to read this attribute!");
 
             //this is only to avoid compiler warnings
@@ -182,9 +182,9 @@ template<typename AttrType> class NXAttributeWrapper
         access to the attribute data. An exception will be thrown if the method
         cannot write data from the object. For the time being the object must
         either be a numpy array or a simple Python scalar.
-        \throws NXAttributeError in case of problems
-        \throws TypeError if type conversion fails
-        \throws ShapeMissmatchError if attribute and object shape cannot be
+        \throws nxattribute_reader in case of problems
+        \throws type_error if type conversion fails
+        \throws shape_missmatch_error if attribute and object shape cannot be
         converted
         \param o object from which to write data
         */

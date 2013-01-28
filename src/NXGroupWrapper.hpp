@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <pni/io/nx/NXObjectType.hpp>
+#include <pni/io/nx/nxobject_type.hpp>
 #include <pni/core/service.hpp>
 
 #include "NXWrapperHelpers.hpp"
@@ -110,7 +110,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \return new instance of NXGroupWrapper
         */
         NXGroupWrapper<typename NXObjectMap<type_t>::GroupType>
-        create_group(const String &n,const String &nxclass=String()) const
+        create_group(const string &n,const string &nxclass=string()) const
         {
             typedef typename NXObjectMap<type_t>::GroupType l_group_t;
             typedef NXGroupWrapper<l_group_t> l_group_wrapper_t;
@@ -146,7 +146,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \return instance of a field wrapper
         */
         typename field_creator_t::field_wrapper_t
-         create_field(const String &name,const String &type_code,
+         create_field(const string &name,const string &type_code,
                          const object &shape=list(),const object
                          &chunk=list(),const object &filter=object()) const
         {
@@ -171,7 +171,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         \param n name of the object to open
         \return Python object for NXGroup or NXField.
         */
-        object open_by_name(const String &n) const
+        object open_by_name(const string &n) const
         {
             typedef typename NXObjectMap<type_t>::ObjectType object_t;
             typedef typename NXObjectMap<type_t>::GroupType l_group_t;
@@ -184,10 +184,10 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 
             //we use here copy construction thus we do not have to care
             //of the original nxobject goes out of scope and gets destroyed.
-            if(nxobject.object_type() == pni::io::nx::NXObjectType::NXFIELD)
+            if(nxobject.object_type() == pni::io::nx::nxobject_type::NXFIELD)
                return object(field_wrapper_t(field_t(nxobject)));
 
-            if(nxobject.object_type() == pni::io::nx::NXObjectType::NXGROUP)
+            if(nxobject.object_type() == pni::io::nx::nxobject_type::NXGROUP)
                 return object(l_group_wrapper_t(l_group_t(nxobject)));
 
             nxobject.close();
@@ -220,7 +220,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         Returns true if the object defined by path 'n'. 
         \return true if object exists, false otherwise
         */
-        bool exists(const String &n) const { return this->_object.exists(n); }
+        bool exists(const string &n) const { return this->_object.exists(n); }
 
         //--------------------------------------------------------------------------
         /*! \brief number of child objects
@@ -237,7 +237,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         Exposes only one of the three link creation methods from the original
         NXGroup object.
         */
-        void link(const String &p,const String &n) const
+        void link(const string &p,const string &n) const
         {
             this->_object.link(p,n);
         }
@@ -328,7 +328,7 @@ static const char __group_childs_docstr[] =
 Template function to create a new wrapper for an NXGroup type GType.
 \param class_name name for the Python class
 */
-template<typename GTYPE> void wrap_nxgroup(const String &class_name)
+template<typename GTYPE> void wrap_nxgroup(const string &class_name)
 {
     typedef typename NXGroupWrapper<GTYPE>::group_wrapper_t group_wrapper_t;
     typedef typename NXObjectWrapper<GTYPE>::object_wrapper_t object_wrapper_t;
@@ -339,7 +339,7 @@ template<typename GTYPE> void wrap_nxgroup(const String &class_name)
         .def("__getitem__",&group_wrapper_t::open)
         .def("__getitem__",&group_wrapper_t::open_by_name)
         .def("create_group",&group_wrapper_t::create_group,
-                ("n",arg("nxclass")=String()),__group_create_group_docstr)
+                ("n",arg("nxclass")=string()),__group_create_group_docstr)
         .def("create_field",&group_wrapper_t::create_field,
                 ("name","type_code",arg("shape")=list(),arg("chunk")=list(),
                  arg("filter")=object()),__group_create_field_docstr)

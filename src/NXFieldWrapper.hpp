@@ -97,7 +97,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         string. The type-code will be exposed as a read-only property.
         \return numpy type string
         */
-        String type_id() const { return typeid2str(this->_object.type_id()); }
+        string type_id() const { return typeid2str(this->_object.type_id()); }
 
         //---------------------------------------------------------------------
         /*! \brief get field shape
@@ -141,7 +141,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         Reading data from a field. The method returns a Python object and tries
         to figure out by itself which kind of object and datatype to use. 
         If this fails an exception will be thrown.
-        \throws TypeError if return type determination fails
+        \throws type_error if return type determination fails
         \return Python object with the read data
         */
         object read() const
@@ -160,7 +160,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 return io_read<ArrayReader>(this->_object);
             }
 
-            throw TypeError(EXCEPTION_RECORD,"Cannot determine return type!");
+            throw type_error(EXCEPTION_RECORD,"Cannot determine return type!");
 
             //this is only to avoid compiler warnings
             return object();
@@ -179,7 +179,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         {
 
             //first we need to create a selection
-            std::vector<Slice> selection = create_selection(t,this->_object);
+            std::vector<pni::core::slice> selection = create_selection(t,this->_object);
 
             //apply the selection
             //this->_object(selection);
@@ -247,7 +247,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         void __setitem__tuple(const tuple &t,const object &o)
         {
             
-            std::vector<Slice> selection = create_selection(t,this->_object);
+            std::vector<pni::core::slice> selection = create_selection(t,this->_object);
             //this->_object(selection);
 
             if((this->_object(selection).size() == 1) && !(PyArray_CheckExact(o.ptr())))
@@ -315,7 +315,7 @@ static const char __field_size_docstr[] = "total number of elements in the field
 Template function to create a wrapper for NXField type FType. 
 \param class_name Python name of the new class
 */
-template<typename FIELDT> void wrap_nxfield(const String &class_name)
+template<typename FIELDT> void wrap_nxfield(const string &class_name)
 {
     typedef typename NXFieldWrapper<FIELDT>::field_wrapper_t field_wrapper_t; 
     typedef typename NXFieldWrapper<FIELDT>::object_wrapper_t object_wrapper_t;

@@ -86,7 +86,7 @@ class ArrayReader
             object narray = CreateNumpyArray<T>(readable.template shape<shape_t>());
 
             //create a reference array to the numpy arrays buffer 
-            DArray<T,RBuffer<T> > rarray = Numpy2RefArray<T>(narray);
+            darray<T,rbuffer<T> > rarray = Numpy2RefArray<T>(narray);
             //read data to the numpy buffer
             readable.read(rarray);
             return narray;
@@ -153,37 +153,37 @@ class ArrayWriter
             switch(PyArray_TYPE(o.ptr()))
             {
                 case PyArray_UINT8:
-                    w.write(Numpy2RefArray<UInt8>(o));break;
+                    w.write(Numpy2RefArray<uint8>(o));break;
                 case PyArray_INT8:
-                    w.write(Numpy2RefArray<Int8>(o));break;
+                    w.write(Numpy2RefArray<int8>(o));break;
                 case PyArray_UINT16:
-                    w.write(Numpy2RefArray<UInt16>(o));break;
+                    w.write(Numpy2RefArray<uint16>(o));break;
                 case PyArray_INT16:
-                    w.write(Numpy2RefArray<Int16>(o));break;
+                    w.write(Numpy2RefArray<int16>(o));break;
                 case PyArray_UINT32:
-                    w.write(Numpy2RefArray<UInt32>(o)); break;
+                    w.write(Numpy2RefArray<uint32>(o)); break;
                 case PyArray_INT32:
-                    w.write(Numpy2RefArray<Int32>(o));break;
+                    w.write(Numpy2RefArray<int32>(o));break;
                 case PyArray_UINT64:
-                    w.write(Numpy2RefArray<UInt64>(o)); break;
+                    w.write(Numpy2RefArray<uint64>(o)); break;
                 case PyArray_INT64:
-                    w.write(Numpy2RefArray<Int64>(o)); break;
+                    w.write(Numpy2RefArray<int64>(o)); break;
                 case PyArray_FLOAT32:
-                    w.write(Numpy2RefArray<Float32>(o)); break;
+                    w.write(Numpy2RefArray<float32>(o)); break;
                 case PyArray_FLOAT64:
-                    w.write(Numpy2RefArray<Float64>(o)); break;
+                    w.write(Numpy2RefArray<float64>(o)); break;
                 case PyArray_LONGDOUBLE:
-                    w.write(Numpy2RefArray<Float128>(o));break;
+                    w.write(Numpy2RefArray<float128>(o));break;
                 case NPY_CFLOAT:
-                    w.write(Numpy2RefArray<Complex32>(o));break;
+                    w.write(Numpy2RefArray<complex32>(o));break;
                 case NPY_CDOUBLE:
-                    w.write(Numpy2RefArray<Complex64>(o)); break;
+                    w.write(Numpy2RefArray<complex64>(o)); break;
                 case NPY_CLONGDOUBLE:
-                    w.write(Numpy2RefArray<Complex128>(o));break;
+                    w.write(Numpy2RefArray<complex128>(o));break;
                 case NPY_BOOL:
-                    w.write(Numpy2RefArray<Bool>(o)); break;
+                    w.write(Numpy2RefArray<bool>(o)); break;
                 default:
-                    throw TypeError(EXCEPTION_RECORD,
+                    throw type_error(EXCEPTION_RECORD,
                     "Type of numpy array cannot be handled!");
             };
 
@@ -206,7 +206,7 @@ class ArrayWriter
             auto shape = w.template shape<shape_t>();
 
             T value = extract<T>(o)();
-            DArray<T> data(shape);
+            darray<T> data(shape);
             std::fill(data.begin(),data.end(),value);
             w.write(data);
         }
@@ -249,43 +249,43 @@ interface.
 */
 template<typename IOOP,typename OType> object io_read(const OType &readable)
 {
-    if(readable.type_id() == TypeID::UINT8) 
-        return IOOP::template read<UInt8>(readable);
-    if(readable.type_id() == TypeID::INT8)  
-        return IOOP::template read<Int8>(readable);
-    if(readable.type_id() == TypeID::UINT16) 
-        return IOOP::template read<UInt16>(readable);
-    if(readable.type_id() == TypeID::INT16)  
-        return IOOP::template read<Int16>(readable);
-    if(readable.type_id() == TypeID::UINT32) 
-        return IOOP::template read<UInt32>(readable);
-    if(readable.type_id() == TypeID::INT32)  
-        return IOOP::template read<Int32>(readable);
-    if(readable.type_id() == TypeID::UINT64) 
-        return IOOP::template read<UInt64>(readable);
-    if(readable.type_id() == TypeID::INT64)  
-        return IOOP::template read<Int64>(readable);
+    if(readable.type_id() == type_id_t::UINT8) 
+        return IOOP::template read<uint8>(readable);
+    if(readable.type_id() == type_id_t::INT8)  
+        return IOOP::template read<int8>(readable);
+    if(readable.type_id() == type_id_t::UINT16) 
+        return IOOP::template read<uint16>(readable);
+    if(readable.type_id() == type_id_t::INT16)  
+        return IOOP::template read<int16>(readable);
+    if(readable.type_id() == type_id_t::UINT32) 
+        return IOOP::template read<uint32>(readable);
+    if(readable.type_id() == type_id_t::INT32)  
+        return IOOP::template read<int32>(readable);
+    if(readable.type_id() == type_id_t::UINT64) 
+        return IOOP::template read<uint64>(readable);
+    if(readable.type_id() == type_id_t::INT64)  
+        return IOOP::template read<int64>(readable);
 
-    if(readable.type_id() == TypeID::FLOAT32) 
-        return IOOP::template read<Float32>(readable);
-    if(readable.type_id() == TypeID::FLOAT64) 
-        return IOOP::template read<Float64>(readable);
-    if(readable.type_id() == TypeID::FLOAT128) 
-        return IOOP::template read<Float128>(readable);
+    if(readable.type_id() == type_id_t::FLOAT32) 
+        return IOOP::template read<float32>(readable);
+    if(readable.type_id() == type_id_t::FLOAT64) 
+        return IOOP::template read<float64>(readable);
+    if(readable.type_id() == type_id_t::FLOAT128) 
+        return IOOP::template read<float128>(readable);
 
-    if(readable.type_id() == TypeID::COMPLEX32) 
-        return IOOP::template read<Complex32>(readable);
-    if(readable.type_id() == TypeID::COMPLEX64) 
-        return IOOP::template read<Complex64>(readable);
-    if(readable.type_id() == TypeID::COMPLEX128) 
-        return IOOP::template read<Complex128>(readable);
+    if(readable.type_id() == type_id_t::COMPLEX32) 
+        return IOOP::template read<complex32>(readable);
+    if(readable.type_id() == type_id_t::COMPLEX64) 
+        return IOOP::template read<complex64>(readable);
+    if(readable.type_id() == type_id_t::COMPLEX128) 
+        return IOOP::template read<complex128>(readable);
 
-    if(readable.type_id() == TypeID::STRING) 
-        return IOOP::template read<String>(readable);
-    if(readable.type_id() == TypeID::BOOL)
-        return IOOP::template read<Bool>(readable);
+    if(readable.type_id() == type_id_t::STRING) 
+        return IOOP::template read<string>(readable);
+    if(readable.type_id() == type_id_t::BOOL)
+        return IOOP::template read<bool>(readable);
 
-    throw TypeError(EXCEPTION_RECORD,"Cannot handle field datatype!");
+    throw type_error(EXCEPTION_RECORD,"Cannot handle field datatype!");
    
     return object();
 }
@@ -305,77 +305,77 @@ Write data from a Python object to a writable object.
 template<typename IOOP,typename OTYPE> 
 void io_write(const OTYPE &writeable,const object &obj)
 {
-    if(writeable.type_id() == TypeID::UINT8)
+    if(writeable.type_id() == type_id_t::UINT8)
     {
-        IOOP::template write<UInt8>(writeable,obj); return;
+        IOOP::template write<uint8>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::INT8) 
+    if(writeable.type_id() == type_id_t::INT8) 
     {
-        IOOP::template write<Int8>(writeable,obj); return;
+        IOOP::template write<int8>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::UINT16)
+    if(writeable.type_id() == type_id_t::UINT16)
     {
-        IOOP::template write<UInt16>(writeable,obj); return;
+        IOOP::template write<uint16>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::INT16) 
+    if(writeable.type_id() == type_id_t::INT16) 
     {
-        IOOP::template write<Int16>(writeable,obj); return;
+        IOOP::template write<int16>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::UINT32) 
+    if(writeable.type_id() == type_id_t::UINT32) 
     {
-        IOOP::template write<UInt32>(writeable,obj); return;
+        IOOP::template write<uint32>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::INT32) 
+    if(writeable.type_id() == type_id_t::INT32) 
     {
-        IOOP::template write<Int32>(writeable,obj); return;
+        IOOP::template write<int32>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::UINT64) 
+    if(writeable.type_id() == type_id_t::UINT64) 
     {
-        IOOP::template write<UInt64>(writeable,obj); return;
+        IOOP::template write<uint64>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::INT64)
+    if(writeable.type_id() == type_id_t::INT64)
     {
-        IOOP::template write<Int64>(writeable,obj); return;
+        IOOP::template write<int64>(writeable,obj); return;
     }
     
-    if(writeable.type_id() == TypeID::FLOAT32) 
+    if(writeable.type_id() == type_id_t::FLOAT32) 
     {
-        IOOP::template write<Float32>(writeable,obj); return;
+        IOOP::template write<float32>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::FLOAT64)
+    if(writeable.type_id() == type_id_t::FLOAT64)
     {
-        IOOP::template write<Float64>(writeable,obj); return;
+        IOOP::template write<float64>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::FLOAT128) 
+    if(writeable.type_id() == type_id_t::FLOAT128) 
     {
-        IOOP::template write<Float128>(writeable,obj); return;
+        IOOP::template write<float128>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::COMPLEX32) 
+    if(writeable.type_id() == type_id_t::COMPLEX32) 
     {
-        IOOP::template write<Complex32>(writeable,obj); return;
+        IOOP::template write<complex32>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::COMPLEX64)
+    if(writeable.type_id() == type_id_t::COMPLEX64)
     { 
-        IOOP::template write<Complex64>(writeable,obj); return;
+        IOOP::template write<complex64>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::COMPLEX128)
+    if(writeable.type_id() == type_id_t::COMPLEX128)
     {
-        IOOP::template write<Complex128>(writeable,obj); return;
+        IOOP::template write<complex128>(writeable,obj); return;
     }
 
-    if(writeable.type_id() == TypeID::STRING)
+    if(writeable.type_id() == type_id_t::STRING)
     {   
         //need to check if the object represents a unicode string
         object data;
@@ -384,15 +384,15 @@ void io_write(const OTYPE &writeable,const object &obj)
         else    
             data = obj;
 
-        IOOP::template write<String>(writeable,data); return;
+        IOOP::template write<string>(writeable,data); return;
     }
 
-    if(writeable.type_id() == TypeID::BOOL)
+    if(writeable.type_id() == type_id_t::BOOL)
     {
-        IOOP::template write<Bool>(writeable,obj); return;
+        IOOP::template write<bool>(writeable,obj); return;
     }
 
     //raise an exception here if the datatype cannot be managed
-    throw TypeError(EXCEPTION_RECORD,"Datatype of writabel is unknown!");
+    throw type_error(EXCEPTION_RECORD,"Datatype of writabel is unknown!");
 
 }

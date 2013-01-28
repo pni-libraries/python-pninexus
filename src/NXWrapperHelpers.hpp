@@ -30,11 +30,11 @@ extern "C"{
 #include<numpy/arrayobject.h>
 }
 
-#include<pni/core/Types.hpp>
-#include<pni/core/Array.hpp>
-#include<pni/core/RBuffer.hpp>
+#include<pni/core/types.hpp>
+#include<pni/core/arrays.hpp>
+#include<pni/core/rbuffer.hpp>
 
-#include<pni/io/nx/NX.hpp>
+#include<pni/io/nx/nx.hpp>
 
 #include<boost/python/extract.hpp>
 #include<boost/python/list.hpp>
@@ -60,22 +60,22 @@ NumPy type numbers.
 */
 template<typename T> class PNI2NumpyType;
 
-CREATE_PNI2NUMPY_TYPE(UInt8,NPY_UBYTE);
-CREATE_PNI2NUMPY_TYPE(Int8,NPY_BYTE);
-CREATE_PNI2NUMPY_TYPE(UInt16,NPY_USHORT);
-CREATE_PNI2NUMPY_TYPE(Int16,NPY_SHORT);
-CREATE_PNI2NUMPY_TYPE(UInt32,NPY_UINT);
-CREATE_PNI2NUMPY_TYPE(Int32,NPY_INT);
-CREATE_PNI2NUMPY_TYPE(UInt64,NPY_ULONG);
-CREATE_PNI2NUMPY_TYPE(Int64,NPY_LONG);
-CREATE_PNI2NUMPY_TYPE(Float32,NPY_FLOAT);
-CREATE_PNI2NUMPY_TYPE(Float64,NPY_DOUBLE);
-CREATE_PNI2NUMPY_TYPE(Float128,NPY_LONGDOUBLE);
-CREATE_PNI2NUMPY_TYPE(Complex32,NPY_CFLOAT);
-CREATE_PNI2NUMPY_TYPE(Complex64,NPY_CDOUBLE);
-CREATE_PNI2NUMPY_TYPE(Complex128,NPY_CLONGDOUBLE);
-CREATE_PNI2NUMPY_TYPE(String,NPY_STRING);
-CREATE_PNI2NUMPY_TYPE(Bool,NPY_BOOL);
+CREATE_PNI2NUMPY_TYPE(uint8,NPY_UBYTE);
+CREATE_PNI2NUMPY_TYPE(int8,NPY_BYTE);
+CREATE_PNI2NUMPY_TYPE(uint16,NPY_USHORT);
+CREATE_PNI2NUMPY_TYPE(int16,NPY_SHORT);
+CREATE_PNI2NUMPY_TYPE(uint32,NPY_UINT);
+CREATE_PNI2NUMPY_TYPE(int32,NPY_INT);
+CREATE_PNI2NUMPY_TYPE(uint64,NPY_ULONG);
+CREATE_PNI2NUMPY_TYPE(int64,NPY_LONG);
+CREATE_PNI2NUMPY_TYPE(float32,NPY_FLOAT);
+CREATE_PNI2NUMPY_TYPE(float64,NPY_DOUBLE);
+CREATE_PNI2NUMPY_TYPE(float128,NPY_LONGDOUBLE);
+CREATE_PNI2NUMPY_TYPE(complex32,NPY_CFLOAT);
+CREATE_PNI2NUMPY_TYPE(complex64,NPY_CDOUBLE);
+CREATE_PNI2NUMPY_TYPE(complex128,NPY_CLONGDOUBLE);
+CREATE_PNI2NUMPY_TYPE(string,NPY_STRING);
+CREATE_PNI2NUMPY_TYPE(bool,NPY_BOOL);
 
 //=============================================================================
 /*! 
@@ -86,7 +86,7 @@ Helper function that creatds a numpy type code string from a pni::utils::TypeID.
 \param tid type id from pniutils
 \return NumPy typecode
 */
-String typeid2str(const TypeID &tid);
+string typeid2str(const type_id_t &tid);
 
 //-----------------------------------------------------------------------------
 /*! 
@@ -158,7 +158,7 @@ array. The method for this purpose assumes that the object passed to it referes
 to a numpy array. 
 \param o python object
 */
-template<typename T> DArray<T,RBuffer<T> > Numpy2RefArray(const object &o)
+template<typename T> darray<T,rbuffer<T> > Numpy2RefArray(const object &o)
 {
     const PyArrayObject *py_array = (const PyArrayObject *)o.ptr();
 
@@ -167,8 +167,8 @@ template<typename T> DArray<T,RBuffer<T> > Numpy2RefArray(const object &o)
     for(size_t i=0;i<shape.size();i++) 
         shape[i] = (size_t)PyArray_DIM(o.ptr(),i);
 
-    RBuffer<T> rbuffer(PyArray_SIZE(o.ptr()),(T *)PyArray_DATA(o.ptr()));
-    return DArray<T,RBuffer<T> >(shape,rbuffer);
+    rbuffer<T> buffer(PyArray_SIZE(o.ptr()),(T *)PyArray_DATA(o.ptr()));
+    return darray<T,rbuffer<T> >(shape,buffer);
 }
 
 //-----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ template<typename T,typename CTYPE> object CreateNumpyArray(const CTYPE &s)
 {
     PyObject *ptr = nullptr;
     //create the buffer for with the shape information
-    DBuffer<npy_intp> dims(s.size());
+    dbuffer<npy_intp> dims(s.size());
     std::copy(s.begin(),s.end(),dims.begin());
 
     ptr = PyArray_SimpleNew(s.size(),const_cast<npy_intp*>(dims.ptr()),
@@ -242,7 +242,7 @@ field from which the selection should be drawn.
 \param t tuple with indices and slices
 \param f reference to the field for which to create the selection
 */
-std::vector<Slice> create_selection(const tuple &t,const NXField &f);
+std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &f);
 
 //-----------------------------------------------------------------------------
 /*!

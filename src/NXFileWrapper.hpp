@@ -107,7 +107,7 @@ This template wraps the static create_file method of FType.
 \param s split size (feature not implemented yet)
 \return new instance of NXFileWrapper
 */
-template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const String &n,
+template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const string &n,
         bool ov=true,size_t s=0)
 {
     NXFileWrapper<FTYPE> file;
@@ -115,7 +115,7 @@ template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const String &n,
     {
         file = NXFileWrapper<FTYPE>(FTYPE::create_file(n,ov,s));
     }
-    catch(pni::io::nx::NXFileError &error)
+    catch(pni::io::nx::nxfile_error &error)
     {
         std::cerr<<error<<std::endl;
         error.append(EXCEPTION_RECORD);
@@ -135,7 +135,7 @@ Template wraps the static open_file method of NXFile.
 \param ro if true open the file read only
 \return new instance of NXFileWrapper
 */
-template<typename FType> NXFileWrapper<FType> open_file(const String &n,
+template<typename FType> NXFileWrapper<FType> open_file(const string &n,
         bool ro=false)
 {
     return NXFileWrapper<FType>(FType::open_file(n,ro)); 
@@ -149,7 +149,7 @@ template<typename FType> NXFileWrapper<FType> open_file(const String &n,
 Tempalte function creates a wrappers for the NXFile type FType. 
 \param class_name name of the newly created type in Python
 */
-template<typename FTYPE> void wrap_nxfile(const String &class_name)
+template<typename FTYPE> void wrap_nxfile(const string &class_name)
 {
     class_<NXFileWrapper<FTYPE>,bases<NXGroupWrapper<FTYPE> > >(class_name.c_str())
         .def(init<>())

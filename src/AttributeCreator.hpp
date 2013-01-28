@@ -24,8 +24,8 @@
  */
 #pragma once
 
-#include<pni/core/Types.hpp>
-#include<pni/core/Exceptions.hpp>
+#include<pni/core/types.hpp>
+#include<pni/core/exceptions.hpp>
 
 using namespace pni::core;
 
@@ -39,7 +39,7 @@ The created attributes are instances of the template parameter AttrT.
 template<typename ATTRT> class AttributeCreator
 {
     private:
-        String __n; //!< name of the field
+        string __n; //!< name of the field
         std::vector<size_t> __s;  //!< shape of the field
     public:
         //---------------------------------------------------------------------
@@ -47,7 +47,7 @@ template<typename ATTRT> class AttributeCreator
 
         \param n name of the attribute
         */
-        AttributeCreator(const String &n):__n(n),__s(){}
+        AttributeCreator(const string &n):__n(n),__s(){}
 
         //---------------------------------------------------------------------
         /*! \brief constructor
@@ -56,7 +56,7 @@ template<typename ATTRT> class AttributeCreator
         \param s shape of the attribute
         */
         template<typename CTYPE>
-            AttributeCreator(const String &n,const CTYPE &s): __n(n),__s(s){}
+            AttributeCreator(const string &n,const CTYPE &s): __n(n),__s(s){}
 
         //---------------------------------------------------------------------
         /*! \brief attribute creation
@@ -64,7 +64,7 @@ template<typename ATTRT> class AttributeCreator
         Create an attribute by o. The data-type used for the attribute is 
         determined by the template parameter T. OType is the type of the object
         responsible for attribute creation.
-        \throws NXAttributeError in case of errors
+        \throws nxattribute_error in case of errors
         \param o attribute creating object.
         \return instance of AttrT
         */
@@ -74,14 +74,14 @@ template<typename ATTRT> class AttributeCreator
         /*! \brief create attribute from type string
         
         Creates an attribute below o of a data-type determined by type_str.
-        \throws TypeError if type_str cannot be interpreted (unknown type-code)
-        \throws NXAttributeError in case of errors during attribute creation
+        \throws type_error if type_str cannot be interpreted (unknown type-code)
+        \throws nxattribute_error in case of errors during attribute creation
         \param o parent object (creating object)
         \param type_str string determining the data-type to use
         \return instance of AttrT 
         */
         template<typename OTYPE> 
-            ATTRT create(const OTYPE &o,const String &type_str) const;
+            ATTRT create(const OTYPE &o,const string &type_str) const;
 };
 
 //-----------------------------------------------------------------------------
@@ -101,30 +101,30 @@ template<typename T,typename OTYPE>
 //------------------------------------------------------------------------------
 template<typename ATTRT> 
 template<typename OTYPE> ATTRT 
-AttributeCreator<ATTRT>::create(const OTYPE &o,const String &type_code) const
+AttributeCreator<ATTRT>::create(const OTYPE &o,const string &type_code) const
 {
-    if(type_code == "uint8") return this->create<UInt8>(o);
-    if(type_code == "int8")  return this->create<Int8>(o);
-    if(type_code == "uint16") return this->create<UInt16>(o);
-    if(type_code == "int16")  return this->create<Int16>(o);
-    if(type_code == "uint32") return this->create<UInt32>(o);
-    if(type_code == "int32")  return this->create<Int32>(o);
-    if(type_code == "uint64") return this->create<UInt64>(o);
-    if(type_code == "int64")  return this->create<Int64>(o);
+    if(type_code == "uint8") return this->create<uint8>(o);
+    if(type_code == "int8")  return this->create<int8>(o);
+    if(type_code == "uint16") return this->create<uint16>(o);
+    if(type_code == "int16")  return this->create<int16>(o);
+    if(type_code == "uint32") return this->create<uint32>(o);
+    if(type_code == "int32")  return this->create<int32>(o);
+    if(type_code == "uint64") return this->create<uint64>(o);
+    if(type_code == "int64")  return this->create<int64>(o);
 
-    if(type_code == "float32") return this->create<Float32>(o);
-    if(type_code == "float64") return this->create<Float64>(o);
-    if(type_code == "float128") return this->create<Float128>(o);
+    if(type_code == "float32") return this->create<float32>(o);
+    if(type_code == "float64") return this->create<float64>(o);
+    if(type_code == "float128") return this->create<float128>(o);
     
-    if(type_code == "complex64") return this->create<Complex32>(o);
-    if(type_code == "complex128") return this->create<Complex64>(o);
-    if(type_code == "complex256") return this->create<Complex128>(o);
+    if(type_code == "complex64") return this->create<complex32>(o);
+    if(type_code == "complex128") return this->create<complex64>(o);
+    if(type_code == "complex256") return this->create<complex128>(o);
 
-    if(type_code == "string") return this->create<String>(o);
-    if(type_code == "bool") return this->create<Bool>(o);
+    if(type_code == "string") return this->create<string>(o);
+    if(type_code == "bool") return this->create<bool>(o);
 
     //raise an exception here
-    throw TypeError(EXCEPTION_RECORD,
+    throw type_error(EXCEPTION_RECORD,
         "Cannot create field with type-code ("+type_code+")!");
 }
 
