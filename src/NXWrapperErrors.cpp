@@ -44,6 +44,9 @@ ERR_TRANSLATOR(pni::io::nx,nxfield_error);
 ERR_TRANSLATOR(pni::io::nx,nxattribute_error);
 ERR_TRANSLATOR(pni::io::nx,nxselection_error);
 ERR_TRANSLATOR(pni::io::nx,nxfilter_error);
+ERR_TRANSLATOR(pni::io::nx,nxbackend_error);
+ERR_TRANSLATOR(pni::io::nx,nxlink_error);
+ERR_TRANSLATOR(pni::io::nx,nxobject_error);
 
 //-----------------------------------------------------------------------------
 void ChildIteratorStop_translator(ChildIteratorStop const &error)
@@ -85,7 +88,10 @@ void exception_registration()
     ERR_OBJECT_DECL(pni::io::nx,nxgroup_error);
     ERR_OBJECT_DECL(pni::io::nx,nxattribute_error);
     ERR_OBJECT_DECL(pni::io::nx,nxselection_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxfilter_error)
+    ERR_OBJECT_DECL(pni::io::nx,nxfilter_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxbackend_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxlink_error);
+    ERR_OBJECT_DECL(pni::io::nx,nxobject_error);
     ERR_OBJECT_DECL(pni::core,shape_missmatch_error);
     ERR_OBJECT_DECL(pni::core,index_error);
     ERR_OBJECT_DECL(pni::core,size_missmatch_error);
@@ -100,6 +106,9 @@ void exception_registration()
     ERR_REGISTRATION(pni::io::nx,nxattribute_error);
     ERR_REGISTRATION(pni::io::nx,nxselection_error);
     ERR_REGISTRATION(pni::io::nx,nxfilter_error);
+    ERR_REGISTRATION(pni::io::nx,nxbackend_error);
+    ERR_REGISTRATION(pni::io::nx,nxlink_error);
+    ERR_REGISTRATION(pni::io::nx,nxobject_error);
     ERR_REGISTRATION(pni::core,shape_missmatch_error);
     ERR_REGISTRATION(pni::core,index_error);
     ERR_REGISTRATION(pni::core,size_missmatch_error);
