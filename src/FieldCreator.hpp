@@ -119,9 +119,13 @@ FieldCreator<GTYPE>::create(const group_t &parent) const
     {
         nxdeflate_filter deflate = deflate_obj();
         if(__cs.size()==0)
-            wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,deflate));
+            wrapper = field_wrapper_t(
+                      parent.template create_field<T>(__n,__s,deflate)
+                      );
         else
-            wrapper = field_wrapper_t(parent.template create_field<T>(__n,__s,__cs,deflate)); 
+            wrapper = field_wrapper_t(
+                      parent.template create_field<T>(__n,__s,__cs,deflate)
+                      ); 
     }
     //if the filter object is a NONE a field without filter is created
     else if(__filter.ptr() == Py_None)
