@@ -122,7 +122,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void write(const object &o) const
         {
-            if(this->_object.size() == 1)
+            if((this->_object.size() == 1)&&(!is_numpy_array(o)))
             {
                 //scalar field - here we can use any scalar type to write data
                 io_write<ScalarWriter>(this->_object,o);
@@ -250,7 +250,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             std::vector<pni::core::slice> selection = create_selection(t,this->_object);
             //this->_object(selection);
 
-            if((this->_object(selection).size() == 1) && !(PyArray_CheckExact(o.ptr())))
+            if((this->_object(selection).size() == 1) && !is_numpy_array(o))
             {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value

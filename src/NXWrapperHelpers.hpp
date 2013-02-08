@@ -149,6 +149,16 @@ template<typename CTYPE> CTYPE Tuple2Container(const tuple &t)
 }
 
 //-----------------------------------------------------------------------------
+/*!
+\ingroup utils
+\brief check if object is numpy array
+
+Checks if an object is a numpy array. 
+\return true if object is a numpy array
+*/
+bool is_numpy_array(const object &o);
+
+//-----------------------------------------------------------------------------
 /*! 
 \ingroup utils  
 \brief create reference array from numpy array

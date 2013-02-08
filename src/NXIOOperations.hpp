@@ -225,7 +225,7 @@ class ArrayWriter
         {
            
             //check if the object from which to read data is an array
-            if(!PyArray_CheckExact(o.ptr()))
+            if(!is_numpy_array(o))
                 _write_scalar<T>(w,o);
             else
                 _write_numpy_array(w,o);

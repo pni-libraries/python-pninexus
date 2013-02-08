@@ -57,6 +57,7 @@ string typeid2str(const type_id_t &tid)
 }
 
 
+
 //------------------------------------------------------------------------------
 std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &field)
 {
@@ -200,4 +201,17 @@ object unicode2str(const object &o)
 {
     PyObject *ptr = PyUnicode_AsUTF8String(o.ptr());
     return object(handle<>(ptr));
+}
+
+//-----------------------------------------------------------------------------
+
+void init_array() { import_array(); }
+bool is_numpy_array(const object &o)
+{
+    init_array();
+    //if the object is not allocated we assume that it is not an array
+    if(o.ptr())
+        return PyArray_CheckExact(o.ptr());
+    else
+        return false;
 }

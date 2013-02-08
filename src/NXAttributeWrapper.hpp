@@ -198,7 +198,7 @@ template<typename AttrType> class NXAttributeWrapper
             else
             {
                 //the attribute is an array attribute
-                if(PyArray_CheckExact(o.ptr()))
+                if(is_numpy_array(o))
                     //write array to array
                     io_write<ArrayWriter>(this->_attribute,o);
             }
