@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #file: nxfile_ex2.py
 
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 fname = "nxfile_ex2.h5"
 try:

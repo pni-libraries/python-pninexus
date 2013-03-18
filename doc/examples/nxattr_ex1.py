@@ -2,7 +2,7 @@
 #File: nxattr_ex1.py
 
 import numpy
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 nxfile = nx.create_file("nxattr_ex1.h5",overwrite=True)
 g = nxfile.create_group("data");

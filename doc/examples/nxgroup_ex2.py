@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #file: nxgroup_ex2.py
 
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 nxfile = nx.create_file("nxgroup_ex2.h5",overwrite=True)
 

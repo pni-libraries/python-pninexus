@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import numpy
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 def write_data(fname,np,nxpt,nypt):
     frame = numpy.zeros((nxpt,nypt),dtype="uint16")

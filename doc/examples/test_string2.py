@@ -5,7 +5,7 @@ import numpy
 
 #sys.path.append("lib/python")
 
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nx
 
 f = nx.create_file("test3.h5",True,0);
 
