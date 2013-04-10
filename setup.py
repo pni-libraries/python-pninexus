@@ -42,8 +42,16 @@ def pkgconfig(debug=False,*packages, **kw):
         else:
             kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
 
-    kw["libraries"].append("boost_python")
-    kw["include_dirs"].append(misc_util.get_numpy_include_dirs()[0])
+    try:
+        kw["libraries"].append("boost_python")
+    except:
+        kw["libraries"] = ["boost_python"]
+
+    try:
+        kw["include_dirs"].append(misc_util.get_numpy_include_dirs()[0])
+    except:
+        kw["include_dirs"] = [misc_util.get_numpy_include_dirs()[0]]
+
     try:
         kw["extra_compile_args"].append('-std=c++0x')
     except:
