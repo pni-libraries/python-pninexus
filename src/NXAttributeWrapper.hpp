@@ -184,7 +184,7 @@ template<typename AttrType> class NXAttributeWrapper
         either be a numpy array or a simple Python scalar.
         \throws nxattribute_reader in case of problems
         \throws type_error if type conversion fails
-        \throws shape_missmatch_error if attribute and object shape cannot be
+        \throws shape_mismatch_error if attribute and object shape cannot be
         converted
         \param o object from which to write data
         */

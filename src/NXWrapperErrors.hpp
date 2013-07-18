@@ -25,6 +25,10 @@
 
 #pragma once
 
+#include <pni/core/types.hpp>
+
+using namespace pni::core;
+
 /*!
 \ingroup errors
 \brief generate translator name

@@ -7,7 +7,7 @@ from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import NXGroupError
 from pni.io.nx.h5 import NXAttributeError
-from pni.io.nx.h5 import ShapeMissmatchError
+from pni.io.nx.h5 import ShapeMismatchError
 
 from AttributesTest import AttributeTest
 

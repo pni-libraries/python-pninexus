@@ -71,7 +71,7 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
     if(len(t) > boost::python::ssize_t(field.rank()))
-        throw shape_missmatch_error(EXCEPTION_RECORD,
+        throw shape_mismatch_error(EXCEPTION_RECORD,
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");

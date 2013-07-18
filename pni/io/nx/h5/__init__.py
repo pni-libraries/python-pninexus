@@ -5,7 +5,7 @@ from nxh5 import NXFile
 from nxh5 import NXDeflateFilter
 from nxh5 import NXField
 
-from nxh5 import shape_missmatch_error as  ShapeMissmatchError
+from nxh5 import shape_mismatch_error as  ShapeMismatchError
 from nxh5 import type_error as TypeError
 from nxh5 import memory_allocation_error as MemoryAllocationError
 from nxh5 import index_error as IndexError
