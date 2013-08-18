@@ -10,7 +10,7 @@ from distutils.ccompiler import new_compiler
 from distutils.unixccompiler import UnixCCompiler
 from numpy.distutils import misc_util
 
-import commands
+from pkgconfig import package
 
 cliopts =[]
 cliopts.append(("h5libdir=",None,"HDF5 library path"))
@@ -32,39 +32,32 @@ for o,v in op.get_option_order():
     if o == "debug":
         debug = True
 
+#add pniio libraries and flags
+pniio = package('pniio')
+include_dirs = pniio.include_dirs
+library_dirs = pniio.library_dirs
+libraries    = pniio.libraries
+libraries.append('boost_python')
 
-def pkgconfig(debug=False,*packages, **kw):
-    flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l':
-                'libraries','-D':'extra_compile_args'}
-    for token in commands.getoutput("pkg-config --libs --cflags %s" % ' '.join(packages)).split():
-        if(token[:2]=="-D"):
-            kw.setdefault(flag_map.get(token[:2]),[]).append(token)
-        else:
-            kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
-
-    kw["libraries"].append("boost_python")
-    kw["include_dirs"].append(misc_util.get_numpy_include_dirs()[0])
-    try:
-        kw["extra_compile_args"].append('-std=c++0x')
-    except:
-        kw["extra_compile_args"] = ["-std=c++0x"]
-
-    if debug:
-        kw["extra_compile_args"].append('-O0')
-        kw["extra_compile_args"].append('-g')
-    return kw
+extra_compile_args = ['-std=c++0x']
+if(debug):
+    extra_compile_args.append('-O0')
+    extra_compile_args.append('-g')
 
 
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
 
 nxh5 = Extension("nxh5",files,
-                 **pkgconfig(debug,'pniio'))
+                 include_dirs = include_dirs,
+                 library_dirs = library_dirs,
+                 libraries = libraries,
+                 extra_compile_args = extra_compile_args)
 
-setup(name="libpninx-python",
+setup(name="libpniio-python",
         author="Eugen Wintersberger",
         author_email="eugen.wintersberger@desy.de",
-        description="Python wrapper for libpninx",
-        version = "0.9.0",
+        description="Python wrapper for libpniio",
+        version = "0.9.4",
         ext_package="pni.io.nx.h5",
         ext_modules=[nxh5],
         packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],
