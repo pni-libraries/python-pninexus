@@ -30,9 +30,7 @@ def strip_string_list(inlist):
     """
     l = []
     for value in inlist:
-        value = value.strip()
-        value = value.replace('"','')
-        l.append(value)
+        l.append(value.strip())
 
 
     return l
@@ -58,7 +56,9 @@ def remove_empty_strings(inlist):
 def split_result(result,key):
     result = result.strip()
     result = result.split(key)
-    return remove_empty_strings(result)
+    result = remove_empty_strings(result)
+    return result
+
 
 
 class package(object):
@@ -68,7 +68,13 @@ class package(object):
 
     def _get_library_dirs(self):
         result = execute([self.command,'--libs-only-L',self.name])
-        return split_result(result,'-L')
+        result = split_result(result,'-L')
+
+        l = []
+        for r in result:
+            l.append(r.replace('"',''))
+
+        return l
 
     def _get_include_dirs(self):
         result = execute([self.command,'--cflags-only-I',self.name])
