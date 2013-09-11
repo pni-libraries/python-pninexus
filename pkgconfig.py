@@ -1,4 +1,21 @@
-from subprocess import check_output
+try:
+    from subprocess import check_output
+
+    def execute(l):
+        return check_output(l)
+
+except:
+    from subprocess import Popen
+    from subprocess import PIPE
+
+    def execute(l):
+        p = Popen(l,shell=True,stdout=PIPE)
+        result = ""
+
+        for x in p.stdout: result+=x
+
+        return result
+
 
 def strip_string_list(inlist):
     """
@@ -47,26 +64,31 @@ class package(object):
         self.name = pkgname
 
     def _get_library_dirs(self):
-        result = check_output([self.command,'--libs-only-L',self.name])
+        result = execute([self.command,'--libs-only-L',self.name])
+        #result = check_output([self.command,'--libs-only-L',self.name])
         return split_result(result,'-L')
 
     def _get_include_dirs(self):
-        result = check_output([self.command,'--cflags-only-I',self.name])
+        result = execute([self.command,'--cflags-only-I',self.name])
+        #result = check_output([self.command,'--cflags-only-I',self.name])
         return split_result(result,'-I')
 
     def _get_libraries(self):
-        result = check_output([self.command,'--libs-only-l',self.name])
+        result = execute([self.command,'--libs-only-l',self.name])
+        #result = check_output([self.command,'--libs-only-l',self.name])
         return split_result(result,'-l')
 
     def _get_compiler_flags(self):
         #first we obtain all compiler flags
-        total_result = check_output([self.command,'--cflags',self.name])
+        total_result = execute([self.command,'--cflags',self.name])
+        #total_result = check_output([self.command,'--cflags',self.name])
         total_result = total_result.strip()
         total_result = total_result.split(" ")
         total_result = remove_empty_strings(total_result)
 
         #now we have to obtain all the include files
-        includes = check_output([self.command,'--cflags-only-I',self.name])
+        includes = execute([self.command,'--cflags-only-I',self.name])
+        #includes = check_output([self.command,'--cflags-only-I',self.name])
         includes = includes.strip()
         includes = includes.split(" ")
         includes = remove_empty_strings(includes)
@@ -81,3 +103,4 @@ class package(object):
     libraries    = property(_get_libraries)
     compiler_flags = property(_get_compiler_flags)
     include_dirs = property(_get_include_dirs)
+
