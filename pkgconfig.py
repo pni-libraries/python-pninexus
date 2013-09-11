@@ -30,7 +30,10 @@ def strip_string_list(inlist):
     """
     l = []
     for value in inlist:
-        l.append(value.strip())
+        value = value.strip()
+        value = value.replace('"','')
+        l.append(value)
+
 
     return l
 
