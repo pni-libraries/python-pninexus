@@ -68,16 +68,17 @@ class package(object):
     def _get_library_dirs(self):
         result = execute([self.command,'--libs-only-L',self.name])
         result = split_result(result,'-L')
-
-        return result
+        return strip_string_list(result)
 
     def _get_include_dirs(self):
         result = execute([self.command,'--cflags-only-I',self.name])
-        return split_result(result,'-I')
+        result = split_result(result,'-I')
+        return strip_string_list(result)
 
     def _get_libraries(self):
         result = execute([self.command,'--libs-only-l',self.name])
-        return split_result(result,'-l')
+        result = split_result(result,'-l')
+        return strip_string_list(result)
 
     def _get_compiler_flags(self):
         #first we obtain all compiler flags
