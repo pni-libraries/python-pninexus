@@ -35,6 +35,7 @@ libraries.append('boost_python')
 include_dirs.extend(get_numpy_include_dirs())
 
 extra_compile_args = ['-std=c++0x']
+extra_compile_args.extend(pniio.compiler_flags)
 if(debug):
     extra_compile_args.append('-O0')
     extra_compile_args.append('-g')
