@@ -32,7 +32,6 @@ def strip_string_list(inlist):
     for value in inlist:
         l.append(value.strip())
 
-
     return l
 
 def remove_empty_strings(inlist):
@@ -70,11 +69,7 @@ class package(object):
         result = execute([self.command,'--libs-only-L',self.name])
         result = split_result(result,'-L')
 
-        l = []
-        for r in result:
-            l.append(r.replace('"',''))
-
-        return l
+        return result
 
     def _get_include_dirs(self):
         result = execute([self.command,'--cflags-only-I',self.name])

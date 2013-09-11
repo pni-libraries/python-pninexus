@@ -3,13 +3,8 @@ import sys
 import os
 from distutils.core import setup
 from distutils.extension import Extension
-from distutils.sysconfig import get_python_inc
 from distutils.fancy_getopt import FancyGetopt
-from distutils.fancy_getopt import fancy_getopt
-from distutils.ccompiler import new_compiler
-from distutils.unixccompiler import UnixCCompiler
-from numpy.distutils import misc_util
-
+from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 
 cliopts =[]
@@ -21,7 +16,6 @@ cliopts.append(("nxincdir=",None,"PNI NX include path"))
 cliopts.append(("utlibdir=",None,"PNI utilities library path"))
 cliopts.append(("utincdir=",None,"PNI utilities include path"))
 cliopts.append(("numpyincdir=",None,"Numpy include path"))
-cliopts.append(("noforeach",None,"Set noforeach option for C++"))
 cliopts.append(("debug",None,"append debuging options"))
 
 op = FancyGetopt(option_table=cliopts)
@@ -33,11 +27,12 @@ for o,v in op.get_option_order():
         debug = True
 
 #add pniio libraries and flags
-pniio = package('pniio')
+pniio        = package('pniio')
 include_dirs = pniio.include_dirs
 library_dirs = pniio.library_dirs
 libraries    = pniio.libraries
 libraries.append('boost_python')
+include_dirs.extend(get_numpy_include_dirs())
 
 extra_compile_args = ['-std=c++0x']
 if(debug):
@@ -61,7 +56,7 @@ setup(name="libpniio-python",
         ext_package="pni.io.nx.h5",
         ext_modules=[nxh5],
         packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],
-        url="https://sourceforge.net/projects/libpninxpython/",
+        url="https://code.google.com/p/pni-libraries/",
         script_args = args
         )
 
