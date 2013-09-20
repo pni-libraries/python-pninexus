@@ -107,8 +107,8 @@ This template wraps the static create_file method of FType.
 \param s split size (feature not implemented yet)
 \return new instance of NXFileWrapper
 */
-template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const string &n,
-        bool ov=true,size_t s=0)
+template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const string &n, 
+                                              bool ov,size_t s)
 {
     NXFileWrapper<FTYPE> file;
     try
@@ -135,8 +135,7 @@ Template wraps the static open_file method of NXFile.
 \param ro if true open the file read only
 \return new instance of NXFileWrapper
 */
-template<typename FType> NXFileWrapper<FType> open_file(const string &n,
-        bool ro=false)
+template<typename FType> NXFileWrapper<FType> open_file(const string &n, bool ro)
 {
     return NXFileWrapper<FType>(FType::open_file(n,ro)); 
 }
