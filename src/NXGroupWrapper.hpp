@@ -27,6 +27,7 @@
 
 #include <pni/io/nx/nxobject_type.hpp>
 #include <pni/core/service.hpp>
+#include <pni/io/nx/nxlink.hpp>
 
 #include "NXWrapperHelpers.hpp"
 #include "NXObjectMap.hpp"
@@ -239,7 +240,9 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         */
         void link(const string &p,const string &n) const
         {
-            this->_object.link(p,n);
+            pni::io::nx::link(p,this->_object,n);
+
+            //this->_object.link(p,n);
         }
 
         //----------------------------------------------------------------------

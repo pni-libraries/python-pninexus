@@ -1,4 +1,3 @@
 recursive-include src *.hpp *.cpp
 include doc/examples/*.py
-include ccheck/*.cpp
 recursive-include doc/c++api/c++api *

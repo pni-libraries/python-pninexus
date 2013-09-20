@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from pni.io.nx.h5 import NXFile
 from pni.io.nx.h5 import create_file
@@ -12,26 +13,65 @@ from AttributesTest import AttributeTest
 #implementing test fixture
 class NXFileTest(unittest.TestCase):
     attr_tester = AttributeTest()
+    filename = "nxfiletest.nxs"
+    filename2 = "nxfiletest2.nxs"
 
     def setUp(self):
         print "setUp ...."
-        self._file = create_file("NXFileTest.h5",overwrite=True)
+        self._file = create_file(self.filename,overwrite=True)
 
     def tearDown(self):
         print "treaDown ..."
         self._file.flush()
         self._file.close()
 
+        try:
+            os.remove(self.filename)
+        except:
+            pass
+
+        try:
+            os.remove(self.filename2)
+        except:
+            pass
+
     def test_creation(self):
         print "NXFileTest.test_creation() ............................"
-        f = create_file("test.h5",overwrite=True)
+
+        #this should work as the file does not exist yet
+        f = create_file(self.filename2)
         self.assertTrue(f.valid)
         self.assertFalse(f.readonly)
         f.close()
-    
-        self.assertRaises(NXFileError,create_file,"test.h5",False)
-        f = open_file("test.h5",readonly=False)
+   
+        #this will throw an exception as the file already exists
+        self.assertRaises(NXFileError,create_file,self.filename2,False)
+        #this should work now
+        f = create_file(self.filename2,overwrite=True)
+        self.assertTrue(f.valid)
         f.close()
+
+    def test_open(self):
+        print "NXFileTest::test_open() ................................"
+        self._file.close() #close the original file
+
+        #open the file in read only mode
+        f = open_file(self.filename)
+        try:
+            f.create_group("group1")
+            self.assertTrue(False)
+        except:
+            self.assertTrue(True)
+
+        f.close()
+        #open the file in read/write mode
+        f = open_file(self.filename,readonly=False)
+        g = f.create_group("group2")
+        self.assertTrue(f.valid)
+        self.assertTrue(g.valid)
+        g.close()
+        f.close()
+
 
     def test_scalar_attribute(self):
         print "NXFileTest.test_scalar_attributes() ...................."
