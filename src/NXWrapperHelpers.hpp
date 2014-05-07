@@ -72,7 +72,7 @@ CREATE_PNI2NUMPY_TYPE(complex32,NPY_CFLOAT);
 CREATE_PNI2NUMPY_TYPE(complex64,NPY_CDOUBLE);
 CREATE_PNI2NUMPY_TYPE(complex128,NPY_CLONGDOUBLE);
 CREATE_PNI2NUMPY_TYPE(string,NPY_STRING);
-CREATE_PNI2NUMPY_TYPE(bool,NPY_BOOL);
+CREATE_PNI2NUMPY_TYPE(bool_t,NPY_BOOL);
 
 //=============================================================================
 //! 

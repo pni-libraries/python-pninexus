@@ -1,27 +1,25 @@
-/*
- * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
- *
- * This file is part of python-pniio.
- *
- * python-pniio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * python-pniio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
- *************************************************************************
- *
- * Definition of the wrapper template for NXField classes.
- *
- * Created on: March 8, 2012
- *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
- */
+//
+// (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
+// This file is part of python-pniio.
+//
+// python-pniio is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// python-pniio is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+// ===========================================================================
+//
+// Created on: March 8, 2012
+//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+///
 #pragma once
 
 #include <boost/python/slice.hpp>
@@ -29,12 +27,12 @@
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
 
-/*!
-\ingroup wrappers
-\brief NXField wrapper template
-
-Template to produce wrappers for NXField types.
-*/
+//!
+//! \ingroup wrappers
+//! \brief NXField wrapper template
+//! 
+//! Template to produce wrappers for NXField types.
+//!
 template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
 {
     public:
@@ -125,13 +123,13 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             if((this->_object.size() == 1)&&(!is_numpy_array(o)))
             {
                 //scalar field - here we can use any scalar type to write data
-                io_write<ScalarWriter>(this->_object,o);
+                io_write<scalar_writer>(this->_object,o);
             }
             else
             {
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
-                io_write<ArrayWriter>(this->_object,o);
+                io_write<array_writer>(this->_object,o);
             }
         }
 
@@ -150,14 +148,14 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             {
                 //the field contains only a single value - can return a
                 //primitive python object
-                return io_read<ScalarReader>(this->_object);                
+                return io_read<scalar_reader>(this->_object);                
 
             }
             else
             {
                 //the field contains multidimensional data  - we return a numpy
                 //array
-                return io_read<ArrayReader>(this->_object);
+                return io_read<array_reader>(this->_object);
             }
 
             throw type_error(EXCEPTION_RECORD,"Cannot determine return type!");
@@ -188,10 +186,10 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             //return value
             if(this->_object(selection).size()==1)
                 //in this case we return a primitive python value
-                return io_read<ScalarReader>(this->_object(selection));
+                return io_read<scalar_reader>(this->_object(selection));
             else
                 //a numpy array will be returned
-                return io_read<ArrayReader>(this->_object(selection));
+                return io_read<array_reader>(this->_object(selection));
 
             //throw an exception if we cannot handle the user request
             throw_NXFieldError("cannot handle user request");
@@ -254,7 +252,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value
-                io_write<ScalarWriter>(this->_object(selection),o);
+                io_write<scalar_writer>(this->_object(selection),o);
             }
             else
             {
@@ -266,7 +264,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 //    data.
 
                 //let us assume here that we only do broadcast
-                io_write<ArrayWriter>(this->_object(selection),o);
+                io_write<array_writer>(this->_object(selection),o);
             }
 
             //throw_NXFieldError("could not handle user request!");

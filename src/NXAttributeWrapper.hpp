@@ -19,7 +19,7 @@
 //
 // Created on: Feb 17, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
-///
+//
 #pragma once
 
 extern "C"{
@@ -33,12 +33,12 @@ using namespace pni::core;
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
 
-/*! 
-\ingroup wrappers  
-\brief template class to wrap attributes
-
-This template provides a wrapper for attribute types.
-*/
+//! 
+//! \ingroup wrappers  
+//! \brief template class to wrap attributes
+//! 
+//! This template provides a wrapper for attribute types.
+//!
 template<typename AttrType> class NXAttributeWrapper
 {
     private:
@@ -160,9 +160,9 @@ template<typename AttrType> class NXAttributeWrapper
         object read() const
         {
             if(this->_attribute.template shape<shape_t>().size() == 0)
-                return io_read<ScalarReader>(this->_attribute);
+                return io_read<scalar_reader>(this->_attribute);
             else
-                return io_read<ArrayReader>(this->_attribute);
+                return io_read<array_reader>(this->_attribute);
 
             //should raise an exception here
             throw pni::io::nx::nxattribute_error(EXCEPTION_RECORD,
@@ -192,13 +192,13 @@ template<typename AttrType> class NXAttributeWrapper
             //it really i
             if(this->_attribute.template shape<shape_t>().size() == 0)
                 //write to a scalar attribute
-                io_write<ScalarWriter>(this->_attribute,o);
+                io_write<scalar_writer>(this->_attribute,o);
             else
             {
                 //the attribute is an array attribute
                 if(is_numpy_array(o))
                     //write array to array
-                    io_write<ArrayWriter>(this->_attribute,o);
+                    io_write<array_writer>(this->_attribute,o);
             }
         }
 
