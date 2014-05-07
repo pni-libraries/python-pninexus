@@ -35,7 +35,7 @@ class array_writer
         //! \brief write a numpy array to the writable objects
         //! 
         //! \throw type_error if the array data type is not supported by pniio
-        //! \tparam WTYPE writable type
+        //! \tparam WTYPE writable type (field or attribute)
         //! \param w instance of WTYPE
         //! \param o object representing a numpy array
         //!
@@ -46,35 +46,50 @@ class array_writer
             switch(PyArray_TYPE(o.ptr()))
             {
                 case PyArray_UINT8:
-                    w.write(get_numpy_data<uint8>(o));break;
+                    w.write((const uint8*)get_numpy_data<uint8>(o));
+                    break;
                 case PyArray_INT8:
-                    w.write(get_numpy_data<int8>(o));break;
+                    w.write((const int8 *)get_numpy_data<int8>(o));
+                    break;
                 case PyArray_UINT16:
-                    w.write(get_numpy_data<uint16>(o));break;
+                    w.write((const uint16*)get_numpy_data<uint16>(o));
+                    break;
                 case PyArray_INT16:
-                    w.write(get_numpy_data<int16>(o));break;
+                    w.write((const int16*)get_numpy_data<int16>(o));
+                    break;
                 case PyArray_UINT32:
-                    w.write(get_numpy_data<uint32>(o)); break;
+                    w.write((const uint32*)get_numpy_data<uint32>(o)); 
+                    break;
                 case PyArray_INT32:
-                    w.write(get_numpy_data<int32>(o));break;
+                    w.write((const int32 *)get_numpy_data<int32>(o));
+                    break;
                 case PyArray_UINT64:
-                    w.write(get_numpy_data<uint64>(o)); break;
+                    w.write((const uint64*)get_numpy_data<uint64>(o)); 
+                    break;
                 case PyArray_INT64:
-                    w.write(get_numpy_data<int64>(o)); break;
+                    w.write((const int64*)get_numpy_data<int64>(o)); 
+                    break;
                 case PyArray_FLOAT32:
-                    w.write(get_numpy_data<float32>(o)); break;
+                    w.write((const float32*)get_numpy_data<float32>(o)); 
+                    break;
                 case PyArray_FLOAT64:
-                    w.write(get_numpy_data<float64>(o)); break;
+                    w.write((const float64*)get_numpy_data<float64>(o)); 
+                    break;
                 case PyArray_LONGDOUBLE:
-                    w.write(get_numpy_data<float128>(o));break;
+                    w.write((const float128*)get_numpy_data<float128>(o));
+                    break;
                 case NPY_CFLOAT:
-                    w.write(get_numpy_data<complex32>(o));break;
+                    w.write((const complex32*)get_numpy_data<complex32>(o));
+                    break;
                 case NPY_CDOUBLE:
-                    w.write(get_numpy_data<complex64>(o)); break;
+                    w.write((const complex64*)get_numpy_data<complex64>(o)); 
+                    break;
                 case NPY_CLONGDOUBLE:
-                    w.write(get_numpy_data<complex128>(o));break;
+                    w.write((const complex128*)get_numpy_data<complex128>(o));
+                    break;
                 case NPY_BOOL:
-                    w.write(get_numpy_data<bool_t>(o)); break;
+                    w.write((const bool_t*)get_numpy_data<bool_t>(o)); 
+                    break;
                 default:
                     throw type_error(EXCEPTION_RECORD,
                     "Type of numpy array cannot be handled!");
@@ -88,7 +103,7 @@ class array_writer
         //!
         //! Broadcast a scalar value to the field.
         //! \tparam T type of the scalar
-        //! \tparam WTYPE writable type
+        //! \tparam WTYPE writable type (field or attribute)
         //! \param w instance of WTYPE
         //! \param o object representing a scalar
         //!
@@ -105,7 +120,7 @@ class array_writer
             T value = extract<T>(o)();
             auto data = array_type::create(shape);
             std::fill(data.begin(),data.end(),value);
-            w.write(value);
+            w.write(data);
         }
     public:
         //! 
@@ -124,12 +139,10 @@ class array_writer
                 > 
         static void write(const WTYPE &w,const object &o)
         {
-           
             //check if the object from which to read data is an array
             if(!is_numpy_array(o))
                 _write_scalar<T>(w,o);
             else
                 _write_numpy_array(w,o);
-
         }
 };

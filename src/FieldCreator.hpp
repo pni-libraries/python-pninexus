@@ -157,7 +157,7 @@ FieldCreator<GTYPE>::create(const group_t &parent,const string &type_code) const
     if(type_code == "complex256") return this->create<complex128>(parent);
 
     if(type_code == "string") return this->create<string>(parent);
-    if(type_code == "bool")   return this->create<bool>(parent);
+    if(type_code == "bool")   return this->create<bool_t>(parent);
 
     //raise an exception here
     throw type_error(EXCEPTION_RECORD, 

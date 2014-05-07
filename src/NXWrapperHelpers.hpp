@@ -112,7 +112,7 @@ template<typename CTYPE> list Container2List(const CTYPE &c)
 //! 
 //! \ingroup utils  
 //! \brief create a container from a Python list
-
+//!
 //! Convert a Python list to a C++ container. 
 //! \tparam CTYPE container type.
 //! \param l python list object
