@@ -1,27 +1,25 @@
-/*
- * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
- *
- * This file is part of python-pniio.
- *
- * python-pniio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * python-pniio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
- *************************************************************************
- *
- * Definition of IO classes to read and write data.
- *
- * Created on: March 9, 2012
- *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
- */
+//
+// (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
+// This file is part of python-pniio.
+//
+// python-pniio is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// python-pniio is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+// ===========================================================================
+//
+// Created on: March 9, 2012
+//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
 
 #pragma once
 
@@ -83,12 +81,12 @@ class ArrayReader
             object read(const OTYPE &readable)
         {
             //create the numpy array which will store the data
-            object narray = CreateNumpyArray<T>(readable.template shape<shape_t>());
+            object narray = create_numpy_array<T>(readable.template shape<shape_t>());
 
-            //create a reference array to the numpy arrays buffer 
-            darray<T,rbuffer<T> > rarray = Numpy2RefArray<T>(narray);
             //read data to the numpy buffer
-            readable.read(rarray);
+            //we can safely use the pointer as the target array is created 
+            //from the properties of the field and thus the size must match
+            readable.read(get_numpy_data<T>(narray));
             return narray;
         }
 };
@@ -153,35 +151,35 @@ class ArrayWriter
             switch(PyArray_TYPE(o.ptr()))
             {
                 case PyArray_UINT8:
-                    w.write(Numpy2RefArray<uint8>(o));break;
+                    w.write(get_numpy_data<uint8>(o));break;
                 case PyArray_INT8:
-                    w.write(Numpy2RefArray<int8>(o));break;
+                    w.write(get_numpy_data<int8>(o));break;
                 case PyArray_UINT16:
-                    w.write(Numpy2RefArray<uint16>(o));break;
+                    w.write(get_numpy_data<uint16>(o));break;
                 case PyArray_INT16:
-                    w.write(Numpy2RefArray<int16>(o));break;
+                    w.write(get_numpy_data<int16>(o));break;
                 case PyArray_UINT32:
-                    w.write(Numpy2RefArray<uint32>(o)); break;
+                    w.write(get_numpy_data<uint32>(o)); break;
                 case PyArray_INT32:
-                    w.write(Numpy2RefArray<int32>(o));break;
+                    w.write(get_numpy_data<int32>(o));break;
                 case PyArray_UINT64:
-                    w.write(Numpy2RefArray<uint64>(o)); break;
+                    w.write(get_numpy_data<uint64>(o)); break;
                 case PyArray_INT64:
-                    w.write(Numpy2RefArray<int64>(o)); break;
+                    w.write(get_numpy_data<int64>(o)); break;
                 case PyArray_FLOAT32:
-                    w.write(Numpy2RefArray<float32>(o)); break;
+                    w.write(get_numpy_data<float32>(o)); break;
                 case PyArray_FLOAT64:
-                    w.write(Numpy2RefArray<float64>(o)); break;
+                    w.write(get_numpy_data<float64>(o)); break;
                 case PyArray_LONGDOUBLE:
-                    w.write(Numpy2RefArray<float128>(o));break;
+                    w.write(get_numpy_data<float128>(o));break;
                 case NPY_CFLOAT:
-                    w.write(Numpy2RefArray<complex32>(o));break;
+                    w.write(get_numpy_data<complex32>(o));break;
                 case NPY_CDOUBLE:
-                    w.write(Numpy2RefArray<complex64>(o)); break;
+                    w.write(get_numpy_data<complex64>(o)); break;
                 case NPY_CLONGDOUBLE:
-                    w.write(Numpy2RefArray<complex128>(o));break;
+                    w.write(get_numpy_data<complex128>(o));break;
                 case NPY_BOOL:
-                    w.write(Numpy2RefArray<bool>(o)); break;
+                    w.write(get_numpy_data<bool_t>(o)); break;
                 default:
                     throw type_error(EXCEPTION_RECORD,
                     "Type of numpy array cannot be handled!");
@@ -206,9 +204,9 @@ class ArrayWriter
             auto shape = w.template shape<shape_t>();
 
             T value = extract<T>(o)();
-            darray<T> data(shape);
-            std::fill(data.begin(),data.end(),value);
-            w.write(data);
+            //darray<T> data(shape);
+            //std::fill(data.begin(),data.end(),value);
+            w.write(value);
         }
     public:
         /*! \brief write array data

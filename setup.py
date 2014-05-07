@@ -34,7 +34,7 @@ libraries    = pniio.libraries
 libraries.append('boost_python')
 include_dirs.extend(get_numpy_include_dirs())
 
-extra_compile_args = ['-std=c++0x']
+extra_compile_args = ['-std=c++11']
 extra_compile_args.extend(pniio.compiler_flags)
 if(debug):
     extra_compile_args.append('-O0')
@@ -53,7 +53,7 @@ setup(name="libpniio-python",
         author="Eugen Wintersberger",
         author_email="eugen.wintersberger@desy.de",
         description="Python wrapper for libpniio",
-        version = "0.9.4",
+        version = "0.9.666",
         ext_package="pni.io.nx.h5",
         ext_modules=[nxh5],
         packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],

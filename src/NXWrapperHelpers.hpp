@@ -1,28 +1,25 @@
-/*
- * (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
- *
- * This file is part of python-pniio.
- *
- * python-pniio is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * python-pniio is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
- *************************************************************************
- *
- * Declearation of helper functions and classes for wrappers.
- *
- * Created on: Feb 17, 2012
- *     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
- */
-
+//
+// (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
+// This file is part of python-pniio.
+//
+// python-pniio is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// python-pniio is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+// ===========================================================================
+//
+// Created on: Feb 17, 2012
+//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
 #pragma once
 
 extern "C"{
@@ -30,15 +27,15 @@ extern "C"{
 #include<numpy/arrayobject.h>
 }
 
-#include<pni/core/types.hpp>
-#include<pni/core/arrays.hpp>
-#include<pni/core/rbuffer.hpp>
+#include <vector>
+#include <pni/core/types.hpp>
+#include <pni/core/arrays.hpp>
 
-#include<pni/io/nx/nx.hpp>
+#include <pni/io/nx/nx.hpp>
 
-#include<boost/python/extract.hpp>
-#include<boost/python/list.hpp>
-#include<boost/python/tuple.hpp>
+#include <boost/python/extract.hpp>
+#include <boost/python/list.hpp>
+#include <boost/python/tuple.hpp>
 
 using namespace pni::core;
 using namespace boost::python;
@@ -51,13 +48,13 @@ using namespace pni::io::nx::h5;
                static const int typenum = nptype;\
     };
 
-/*! 
-\ingroup utils  
-\brief type mape for numpy types
-
-This type-map maps PNI types as defines in pni/utils/Types.hpp to 
-NumPy type numbers.
-*/
+//! 
+//! \ingroup utils  
+//! \brief type mape for numpy types
+//! 
+//! This type-map maps PNI types as defines in pni/utils/Types.hpp to 
+//! NumPy type numbers.
+//!
 template<typename T> class PNI2NumpyType;
 
 CREATE_PNI2NUMPY_TYPE(uint8,NPY_UINT8);
@@ -78,31 +75,32 @@ CREATE_PNI2NUMPY_TYPE(string,NPY_STRING);
 CREATE_PNI2NUMPY_TYPE(bool,NPY_BOOL);
 
 //=============================================================================
-/*! 
-\ingroup utils  
-\brief create string from type id
-
-Helper function that creatds a numpy type code string from a pni::utils::TypeID.
-\param tid type id from pniutils
-\return NumPy typecode
-*/
+//! 
+//! \ingroup utils  
+//! \brief create string from type id
+//! 
+//! Helper function that creatds a numpy type code string from a 
+//! pni::core::type_id_t.
+//! \param tid type id from pniutils
+//! \return NumPy typecode
+//!
 string typeid2str(const type_id_t &tid);
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief create a python list from a container
-
-Creates a Python list from a C++ container.
-\tparam CTYPE containerr type
-\param c instance of CTYPE
-\return python list with 
-*/
+//! 
+//! \ingroup utils  
+//! \brief create a python list from a container
+//! 
+//! Creates a Python list from a C++ container.
+//! \tparam CTYPE containerr type
+//! \param c instance of CTYPE
+//! \return python list with 
+//!
 template<typename CTYPE> list Container2List(const CTYPE &c)
 {
     list l;
     if(c.size()==0) return l;
-    
+
     for(auto iter=c.begin();iter!=c.end();++iter)
         l.append(*iter);
 
@@ -111,15 +109,15 @@ template<typename CTYPE> list Container2List(const CTYPE &c)
 }
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief create a container from a Python list
+//! 
+//! \ingroup utils  
+//! \brief create a container from a Python list
 
-Convert a Python list to a C++ container. 
-\tparam CTYPE container type.
-\param l python list object
-\return instance of 
-*/
+//! Convert a Python list to a C++ container. 
+//! \tparam CTYPE container type.
+//! \param l python list object
+//! \return instance of 
+//!
 template<typename CTYPE> CTYPE List2Container(const list &l)
 {
     CTYPE c(len(l));
@@ -132,72 +130,90 @@ template<typename CTYPE> CTYPE List2Container(const list &l)
 }
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief tuple to container conversion
-
-Converts a Python tuple to a Shape object. The length of the tuple determines
-the rank of the Shape and its elements the number of elements along each
-dimension.
-\tparam CTYPE container type
-\param t tuple object
-\return instance of type CTYPE
-*/
+//! 
+//! \ingroup utils  
+//! \brief tuple to container conversion
+//! 
+//! Converts a Python tuple to a Shape object. The length of the tuple 
+//! determines the rank of the Shape and its elements the number of elements 
+//! along each dimension.
+//! 
+//! \tparam CTYPE container type
+//! \param t tuple object
+//! \return instance of type CTYPE
+//!
 template<typename CTYPE> CTYPE Tuple2Container(const tuple &t)
 {
     return List2Container<CTYPE>(list(t));
 }
 
 //-----------------------------------------------------------------------------
-/*!
-\ingroup utils
-\brief check if object is numpy array
-
-Checks if an object is a numpy array. 
-\return true if object is a numpy array
-*/
+//!
+//! \ingroup utils
+//! \brief check if object is numpy array
+//! 
+//! Checks if an object is a numpy array. 
+//! \return true if object is a numpy array
+//!
 bool is_numpy_array(const object &o);
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief create reference array from numpy array
-
-This template method creates a reference array to the data held by a numpy
-array. The method for this purpose assumes that the object passed to it referes
-to a numpy array. 
-\param o python object
-*/
-template<typename T> darray<T,rbuffer<T> > Numpy2RefArray(const object &o)
+//!
+//! \ingroup utils
+//! \brief get the shape of a numpy array
+//! 
+//! Return the number of elements along each dimension of a numpy array 
+//! in use determined container.
+//!
+//! 
+template<typename CTYPE> CTYPE get_numpy_shape(const object &o)
 {
+    typedef typename CTYPE::value_type value_type;
+
+    if(!is_numpy_array(o))
+        throw type_error(EXCEPTION_RECORD,"Object must be a numpy array!");
+
     const PyArrayObject *py_array = (const PyArrayObject *)o.ptr();
 
-    //create a shape object
-    std::vector<size_t> shape(py_array->nd);
-    for(size_t i=0;i<shape.size();i++) 
-        shape[i] = (size_t)PyArray_DIM(o.ptr(),i);
+    CTYPE shape(py_array->nd);
+    auto iter = shape.begin();
+    for(size_t i=0;i<shape.size();++i)
+        *iter++ = (value_type)PyArray_DIM(o.ptr(),i);
 
-    rbuffer<T> buffer(PyArray_SIZE(o.ptr()),(T *)PyArray_DATA(o.ptr()));
-    return darray<T,rbuffer<T> >(shape,buffer);
+    return shape;
 }
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief create a numpy array 
+template<typename T> T *get_numpy_data(const object &o)
+{
+    return (T*)PyArray_DATA(o.ptr());
+}
 
-This template function creates a new numpy array from shape and type
-information. This should be a rather simple thing.
-*/
-template<typename T,typename CTYPE> object CreateNumpyArray(const CTYPE &s)
+
+//-----------------------------------------------------------------------------
+//! 
+//! \ingroup utils  
+//! \brief create a numpy array 
+//!
+//! This template function creates a new numpy array from shape and type
+//! information. This should be a rather simple thing.
+//! \tparam T data type to use for the numpy array
+//! \tparam CTYPE container type for the shape
+//! \param s instance of CTYPE with the required shape
+//! \return instance of numpy
+//! 
+template<
+         typename T,
+         typename CTYPE
+        > 
+object create_numpy_array(const CTYPE &s)
 {
     PyObject *ptr = nullptr;
     //create the buffer for with the shape information
-    dbuffer<npy_intp> dims(s.size());
+    std::vector<npy_intp> dims(s.size());
     std::copy(s.begin(),s.end(),dims.begin());
 
-    ptr = PyArray_SimpleNew(s.size(),const_cast<npy_intp*>(dims.ptr()),
-                            PNI2NumpyType<T>::typenum);
+    ptr = PyArray_SimpleNew(s.size(),dims.data(),PNI2NumpyType<T>::typenum);
 
     handle<> h(ptr);
 
@@ -205,19 +221,20 @@ template<typename T,typename CTYPE> object CreateNumpyArray(const CTYPE &s)
 }
 
 //-----------------------------------------------------------------------------
-/*!
-\ingroup utils
-\brief get array information from nested lists
-
-Though arrays of data are usually represented by numpy-arrays in Python the fact
-that libpninx supports arrays of variable length strings causes some problems. 
-Numpy does not support arrays of variable length strings. Thus we use nested
-lists to represent such structures. 
-This function determines the rank (the number of dimensions) for an array that
-should represent the data stored in the list. 
-\param o object with the nested list
-\return rank of the array
-*/
+//!
+//! \ingroup utils
+//! \brief get array information from nested lists
+//! 
+//! Though arrays of data are usually represented by numpy-arrays in Python 
+//! the fact that libpninx supports arrays of variable length strings causes 
+//! some problems.  Numpy does not support arrays of variable length strings. 
+//! Thus we use nested lists to represent such structures. 
+//! This function determines the rank (the number of dimensions) for an array 
+//! that should represent the data stored in the list. 
+//! 
+//! \param o object with the nested list
+//! \return rank of the array
+//!
 size_t  nested_list_rank(const object &o);
 
 //-----------------------------------------------------------------------------
@@ -237,43 +254,47 @@ template<typename CTYPE> CTYPE nested_list_shape(const object &o)
 }
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup utils  
-\brief selection from tuple 
-
-Adopts the selection of a field according to a tuple with indices and slices.
-In order to succeed the tuple passed to this function must contain only indices,
-slices, and a single ellipsis.
-\throws TypeError if one of typle element is from an unsupported type
-\throws IndexError if more than one ellipsis is contained in the tuple or if an
-Index exceeds the number of elements along the correpsonding field dimension.
-\throws ShapeMissmatchError if the size of the tuple exceeds the rank of the
-field from which the selection should be drawn.
-\param t tuple with indices and slices
-\param f reference to the field for which to create the selection
-*/
+//! 
+//! \ingroup utils  
+//! \brief selection from tuple 
+//! 
+//! Adopts the selection of a field according to a tuple with indices and 
+//! slices.  In order to succeed the tuple passed to this function must contain 
+//! only indices, slices, and a single ellipsis.
+//! 
+//! \throws TypeError if one of typle element is from an unsupported type
+//! \throws IndexError if more than one ellipsis is contained in the tuple or 
+//! if an index exceeds the number of elements along the correpsonding field 
+//! dimension.
+//! \throws ShapeMissmatchError if the size of the tuple exceeds the rank of 
+//! the field from which the selection should be drawn.
+//! \param t tuple with indices and slices
+//! \param f reference to the field for which to create the selection
+//! \return vector with slices
+//!
 std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &f);
 
 //-----------------------------------------------------------------------------
-/*!
-\ingroup utils
-\brief check if unicode
-
-Check if the instance of objec represents a unicode object. 
-\param o instance to check
-\return true if o is a unicode object, false otherwise
-*/
+//!
+//! \ingroup utils
+//! \brief check if unicode
+//! 
+//! Check if the instance of objec represents a unicode object. 
+//! \param o instance to check
+//! \return true if o is a unicode object, false otherwise
+//!
 bool is_unicode(const object &o);
 
 //-----------------------------------------------------------------------------
-/*!
-\ingroup utils
-\brief convert unicode to string
-
-Converts a Python unicode object to a common Python String object using 
-UTF8 encoding.
-\param o python unicode object
-\return python string object
-*/
+//!
+//! \ingroup utils
+//! \brief convert unicode to string
+//! 
+//! Converts a Python unicode object to a common Python String object using 
+//! UTF8 encoding.
+//! 
+//! \param o python unicode object
+//! \return python string object
+//!
 object unicode2str(const object &o);
 
