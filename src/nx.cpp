@@ -48,6 +48,7 @@ using namespace pni::io::nx::h5;
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
 #include "NXWrapperErrors.hpp"
+#include "bool_converter.hpp"
 
 
 
@@ -59,9 +60,13 @@ BOOST_PYTHON_MODULE(nxh5)
     //work.
     import_array();
 
+    //register converter
+    to_python_converter<bool_t,bool_t_to_python_converter>();
+    python_to_bool_t_converter();
 
     //register exception translators
     exception_registration();
+
    
     //wrap NX-attribute object
     wrap_nxattribute<pni::io::nx::h5::nxattribute>();

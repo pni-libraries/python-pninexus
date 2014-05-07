@@ -149,8 +149,8 @@ void io_write(const OTYPE &writeable,const object &obj)
     }
     else if(writeable.type_id() == type_id_t::BOOL)
         IOOP::template write<bool_t>(writeable,obj); 
-
-    //raise an exception here if the datatype cannot be managed
-    throw type_error(EXCEPTION_RECORD,"Datatype of writabel is unknown!");
+    else 
+        //raise an exception here if the datatype cannot be managed
+        throw type_error(EXCEPTION_RECORD,"Datatype of writabel is unknown!");
 
 }
