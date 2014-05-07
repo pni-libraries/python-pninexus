@@ -19,7 +19,7 @@
 //
 // Created on: Feb 17, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
-///
+//
 
 #pragma once
 
@@ -265,6 +265,8 @@ template<typename OTYPE> void wrap_nxobject(const string &class_name)
     typedef typename NXObjectWrapper<OTYPE>::object_wrapper_t object_wrapper_t;
     typedef class_<object_wrapper_t> wrapper_class;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-value"
     wrapper_class(class_name.c_str())
         .def(init<>())
         .add_property("name", &object_wrapper_t::name,__object_name_docstr)
@@ -277,6 +279,7 @@ template<typename OTYPE> void wrap_nxobject(const string &class_name)
         .def("close", &object_wrapper_t::close,__object_close_docstr)
         .add_property("attributes",&object_wrapper_t::get_attribute_iterator,__object_attributes_docstr)
         ;
+#pragma GCC diagnostic pop
 }
 
 

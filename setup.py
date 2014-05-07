@@ -34,7 +34,7 @@ libraries    = pniio.libraries
 libraries.append('boost_python')
 include_dirs.extend(get_numpy_include_dirs())
 
-extra_compile_args = ['-std=c++11']
+extra_compile_args = ['-std=c++11','-Wall','-pedantic','-Wextra']
 extra_compile_args.extend(pniio.compiler_flags)
 if(debug):
     extra_compile_args.append('-O0')

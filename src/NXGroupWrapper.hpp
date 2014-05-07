@@ -333,7 +333,9 @@ template<typename GTYPE> void wrap_nxgroup(const string &class_name)
 {
     typedef typename NXGroupWrapper<GTYPE>::group_wrapper_t group_wrapper_t;
     typedef typename NXObjectWrapper<GTYPE>::object_wrapper_t object_wrapper_t;
-    
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-value"
     class_<group_wrapper_t,bases<object_wrapper_t> >(class_name.c_str())
         .def(init<>())
         .def("open",&group_wrapper_t::open_by_name,__group_open_docstr)
@@ -350,5 +352,6 @@ template<typename GTYPE> void wrap_nxgroup(const string &class_name)
         .add_property("nchildren",&group_wrapper_t::nchildren,__group_nchilds_docstr)   
         .add_property("children",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
         ;
+#pragma GCC diagnostic pop
 }
 
