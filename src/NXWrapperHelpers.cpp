@@ -203,7 +203,12 @@ object unicode2str(const object &o)
 
 //-----------------------------------------------------------------------------
 
-void init_array() { import_array(); }
+void init_array() 
+{ 
+    import_array(); 
+}
+
+//----------------------------------------------------------------------------
 bool is_numpy_array(const object &o)
 {
     init_array();

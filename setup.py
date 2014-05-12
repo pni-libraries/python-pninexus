@@ -34,7 +34,8 @@ libraries    = pniio.libraries
 libraries.append('boost_python')
 include_dirs.extend(get_numpy_include_dirs())
 
-extra_compile_args = ['-std=c++11','-Wall','-pedantic','-Wextra']
+extra_compile_args = ['-std=c++11','-Wall','-Wextra',
+                      '-fdiagnostics-show-option']
 extra_compile_args.extend(pniio.compiler_flags)
 if(debug):
     extra_compile_args.append('-O0')
@@ -47,6 +48,7 @@ nxh5 = Extension("nxh5",files,
                  include_dirs = include_dirs,
                  library_dirs = library_dirs,
                  libraries = libraries,
+                 language="c++",
                  extra_compile_args = extra_compile_args)
 
 setup(name="libpniio-python",

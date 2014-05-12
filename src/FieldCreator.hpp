@@ -19,7 +19,7 @@
 //
 // Created on: March 13, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
-///
+//
 
 #pragma once
 
@@ -37,23 +37,21 @@
 using namespace pni::core;
 using namespace boost::python;
 
-/*! 
-\ingroup utils  
-\brief field creator class-template
-
-This template generats classes whose instance are responsible for creating
-NXField instances. The instance is of type FieldT. 
-\tparam GTYPE group type responsible for field creation
-*/
-template<typename GTYPE> class FieldCreator
+//! 
+//! \ingroup utils  
+//! \brief field creator class-template
+//! 
+//! This template generats classes whose instance are responsible for creating
+//! NXField instances. The instance is of type FieldT. 
+//! \tparam GTYPE group type responsible for field creation
+//! 
+template<typename GTYPE> class field_creator
 {
     private:
         string __n;      //!< name of the field
         shape_t __s;     //!< shape of the field
         shape_t __cs;    //!< chunk shape of the field
         object __filter; //!< name of the filter to use
-
-        //====================private methods==================================
 
     public:
         //===================public types======================================
@@ -64,50 +62,60 @@ template<typename GTYPE> class FieldCreator
         //! field wrapper type
         typedef NXFieldWrapper<field_t> field_wrapper_t;
         //====================constructor======================================
-        /*! \brief constructor
-       
-        The standard constructor for this class.
-        \param n name of the field
-        \param s shape of the field
-        \param cs chunk shape
-        \param filter filter object to use for compression
-        */
-        FieldCreator(const string &n,const shape_t &s,const shape_t &cs,const object
-                &filter):
+        //!
+        //! \brief constructor
+        //! 
+        //! The standard constructor for this class.
+        //! \param n name of the field
+        //! \param s shape of the field
+        //! \param cs chunk shape
+        //! \param filter filter object to use for compression
+        //!
+        FieldCreator(const string &n,const shape_t &s,const shape_t &cs,
+                     const object &filter):
             __n(n),__s(s),__cs(cs),__filter(filter){}
        
         //---------------------------------------------------------------------
-        /*! \brief create field object
-
-        This template emthod finally creates the field object. The datatype to 
-        use is determined by the template parameter T. OType is the type of the
-        parent object of the field.
-        \throws nxfield_error in case of field related problems
-        \throws nxfilter_error in case of filter related errors
-        \tparam T data type for which to create a field
-        \param parent parent group
-        \return instance of a python object
-        */
-        template<typename T> field_wrapper_t create(const group_t &parent) const;
+        //!
+        //*! \brief create field object
+        //!
+        //! This template emthod finally creates the field object. The 
+        //! datatype to use is determined by the template parameter T. OType 
+        //! is the type of the parent object of the field.
+        //!
+        //! \throws nxfield_error in case of field related problems
+        //! \throws nxfilter_error in case of filter related errors
+        //! \tparam T data type for which to create a field
+        //! \param parent parent group
+        //! \return instance of a python object
+        //!
+        template<typename T> 
+        field_wrapper_t create(const group_t &parent) const;
 
         //---------------------------------------------------------------------
-        /*! \brief create field using a type string
-
-        This is the method usually used by a client of this class to create an
-        instance of an NXField object. The datatype is determined by a string.
-        \throws type_error if the datatype given by the user could no be handled
-        \throws nxfield_error if field creation fails
-        \throws nxfilter_error if the filter object is invalid
-        \param parent parent object 
-        \param type_str string representing the data-type to use
-        */
-        field_wrapper_t create(const group_t &parent,const string &type_str) const;
+        //! 
+        //! \brief create field using a type string
+        //!
+        //! This is the method usually used by a client of this class to 
+        //! create an instance of an NXField object. The datatype is 
+        //! determined by a string.
+        //!
+        //! \throws type_error if the datatype given by the user could no 
+        //! be handled
+        //! \throws nxfield_error if field creation fails
+        //! \throws nxfilter_error if the filter object is invalid
+        //! \param parent parent object 
+        //! \param type_str string representing the data-type to use
+        //!
+        field_wrapper_t create(const group_t &parent,
+                               const string &type_str) const;
 };
 
 //-----------------------------------------------------------------------------
 template<typename GTYPE>
-template<typename T> typename FieldCreator<GTYPE>::field_wrapper_t
-FieldCreator<GTYPE>::create(const group_t &parent) const
+template<typename T> 
+typename field_creator<GTYPE>::field_wrapper_t
+field_creator<GTYPE>::create(const group_t &parent) const
 {
     extract<nxdeflate_filter> deflate_obj(__filter);
 

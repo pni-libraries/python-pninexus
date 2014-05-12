@@ -38,36 +38,43 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::io::nx::h5;
 
-ERR_TRANSLATOR(pni::io::nx,nxfile_error);
-ERR_TRANSLATOR(pni::io::nx,nxgroup_error);
-ERR_TRANSLATOR(pni::io::nx,nxfield_error);
-ERR_TRANSLATOR(pni::io::nx,nxattribute_error);
-ERR_TRANSLATOR(pni::io::nx,nxselection_error);
-ERR_TRANSLATOR(pni::io::nx,nxfilter_error);
-ERR_TRANSLATOR(pni::io::nx,nxbackend_error);
-ERR_TRANSLATOR(pni::io::nx,nxlink_error);
-ERR_TRANSLATOR(pni::io::nx,nxobject_error);
+ERR_TRANSLATOR(pni::io::nx,nxfile_error)
+ERR_TRANSLATOR(pni::io::nx,nxgroup_error)
+ERR_TRANSLATOR(pni::io::nx,nxfield_error)
+ERR_TRANSLATOR(pni::io::nx,nxattribute_error)
+ERR_TRANSLATOR(pni::io::nx,nxselection_error)
+ERR_TRANSLATOR(pni::io::nx,nxfilter_error)
+ERR_TRANSLATOR(pni::io::nx,nxbackend_error)
+ERR_TRANSLATOR(pni::io::nx,nxlink_error)
+ERR_TRANSLATOR(pni::io::nx,nxobject_error)
 
 //-----------------------------------------------------------------------------
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void ChildIteratorStop_translator(ChildIteratorStop const &error)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
+#pragma GCC diagnostic pop
 
 //-----------------------------------------------------------------------------
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
+#pragma GCC diagnostic pop
 
 
 //====================General purpose exceptions===============================
-ERR_TRANSLATOR(pni::core,shape_mismatch_error);
-ERR_TRANSLATOR(pni::core,index_error);
-ERR_TRANSLATOR(pni::core,size_mismatch_error);
-ERR_TRANSLATOR(pni::core,memory_not_allocated_error);
-ERR_TRANSLATOR(pni::core,memory_allocation_error);
-ERR_TRANSLATOR(pni::core,type_error);
+ERR_TRANSLATOR(pni::core,shape_mismatch_error)
+ERR_TRANSLATOR(pni::core,index_error)
+ERR_TRANSLATOR(pni::core,size_mismatch_error)
+ERR_TRANSLATOR(pni::core,memory_not_allocated_error)
+ERR_TRANSLATOR(pni::core,memory_allocation_error)
+ERR_TRANSLATOR(pni::core,type_error)
+ERR_TRANSLATOR(pni::core,key_error)
 
 
 
@@ -98,6 +105,7 @@ void exception_registration()
     ERR_OBJECT_DECL(pni::core,memory_allocation_error);
     ERR_OBJECT_DECL(pni::core,memory_not_allocated_error);
     ERR_OBJECT_DECL(pni::core,type_error);
+    ERR_OBJECT_DECL(pni::core,key_error);
 
     
     ERR_REGISTRATION(pni::io::nx,nxfile_error);
@@ -115,6 +123,7 @@ void exception_registration()
     ERR_REGISTRATION(pni::core,memory_allocation_error);
     ERR_REGISTRATION(pni::core,memory_not_allocated_error);
     ERR_REGISTRATION(pni::core,type_error);
+    ERR_REGISTRATION(pni::core,key_error);
 
 
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);

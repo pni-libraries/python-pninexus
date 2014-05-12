@@ -24,23 +24,27 @@
 #pragma once
 
 #include <pni/io/nx/nxobject_type.hpp>
+#include <pni/io/nx/nxobject_traits.hpp>
+#include <pni/io/nx/utils/nxfield_utils.hpp>
+#include <pni/io/nx/nxexceptions.hpp>
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/nxlink.hpp>
 
 #include "NXWrapperHelpers.hpp"
 #include "NXObjectMap.hpp"
 #include "NXObjectWrapper.hpp"
-#include "FieldCreator.hpp"
+#include "field_creator.hpp"
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
 
-/*! 
-\ingroup wrappers  
-\brief class tempalte for NXGroup wrapper
-
-Class template to create wrappers for NXGroup types.
-*/
-template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
+//! 
+//! \ingroup wrappers  
+//! \brief class tempalte for NXGroup wrapper
+//! 
+//! Class template to create wrappers for NXGroup types.
+//!
+template<typename GTYPE> 
+class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 {
     public:
         //!wrapped type 
@@ -50,7 +54,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //! wrapper type for GTYPE
         typedef NXGroupWrapper<type_t> group_wrapper_t;
         //! field creator type
-        typedef FieldCreator<type_t> field_creator_t;
+        typedef field_creator<type_t> field_creator_t;
         //================constructors and destructor==========================
         //! default constructor
         NXGroupWrapper():NXObjectWrapper<type_t>(){}
@@ -61,26 +65,26 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
             NXObjectWrapper<type_t>(o)
         { }
 
-        //----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! move constructor
         NXGroupWrapper(group_wrapper_t &&o):
             NXObjectWrapper<type_t>(std::move(o))
         { }
 
-        //----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! conversion copy constructor
         explicit NXGroupWrapper(const type_t &g):NXObjectWrapper<type_t>(g){}
 
-        //----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! conversion move constructor
         explicit NXGroupWrapper(type_t &&g):NXObjectWrapper<type_t>(std::move(g))
         {}
 
-        //----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //! destructor
         virtual ~NXGroupWrapper() { }
 
-        //====================assignment operators==============================
+        //====================assignment operators=============================
         //!copy assignment 
         group_wrapper_t &operator=(const group_wrapper_t &o)
         {
@@ -88,7 +92,7 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
             return *this;
         }
 
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         //!move assignment
         group_wrapper_t &operator=(group_wrapper_t &&o)
         {
@@ -96,18 +100,21 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
             return *this;
         }
 
-        //----------------------------------------------------------------------
-        /*! \brief create group 
-        
-        Create a new group object. The method takes the name of the group (or 
-        the path relative to the actual group) and an optional argument with the 
-        Nexus class string of the new group. If the latter argument is not 
-        provided no NX_class attribute will be set on the newly created group.
-        \throws NXGroupError in case of problems
-        \param n name of the new group
-        \param nxclass optional argument with the Nexus class
-        \return new instance of NXGroupWrapper
-        */
+        //---------------------------------------------------------------------
+        //!
+        //! \brief create group 
+        //! 
+        //! Create a new group object. The method takes the name of the 
+        //! group (or the path relative to the actual group) and an optional 
+        //! argument with the Nexus class string of the new group. If the 
+        //! latter argument is not provided no NX_class attribute will be set 
+        //! on the newly created group.
+        //!
+        //! \throws nxgroup_error in case of problems
+        //! \param n name of the new group
+        //! \param nxclass optional argument with the Nexus class
+        //! \return new instance of NXGroupWrapper
+        //!
         NXGroupWrapper<typename NXObjectMap<type_t>::GroupType>
         create_group(const string &n,const string &nxclass=string()) const
         {
@@ -118,58 +125,133 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
             return group;
         }
 
-        //-------------------------------------------------------------------------
-        /*! \brief create field
-
-        This method creates a new NXField object in the file. It has two
-        mandatory positional arguments: the name and the type_code of the new
-        field. Further optional keyword arguments allow the creation of
-        multidimensional fields and the creation of fields using filters for
-        compressing data.
-        A multidimensional field is created by setting the 'shape' argument 
-        to a tuple whose length defines the number of dimensions of the field
-        and its elements the number of elements along each dimension. 
-        The 'chunk' argument takes any sequence object an defines the shape of
-        data chunks which are written contiguously to the file. Finally, the
-        filter object can be used to pass a filter for data compression to the
-        field.
-        \throws NXFieldError in case of general problems with object creation
-        \throws TypeError if the type_code argument contains an invalid string
-        \throws ShapeMissmatchError if the rank of the chunk shape does not
-        match the rank of the fields shape
-        \param name name of the new field
-        \param type_code numpy type code 
-        \param shape sequence object with the shape of the field
-        \param chunk sequence object for the chunk shape
-        \param filter a filter object for data compression
-        \return instance of a field wrapper
-        */
+        //---------------------------------------------------------------------
+        //!
+        //! \brief create field
+        //!
+        //! This method creates a new NXField object in the file. It has two
+        //! mandatory positional arguments: the name and the type_code of the 
+        //! new field. Further optional keyword arguments allow the creation 
+        //! of multidimensional fields and the creation of fields using 
+        //! filters for compressing data.
+        //!
+        //! A multidimensional field is created by setting the 'shape' 
+        //! argument to a tuple whose length defines the number of dimensions 
+        //! of the field and its elements the number of elements along each 
+        //! dimension.  The 'chunk' argument takes any sequence object an 
+        //! defines the shape of data chunks which are written contiguously 
+        //! to the file. Finally, the filter object can be used to pass a 
+        //! filter for data compression to the field.
+        //!
+        //! \throws nxfield_error in case of general problems with object 
+        //! creation
+        //! \throws type_error if the type_code argument contains an invalid 
+        //! string
+        //! \throws shape_mismatch_error if the rank of the chunk shape 
+        //! does not match the rank of the fields shape
+        //! 
+        //! \param name name of the new field
+        //! \param type_code numpy type code 
+        //! \param shape sequence object with the shape of the field
+        //! \param chunk sequence object for the chunk shape
+        //! \param filter a filter object for data compression
+        //! \return instance of a field wrapper
+        //!
         typename field_creator_t::field_wrapper_t
-         create_field(const string &name,const string &type_code,
-                         const object &shape=list(),const object
-                         &chunk=list(),const object &filter=object()) const
+        create_field(const string &name,
+                     const string &type_code,
+                     const object &shape=object(),
+                     const object &chunk=object(),
+                     const object &filter=object()) const
         {
-            typedef typename field_creator_t::field_wrapper_t field_wrapper_t;
-            field_creator_t creator(name,List2Container<shape_t>(list(shape)),
-                                    List2Container<shape_t>(list(chunk)),filter);
+            typedef pni::io::nx::field_type<GTYPE> field_type;
+            typedef pni::io::nx::deflate_type<GTYPE> deflate_type;
+            typedef NXFieldWrapper<field_type> wrapper_type;
+            using pni::io::nx::create_field;
+            
+            field_type field;
+            type_id_t type_id;
+            try
+            {
+                type_id = type_id_from_str(type_code);
+            }
+            catch(key_error &error)
+            {
+                //forward exception
+                error.append(EXCEPTION_RECORD); throw error;
+            }
 
-            field_wrapper_t wrapper = creator.create(this->_object,type_code);
-            return wrapper;
+            if(filter.is_none())
+            {
+                //create a field without a filter
+                if(shape.is_none())
+                    //this corresponds to create_field<T>(name);
+                    field = create_field(this->_object,name,type_id);
+                else if(!shape.is_none() && chunk.is_none())
+                {
+                    //create_field<T>(name,shape);
+                    auto s = List2Container<shape_t>(list(shape));
+                    field = create_field(this->_object,name,type_id,s);
+                }
+                else if(!shape.is_none() && !chunk.is_none())
+                {
+                    //create_field<T>(name,shape,chunk);
+                    auto s = List2Container<shape_t>(list(shape));
+                    auto c = List2Container<shape_t>(list(chunk));
+                    field = create_field(this->_object,name,type_id,s,c);
+                }
+                else
+                {
+                    throw pni::io::nx::nxgroup_error(EXCEPTION_RECORD,
+                            "Cannot create field from arguments!");
+                }
+            }
+            else
+            {
+                //extract filter
+                extract<deflate_type> deflate_object(filter);
+
+                if(!deflate_object.check())
+                    throw type_error(EXCEPTION_RECORD,
+                                     "Filter is not an instance of filter class!");
+
+                if(!shape.is_none() && chunk.is_none())
+                {
+                    auto s = List2Container<shape_t>(list(shape));
+                    field = create_field(this->_object,name,type_id,s,deflate_object());
+                }
+                else if(!shape.is_none() && !chunk.is_none())
+                {
+                    auto s = List2Container<shape_t>(list(shape));
+                    auto c = List2Container<shape_t>(list(chunk));
+                    field = create_field(this->_object,name,type_id,s,c,deflate_object());
+                }
+                else
+                {
+                    throw pni::io::nx::nxgroup_error(EXCEPTION_RECORD,
+                            "Cannot create field from arguments!");
+                }
+                    //throw an exception here
+            }
+
+            return wrapper_type(field);
         }
 
         //-------------------------------------------------------------------------
-        /*! \brief open an object
-
-        This method opens an object and tries to figure out by itself what kind
-        of object is has to deal with. Consequently it returns already a Python
-        obeject of the appropriate type (which can be either NXGroup of
-        NXField). If the method fails to determine the type of the return object
-        an exception will be thrown.
-        \throws NXGroupError if opening the object fails
-        \throws TypeError if the return type cannot be determined
-        \param n name of the object to open
-        \return Python object for NXGroup or NXField.
-        */
+        //!
+        //! \brief open an object
+        //!
+        //! This method opens an object and tries to figure out by itself 
+        //! what kind of object is has to deal with. Consequently it returns 
+        //! already a Python obeject of the appropriate type (which can be 
+        //! either NXGroup of NXField). If the method fails to determine the 
+        //! type of the return object an exception will be thrown.
+        //!
+        //! \throws nxgroup_error if opening the object fails
+        //! \throws type_error if the return type cannot be determined
+        //! \param n name of the object to open
+        //! \return Python object for NXGroup or NXField.
+        //!
         object open_by_name(const string &n) const
         {
             typedef typename NXObjectMap<type_t>::ObjectType object_t;
@@ -196,15 +278,16 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         }
 
         //---------------------------------------------------------------------
-        /*! \brief open object by index
-
-        Opens a child of the group by its index.
-        \throws IndexError if the index exceeds the total number of child
-        objects
-        \throws NXGroupError in case of errors while opening the object
-        \param i index of the child
-        \return child object
-        */
+        //!
+        //! \brief open object by index
+        //!
+        //! Opens a child of the group by its index.
+        //! \throws index_error if the index exceeds the total number of child
+        //! objects
+        //! \throws nxgroup_error in case of errors while opening the object
+        //! \param i index of the child
+        //! \return child object
+        //!
         object open(size_t i) const
         {
             typedef typename NXObjectMap<type_t>::ObjectType object_t;
@@ -214,28 +297,30 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         }
 
         //--------------------------------------------------------------------------
-        /*! \brief check for objects existance
-        
-        Returns true if the object defined by path 'n'. 
-        \return true if object exists, false otherwise
-        */
+        //! 
+        //! \brief check for objects existance
+        //! 
+        //! Returns true if the object defined by path 'n'. 
+        //! \return true if object exists, false otherwise
+        //!
         bool exists(const string &n) const { return this->_object.exists(n); }
 
         //--------------------------------------------------------------------------
-        /*! \brief number of child objects
-
-        Return the number of child objects linked below this group.
-        \return number of child objects
-        */
+        //!
+        //! \brief number of child objects
+        //!
+        //! Return the number of child objects linked below this group.
+        //! \return number of child objects
+        //!
         size_t nchildren() const { return this->_object.nchildren(); }
 
-
         //---------------------------------------------------------------------
-        /*! \brief create links
-
-        Exposes only one of the three link creation methods from the original
-        NXGroup object.
-        */
+        //!
+        //! \brief create links
+        //!
+        //! Exposes only one of the three link creation methods from the 
+        //! original NXGroup object.
+        //!
         void link(const string &p,const string &n) const
         {
             pni::io::nx::link(p,this->_object,n);
@@ -244,11 +329,14 @@ template<typename GTYPE> class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         }
 
         //----------------------------------------------------------------------
-        /*! \brief get child iterator
-
-        Returns an iterator over all child objects linked below this group.
-        \return instance of ChildIterator
-        */
+        //!
+        //! \brief get child iterator
+        //!
+        //! Returns an iterator over all child objects linked below this 
+        //! group.
+        //!
+        //! \return instance of ChildIterator
+        //!
         ChildIterator<group_wrapper_t,object> get_child_iterator() const
         {
             return ChildIterator<group_wrapper_t,object>(*this);
@@ -305,7 +393,7 @@ static const char __group_exists_docstr[] =
 "\tname .................. name (path) of the object to check\n\n"
 "Return value:\n"
 "\t true if object exists, false otherwise";
-;
+
 static const char __group_link_docstr[] = 
 "Create an internal or external link. The first argument is the path to the \n"
 "object to which a new link shall be created. The second argument is a path \n"
@@ -322,14 +410,15 @@ static const char __group_childs_docstr[] =
 "Read only property providing a sequence object which can be used to iterate\n"
 "over all childs linked below this group.";
 
-/*!
-\ingroup wrappers
-\brief create NXGroup wrapper
-
-Template function to create a new wrapper for an NXGroup type GType.
-\param class_name name for the Python class
-*/
-template<typename GTYPE> void wrap_nxgroup(const string &class_name)
+//!
+//! \ingroup wrappers
+//! \brief create NXGroup wrapper
+//! 
+//! Template function to create a new wrapper for an NXGroup type GType.
+//! \param class_name name for the Python class
+//!
+template<typename GTYPE> 
+void wrap_nxgroup(const string &class_name)
 {
     typedef typename NXGroupWrapper<GTYPE>::group_wrapper_t group_wrapper_t;
     typedef typename NXObjectWrapper<GTYPE>::object_wrapper_t object_wrapper_t;
@@ -344,7 +433,7 @@ template<typename GTYPE> void wrap_nxgroup(const string &class_name)
         .def("create_group",&group_wrapper_t::create_group,
                 ("n",arg("nxclass")=string()),__group_create_group_docstr)
         .def("create_field",&group_wrapper_t::create_field,
-                ("name","type_code",arg("shape")=list(),arg("chunk")=list(),
+                ("name","type_code",arg("shape")=object(),arg("chunk")=object(),
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&group_wrapper_t::exists,__group_exists_docstr)
         .def("link",&group_wrapper_t::link,__group_link_docstr)

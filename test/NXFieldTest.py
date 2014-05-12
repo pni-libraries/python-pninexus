@@ -38,10 +38,10 @@ class NXFieldTest(unittest.TestCase):
 
         #check for some errors
         #what if chunk shape and data shape do not have same rank
-        self.assertRaises(nx.ShapeMismatchError,self.gf.create_field,
+        self.assertRaises(nx.SizeMismatchError,self.gf.create_field,
                 "data2","float32",shape=(256,412),chunk=(256,))
         #check for unkown data type
-        self.assertRaises(nx.TypeError,self.gf.create_field,
+        self.assertRaises(nx.KeyError,self.gf.create_field,
                 "data2","hallo")
 
 

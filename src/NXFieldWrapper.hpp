@@ -19,10 +19,11 @@
 //
 // Created on: March 8, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
-///
+//
 #pragma once
 
 #include <boost/python/slice.hpp>
+#include <pni/io/nx/nxexceptions.hpp>
 #include "NXObjectWrapper.hpp"
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
@@ -192,7 +193,8 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 return io_read<array_reader>(this->_object(selection));
 
             //throw an exception if we cannot handle the user request
-            throw_NXFieldError("cannot handle user request");
+            throw pni::io::nx::nxfield_error(EXCEPTION_RECORD,
+                                             "cannot handle user request");
 
 
             return object();

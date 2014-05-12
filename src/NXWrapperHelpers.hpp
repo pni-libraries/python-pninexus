@@ -57,22 +57,22 @@ using namespace pni::io::nx::h5;
 //!
 template<typename T> class PNI2NumpyType;
 
-CREATE_PNI2NUMPY_TYPE(uint8,NPY_UINT8);
-CREATE_PNI2NUMPY_TYPE(int8,NPY_INT8);
-CREATE_PNI2NUMPY_TYPE(uint16,NPY_UINT16);
-CREATE_PNI2NUMPY_TYPE(int16,NPY_INT16);
-CREATE_PNI2NUMPY_TYPE(uint32,NPY_UINT32);
-CREATE_PNI2NUMPY_TYPE(int32,NPY_INT32);
-CREATE_PNI2NUMPY_TYPE(uint64,NPY_UINT64);
-CREATE_PNI2NUMPY_TYPE(int64,NPY_INT64);
-CREATE_PNI2NUMPY_TYPE(float32,NPY_FLOAT);
-CREATE_PNI2NUMPY_TYPE(float64,NPY_DOUBLE);
-CREATE_PNI2NUMPY_TYPE(float128,NPY_LONGDOUBLE);
-CREATE_PNI2NUMPY_TYPE(complex32,NPY_CFLOAT);
-CREATE_PNI2NUMPY_TYPE(complex64,NPY_CDOUBLE);
-CREATE_PNI2NUMPY_TYPE(complex128,NPY_CLONGDOUBLE);
-CREATE_PNI2NUMPY_TYPE(string,NPY_STRING);
-CREATE_PNI2NUMPY_TYPE(bool_t,NPY_BOOL);
+CREATE_PNI2NUMPY_TYPE(uint8,NPY_UINT8)
+CREATE_PNI2NUMPY_TYPE(int8,NPY_INT8)
+CREATE_PNI2NUMPY_TYPE(uint16,NPY_UINT16)
+CREATE_PNI2NUMPY_TYPE(int16,NPY_INT16)
+CREATE_PNI2NUMPY_TYPE(uint32,NPY_UINT32)
+CREATE_PNI2NUMPY_TYPE(int32,NPY_INT32)
+CREATE_PNI2NUMPY_TYPE(uint64,NPY_UINT64)
+CREATE_PNI2NUMPY_TYPE(int64,NPY_INT64)
+CREATE_PNI2NUMPY_TYPE(float32,NPY_FLOAT)
+CREATE_PNI2NUMPY_TYPE(float64,NPY_DOUBLE)
+CREATE_PNI2NUMPY_TYPE(float128,NPY_LONGDOUBLE)
+CREATE_PNI2NUMPY_TYPE(complex32,NPY_CFLOAT)
+CREATE_PNI2NUMPY_TYPE(complex64,NPY_CDOUBLE)
+CREATE_PNI2NUMPY_TYPE(complex128,NPY_CLONGDOUBLE)
+CREATE_PNI2NUMPY_TYPE(string,NPY_STRING)
+CREATE_PNI2NUMPY_TYPE(bool_t,NPY_BOOL)
 
 //=============================================================================
 //! 
@@ -120,6 +120,10 @@ template<typename CTYPE> list Container2List(const CTYPE &c)
 //!
 template<typename CTYPE> CTYPE List2Container(const list &l)
 {
+    //if the list is empty we return an empty container
+    if(!len(l)) return CTYPE();
+
+    //otherwise we need to copy some content
     CTYPE c(len(l));
 
     size_t index=0;
@@ -213,7 +217,8 @@ object create_numpy_array(const CTYPE &s)
     std::vector<npy_intp> dims(s.size());
     std::copy(s.begin(),s.end(),dims.begin());
 
-    ptr = PyArray_SimpleNew(s.size(),dims.data(),PNI2NumpyType<T>::typenum);
+    ptr =
+        reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),dims.data(),PNI2NumpyType<T>::typenum));
 
     handle<> h(ptr);
 
