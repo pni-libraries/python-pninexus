@@ -43,7 +43,7 @@ if(debug):
 
 
 files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp",
-         "src/bool_converter.cpp"]
+         "src/bool_converter.cpp","src/numpy_scalar_converter.cpp"]
 
 nxh5 = Extension("nxh5",files,
                  include_dirs = include_dirs,
