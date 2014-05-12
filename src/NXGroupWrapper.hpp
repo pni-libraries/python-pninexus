@@ -31,9 +31,9 @@
 #include <pni/io/nx/nxlink.hpp>
 
 #include "NXWrapperHelpers.hpp"
+#include "NXFieldWrapper.hpp"
 #include "NXObjectMap.hpp"
 #include "NXObjectWrapper.hpp"
-#include "field_creator.hpp"
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
 
@@ -48,36 +48,37 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 {
     public:
         //!wrapped type 
-        typedef GTYPE type_t;
+        typedef GTYPE group_type;
         //! wrapper for NXObject
-        typedef NXObjectWrapper<type_t> object_wrapper_t;
+        typedef NXObjectWrapper<group_type> object_wrapper;
         //! wrapper type for GTYPE
-        typedef NXGroupWrapper<type_t> group_wrapper_t;
-        //! field creator type
-        typedef field_creator<type_t> field_creator_t;
+        typedef NXGroupWrapper<group_type> group_wrapper;
         //================constructors and destructor==========================
         //! default constructor
-        NXGroupWrapper():NXObjectWrapper<type_t>(){}
+        NXGroupWrapper():NXObjectWrapper<group_type>(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXGroupWrapper(const group_wrapper_t &o):
-            NXObjectWrapper<type_t>(o)
-        { }
+        NXGroupWrapper(const group_wrapper &o):
+            NXObjectWrapper<group_type>(o)
+        {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXGroupWrapper(group_wrapper_t &&o):
-            NXObjectWrapper<type_t>(std::move(o))
-        { }
+        NXGroupWrapper(group_wrapper &&o):
+            NXObjectWrapper<group_type>(std::move(o))
+        {}
 
         //---------------------------------------------------------------------
         //! conversion copy constructor
-        explicit NXGroupWrapper(const type_t &g):NXObjectWrapper<type_t>(g){}
+        explicit NXGroupWrapper(const group_type &g):
+            NXObjectWrapper<group_type>(g)
+        {}
 
         //---------------------------------------------------------------------
         //! conversion move constructor
-        explicit NXGroupWrapper(type_t &&g):NXObjectWrapper<type_t>(std::move(g))
+        explicit NXGroupWrapper(group_type &&g):
+            NXObjectWrapper<group_type>(std::move(g))
         {}
 
         //---------------------------------------------------------------------
@@ -86,17 +87,17 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
 
         //====================assignment operators=============================
         //!copy assignment 
-        group_wrapper_t &operator=(const group_wrapper_t &o)
+        group_wrapper &operator=(const group_wrapper &o)
         {
-            if(this != &o) object_wrapper_t::operator=(o);
+            if(this != &o) object_wrapper::operator=(o);
             return *this;
         }
 
         //---------------------------------------------------------------------
         //!move assignment
-        group_wrapper_t &operator=(group_wrapper_t &&o)
+        group_wrapper &operator=(group_wrapper &&o)
         {
-            if(this != &o) object_wrapper_t::operator=(std::move(o));
+            if(this != &o) object_wrapper::operator=(std::move(o));
             return *this;
         }
 
@@ -115,13 +116,13 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //! \param nxclass optional argument with the Nexus class
         //! \return new instance of NXGroupWrapper
         //!
-        NXGroupWrapper<typename NXObjectMap<type_t>::GroupType>
+        NXGroupWrapper<pni::io::nx::group_type<group_type>>
         create_group(const string &n,const string &nxclass=string()) const
         {
-            typedef typename NXObjectMap<type_t>::GroupType l_group_t;
-            typedef NXGroupWrapper<l_group_t> l_group_wrapper_t;
+            typedef pni::io::nx::group_type<group_type> l_group_type;
+            typedef NXGroupWrapper<l_group_type>        l_group_wrapper;
 
-            l_group_wrapper_t group(this->_object.create_group(n,nxclass));
+            l_group_wrapper group(this->_object.create_group(n,nxclass));
             return group;
         }
 
@@ -157,7 +158,7 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //! \param filter a filter object for data compression
         //! \return instance of a field wrapper
         //!
-        typename field_creator_t::field_wrapper_t
+        NXFieldWrapper<pni::io::nx::field_type<group_type>>
         create_field(const string &name,
                      const string &type_code,
                      const object &shape=object(),
@@ -254,11 +255,11 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //!
         object open_by_name(const string &n) const
         {
-            typedef typename NXObjectMap<type_t>::ObjectType object_t;
-            typedef typename NXObjectMap<type_t>::GroupType l_group_t;
+            typedef pni::io::nx::object_type<group_type> object_t;
+            typedef pni::io::nx::group_type<group_type>  l_group_t;
             typedef NXGroupWrapper<l_group_t> l_group_wrapper_t;
-            typedef typename field_creator_t::field_t field_t;
-            typedef typename field_creator_t::field_wrapper_t field_wrapper_t;
+            typedef pni::io::nx::field_type<group_type> field_t;
+            typedef NXFieldWrapper<field_t> field_wrapper_t;
            
             //open the NXObject 
             object_t nxobject = this->_object.open(n);
@@ -290,7 +291,7 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //!
         object open(size_t i) const
         {
-            typedef typename NXObjectMap<type_t>::ObjectType object_t;
+            typedef pni::io::nx::object_type<group_type> object_t;
             object_t nxobject = this->_object.open(i);
 
             return open_by_name(nxobject.path());
@@ -337,9 +338,9 @@ class NXGroupWrapper:public NXObjectWrapper<GTYPE>
         //!
         //! \return instance of ChildIterator
         //!
-        ChildIterator<group_wrapper_t,object> get_child_iterator() const
+        ChildIterator<group_wrapper,object> get_child_iterator() const
         {
-            return ChildIterator<group_wrapper_t,object>(*this);
+            return ChildIterator<group_wrapper,object>(*this);
         }
 
 };
@@ -420,8 +421,8 @@ static const char __group_childs_docstr[] =
 template<typename GTYPE> 
 void wrap_nxgroup(const string &class_name)
 {
-    typedef typename NXGroupWrapper<GTYPE>::group_wrapper_t group_wrapper_t;
-    typedef typename NXObjectWrapper<GTYPE>::object_wrapper_t object_wrapper_t;
+    typedef typename NXGroupWrapper<GTYPE>::group_wrapper group_wrapper_t;
+    typedef typename NXGroupWrapper<GTYPE>::object_wrapper object_wrapper_t;
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
