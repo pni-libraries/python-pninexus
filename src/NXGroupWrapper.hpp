@@ -32,7 +32,6 @@
 
 #include "NXWrapperHelpers.hpp"
 #include "NXFieldWrapper.hpp"
-#include "NXObjectMap.hpp"
 #include "NXObjectWrapper.hpp"
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"

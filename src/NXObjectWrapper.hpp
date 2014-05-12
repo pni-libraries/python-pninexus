@@ -30,7 +30,6 @@ extern "C"{
 #include <boost/python.hpp>
 #include <pni/core/types.hpp>
 
-#include "NXObjectMap.hpp"
 #include "NXAttributeWrapper.hpp"
 #include "AttributeIterator.hpp"
 #include "AttributeCreator.hpp"
@@ -62,11 +61,11 @@ template<typename OTYPE> class NXObjectWrapper
     public:
         //=================public types========================================
         //! wrapped type
-        typedef OTYPE type_t;
+        typedef OTYPE object_type;
         //! object wrapper type
-        typedef NXObjectWrapper<type_t> object_wrapper_t;
+        typedef NXObjectWrapper<object_type> object_wrapper_t;
         //! attribute type
-        typedef NXAttributeWrapper<typename NXObjectMap<type_t>::AttributeType>
+        typedef NXAttributeWrapper<pni::io::nx::attribute_type<object_type>>
             attribute_type; 
         //================constructors and destructor==========================
         //! default constructor
@@ -88,11 +87,11 @@ template<typename OTYPE> class NXObjectWrapper
         In this case the original instance of type_t will be copied. 
         \param o reference to instance of type_t
         */
-        explicit NXObjectWrapper(const type_t &o):_object(o){}
+        explicit NXObjectWrapper(const object_type &o):_object(o){}
 
         //---------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit NXObjectWrapper(type_t &&o):_object(std::move(o)){ }
+        explicit NXObjectWrapper(object_type &&o):_object(std::move(o)){ }
 
         //---------------------------------------------------------------------
         //! destructor
