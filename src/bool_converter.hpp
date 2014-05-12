@@ -28,43 +28,74 @@
 using namespace pni::core;
 using namespace boost::python;
 
+//converter namespace
+namespace convns = boost::python::converter; 
+
+//----------------------------------------------------------------------------
+//!
+//! \brief convert bool_t to a python object
+//! 
+//! A converter structure to convert a value of bool_t from the C++ domain
+//! to a Python bool object in the Python domain.
+//!
 struct bool_t_to_python_converter
 {
-    static PyObject *convert(const bool_t &v)
-    {
-        return incref(object(bool(v)).ptr());
-    }
+    //! 
+    //! \brief constructor
+    //! 
+    //! When a converter is instantiated the converter is registered. 
+    //!
+    bool_t_to_python_converter();
+
+    //------------------------------------------------------------------------
+    //!
+    //! \brief conversion method
+    //! 
+    //! \param v instance of bool_t
+    //! \return Python boolean object
+    //!
+    static PyObject *convert(const bool_t &v);
 
 };
 
+//----------------------------------------------------------------------------
+//!
+//! \brief convert Python bool object to bool_t
+//!
+//! Converts a Python boolean object to bool_t.  This is used in cases where 
+//! the rvalue of an assignment is a python object of a boolean type. 
+//!
 struct python_to_bool_t_converter
 {
-    python_to_bool_t_converter()
-    {
-        boost::python::converter::registry::push_back(
-        &convertible,
-        &construct,
-        type_id<bool_t>()
-                );
-    }
+    typedef convns::rvalue_from_python_stage1_data     rvalue_type;
+    typedef convns::rvalue_from_python_storage<bool_t> storage_type;
+    //!
+    //! \brief constructor
+    //! 
+    //! Registers the converter for the boost::python runtime.
+    //!
+    python_to_bool_t_converter();
 
-    static void* convertible(PyObject *obj_ptr)
-    {
-        if(!PyBool_Check(obj_ptr)) return nullptr;
-        return obj_ptr;
-    }
+    //-----------------------------------------------------------------------
+    //!
+    //! \brief check convertible 
+    //! 
+    //! Returns a nullptr if the python object passed via obj_ptr is not a
+    //! Python boolean. Otherwise the address to which obj_ptr referes 
+    //! to will be returned as void*.
+    //!
+    //! \param obj_ptr pointer to the python object to check
+    //! \return object address or nullptr
+    //!
+    static void* convertible(PyObject *obj_ptr);
 
-    static void construct(PyObject *obj_ptr,
-                          boost::python::converter::rvalue_from_python_stage1_data *data)
-    {
-        typedef boost::python::converter::rvalue_from_python_storage<bool_t> storage_type;
-
-        bool value = obj_ptr == Py_True ? true : false;
-
-        void *storage = ((storage_type*)data)->storage.bytes;
-        
-        new (storage) bool_t(value);
-        data->convertible = storage;
-    }
+    //------------------------------------------------------------------------
+    //!
+    //! \brief construct rvalue
+    //!
+    //! \param obj_ptr pointer to the original python object
+    //! \param data pointer to the new rvalue
+    //!
+    static void construct(PyObject *obj_ptr,rvalue_type *data);
 };
 

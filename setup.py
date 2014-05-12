@@ -42,7 +42,8 @@ if(debug):
     extra_compile_args.append('-g')
 
 
-files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp"]
+files = ["src/nx.cpp","src/NXWrapperHelpers.cpp","src/NXWrapperErrors.cpp",
+         "src/bool_converter.cpp"]
 
 nxh5 = Extension("nxh5",files,
                  include_dirs = include_dirs,

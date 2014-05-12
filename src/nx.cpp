@@ -43,7 +43,6 @@ using namespace pni::io::nx::h5;
 #include "NXGroupWrapper.hpp"
 #include "NXAttributeWrapper.hpp"
 #include "NXFileWrapper.hpp"
-#include "NXObjectMap.hpp"
 #include "NXFieldWrapper.hpp"
 #include "ChildIterator.hpp"
 #include "AttributeIterator.hpp"
@@ -61,7 +60,7 @@ BOOST_PYTHON_MODULE(nxh5)
     import_array();
 
     //register converter
-    to_python_converter<bool_t,bool_t_to_python_converter>();
+    bool_t_to_python_converter();
     python_to_bool_t_converter();
 
     //register exception translators
