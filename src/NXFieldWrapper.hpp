@@ -27,6 +27,7 @@
 #include "NXObjectWrapper.hpp"
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
+#include "numpy_utils.hpp"
 
 //!
 //! \ingroup wrappers
@@ -96,7 +97,10 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         string. The type-code will be exposed as a read-only property.
         \return numpy type string
         */
-        string type_id() const { return typeid2str(this->_object.type_id()); }
+        string type_id() const 
+        { 
+            return str_from_type_id(this->_object.type_id()); 
+        }
 
         //---------------------------------------------------------------------
         /*! \brief get field shape
@@ -121,7 +125,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void write(const object &o) const
         {
-            if((this->_object.size() == 1)&&(!is_numpy_array(o)))
+            if((this->_object.size() == 1)&&(!numpy::is_array(o)))
             {
                 //scalar field - here we can use any scalar type to write data
                 io_write<scalar_writer>(this->_object,o);
@@ -250,7 +254,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             std::vector<pni::core::slice> selection = create_selection(t,this->_object);
             //this->_object(selection);
 
-            if((this->_object(selection).size() == 1) && !is_numpy_array(o))
+            if((this->_object(selection).size() == 1) && !numpy::is_array(o))
             {
                 //in this case we can write only a single scalar value. Thus the
                 //object passed must be a simple scalar value

@@ -22,6 +22,8 @@
 //
 #pragma once
 
+#include "numpy_utils.hpp"
+
 //! 
 //! \ingroup ioclasses  
 //! \brief reads a single array 
@@ -49,12 +51,12 @@ class array_reader
         static object read(const OTYPE &readable)
         {
             //create the numpy array which will store the data
-            object narray = create_numpy_array<T>(readable.template shape<shape_t>());
+            object narray = numpy::create_array<T>(readable.template shape<shape_t>());
 
             //read data to the numpy buffer
             //we can safely use the pointer as the target array is created 
             //from the properties of the field and thus the size must match
-            readable.read(get_numpy_data<T>(narray));
+            readable.read(numpy::get_data<T>(narray));
             return narray;
         }
 };

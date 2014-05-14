@@ -28,32 +28,6 @@
 #include "NXWrapperHelpers.hpp"
 #include "NXWrapperErrors.hpp"
 
-//-----------------------------------------------------------------------------
-string typeid2str(const type_id_t &tid)
-{
-    if(tid == type_id_t::STRING) return "string";
-    if(tid == type_id_t::UINT8) return "uint8";
-    if(tid == type_id_t::INT8)  return "int8";
-    if(tid == type_id_t::UINT16) return "uint16";
-    if(tid == type_id_t::INT16)  return "int16";
-    if(tid == type_id_t::UINT32) return "uint32";
-    if(tid == type_id_t::INT32)  return "int32";
-    if(tid == type_id_t::UINT64) return "uint64";
-    if(tid == type_id_t::INT64) return "int64";
-
-    if(tid == type_id_t::FLOAT32) return "float32";
-    if(tid == type_id_t::FLOAT64) return "float64";
-    if(tid == type_id_t::FLOAT128) return "float128";
-
-    if(tid == type_id_t::COMPLEX32) return "complex64";
-    if(tid == type_id_t::COMPLEX64) return "complex128";
-    if(tid == type_id_t::COMPLEX128) return "complex256";
-
-    if(tid == type_id_t::BOOL) return "bool";
-
-    return "none";
-}
-
 
 
 //------------------------------------------------------------------------------
@@ -201,20 +175,5 @@ object unicode2str(const object &o)
     return object(handle<>(ptr));
 }
 
-//-----------------------------------------------------------------------------
 
-void init_array() 
-{ 
-    import_array(); 
-}
 
-//----------------------------------------------------------------------------
-bool is_numpy_array(const object &o)
-{
-    init_array();
-    //if the object is not allocated we assume that it is not an array
-    if(o.ptr())
-        return PyArray_CheckExact(o.ptr());
-    else
-        return false;
-}

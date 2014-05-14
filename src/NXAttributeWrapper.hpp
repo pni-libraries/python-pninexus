@@ -32,6 +32,7 @@ using namespace pni::core;
 
 #include "NXWrapperHelpers.hpp"
 #include "NXIOOperations.hpp"
+#include "numpy_utils.hpp"
 
 //! 
 //! \ingroup wrappers  
@@ -120,7 +121,7 @@ template<typename AttrType> class NXAttributeWrapper
         */
         string type_id() const
         {
-            return typeid2str(this->_attribute.type_id()); 
+            return str_from_type_id(this->_attribute.type_id()); 
         }
 
         //---------------------------------------------------------------------
@@ -196,7 +197,7 @@ template<typename AttrType> class NXAttributeWrapper
             else
             {
                 //the attribute is an array attribute
-                if(is_numpy_array(o))
+                if(numpy::is_array(o))
                     //write array to array
                     io_write<array_writer>(this->_attribute,o);
             }

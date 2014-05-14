@@ -26,6 +26,7 @@
 #include <pni/core/arrays.hpp>
 
 #include "NXWrapperHelpers.hpp"
+#include "numpy_utils.hpp"
 
 using namespace pni::core;
 
@@ -55,54 +56,54 @@ class array_writer
             switch(PyArray_TYPE(o.ptr()))
             {
                 case PyArray_UINT8:
-                    w.write((const uint8*)get_numpy_data<uint8>(o));
+                    w.write(numpy::get_data<const uint8>(o));
                     break;
                 case PyArray_INT8:
-                    w.write((const int8 *)get_numpy_data<int8>(o));
+                    w.write(numpy::get_data<const int8>(o));
                     break;
                 case PyArray_UINT16:
-                    w.write((const uint16*)get_numpy_data<uint16>(o));
+                    w.write(numpy::get_data<const uint16>(o));
                     break;
                 case PyArray_INT16:
-                    w.write((const int16*)get_numpy_data<int16>(o));
+                    w.write(numpy::get_data<const int16>(o));
                     break;
                 case PyArray_UINT32:
-                    w.write((const uint32*)get_numpy_data<uint32>(o)); 
+                    w.write(numpy::get_data<const uint32>(o)); 
                     break;
                 case PyArray_INT32:
-                    w.write((const int32 *)get_numpy_data<int32>(o));
+                    w.write(numpy::get_data<const int32>(o));
                     break;
                 case PyArray_UINT64:
-                    w.write((const uint64*)get_numpy_data<uint64>(o)); 
+                    w.write(numpy::get_data<const uint64>(o)); 
                     break;
                 case PyArray_INT64:
-                    w.write((const int64*)get_numpy_data<int64>(o)); 
+                    w.write(numpy::get_data<const int64>(o)); 
                     break;
                 case PyArray_FLOAT32:
-                    w.write((const float32*)get_numpy_data<float32>(o)); 
+                    w.write(numpy::get_data<const float32>(o)); 
                     break;
                 case PyArray_FLOAT64:
-                    w.write((const float64*)get_numpy_data<float64>(o)); 
+                    w.write(numpy::get_data<const float64>(o)); 
                     break;
                 case PyArray_LONGDOUBLE:
-                    w.write((const float128*)get_numpy_data<float128>(o));
+                    w.write(numpy::get_data<const float128>(o));
                     break;
                 case NPY_CFLOAT:
-                    w.write((const complex32*)get_numpy_data<complex32>(o));
+                    w.write(numpy::get_data<const complex32>(o));
                     break;
                 case NPY_CDOUBLE:
-                    w.write((const complex64*)get_numpy_data<complex64>(o)); 
+                    w.write(numpy::get_data<const complex64>(o)); 
                     break;
                 case NPY_CLONGDOUBLE:
-                    w.write((const complex128*)get_numpy_data<complex128>(o));
+                    w.write(numpy::get_data<const complex128>(o));
                     break;
                 case NPY_BOOL:
-                    w.write((const bool_t*)get_numpy_data<bool_t>(o)); 
+                    w.write(numpy::get_data<const bool_t>(o)); 
                     break;
                 case NPY_STRING:
-                    shape = get_numpy_shape<shape_t>(o);
+                    shape = numpy::get_shape<shape_t>(o);
                     data = dynamic_array<string>::create(shape);
-                    copy_string_from_numpy_array(o,data);
+                    numpy::copy_string_from_array(o,data);
                     w.write(data);
                     break;
                 default:
@@ -155,7 +156,7 @@ class array_writer
         static void write(const WTYPE &w,const object &o)
         {
             //check if the object from which to read data is an array
-            if(!is_numpy_array(o))
+            if(!numpy::is_array(o))
                 _write_scalar<T>(w,o);
             else
                 _write_numpy_array(w,o);
