@@ -42,5 +42,62 @@ namespace numpy
             return false;
     }
 
+    //------------------------------------------------------------------------
+    bool is_scalar(const object &o)
+    {
+        if(o.ptr())
+            return PyArray_CheckScalar(o.ptr());
+        else
+            return false;
+    }
+
+    //------------------------------------------------------------------------
+    type_id_t type_id(const object &o)
+    {
+        //select the data type to use for writing the array data
+        switch(PyArray_TYPE(o.ptr()))
+        {
+            case PyArray_UINT8:  return type_id_t::UINT8;
+            case PyArray_INT8:   return type_id_t::INT8;
+            case PyArray_UINT16: return type_id_t::UINT16;
+            case PyArray_INT16:  return type_id_t::INT16;
+            case PyArray_UINT32: return type_id_t::UINT32;
+            case PyArray_INT32:  return type_id_t::INT32;
+            case PyArray_UINT64: return type_id_t::UINT64;
+            case PyArray_INT64:  return type_id_t::INT64;
+            case PyArray_FLOAT32:    return type_id_t::FLOAT32;
+            case PyArray_FLOAT64:    return type_id_t::FLOAT64;
+            case PyArray_LONGDOUBLE: return type_id_t::FLOAT128;
+            case NPY_CFLOAT:      return type_id_t::COMPLEX32;
+            case NPY_CDOUBLE:     return type_id_t::COMPLEX64;
+            case NPY_CLONGDOUBLE: return type_id_t::COMPLEX128;
+            case NPY_BOOL:   return type_id_t::BOOL;
+            case NPY_STRING: return type_id_t::STRING;
+            default:
+                throw type_error(EXCEPTION_RECORD,
+                "Type of numpy array cannot be handled!");
+        };
+
+    }
+
+    //------------------------------------------------------------------------
+    string type_str(type_id_t id)
+    {
+
+        if(id == type_id_t::COMPLEX32) 
+            return "complex64";
+        else if(id == type_id_t::COMPLEX64)
+            return "complex128";
+        else if(id == type_id_t::COMPLEX128)
+            return "complex256";
+        else
+            return str_from_type_id(id);
+    }
+
+    //------------------------------------------------------------------------
+    string type_str(const object &o)
+    {
+        return type_str(type_id(o));
+    }
 //end of namespace
 }

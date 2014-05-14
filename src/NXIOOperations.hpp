@@ -48,40 +48,34 @@ template<
         > 
 object io_read(const OType &readable)
 {
-    if(readable.type_id() == type_id_t::UINT8) 
-        return IOOP::template read<uint8>(readable);
-    if(readable.type_id() == type_id_t::INT8)  
-        return IOOP::template read<int8>(readable);
-    if(readable.type_id() == type_id_t::UINT16) 
-        return IOOP::template read<uint16>(readable);
-    if(readable.type_id() == type_id_t::INT16)  
-        return IOOP::template read<int16>(readable);
-    if(readable.type_id() == type_id_t::UINT32) 
-        return IOOP::template read<uint32>(readable);
-    if(readable.type_id() == type_id_t::INT32)  
-        return IOOP::template read<int32>(readable);
-    if(readable.type_id() == type_id_t::UINT64) 
-        return IOOP::template read<uint64>(readable);
-    if(readable.type_id() == type_id_t::INT64)  
-        return IOOP::template read<int64>(readable);
+    type_id_t tid = readable.type_id();
 
-    if(readable.type_id() == type_id_t::FLOAT32) 
+    if(tid == type_id_t::UINT8)  return IOOP::template read<uint8>(readable);
+    if(tid == type_id_t::INT8)   return IOOP::template read<int8>(readable);
+    if(tid == type_id_t::UINT16) return IOOP::template read<uint16>(readable);
+    if(tid == type_id_t::INT16)  return IOOP::template read<int16>(readable);
+    if(tid == type_id_t::UINT32) return IOOP::template read<uint32>(readable);
+    if(tid == type_id_t::INT32)  return IOOP::template read<int32>(readable);
+    if(tid == type_id_t::UINT64) return IOOP::template read<uint64>(readable);
+    if(tid == type_id_t::INT64)  return IOOP::template read<int64>(readable);
+
+    if(tid == type_id_t::FLOAT32) 
         return IOOP::template read<float32>(readable);
-    if(readable.type_id() == type_id_t::FLOAT64) 
+    if(tid == type_id_t::FLOAT64) 
         return IOOP::template read<float64>(readable);
-    if(readable.type_id() == type_id_t::FLOAT128) 
+    if(tid == type_id_t::FLOAT128) 
         return IOOP::template read<float128>(readable);
 
-    if(readable.type_id() == type_id_t::COMPLEX32) 
+    if(tid == type_id_t::COMPLEX32) 
         return IOOP::template read<complex32>(readable);
-    if(readable.type_id() == type_id_t::COMPLEX64) 
+    if(tid == type_id_t::COMPLEX64) 
         return IOOP::template read<complex64>(readable);
-    if(readable.type_id() == type_id_t::COMPLEX128) 
+    if(tid == type_id_t::COMPLEX128) 
         return IOOP::template read<complex128>(readable);
 
-    if(readable.type_id() == type_id_t::STRING) 
+    if(tid == type_id_t::STRING) 
         return IOOP::template read<string>(readable);
-    if(readable.type_id() == type_id_t::BOOL)
+    if(tid == type_id_t::BOOL)
         return IOOP::template read<bool_t>(readable);
 
     throw type_error(EXCEPTION_RECORD,"Cannot handle field datatype!");
@@ -108,35 +102,37 @@ template<
         > 
 void io_write(const OTYPE &writeable,const object &obj)
 {
-    if(writeable.type_id() == type_id_t::UINT8)
+    type_id_t tid = writeable.type_id();
+
+    if(tid == type_id_t::UINT8) 
         IOOP::template write<uint8>(writeable,obj);
-    else if(writeable.type_id() == type_id_t::INT8) 
+    else if(tid == type_id_t::INT8) 
         IOOP::template write<int8>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::UINT16)
+    else if(tid == type_id_t::UINT16)
         IOOP::template write<uint16>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::INT16) 
+    else if(tid == type_id_t::INT16) 
         IOOP::template write<int16>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::UINT32) 
+    else if(tid == type_id_t::UINT32) 
         IOOP::template write<uint32>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::INT32) 
+    else if(tid == type_id_t::INT32) 
         IOOP::template write<int32>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::UINT64) 
+    else if(tid == type_id_t::UINT64) 
         IOOP::template write<uint64>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::INT64)
+    else if(tid == type_id_t::INT64)
         IOOP::template write<int64>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::FLOAT32) 
+    else if(tid == type_id_t::FLOAT32) 
         IOOP::template write<float32>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::FLOAT64)
+    else if(tid == type_id_t::FLOAT64)
         IOOP::template write<float64>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::FLOAT128) 
+    else if(tid == type_id_t::FLOAT128) 
         IOOP::template write<float128>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::COMPLEX32) 
+    else if(tid == type_id_t::COMPLEX32) 
         IOOP::template write<complex32>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::COMPLEX64)
+    else if(tid == type_id_t::COMPLEX64)
         IOOP::template write<complex64>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::COMPLEX128)
+    else if(tid == type_id_t::COMPLEX128)
         IOOP::template write<complex128>(writeable,obj); 
-    else if(writeable.type_id() == type_id_t::STRING)
+    else if(tid == type_id_t::STRING)
     {   
         //need to check if the object represents a unicode string
         object data;
@@ -147,7 +143,7 @@ void io_write(const OTYPE &writeable,const object &obj)
 
         IOOP::template write<string>(writeable,data);
     }
-    else if(writeable.type_id() == type_id_t::BOOL)
+    else if(tid == type_id_t::BOOL)
         IOOP::template write<bool_t>(writeable,obj); 
     else 
         //raise an exception here if the datatype cannot be managed

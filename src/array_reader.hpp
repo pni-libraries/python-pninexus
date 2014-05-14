@@ -51,7 +51,8 @@ class array_reader
         static object read(const OTYPE &readable)
         {
             //create the numpy array which will store the data
-            object narray = numpy::create_array<T>(readable.template shape<shape_t>());
+            auto shape = readable.template shape<shape_t>();
+            object narray = numpy::create_array(readable.type_id(),shape);
 
             //read data to the numpy buffer
             //we can safely use the pointer as the target array is created 

@@ -99,7 +99,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         string type_id() const 
         { 
-            return str_from_type_id(this->_object.type_id()); 
+            return numpy::type_str(this->_object.type_id()); 
         }
 
         //---------------------------------------------------------------------

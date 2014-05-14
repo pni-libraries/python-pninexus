@@ -121,7 +121,7 @@ template<typename AttrType> class NXAttributeWrapper
         */
         string type_id() const
         {
-            return str_from_type_id(this->_attribute.type_id()); 
+            return numpy::type_str(this->_attribute.type_id()); 
         }
 
         //---------------------------------------------------------------------

@@ -50,66 +50,49 @@ class array_writer
         template<typename WTYPE>
         static void _write_numpy_array(const WTYPE &w,const object &o)
         {
-            dynamic_array<string> data;
-            shape_t shape;
+            type_id_t tid = numpy::type_id(o);
+
             //select the data type to use for writing the array data
-            switch(PyArray_TYPE(o.ptr()))
+            if(tid == type_id_t::UINT8)
+                w.write(numpy::get_data<const uint8>(o));
+            else if(tid == type_id_t::INT8)
+                w.write(numpy::get_data<const int8>(o));
+            else if(tid == type_id_t::UINT16)
+                w.write(numpy::get_data<const uint16>(o));
+            else if(tid == type_id_t::INT16)
+                w.write(numpy::get_data<const int16>(o));
+            else if(tid == type_id_t::UINT32)
+                w.write(numpy::get_data<const uint32>(o)); 
+            else if(tid == type_id_t::INT32)
+                w.write(numpy::get_data<const int32>(o));
+            else if(tid == type_id_t::UINT64)
+                w.write(numpy::get_data<const uint64>(o)); 
+            else if(tid == type_id_t::INT64)
+                w.write(numpy::get_data<const int64>(o)); 
+            else if(tid == type_id_t::FLOAT32)
+                w.write(numpy::get_data<const float32>(o)); 
+            else if(tid == type_id_t::FLOAT64)
+                w.write(numpy::get_data<const float64>(o)); 
+            else if(tid == type_id_t::FLOAT128)
+                w.write(numpy::get_data<const float128>(o));
+            else if(tid == type_id_t::COMPLEX32)
+                w.write(numpy::get_data<const complex32>(o));
+            else if(tid == type_id_t::COMPLEX64)
+                w.write(numpy::get_data<const complex64>(o)); 
+            else if(tid == type_id_t::COMPLEX128)
+                w.write(numpy::get_data<const complex128>(o));
+            else if(tid == type_id_t::BOOL)
+                w.write(numpy::get_data<const bool_t>(o)); 
+            else if(tid == type_id_t::STRING)
             {
-                case PyArray_UINT8:
-                    w.write(numpy::get_data<const uint8>(o));
-                    break;
-                case PyArray_INT8:
-                    w.write(numpy::get_data<const int8>(o));
-                    break;
-                case PyArray_UINT16:
-                    w.write(numpy::get_data<const uint16>(o));
-                    break;
-                case PyArray_INT16:
-                    w.write(numpy::get_data<const int16>(o));
-                    break;
-                case PyArray_UINT32:
-                    w.write(numpy::get_data<const uint32>(o)); 
-                    break;
-                case PyArray_INT32:
-                    w.write(numpy::get_data<const int32>(o));
-                    break;
-                case PyArray_UINT64:
-                    w.write(numpy::get_data<const uint64>(o)); 
-                    break;
-                case PyArray_INT64:
-                    w.write(numpy::get_data<const int64>(o)); 
-                    break;
-                case PyArray_FLOAT32:
-                    w.write(numpy::get_data<const float32>(o)); 
-                    break;
-                case PyArray_FLOAT64:
-                    w.write(numpy::get_data<const float64>(o)); 
-                    break;
-                case PyArray_LONGDOUBLE:
-                    w.write(numpy::get_data<const float128>(o));
-                    break;
-                case NPY_CFLOAT:
-                    w.write(numpy::get_data<const complex32>(o));
-                    break;
-                case NPY_CDOUBLE:
-                    w.write(numpy::get_data<const complex64>(o)); 
-                    break;
-                case NPY_CLONGDOUBLE:
-                    w.write(numpy::get_data<const complex128>(o));
-                    break;
-                case NPY_BOOL:
-                    w.write(numpy::get_data<const bool_t>(o)); 
-                    break;
-                case NPY_STRING:
-                    shape = numpy::get_shape<shape_t>(o);
-                    data = dynamic_array<string>::create(shape);
-                    numpy::copy_string_from_array(o,data);
-                    w.write(data);
-                    break;
-                default:
-                    throw type_error(EXCEPTION_RECORD,
-                    "Type of numpy array cannot be handled!");
-            };
+                auto shape = numpy::get_shape<shape_t>(o);
+                auto data = dynamic_array<string>::create(shape);
+                numpy::copy_string_from_array(o,data);
+                w.write(data);
+            }
+            else
+                throw type_error(EXCEPTION_RECORD,
+                "Type of numpy array cannot be handled!");
 
         }
 

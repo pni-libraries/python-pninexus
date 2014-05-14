@@ -35,6 +35,8 @@ class AttributeTest(object):
         attr = parent.attr(name,tc,shape)
 
         #test inquery properties
+        print attr.dtype
+        print tc
         ts.assertTrue(attr.dtype == tc)
         ts.assertTrue(attr.valid)
         ts.assertEqual(attr.shape,shape)

@@ -27,6 +27,7 @@ extern "C"{
 #include<numpy/arrayobject.h>
 }
 
+#include <map>
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
 
@@ -72,6 +73,25 @@ namespace numpy
     CREATE_PNI2NUMPY_TYPE(string,NPY_STRING)
     CREATE_PNI2NUMPY_TYPE(bool_t,NPY_BOOL)
 
+    static const std::map<type_id_t,int> type_id2numpy_id = {
+        {type_id_t::UINT8,NPY_UINT8},
+        {type_id_t::INT8,NPY_INT8},
+        {type_id_t::UINT16,NPY_UINT16},
+        {type_id_t::INT16,NPY_INT16},
+        {type_id_t::UINT32,NPY_UINT32},
+        {type_id_t::INT32,NPY_INT32},
+        {type_id_t::UINT64,NPY_UINT64},
+        {type_id_t::INT64,NPY_INT64},
+        {type_id_t::FLOAT32,NPY_FLOAT},
+        {type_id_t::FLOAT64,NPY_DOUBLE},
+        {type_id_t::FLOAT128,NPY_LONGDOUBLE},
+        {type_id_t::COMPLEX32,NPY_CFLOAT},
+        {type_id_t::COMPLEX64,NPY_CDOUBLE},
+        {type_id_t::COMPLEX128,NPY_CLONGDOUBLE},
+        {type_id_t::STRING,NPY_STRING},
+        {type_id_t::BOOL,NPY_BOOL}
+    };
+
     //-------------------------------------------------------------------------
     //!
     //! \ingroup numpy_utils
@@ -81,6 +101,46 @@ namespace numpy
     //! \return true if object is a numpy array
     //!
     bool is_array(const object &o);
+
+    //------------------------------------------------------------------------
+    //!
+    //! \ingroup numpy_utils
+    //! \brief check if object is a numpy scalar
+    //!
+    //! Retrun true if the object is a numpy scalar. False otherwise
+    //! \param o python object
+    //! \return result
+    //!
+    bool is_scalar(const object &o);
+
+    //------------------------------------------------------------------------
+    //!
+    //! \ingroup numpy_utils
+    //! \brief get type_id of a numpy object
+    //! 
+    //! Return the type id of an array or scalar numpy object.
+    //! 
+    type_id_t type_id(const object &o);
+
+    //------------------------------------------------------------------------
+    //!
+    //! \ingroup numpy_utils
+    //! \brief get type string
+    //! 
+    //! This function is necessary as numpy uses a different string
+    //! representation for complex numbers. 
+    //!
+    //! \param id type id for which to obtain the string rep.
+    //! \return string representation of the type
+    //!
+    string type_str(type_id_t id);
+
+    //-------------------------------------------------------------------------
+    //!
+    //! \ingroup numpy_utils
+    //! \briefa get type string
+    //!
+    string type_str(const object &o);
 
     //-------------------------------------------------------------------------
     //!
@@ -159,6 +219,47 @@ namespace numpy
         handle<> h(ptr);
 
         return object(h);
+    }
+    
+    template< typename CTYPE > 
+    object create_array(type_id_t tid,const CTYPE &s)
+    {
+        PyObject *ptr = nullptr;
+        //create the buffer for with the shape information
+        std::vector<npy_intp> dims(s.size());
+        std::copy(s.begin(),s.end(),dims.begin());
+
+        ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),
+                                          dims.data(),type_id2numpy_id.at(tid)));
+
+        handle<> h(ptr);
+
+        return object(h);
+    }
+
+    //-------------------------------------------------------------------------
+    //!
+    //! 
+    //! 
+    template<typename ATYPE>
+    object create_array_from_array(const ATYPE &array)
+    {
+        typedef typename ATYPE::value_type value_type;
+
+        auto shape = array.template shape<shape_t>();
+
+        return create_array(type_id(array),shape);
+    }
+
+    //------------------------------------------------------------------------
+    template<typename FTYPE>
+    object create_array_from_field(const FTYPE &field)
+    {
+        type_id_t tid = field.type_id();
+        auto shape = field.template shape<shape_t>();
+        
+        return create_array(tid,shape);
+
     }
 
     //-------------------------------------------------------------------------
