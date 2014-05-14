@@ -5,7 +5,7 @@ import numpy
 
 import pni.io.nx.h5 as nx
 
-class Issue_53_Test(unittest.TestCase):
+class Issue_48_Test(unittest.TestCase):
     def setUp(self):
         self.nxfile = nx.create_file("issue_48_test.nx",overwrite=True)
         self.root   = self.nxfile["/"]
@@ -41,5 +41,6 @@ class Issue_53_Test(unittest.TestCase):
 
     def test_issue_bool(self):
         self.run_test("bool",numpy.bool8)
+
 
 

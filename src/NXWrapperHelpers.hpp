@@ -164,6 +164,48 @@ bool is_numpy_array(const object &o);
 //-----------------------------------------------------------------------------
 //!
 //! \ingroup utils
+//! \brief copy data from numpy array
+//! 
+//! Copy the data from a numpy array to a container type. 
+//! 
+//! 
+template<typename DTYPE>
+void copy_string_from_numpy_array(const object &o,DTYPE &container)
+{
+    typedef typename DTYPE::value_type value_type;
+    typedef PNI2NumpyType<value_type> pni2numpy;
+
+    PyArrayObject *array = (PyArrayObject *)(o.ptr());
+    PyArray_Descr* dtype = PyArray_DescrFromType(pni2numpy::typenum);
+    
+    NpyIter *aiter = NpyIter_New(array,NPY_ITER_C_INDEX | NPY_ITER_READONLY,
+                     NPY_CORDER,
+                     NPY_SAME_KIND_CASTING,dtype);
+
+
+    NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(aiter,NULL);
+    char **dataptr = NpyIter_GetDataPtrArray(aiter);
+    auto citer = container.begin();
+    int max_item_size = PyArray_ITEMSIZE(array);
+    std::cout<<PyArray_ITEMSIZE(array)<<std::endl;
+    do
+    {
+        value_type d = value_type(dataptr[0]);
+        if(d.size()>size_t(max_item_size))
+            *citer++ = value_type(d,0,max_item_size);
+        else
+           *citer++ = d;
+    }
+    while((iternext(aiter))&&(citer!=container.end()));
+
+    //need to destroy the dtype here - decrement the reference counter
+    Py_DECREF(dtype);
+    NpyIter_Deallocate(aiter);
+}
+
+//-----------------------------------------------------------------------------
+//!
+//! \ingroup utils
 //! \brief get the shape of a numpy array
 //! 
 //! Return the number of elements along each dimension of a numpy array 

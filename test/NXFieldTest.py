@@ -1,52 +1,101 @@
 import unittest
 import numpy
+import numpy.random as random
 
 import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import NXFile
 from pni.io.nx.h5 import NXGroup
 from pni.io.nx.h5 import NXField
+from pni.io.nx.h5 import NXDeflateFilter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 
+types=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
+       "float32","float64","float128","string"]
+
+scalars={"uint8":numpy.uint8,"int8":numpy.int8,
+        "uint16":numpy.uint16,"int16":numpy.int16,
+        "uint32":numpy.uint32,"int32":numpy.int32,
+        "uint64":numpy.uint64,"int64":numpy.int64,
+        "float32":numpy.float32,"float64":numpy.float64,
+        "float128":numpy.float128,
+        "string":numpy.str_}
+         
+
+
 #implementing test fixture
-class NXFieldTest(unittest.TestCase):
+class nxfield_test(unittest.TestCase):
+
+    _typecode = "uint16"
+    
     def setUp(self):
-        print "run NXFieldTest.setUp() ......................"
         self.gf = create_file("NXFieldTest.h5",overwrite=True)
+        self.root = self.gf["/"]
 
     def tearDown(self):
-        print "run NXFieldTest.tearDown() .................."
+        self.root.close()
         self.gf.close()
 
-    def test_creation(self):
-        print "run NXFieldTest.test_creation() ................."
-        f = self.gf.create_field("data1","uint16")
-        self.assertTrue(f.valid)
-        self.assertTrue(f.dtype=="uint16")
-        self.assertTrue(f.shape==(1,))
-        self.assertTrue(f.size == 1)
+    def test_scalar_to_scalar_field_io(self):
+        """
+        IO of a scalar with a scalar field
+        """
+        f = self.gf.create_field("data",self._typecode)
 
-        f = self.gf.create_field("/scan_1/instrument/detector/data",
-                "int32",shape=(0,1024,1024))
-        self.assertTrue(f.valid)
-        self.assertTrue(f.dtype=="int32")
-        self.assertTrue(f.shape==(0,1024,1024))
-        self.assertTrue(f.name == "data")
-        self.assertTrue(f.base == "/scan_1/instrument/detector")
-        self.assertTrue(f.path == "/scan_1/instrument/detector/data")
-        self.assertTrue(f.size == 0)
+        s_write = scalars[self._typecode](random.rand())
+        f.write(s_write)
 
-        #check for some errors
-        #what if chunk shape and data shape do not have same rank
-        self.assertRaises(nx.SizeMismatchError,self.gf.create_field,
-                "data2","float32",shape=(256,412),chunk=(256,))
-        #check for unkown data type
-        self.assertRaises(nx.KeyError,self.gf.create_field,
-                "data2","hallo")
+        s_read = f.read()
+        self.assertTrue(s_write == s_read)
+
+        s_write = scalars[self._typecode](random.rand())
+        f[...] = s_write
+        s_read = f[...]
+        self.assertTrue(s_read == s_write)
+
+
+    def test_scalar_to_mdim_field_broadcast_io(self):
+        """
+        Testing IO of a scalar broadcasted on a multidimensional field
+        """
+        f = self.gf.create_field("data",self._typecode,
+                                 shape=(3,4))
+
+        s_write = scalars[self._typecode](random.rand())
+        f[...] = s_write
+        s_read = f[...]
+    
+        for x in s_read.flat: 
+            self.assertTrue(x==s_write)
+
+    def test_scalar_to_mdim_field_partial_io(self):
+        f = self.gf.create_field("data",self._typecode,
+                                 shape=(3,4))
+        
+        s1_write = scalars[self._typecode](random.rand())
+        s2_write = scalars[self._typecode](random.rand())
+        s3_write = scalars[self._typecode](random.rand())
+        f[0,:] = s1_write
+        f[1,:] = s2_write
+        f[2,:] = s3_write
+
+        s1_read = f[0,...]
+        s2_read = f[1,...]
+        s3_read = f[2,...]
+
+        self.assertTrue(all(x==s1_write for x in s1_read.flat))
+        self.assertTrue(all(x==s2_write for x in s2_read.flat))
+        self.assertTrue(all(x==s3_write for x in s3_read.flat))
+
+    def test_array_to_mdim_field_io(self):
+        pass
+
+    def test_array_to_mdim_field_partial_io(self):
+        pass
+
 
 
     def test_numeric_io(self):
-        print "run NXFieldTest.test_numeric_io() .............."
         f1 = self.gf.create_field("data1","float64",shape=(3,1))
         self.assertTrue(f1.valid)
         self.assertTrue(len(f1.shape) == 2)
@@ -75,10 +124,8 @@ class NXFieldTest(unittest.TestCase):
         f2[...] = 10.
         a = f2[...]
         self.assertTrue(a.shape == (3,))
-        print f2.read()
 
     def test_negative_index(self):
-        print "run NXFieldTest.test_negative_index() ............."
         f1 = self.gf.create_field("data1","uint16",shape=(20,))
 
         f1[...] = numpy.arange(0,20,dtype="uint16")
@@ -98,7 +145,6 @@ class NXFieldTest(unittest.TestCase):
         self.assertTrue(f1[10] == 100)
     
     def test_io(self):
-        print "run NXFieldTest.test_io() ........................."
         f = self.gf.create_field("log","string")
         f.write("hello world this is a text")
         f.write("another text")
@@ -106,3 +152,11 @@ class NXFieldTest(unittest.TestCase):
 
         #try to write unicode
         f.write(u"unicode text")
+
+    def test_string_array(self):
+        f = self.gf.create_field("text","string",shape=(2,2))
+        data = numpy.array([["hello","world"],["this","is a text"]])
+        f.write(data)
+
+        f.close()
+

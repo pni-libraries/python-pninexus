@@ -22,6 +22,13 @@
 //
 #pragma once
 
+#include <pni/core/types.hpp>
+#include <pni/core/arrays.hpp>
+
+#include "NXWrapperHelpers.hpp"
+
+using namespace pni::core;
+
 //! 
 //! \ingroup ioclasses  
 //! \brief write array data
@@ -42,6 +49,8 @@ class array_writer
         template<typename WTYPE>
         static void _write_numpy_array(const WTYPE &w,const object &o)
         {
+            dynamic_array<string> data;
+            shape_t shape;
             //select the data type to use for writing the array data
             switch(PyArray_TYPE(o.ptr()))
             {
@@ -89,6 +98,12 @@ class array_writer
                     break;
                 case NPY_BOOL:
                     w.write((const bool_t*)get_numpy_data<bool_t>(o)); 
+                    break;
+                case NPY_STRING:
+                    shape = get_numpy_shape<shape_t>(o);
+                    data = dynamic_array<string>::create(shape);
+                    copy_string_from_numpy_array(o,data);
+                    w.write(data);
                     break;
                 default:
                     throw type_error(EXCEPTION_RECORD,
