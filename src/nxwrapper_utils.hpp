@@ -37,7 +37,6 @@ extern "C"{
 #include <boost/python/list.hpp>
 #include <boost/python/tuple.hpp>
 
-using namespace pni::core;
 using namespace boost::python;
 using namespace pni::io::nx::h5;
 

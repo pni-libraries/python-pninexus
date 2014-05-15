@@ -25,7 +25,7 @@
 
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
-#include "NXWrapperHelpers.hpp"
+#include "nxwrapper_utils.hpp"
 #include "NXWrapperErrors.hpp"
 #include "numpy_utils.hpp"
 
@@ -216,5 +216,6 @@ bool is_string(const object &o)
 bool is_scalar(const object &o)
 {
     return is_unicode(o) || is_int(o) || is_bool(o) || is_long(o) ||
-           is_float(o) || is_complex(o) || is_string(o) || numpy::is_scalar(o))
+           is_float(o) || ::is_complex(o) || is_string(o) ||
+           numpy::is_scalar(o);
 }

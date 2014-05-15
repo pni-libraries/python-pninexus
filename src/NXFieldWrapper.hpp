@@ -25,8 +25,8 @@
 #include <boost/python/slice.hpp>
 #include <pni/io/nx/nxexceptions.hpp>
 #include "NXObjectWrapper.hpp"
-#include "NXWrapperHelpers.hpp"
-#include "NXIOOperations.hpp"
+#include "nxwrapper_utils.hpp"
+#include "nxio_operations.hpp"
 #include "numpy_utils.hpp"
 
 //!

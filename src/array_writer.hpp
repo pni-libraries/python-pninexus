@@ -25,7 +25,7 @@
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
 
-#include "NXWrapperHelpers.hpp"
+#include "nxwrapper_utils.hpp"
 #include "numpy_utils.hpp"
 
 using namespace pni::core;

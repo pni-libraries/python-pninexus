@@ -30,8 +30,8 @@ extern "C"{
 #include <pni/core/arrays.hpp>
 using namespace pni::core;
 
-#include "NXWrapperHelpers.hpp"
-#include "NXIOOperations.hpp"
+#include "nxwrapper_utils.hpp"
+#include "nxio_operations.hpp"
 #include "numpy_utils.hpp"
 
 //! 

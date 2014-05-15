@@ -33,7 +33,6 @@ extern "C"{
 
 #include <boost/python/extract.hpp>
 
-using namespace pni::core;
 using namespace boost::python;
 
 namespace numpy
@@ -56,40 +55,40 @@ namespace numpy
                static const int typenum = nptype;\
     };
 
-    CREATE_PNI2NUMPY_TYPE(uint8,NPY_UINT8)
-    CREATE_PNI2NUMPY_TYPE(int8,NPY_INT8)
-    CREATE_PNI2NUMPY_TYPE(uint16,NPY_UINT16)
-    CREATE_PNI2NUMPY_TYPE(int16,NPY_INT16)
-    CREATE_PNI2NUMPY_TYPE(uint32,NPY_UINT32)
-    CREATE_PNI2NUMPY_TYPE(int32,NPY_INT32)
-    CREATE_PNI2NUMPY_TYPE(uint64,NPY_UINT64)
-    CREATE_PNI2NUMPY_TYPE(int64,NPY_INT64)
-    CREATE_PNI2NUMPY_TYPE(float32,NPY_FLOAT)
-    CREATE_PNI2NUMPY_TYPE(float64,NPY_DOUBLE)
-    CREATE_PNI2NUMPY_TYPE(float128,NPY_LONGDOUBLE)
-    CREATE_PNI2NUMPY_TYPE(complex32,NPY_CFLOAT)
-    CREATE_PNI2NUMPY_TYPE(complex64,NPY_CDOUBLE)
-    CREATE_PNI2NUMPY_TYPE(complex128,NPY_CLONGDOUBLE)
-    CREATE_PNI2NUMPY_TYPE(string,NPY_STRING)
-    CREATE_PNI2NUMPY_TYPE(bool_t,NPY_BOOL)
+    CREATE_PNI2NUMPY_TYPE(pni::core::uint8,NPY_UINT8)
+    CREATE_PNI2NUMPY_TYPE(pni::core::int8,NPY_INT8)
+    CREATE_PNI2NUMPY_TYPE(pni::core::uint16,NPY_UINT16)
+    CREATE_PNI2NUMPY_TYPE(pni::core::int16,NPY_INT16)
+    CREATE_PNI2NUMPY_TYPE(pni::core::uint32,NPY_UINT32)
+    CREATE_PNI2NUMPY_TYPE(pni::core::int32,NPY_INT32)
+    CREATE_PNI2NUMPY_TYPE(pni::core::uint64,NPY_UINT64)
+    CREATE_PNI2NUMPY_TYPE(pni::core::int64,NPY_INT64)
+    CREATE_PNI2NUMPY_TYPE(pni::core::float32,NPY_FLOAT)
+    CREATE_PNI2NUMPY_TYPE(pni::core::float64,NPY_DOUBLE)
+    CREATE_PNI2NUMPY_TYPE(pni::core::float128,NPY_LONGDOUBLE)
+    CREATE_PNI2NUMPY_TYPE(pni::core::complex32,NPY_CFLOAT)
+    CREATE_PNI2NUMPY_TYPE(pni::core::complex64,NPY_CDOUBLE)
+    CREATE_PNI2NUMPY_TYPE(pni::core::complex128,NPY_CLONGDOUBLE)
+    CREATE_PNI2NUMPY_TYPE(pni::core::string,NPY_STRING)
+    CREATE_PNI2NUMPY_TYPE(pni::core::bool_t,NPY_BOOL)
 
-    static const std::map<type_id_t,int> type_id2numpy_id = {
-        {type_id_t::UINT8,NPY_UINT8},
-        {type_id_t::INT8,NPY_INT8},
-        {type_id_t::UINT16,NPY_UINT16},
-        {type_id_t::INT16,NPY_INT16},
-        {type_id_t::UINT32,NPY_UINT32},
-        {type_id_t::INT32,NPY_INT32},
-        {type_id_t::UINT64,NPY_UINT64},
-        {type_id_t::INT64,NPY_INT64},
-        {type_id_t::FLOAT32,NPY_FLOAT},
-        {type_id_t::FLOAT64,NPY_DOUBLE},
-        {type_id_t::FLOAT128,NPY_LONGDOUBLE},
-        {type_id_t::COMPLEX32,NPY_CFLOAT},
-        {type_id_t::COMPLEX64,NPY_CDOUBLE},
-        {type_id_t::COMPLEX128,NPY_CLONGDOUBLE},
-        {type_id_t::STRING,NPY_STRING},
-        {type_id_t::BOOL,NPY_BOOL}
+    static const std::map<pni::core::type_id_t,int> type_id2numpy_id = {
+        {pni::core::type_id_t::UINT8,NPY_UINT8},
+        {pni::core::type_id_t::INT8,NPY_INT8},
+        {pni::core::type_id_t::UINT16,NPY_UINT16},
+        {pni::core::type_id_t::INT16,NPY_INT16},
+        {pni::core::type_id_t::UINT32,NPY_UINT32},
+        {pni::core::type_id_t::INT32,NPY_INT32},
+        {pni::core::type_id_t::UINT64,NPY_UINT64},
+        {pni::core::type_id_t::INT64,NPY_INT64},
+        {pni::core::type_id_t::FLOAT32,NPY_FLOAT},
+        {pni::core::type_id_t::FLOAT64,NPY_DOUBLE},
+        {pni::core::type_id_t::FLOAT128,NPY_LONGDOUBLE},
+        {pni::core::type_id_t::COMPLEX32,NPY_CFLOAT},
+        {pni::core::type_id_t::COMPLEX64,NPY_CDOUBLE},
+        {pni::core::type_id_t::COMPLEX128,NPY_CLONGDOUBLE},
+        {pni::core::type_id_t::STRING,NPY_STRING},
+        {pni::core::type_id_t::BOOL,NPY_BOOL}
     };
 
     //-------------------------------------------------------------------------
@@ -120,7 +119,7 @@ namespace numpy
     //! 
     //! Return the type id of an array or scalar numpy object.
     //! 
-    type_id_t type_id(const object &o);
+    pni::core::type_id_t type_id(const object &o);
 
     //------------------------------------------------------------------------
     //!
@@ -133,14 +132,14 @@ namespace numpy
     //! \param id type id for which to obtain the string rep.
     //! \return string representation of the type
     //!
-    string type_str(type_id_t id);
+    pni::core::string type_str(pni::core::type_id_t id);
 
     //-------------------------------------------------------------------------
     //!
     //! \ingroup numpy_utils
     //! \briefa get type string
     //!
-    string type_str(const object &o);
+    pni::core::string type_str(const object &o);
 
     //-------------------------------------------------------------------------
     //!
@@ -222,7 +221,7 @@ namespace numpy
     }
     
     template< typename CTYPE > 
-    object create_array(type_id_t tid,const CTYPE &s,int itemsize=0)
+    object create_array(pni::core::type_id_t tid,const CTYPE &s,int itemsize=0)
     {
         PyObject *ptr = nullptr;
         //create the buffer for with the shape information
@@ -272,7 +271,7 @@ namespace numpy
     {
         typedef typename ATYPE::value_type value_type;
 
-        auto shape = array.template shape<shape_t>();
+        auto shape = array.template shape<pni::core::shape_t>();
 
         return create_array(type_id(array),shape);
     }
@@ -281,8 +280,8 @@ namespace numpy
     template<typename FTYPE>
     object create_array_from_field(const FTYPE &field)
     {
-        type_id_t tid = field.type_id();
-        auto shape = field.template shape<shape_t>();
+        pni::core::type_id_t tid = field.type_id();
+        auto shape = field.template shape<pni::core::shape_t>();
         
         return create_array(tid,shape);
 

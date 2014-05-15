@@ -30,7 +30,7 @@
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/nxlink.hpp>
 
-#include "NXWrapperHelpers.hpp"
+#include "nxwrapper_utils.hpp"
 #include "NXFieldWrapper.hpp"
 #include "NXObjectWrapper.hpp"
 #include "ChildIterator.hpp"

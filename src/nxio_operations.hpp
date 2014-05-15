@@ -26,7 +26,7 @@
 #include "array_reader.hpp"
 #include "scalar_reader.hpp"
 #include "scalar_writer.hpp"
-#include "NXWrapperHelpers.hpp"
+#include "nxwrapper_utils.hpp"
 #include "numpy_utils.hpp"
 
 //! 
