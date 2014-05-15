@@ -30,6 +30,8 @@
 //!
 class scalar_writer
 {
+    private:
+
     public:
         //! 
         //! \brief write scalar data

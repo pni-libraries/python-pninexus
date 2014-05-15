@@ -160,7 +160,8 @@ template<typename AttrType> class NXAttributeWrapper
         */
         object read() const
         {
-            if(this->_attribute.template shape<shape_t>().size() == 0)
+            //if(this->_attribute.template shape<shape_t>().size() == 0)
+            if(this->_attribute.size() == 1)
                 return io_read<scalar_reader>(this->_attribute);
             else
                 return io_read<array_reader>(this->_attribute);
@@ -227,6 +228,11 @@ static const char __attribute_close_docstr[] =
 "closed automatically when they are no longer referenced. This method\n"
 "can be used to force the closeing an attribute.";
 
+static const char __attribute_write_docstr[] = 
+"Write all the data of an attribute at once. The argument passed to this\n"
+"function is either a single scalar object or an instance of a numpy\n"
+"array.";
+
 /*! 
 \ingroup wrappers
 \brief create new NXAttribute wrapper
@@ -245,6 +251,7 @@ template<typename ATYPE> void wrap_nxattribute()
         .add_property("value",&wrapper_t::read,
                               &wrapper_t::write,__attribute_value_docstr)
         .def("close",&wrapper_t::close,__attribute_close_docstr)
+        .def("write",&wrapper_t::write,__attribute_write_docstr)
         ;
 
 }

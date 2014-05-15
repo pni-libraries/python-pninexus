@@ -42,12 +42,14 @@ class nxfield_test(unittest.TestCase):
         """
         f = self.gf.create_field("data",self._typecode)
 
+        #use the read() and write() methods
         s_write = scalars[self._typecode](random.rand())
         f.write(s_write)
 
         s_read = f.read()
         self.assertTrue(s_write == s_read)
 
+        #use the broadcast operators
         s_write = scalars[self._typecode](random.rand())
         f[...] = s_write
         s_read = f[...]
@@ -64,9 +66,8 @@ class nxfield_test(unittest.TestCase):
         s_write = scalars[self._typecode](random.rand())
         f[...] = s_write
         s_read = f[...]
-    
-        for x in s_read.flat: 
-            self.assertTrue(x==s_write)
+   
+        self.assertTrue(all(x==s_write for x in s_read.flat))
 
     def test_scalar_to_mdim_field_partial_io(self):
         f = self.gf.create_field("data",self._typecode,

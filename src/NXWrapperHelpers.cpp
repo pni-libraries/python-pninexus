@@ -27,6 +27,7 @@
 #include <boost/python/slice.hpp>
 #include "NXWrapperHelpers.hpp"
 #include "NXWrapperErrors.hpp"
+#include "numpy_utils.hpp"
 
 
 
@@ -175,5 +176,45 @@ object unicode2str(const object &o)
     return object(handle<>(ptr));
 }
 
+//----------------------------------------------------------------------------
+bool is_int(const object &o)
+{
+    return PyInt_CheckExact(o.ptr()) ? true : false;
+}
 
+//----------------------------------------------------------------------------
+bool is_bool(const object &o)
+{
+    return PyBool_Check(o.ptr()) ? true : false;
+}
 
+//----------------------------------------------------------------------------
+bool is_long(const object &o)
+{
+    return PyLong_CheckExact(o.ptr()) ? true : false;
+}
+
+//----------------------------------------------------------------------------
+bool is_float(const object &o)
+{
+    return PyFloat_CheckExact(o.ptr()) ? true : false;
+}
+
+//----------------------------------------------------------------------------
+bool is_complex(const object &o)
+{
+    return PyComplex_CheckExact(o.ptr()) ? true : false;
+}
+
+//----------------------------------------------------------------------------
+bool is_string(const object &o)
+{
+    return PyString_CheckExact(o.ptr()) ? true : false;
+}
+
+//----------------------------------------------------------------------------
+bool is_scalar(const object &o)
+{
+    return is_unicode(o) || is_int(o) || is_bool(o) || is_long(o) ||
+           is_float(o) || is_complex(o) || is_string(o) || numpy::is_scalar(o))
+}

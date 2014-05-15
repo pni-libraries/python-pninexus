@@ -222,19 +222,45 @@ namespace numpy
     }
     
     template< typename CTYPE > 
-    object create_array(type_id_t tid,const CTYPE &s)
+    object create_array(type_id_t tid,const CTYPE &s,int itemsize=0)
     {
         PyObject *ptr = nullptr;
         //create the buffer for with the shape information
         std::vector<npy_intp> dims(s.size());
         std::copy(s.begin(),s.end(),dims.begin());
 
+        ptr = reinterpret_cast<PyObject*>(
+                PyArray_New(&PyArray_Type,
+                            dims.size(),
+                             dims.data(),
+                             type_id2numpy_id.at(tid),
+                             nullptr,
+                             nullptr,
+                             itemsize,
+                             NPY_CORDER,
+                             nullptr));
+                             
+
+        /*
         ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),
                                           dims.data(),type_id2numpy_id.at(tid)));
+                                          */
 
         handle<> h(ptr);
 
         return object(h);
+    }
+
+    //-------------------------------------------------------------------------
+    template<typename CTYPE>
+    size_t max_string_size(const CTYPE &strings)
+    {
+        size_t max_size = 0;
+
+        for(auto s: strings)
+            if(max_size<s.size()) max_size=s.size();
+
+        return max_size;
     }
 
     //-------------------------------------------------------------------------
@@ -291,7 +317,6 @@ namespace numpy
         char **dataptr = NpyIter_GetDataPtrArray(aiter);
         auto citer = container.begin();
         int max_item_size = PyArray_ITEMSIZE(array);
-        std::cout<<PyArray_ITEMSIZE(array)<<std::endl;
         do
         {
             value_type d = value_type(dataptr[0]);
@@ -311,6 +336,30 @@ namespace numpy
     template<typename DTYPE>
     void copy_string_to_array(const DTYPE &source,object &dest)
     {
+        typedef typename DTYPE::value_type value_type;
+        typedef pni2numpy_type<value_type> pni2numpy;
+
+        PyArrayObject *array = (PyArrayObject *)(dest.ptr());
+        PyArray_Descr* dtype = PyArray_DescrFromType(NPY_STRING);
+        
+        NpyIter *aiter = NpyIter_New(array,NPY_ITER_C_INDEX | NPY_ITER_READWRITE,
+                         NPY_CORDER,
+                         NPY_SAME_KIND_CASTING,dtype);
+
+
+        NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(aiter,NULL);
+        char **dataptr = NpyIter_GetDataPtrArray(aiter);
+        auto citer = source.begin();
+        do
+        {
+            std::copy(citer->begin(),citer->end(),dataptr[0]);
+            citer++;
+        }
+        while((iternext(aiter))&&(citer!=source.end()));
+
+        //need to destroy the dtype here - decrement the reference counter
+        Py_DECREF(dtype);
+        NpyIter_Deallocate(aiter);
     }
 
 

@@ -27,6 +27,7 @@
 #include "scalar_reader.hpp"
 #include "scalar_writer.hpp"
 #include "NXWrapperHelpers.hpp"
+#include "numpy_utils.hpp"
 
 //! 
 //! \ingroup ioclasses  
@@ -74,7 +75,20 @@ object io_read(const OType &readable)
         return IOOP::template read<complex128>(readable);
 
     if(tid == type_id_t::STRING) 
-        return IOOP::template read<string>(readable);
+    {
+        auto shape = readable.template shape<shape_t>();
+        
+        if(readable.rank()==0 && readable.size()==1) shape = {1};
+        
+        auto data = dynamic_array<string>::create(shape);
+
+        readable.read(data);
+           
+        size_t itemsize = numpy::max_string_size(data);
+        object array = numpy::create_array(tid,shape,int(itemsize));
+        numpy::copy_string_to_array(data,array);
+        return array;
+    }
     if(tid == type_id_t::BOOL)
         return IOOP::template read<bool_t>(readable);
 

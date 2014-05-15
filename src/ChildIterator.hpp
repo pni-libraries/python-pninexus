@@ -132,7 +132,6 @@ template<typename IterableT,typename ItemT> class ChildIterator
         */
         void increment()
         {
-            std::cout<<"I am here"<<std::endl;
             _index++;
             if(_index < _nlinks)
                 _item = _parent->open(_index);
@@ -146,7 +145,6 @@ template<typename IterableT,typename ItemT> class ChildIterator
         */
         ItemT next()
         {
-            std::cout<<"I am here"<<std::endl;
             //check if iteration is still possible
             if(_index >= _nlinks)
             {
@@ -165,7 +163,6 @@ template<typename IterableT,typename ItemT> class ChildIterator
         //! \brief required by the python wrapper
         object __iter__()
         {
-            std::cout<<"I am here"<<std::endl;
             return object(this);
         }
 

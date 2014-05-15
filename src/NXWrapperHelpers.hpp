@@ -108,42 +108,6 @@ template<typename CTYPE> CTYPE Tuple2Container(const tuple &t)
 }
 
 
-    
-
-
-//-----------------------------------------------------------------------------
-//!
-//! \ingroup utils
-//! \brief get array information from nested lists
-//! 
-//! Though arrays of data are usually represented by numpy-arrays in Python 
-//! the fact that libpninx supports arrays of variable length strings causes 
-//! some problems.  Numpy does not support arrays of variable length strings. 
-//! Thus we use nested lists to represent such structures. 
-//! This function determines the rank (the number of dimensions) for an array 
-//! that should represent the data stored in the list. 
-//! 
-//! \param o object with the nested list
-//! \return rank of the array
-//!
-size_t  nested_list_rank(const object &o);
-
-//-----------------------------------------------------------------------------
-template<typename CTYPE> CTYPE nested_list_shape(const object &o)
-{
-    size_t rank = nested_list_rank(o);
-    CTYPE c(rank);
-    object lo(o);
-    for(auto iter=c.begin();iter!=c.end()-1;++iter)
-    {
-        list l = extract<list>(lo)();
-        *iter = len(l);
-        lo = l[0];
-    }
-
-    return c;
-}
-
 //-----------------------------------------------------------------------------
 //! 
 //! \ingroup utils  
@@ -175,6 +139,27 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &f);
 //! \return true if o is a unicode object, false otherwise
 //!
 bool is_unicode(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_int(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_bool(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_long(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_float(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_complex(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_string(const object &o);
+
+//----------------------------------------------------------------------------
+bool is_scalar(const object &o);
 
 //-----------------------------------------------------------------------------
 //!
