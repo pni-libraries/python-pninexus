@@ -31,7 +31,31 @@
 class scalar_writer
 {
     private:
+        template<
+                 typename T,
+                 typename WTYPE
+                >
+        static void single_scalar(const WTYPE &writeable,const object &o)
+        {
+            T value = extract<T>(o);
+            writeable.write(value);
+        }
 
+        //--------------------------------------------------------------------
+        template<
+                 typename T,
+                 typename WTYPE
+                >
+        static void broadcast_scalar(const WTYPE &writeable,const object &o)
+        {
+            typedef pni::core::dynamic_array<T> array_type;
+
+            auto shape = writeable.template shape<pni::core::shape_t>();
+            auto data = array_type::create(shape);
+
+            std::fill(data.begin(),data.end(),extract<T>(o));
+            writeable.write(data);
+        }
     public:
         //! 
         //! \brief write scalar data
@@ -50,8 +74,10 @@ class scalar_writer
                 > 
         static void write(const WTYPE &writeable,const object &o)
         {
-            T value = extract<T>(o);
-            writeable.write(value);
+            if(writeable.size()==1)
+                single_scalar<T>(writeable,o);
+            else
+                broadcast_scalar<T>(writeable,o);
         }
 };
 

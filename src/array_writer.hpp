@@ -96,31 +96,6 @@ class array_writer
 
         }
 
-        //---------------------------------------------------------------------
-        //!
-        //! \brief broadcast a scalar to a field
-        //!
-        //! Broadcast a scalar value to the field.
-        //! \tparam T type of the scalar
-        //! \tparam WTYPE writable type (field or attribute)
-        //! \param w instance of WTYPE
-        //! \param o object representing a scalar
-        //!
-        template<
-                 typename T,
-                 typename WTYPE
-                >
-        static void _write_scalar(const WTYPE &w,const object &o)
-        {
-            typedef dynamic_array<T> array_type;
-            //get writable parameters
-            auto shape = w.template shape<shape_t>();
-
-            T value = extract<T>(o)();
-            auto data = array_type::create(shape);
-            std::fill(data.begin(),data.end(),value);
-            w.write(data);
-        }
     public:
         //! 
         //! \brief write array data
@@ -138,10 +113,17 @@ class array_writer
                 > 
         static void write(const WTYPE &w,const object &o)
         {
-            //check if the object from which to read data is an array
-            if(!numpy::is_array(o))
-                _write_scalar<T>(w,o);
-            else
-                _write_numpy_array(w,o);
+            if(!((w.size() == 1) && (numpy::get_size(o)==1)))
+            {
+                auto w_shape = w.template shape<pni::core::shape_t>();
+                auto o_shape = numpy::get_shape<pni::core::shape_t>(o);
+                
+                if((w_shape.size()!=o_shape.size()) ||
+                   !std::equal(w_shape.begin(),w_shape.end(),o_shape.begin()))
+                    throw shape_mismatch_error(EXCEPTION_RECORD,
+                            "Shapes of field and numpy array do not match!");
+            }
+
+            _write_numpy_array(w,o);
         }
 };

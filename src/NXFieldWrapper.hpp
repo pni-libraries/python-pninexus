@@ -125,17 +125,23 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void write(const object &o) const
         {
-            if((this->_object.size() == 1)&&(!numpy::is_array(o)))
+            if(is_scalar(o))
             {
+                //write a scalar to the field
                 //scalar field - here we can use any scalar type to write data
                 io_write<scalar_writer>(this->_object,o);
             }
-            else
+            else if(numpy::is_array(o))
             {
+                //write a numpy array to the field
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
                 io_write<array_writer>(this->_object,o);
             }
+            else
+                throw type_error(EXCEPTION_RECORD,
+                        "Argument must be either a numpy array or a "
+                        "Python scalar!");
         }
 
         //---------------------------------------------------------------------
@@ -250,30 +256,16 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         */
         void __setitem__tuple(const tuple &t,const object &o)
         {
-            
             std::vector<pni::core::slice> selection = create_selection(t,this->_object);
-            //this->_object(selection);
 
-            if((this->_object(selection).size() == 1) && !numpy::is_array(o))
-            {
-                //in this case we can write only a single scalar value. Thus the
-                //object passed must be a simple scalar value
+            if(is_scalar(o))
                 io_write<scalar_writer>(this->_object(selection),o);
-            }
-            else
-            {
-                //here we have two possibl: 
-                //1.) object referes to a scalar => all positions marked by the 
-                //    selection will be set to this scalar value
-                //2.) object referes to an array => if the selection shape and
-                //    the array shape match (sizes match) we can write array
-                //    data.
-
-                //let us assume here that we only do broadcast
+            else if(numpy::is_array(o))
                 io_write<array_writer>(this->_object(selection),o);
-            }
-
-            //throw_NXFieldError("could not handle user request!");
+            else
+                throw type_error(EXCEPTION_RECORD,
+                        "Object must be either a numpy arry or a "
+                        "python scalar!");
         }
 
         //----------------------------------------------------------------------

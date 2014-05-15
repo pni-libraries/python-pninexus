@@ -192,16 +192,14 @@ template<typename AttrType> class NXAttributeWrapper
         {
             //before we can write an object we need to find out what 
             //it really i
-            if(this->_attribute.template shape<shape_t>().size() == 0)
-                //write to a scalar attribute
+            if(is_scalar(o))
                 io_write<scalar_writer>(this->_attribute,o);
+            else if(numpy::is_array(o))
+                io_write<array_writer>(this->_attribute,o);
             else
-            {
-                //the attribute is an array attribute
-                if(numpy::is_array(o))
-                    //write array to array
-                    io_write<array_writer>(this->_attribute,o);
-            }
+                throw type_error(EXCEPTION_RECORD,
+                        "Argument must be either a numpy array or a "
+                        "Python scalar!");
         }
 
 };

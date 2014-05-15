@@ -45,6 +45,7 @@ namespace numpy
     //------------------------------------------------------------------------
     bool is_scalar(const object &o)
     {
+        init_array();
         if(o.ptr())
             return PyArray_CheckScalar(o.ptr());
         else
@@ -98,6 +99,12 @@ namespace numpy
     pni::core::string type_str(const object &o)
     {
         return type_str(type_id(o));
+    }
+
+    //------------------------------------------------------------------------
+    size_t get_size(const object &o)
+    {
+        return PyArray_SIZE(o.ptr());
     }
 //end of namespace
 }

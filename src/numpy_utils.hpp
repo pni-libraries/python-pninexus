@@ -171,6 +171,17 @@ namespace numpy
         return shape;
     }
 
+    //------------------------------------------------------------------------
+    //! 
+    //! \brief get number of elements
+    //! 
+    //! Returns the number of elements stored in the array.
+    //!
+    //! \param o array object
+    //! \return number of elements
+    //!
+    size_t get_size(const object &o);
+
     //-------------------------------------------------------------------------
     //!
     //! \ingroup numpy utils
