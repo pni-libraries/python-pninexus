@@ -94,31 +94,35 @@ template<typename AttrType> class NXAttributeWrapper
         }
 
         //==========================inquery methodes===========================
-        /*! \brief get attribute shape
-
-        Returns the shape of an attribute as tuple. In Python shape will be a
-        read only property of the attribute object. Using a tuple immediately 
-        indicates that this is an immutable value. The length of the tuple is
-        equal to the rank (number of dimensions) while the elements are the
-        number of elements along each dimension.
-        \return tuple with shape information
-        */
+        //!
+        //! \brief get attribute shape
+        //!
+        //! Returns the shape of an attribute as tuple. In Python shape will 
+        //! be a read only property of the attribute object. Using a tuple 
+        //! immediately indicates that this is an immutable value. The length 
+        //! of the tuple is equal to the rank (number of dimensions) while 
+        //! the elements are the number of elements along each dimension.
+        //!
+        //! \return tuple with shape information
+        //!
         tuple shape() const
         {
             return tuple(Container2List(this->_attribute.template shape<shape_t>()));
         }
 
         //---------------------------------------------------------------------
-        /*! \brief get attribute type id
-        
-        Returns the numpy typecode of the attribute. We do not wrapp the TypeID
-        enum class to Python as this would not make too much sense. 
-        However, if we use here directly the numpy codes we cann use this value
-        for the instantiation of a new numpy array. 
-        This value will be provided to Python users as a read-only property with
-        name dtype (as in numpy).
-        \return numpy typecode
-        */
+        //!
+        //! \brief get attribute type id
+        //! 
+        //! Returns the numpy typecode of the attribute. We do not wrapp the 
+        //! type_id_t enum class to Python as this would not make too much 
+        //! sense.  However, if we use here directly the numpy codes we cann 
+        //! use this value for the instantiation of a new numpy array. 
+        //! This value will be provided to Python users as a read-only property 
+        //! with name dtype (as in numpy).
+        //!
+        //! \return numpy typecode
+        //!
         string type_id() const
         {
             return numpy::type_str(this->_attribute.type_id()); 
@@ -129,35 +133,42 @@ template<typename AttrType> class NXAttributeWrapper
         void close() { this->_attribute.close(); }
 
         //----------------------------------------------------------------------
-        /*! \brief query validity status
-
-        Returns true if the attribute object is valid. The user will have access
-        to this value via a read-only property names valid. 
-        \return true of attribute is valid, false otherwise
-        */
+        //!
+        //! \brief query validity status
+        //!
+        //! Returns true if the attribute object is valid. The user will have 
+        //! access to this value via a read-only property names valid. 
+        //!
+        //! \return true of attribute is valid, false otherwise
+        //!
         bool is_valid() const { return this->_attribute.is_valid(); }
 
         //----------------------------------------------------------------------
-        /*! \brief get attribute name
-
-        Returns the name of the attribute object. User access is given via a
-        read-only property "name". 
-        \return attribute name
-        */
+        //!
+        //! \brief get attribute name
+        //! 
+        //! Returns the name of the attribute object. User access is given 
+        //! via a read-only property "name". 
+        //!
+        //! \return attribute name
+        //!
         string name() const { return this->_attribute.name(); }
 
         //=========================read methods================================
-        /*! \brief read attribute data
-
-        This method reads the attributes data and returns an appropriate Python
-        object holding the data. If the method is not able to decide who to
-        store the data to a Python object an exception will be thrown. 
-        The return value is either a simple scalar Python type or a numpy array. 
-        This method is the reading part of the "value" property which provides
-        access to the data of an attribuite.
-        \throws nxattribute_error in case of problems
-        \return Python object with attribute data
-        */
+        //!
+        //! \brief read attribute data
+        //! 
+        //! This method reads the attributes data and returns an appropriate 
+        //! Python object holding the data. If the method is not able to decide 
+        //! who to store the data to a Python object an exception will be 
+        //! thrown. 
+        //! The return value is either a simple scalar Python type or a numpy 
+        //! array.  This method is the reading part of the "value" property 
+        //! which provides access to the data of an attribuite.
+        //!
+        //! \throws nxattribute_error in case of problems
+        //! \return Python object with attribute data
+        //!
         object read() const
         {
             //if(this->_attribute.template shape<shape_t>().size() == 0)
@@ -175,19 +186,22 @@ template<typename AttrType> class NXAttributeWrapper
         }
 
         //=====================write methods===================================
-        /*! \brief write attribute data
-
-        Write attribute data to disk. The data is passed as a Python object.
-        The method is the writing part of the "value" property which provides
-        access to the attribute data. An exception will be thrown if the method
-        cannot write data from the object. For the time being the object must
-        either be a numpy array or a simple Python scalar.
-        \throws nxattribute_reader in case of problems
-        \throws type_error if type conversion fails
-        \throws shape_mismatch_error if attribute and object shape cannot be
-        converted
-        \param o object from which to write data
-        */
+        //!
+        //! \brief write attribute data
+        //!
+        //! Write attribute data to disk. The data is passed as a Python object.
+        //! The method is the writing part of the "value" property which 
+        //! provides access to the attribute data. An exception will be 
+        //! thrown if the method cannot write data from the object. For the 
+        //! time being the object must either be a numpy array or a simple 
+        //! Python scalar.
+        //!
+        //! \throws nxattribute_reader in case of problems
+        //! \throws type_error if type conversion fails
+        //! \throws shape_mismatch_error if attribute and object shape cannot be
+        //! converted
+        //! \param o object from which to write data
+        //!
         void write(object o) const
         {
             //before we can write an object we need to find out what 

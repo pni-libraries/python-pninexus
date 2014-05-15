@@ -91,38 +91,47 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         }
 
         //=================wrap some conviencen methods========================
-        /*! \brief get type code 
-          
-        Returns the type-code of the data stored in the field as numpy type
-        string. The type-code will be exposed as a read-only property.
-        \return numpy type string
-        */
+        //!
+        //! \brief get type code 
+        //!   
+        //! Returns the type-code of the data stored in the field as numpy 
+        //! type string. The type-code will be exposed as a read-only 
+        //! property.
+        //!
+        //! \return numpy type string
+        //!
         string type_id() const 
         { 
             return numpy::type_str(this->_object.type_id()); 
         }
 
         //---------------------------------------------------------------------
-        /*! \brief get field shape
-
-        Return the shape of the field as tuple. The length of the tuple is the 
-        rank of the field and its elements define the number of elements along 
-        each dimension. The shape will be exposed as a read-only property.
-        \return shape as tuple
-        */
+        //!
+        //! \brief get field shape
+        //!
+        //! Return the shape of the field as tuple. The length of the tuple 
+        //! is the rank of the field and its elements define the number of 
+        //! elements along each dimension. The shape will be exposed as a 
+        //! read-only property.
+        //!
+        //! \return shape as tuple
+        //!
         tuple shape() const
         {
-            return tuple(Container2List(this->_object.template shape<shape_t>()));
+            auto shape = this->_object.template shape<shape_t>();
+            return tuple(Container2List(shape));
         }
 
         //---------------------------------------------------------------------
-        /*! \brief writing data to the field
-
-        Write data to the field. The data is passed to the wrapper as a Python
-        object. The method tries to figure out what kind of object it is 
-        and if it can be written to the field. 
-        \param o object from which to write data
-        */
+        //!
+        //! \brief writing data to the field
+        //!
+        //! Write data to the field. The data is passed to the wrapper as a 
+        //! Python object. The method tries to figure out what kind of object 
+        //! it is and if it can be written to the field. 
+        //!
+        //! \param o object from which to write data
+        //!
         void write(const object &o) const
         {
             if(is_scalar(o))
@@ -145,14 +154,16 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         }
 
         //---------------------------------------------------------------------
-        /*! \brief reading data from the field
-
-        Reading data from a field. The method returns a Python object and tries
-        to figure out by itself which kind of object and datatype to use. 
-        If this fails an exception will be thrown.
-        \throws type_error if return type determination fails
-        \return Python object with the read data
-        */
+        //!
+        //! \brief reading data from the field
+        //! 
+        //! Reading data from a field. The method returns a Python object 
+        //! and tries to figure out by itself which kind of object and 
+        //! datatype to use.  If this fails an exception will be thrown.
+        //!
+        //! \throws type_error if return type determination fails
+        //! \return Python object with the read data
+        //!
         object read() const
         {
             if(this->_object.size() == 1)
@@ -160,7 +171,6 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 //the field contains only a single value - can return a
                 //primitive python object
                 return io_read<scalar_reader>(this->_object);                
-
             }
             else
             {
@@ -169,6 +179,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 return io_read<array_reader>(this->_object);
             }
 
+            //should be rather rare
             throw type_error(EXCEPTION_RECORD,"Cannot determine return type!");
 
             //this is only to avoid compiler warnings
@@ -176,22 +187,22 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         }
        
         //---------------------------------------------------------------------
-        /*! \brief the core __getitem__ implementation
-
-        The most fundamental implementation of the __getitem__ method. 
-        The tuple passed to the method can contain indices, slices, and a single
-        ellipsis. This method is doing the real work - all other __getitem__ 
-        implementations simply call this method.
-        \param t tuple with 
-        */
+        //!
+        //! \brief the core __getitem__ implementation
+        //!
+        //! The most fundamental implementation of the __getitem__ method. 
+        //! The tuple passed to the method can contain indices, slices, and a 
+        //! single ellipsis. This method is doing the real work - all other 
+        //! __getitem__ implementations simply call this method.
+        //!
+        //! \param t tuple with 
+        //!
         object __getitem__tuple(const tuple &t)
         {
+            typedef std::vector<pni::core::slice> selection_type;
 
             //first we need to create a selection
-            std::vector<pni::core::slice> selection = create_selection(t,this->_object);
-
-            //apply the selection
-            //this->_object(selection);
+            selection_type selection = create_selection(t,this->_object);
 
             //once the selection is build we can start to create the 
             //return value
@@ -206,20 +217,20 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             throw pni::io::nx::nxfield_error(EXCEPTION_RECORD,
                                              "cannot handle user request");
 
-
-            return object();
-
+            return object(); //make the compiler happy
         }
         //---------------------------------------------------------------------
-        /*! \brief __getitem__ entry method
-
-        This method is called when a user invokes the __getitem__ method on a
-        NXField object in python. The method converts the object that is passed
-        as input argument to a tuple if necessary and than passes this to the 
-        __getitem__tuple method. 
-        \param o Python object describing the selection
-        \return Python object with the data from the selection
-        */
+        //!
+        //! \brief __getitem__ entry method
+        //!
+        //! This method is called when a user invokes the __getitem__ method 
+        //! on a NXField object in python. The method converts the object 
+        //! that is passed as input argument to a tuple if necessary and 
+        //! than passes this to the __getitem__tuple method. 
+        //!
+        //! \param o Python object describing the selection
+        //! \return Python object with the data from the selection
+        //!
         object __getitem__(const object &o)
         {
             //need to check here if o is already a tuple 
@@ -230,15 +241,17 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         }
 
         //---------------------------------------------------------------------
-        /*! \brief __setitem__ implementation
-
-        As for __getitem__ this method is called if a user invokes the
-        __setitem__ method on an NXField object in Python. The method converts
-        the object passed as input argument to a tuple if necessary and then
-        moves on to __setitem__tuple.
-        \param o selection object
-        \param d Python object holding the data
-        */
+        //!
+        //! \brief __setitem__ implementation
+        //!
+        //! As for __getitem__ this method is called if a user invokes the
+        //! __setitem__ method on an NXField object in Python. The method 
+        //! converts the object passed as input argument to a tuple if 
+        //! necessary and then moves on to __setitem__tuple.
+        //!
+        //! \param o selection object
+        //! \param d Python object holding the data
+        //!
         void __setitem__(const object &o,const object &d)
         {
             //need to check here if o is already a tuple 
@@ -248,15 +261,18 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
                 __setitem__tuple(make_tuple<object>(o),d);
         }
         //---------------------------------------------------------------------
-        /*! \brief write data according to a selection
-
-        Write data from a selection defined by tuple t. 
-        \param t tuple with selection information
-        \param o object with data to write.
-        */
+        //!
+        //! \brief write data according to a selection
+        //!
+        //! Write data from a selection defined by tuple t. 
+        //!
+        //! \param t tuple with selection information
+        //! \param o object with data to write.
+        //!
         void __setitem__tuple(const tuple &t,const object &o)
         {
-            std::vector<pni::core::slice> selection = create_selection(t,this->_object);
+            typedef std::vector<pni::core::slice> selection_type;
+            selection_type selection = create_selection(t,this->_object);
 
             if(is_scalar(o))
                 io_write<scalar_writer>(this->_object(selection),o);
@@ -269,21 +285,23 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         }
 
         //----------------------------------------------------------------------
-        /*! \brief grow field object
-
-        Grow a field object along dimension d by s elements.
-        \param d dimension index
-        \param s extend by which to grow the field
-        */
+        //!
+        //! \brief grow field object
+        //!
+        //! Grow a field object along dimension d by s elements.
+        //! \param d dimension index
+        //! \param s extend by which to grow the field
+        //!
         void grow(size_t d=0,size_t s=1) { this->_object.grow(d,s); }
 
         //-----------------------------------------------------------------------
-        /*!
-        \brief get size
-
-        Return the total number of elements of the field.
-        \return total number of elements.
-        */
+        //!
+        //! \brief get size
+        //!
+        //! Return the total number of elements of the field.
+        //!
+        //! \return total number of elements.
+        //!
         size_t size() const { return this->_object.size(); }
         
 };
