@@ -21,8 +21,11 @@
 # Created on: May 16, 2014
 #     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
-"""
-Module provides a data generator for random numbers. 
+"""Module provides a data generator for random numbers. 
+
+In many cases testing only makes sense if the data used for testing varies with
+each run. For this purpose this module provides a random number data generator 
+for all data types supported by pniio. 
 
 """
 
@@ -35,17 +38,33 @@ _typecodes=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
             "string","bool"]
 
 class type_desc(object):
+    """Container for type information
+
+    This class acts rather like a C structure and should just keep type 
+    related information together.  
+    It has a dtype and a scalar attribute. The former one holds a reference
+    to the data type object of the type and the latter a refernece to the 
+    appropriate scalar object.
+    """
     def __init__(self,dt,s):
+        """initialize a type descriptor
+        
+        Args:
+            dt (numpy.dtype): data type object
+            s  (numpy.generic): data type scalar
+        """
         self.dtype = dt
         self.scalar = s
 
+# a map 
 _type_desc = {"uint8":type_desc(np.dtype("uint8"),np.uint8),
               "int8": type_desc(np.dtype("int8"),np.int8),
               "uint16": type_desc(np.dtype("uint16"),np.uint16),
               "int16":  type_desc(np.dtype("int16"),np.int16),
               "uint32": type_desc(np.dtype("uint32"),np.uint32),
               "int32":  type_desc(np.dtype("int32"),np.int32),
-              "uint64": type_desc(np.dtype("uint64"),np.int64),
+              "uint64": type_desc(np.dtype("uint64"),np.uint64),
+              "int64": type_desc(np.dtype("int64"),np.int64),
               "float32": type_desc(np.dtype("float32"),np.float32),
               "float64": type_desc(np.dtype("float64"),np.float64),
               "float128": type_desc(np.dtype("float128"),np.float128),
@@ -56,6 +75,7 @@ _type_desc = {"uint8":type_desc(np.dtype("uint8"),np.uint8),
               "bool":   type_desc(np.dtype("bool"),np.bool_)}
 
 
+#-----------------------------------------------------------------------------
 class data_generator(object):
     def __init__(self,tdesc,func):
         self._desc = tdesc
@@ -65,9 +85,9 @@ class data_generator(object):
 
         #just allocate the data array
         if shape:
-            data =  numpy.zeros(shape,dtype=self._desc.dtype)
-            for x in numpy.nditer(data,op_flags=['readwrite']):
-                x[...] = self._func()
+            size = reduce(lambda x,y: x*y, shape)
+            l = [self._func() for i in range(size)]
+            data = np.array(l,dtype=self._desc.dtype).reshape(shape)
 
         else: 
             data = self._desc.scalar(self._func())
@@ -75,37 +95,142 @@ class data_generator(object):
         return data
 
 
+#-----------------------------------------------------------------------------
 class generator(object):
-    def __init__(self,f,min_val,max_val):
+    """Generator function
+
+    This class acts as a generator function. Everytime an instance of 
+    this class is called a new random value will be generated. 
+    It wraps the functions below to a single interface. 
+
+    """
+    def __init__(self,f,*args,**kargs):
+        """Construct a generator function
+
+        The constructor takes the function object and all its positional 
+        and keyword arguments. 
+
+        Args:
+            f: the function to wrap
+            args: all positional arguments for this function
+            kargs: all keyword arguments for this function
+        """
         self._func = f
-        self._min = min_val
-        self._max = max_val
+        self._args = args
+        self._kargs = kargs
 
     def __call__(self):
-        return self._func(self._min,self._max)
+        """Execute the wrapped function
+    
+        Execute the wrapped function with all its arguments passed 
+        during construction of this instance.
+        """
+        return self._func(*self._args,**self._kargs)
     
 
 
+#-----------------------------------------------------------------------------
 def int_generator_func(min_val=0,max_val=100):
+    """Generate random integer numbers
+    
+    Generate a random integer number in the range of min_val to max_val. 
+
+    Args:
+        min_val (int): lower bound for random numbers
+        max_val (int): upper bound for random numbers
+
+    Return:
+        int: random number 
+    """
     return random.randint(min_val,max_val)
 
+#-----------------------------------------------------------------------------
 def float_generator_func(min_val=0,max_val=100):
+    """Generate random float numbers
+
+    Generate a random float number in the range of min_val and max_val.
+
+    Args:
+        min_val (float): lower bound for random numbers
+        max_val (float): upper bound for random numbers
+
+    Return:
+        float: random number
+
+    """
     delta = max_val-min_val
     return min_val-delta*random.ranf()
 
+#-----------------------------------------------------------------------------
 def complex_generator_func(min_val=0,max_val=100):
+    """Generate random complex numbers
+    
+    Generate a random complex numbers whose real and imaginary part lie within 
+    the bounds min_val and max_val. 
+
+    Args:
+        min_val (float): lower bound for imaginary and real part
+        max_val (float): upper bound for imaginary and real part
+
+    Return:
+        complex: a complex random number
+    """
     return complex(float_generator_func(min_val,max_val),
                    float_generator_func(min_val,max_val))
 
 
-def bool_generator_func(min_val=0,max_val=0):
+#-----------------------------------------------------------------------------
+def bool_generator_func():
+    """Generate boolean random numbers
+
+    As boolean values can only take the values True and False no min_val 
+    and max_val arguments are required. 
+
+    Return:
+        bool: random value
+    """
     return int_generator_func(0,2)
 
+#-----------------------------------------------------------------------------
+def string_generator_func(min_val=0,max_val=100):
+    """Generate a random string
 
+    Generate a random string. The meaning of the arguments min_val and 
+    max_val is slightly change for strings. As the length of the string is 
+    a random number too, min_val and max_val denote the minimum and 
+    maximum string length respectively. 
+    The string will contain only printable characters from the ASCII range 
+    33 to 126.
 
-def create_generator(typecode,min_val=0,max_val=100):
+    Args:
+        min_val (int): minimum length of the random string
+        max_val (int): maximum length of the random string
+
+    Return:
+        str: random string whose length is within min_val and max_val
     """
-     
+    #generate the random length of the string
+    size = int_generator_func(min_val,max_val)
+    
+    return ''.join(map(chr,[ int_generator_func(33,126) for i in range(size)]))
+
+#-----------------------------------------------------------------------------
+def create(typecode,min_val=0,max_val=100):
+    """Create a data generator  
+
+    This function returns a data generator function for the type determined by 
+    typecode which generates random data within a range specified by min_val and 
+    max_val.
+
+    Args:
+        typecode (str): typecode of the data that shall be produced
+        min_val (int|float optional): lower bound of the data to be generated
+        max_val (int|float optional): upper bound for the data to be generated
+
+    Returns: 
+        data_generator: an instance of class data_generator
+    Raises:
+        TypeError: if the type code is not  supported by pniio
     """
     tdesc = _type_desc[typecode]
 
@@ -116,8 +241,11 @@ def create_generator(typecode,min_val=0,max_val=100):
     elif tdesc.dtype.kind == 'c':
         g = generator(complex_generator_func,min_val,max_val)
     elif tdesc.dtype.kind == 'b':
-        print 'create bool generator'
-        g = generator(bool_generator_func,0,1)
+        g = generator(bool_generator_func)
+    elif tdesc.dtype.kind == 'S':
+        g = generator(string_generator_func,min_val,max_val)
+    else:
+        TypeError,'unsupported type code'
 
     
     return data_generator(tdesc,g)

@@ -9,9 +9,11 @@ from pni.io.nx.h5 import NXField
 from pni.io.nx.h5 import NXDeflateFilter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
+import data_generator as data_gen
 
 types=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
-       "float32","float64","float128","string"]
+       "float32","float64","float128","complex32","complex64","complex128",
+       "string","bool"]
 
 scalars={"uint8":numpy.uint8,"int8":numpy.int8,
         "uint16":numpy.uint16,"int16":numpy.int16,
@@ -19,7 +21,10 @@ scalars={"uint8":numpy.uint8,"int8":numpy.int8,
         "uint64":numpy.uint64,"int64":numpy.int64,
         "float32":numpy.float32,"float64":numpy.float64,
         "float128":numpy.float128,
-        "string":numpy.str_}
+        "complex32":numpy.complex64,
+        "complex64":numpy.complex128,
+        "complex128":numpy.complex256,
+        "string":numpy.str_,"bool":numpy.bool_}
          
 
 
@@ -31,6 +36,7 @@ class nxfield_test(unittest.TestCase):
     def setUp(self):
         self.gf = create_file("NXFieldTest.h5",overwrite=True)
         self.root = self.gf["/"]
+        self.dg = data_gen.create(self._typecode)
 
     def tearDown(self):
         self.root.close()
@@ -43,14 +49,14 @@ class nxfield_test(unittest.TestCase):
         f = self.gf.create_field("data",self._typecode)
 
         #use the read() and write() methods
-        s_write = scalars[self._typecode](random.rand())
+        s_write = self.dg()
         f.write(s_write)
 
         s_read = f.read()
         self.assertTrue(s_write == s_read)
 
         #use the broadcast operators
-        s_write = scalars[self._typecode](random.rand())
+        s_write = self.dg()
         f[...] = s_write
         s_read = f[...]
         self.assertTrue(s_read == s_write)
@@ -63,7 +69,7 @@ class nxfield_test(unittest.TestCase):
         f = self.gf.create_field("data",self._typecode,
                                  shape=(3,4))
 
-        s_write = scalars[self._typecode](random.rand())
+        s_write = self.dg()
         f[...] = s_write
         s_read = f[...]
    
@@ -73,9 +79,9 @@ class nxfield_test(unittest.TestCase):
         f = self.gf.create_field("data",self._typecode,
                                  shape=(3,4))
         
-        s1_write = scalars[self._typecode](random.rand())
-        s2_write = scalars[self._typecode](random.rand())
-        s3_write = scalars[self._typecode](random.rand())
+        s1_write = self.dg()
+        s2_write = self.dg()
+        s3_write = self.dg()
         f[0,:] = s1_write
         f[1,:] = s2_write
         f[2,:] = s3_write
@@ -88,11 +94,43 @@ class nxfield_test(unittest.TestCase):
         self.assertTrue(all(x==s2_write for x in s2_read.flat))
         self.assertTrue(all(x==s3_write for x in s3_read.flat))
 
+        #writing a single element
+        s1_write = self.dg()
+        f[0,1] = s1_write
+        read =  f[0,1]
+        self.assertTrue(s1_write,read)
+
     def test_array_to_mdim_field_io(self):
-        pass
+        shape = (3,4)
+        f = self.gf.create_field("data",self._typecode,
+                                 shape=shape)
+        write = self.dg(shape)
+        f.write(write)
+        read = f.read()
+
+        self.assertTrue(x==y for x,y in zip(read,write))
+
+        f[...] = write
+        read = f[...]
+
+        self.assertTrue(x==y for x,y in zip(read,write))
 
     def test_array_to_mdim_field_partial_io(self):
-        pass
+        shape = (3,4)
+        f = self.gf.create_field("data",self._typecode,shape=shape)
+
+        write1 = self.dg((4,))
+        
+        f[0,:] = write1
+        read   = f[0,:]
+
+        self.assertTrue(x==y for x,y in zip(read,write1))
+
+        write2 = self.dg((3,))
+        f[:,1] = write2
+        read   = f[:,1]
+
+        self.assertTrue(x==y for x,y in zip(read,write2))
 
 
 
