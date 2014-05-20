@@ -36,7 +36,7 @@ class nxfield_test(unittest.TestCase):
     def setUp(self):
         self.gf = create_file("NXFieldTest.h5",overwrite=True)
         self.root = self.gf["/"]
-        self.dg = data_gen.create(self._typecode)
+        self.dg = data_gen.create(self._typecode,5,40)
 
     def tearDown(self):
         self.root.close()
@@ -82,6 +82,9 @@ class nxfield_test(unittest.TestCase):
         s1_write = self.dg()
         s2_write = self.dg()
         s3_write = self.dg()
+        print s1_write
+        print s2_write
+        print s3_write
         f[0,:] = s1_write
         f[1,:] = s2_write
         f[2,:] = s3_write
@@ -96,9 +99,10 @@ class nxfield_test(unittest.TestCase):
 
         #writing a single element
         s1_write = self.dg()
+        print s1_write
         f[0,1] = s1_write
         read =  f[0,1]
-        self.assertTrue(s1_write,read)
+        self.assertTrue(s1_write == read)
 
     def test_array_to_mdim_field_io(self):
         shape = (3,4)
