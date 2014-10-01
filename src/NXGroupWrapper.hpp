@@ -23,12 +23,8 @@
 
 #pragma once
 
-#include <pni/io/nx/nxobject_type.hpp>
-#include <pni/io/nx/nxobject_traits.hpp>
-#include <pni/io/nx/utils/nxfield_utils.hpp>
-#include <pni/io/nx/nxexceptions.hpp>
+#include <pni/io/nx/nx.hpp>
 #include <pni/core/utilities.hpp>
-#include <pni/io/nx/nxlink.hpp>
 
 #include "nxwrapper_utils.hpp"
 #include "NXFieldWrapper.hpp"

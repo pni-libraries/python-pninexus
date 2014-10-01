@@ -31,7 +31,7 @@ extern "C"{
 #include <sstream>
 
 #include <pni/io/nx/nx.hpp>
-#include <pni/io/nx/nxexceptions.hpp>
+#include <pni/io/exceptions.hpp>
 
 using namespace pni::core;
 using namespace boost::python;

@@ -28,6 +28,7 @@ extern "C"{
 }
 #include <pni/core/error.hpp>
 #include <boost/python.hpp>
+#include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nx.hpp>
 
 #include "NXWrapperErrors.hpp"
@@ -38,15 +39,11 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::io::nx::h5;
 
-ERR_TRANSLATOR(pni::io::nx,nxfile_error)
-ERR_TRANSLATOR(pni::io::nx,nxgroup_error)
-ERR_TRANSLATOR(pni::io::nx,nxfield_error)
-ERR_TRANSLATOR(pni::io::nx,nxattribute_error)
-ERR_TRANSLATOR(pni::io::nx,nxselection_error)
-ERR_TRANSLATOR(pni::io::nx,nxfilter_error)
-ERR_TRANSLATOR(pni::io::nx,nxbackend_error)
-ERR_TRANSLATOR(pni::io::nx,nxlink_error)
-ERR_TRANSLATOR(pni::io::nx,nxobject_error)
+ERR_TRANSLATOR(pni::io,io_error)
+ERR_TRANSLATOR(pni::io,link_error)
+ERR_TRANSLATOR(pni::io,object_error)
+ERR_TRANSLATOR(pni::io,parser_error)
+ERR_TRANSLATOR(pni::io,invalid_object_error)
 
 //-----------------------------------------------------------------------------
 #pragma GCC diagnostic push
@@ -68,6 +65,7 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 
 
 //====================General purpose exceptions===============================
+ERR_TRANSLATOR(pni::core,file_error)
 ERR_TRANSLATOR(pni::core,shape_mismatch_error)
 ERR_TRANSLATOR(pni::core,index_error)
 ERR_TRANSLATOR(pni::core,size_mismatch_error)
@@ -90,15 +88,12 @@ void exception_registration()
         .def(self_ns::str(self_ns::self))
         ;
 
-    ERR_OBJECT_DECL(pni::io::nx,nxfile_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxfield_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxgroup_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxattribute_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxselection_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxfilter_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxbackend_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxlink_error);
-    ERR_OBJECT_DECL(pni::io::nx,nxobject_error);
+    ERR_OBJECT_DECL(pni::io,io_error);
+    ERR_OBJECT_DECL(pni::io,link_error);
+    ERR_OBJECT_DECL(pni::io,parser_error);
+    ERR_OBJECT_DECL(pni::io,invalid_object_error);
+    ERR_OBJECT_DECL(pni::io,object_error);
+    ERR_OBJECT_DECL(pni::core,file_error);
     ERR_OBJECT_DECL(pni::core,shape_mismatch_error);
     ERR_OBJECT_DECL(pni::core,index_error);
     ERR_OBJECT_DECL(pni::core,size_mismatch_error);
@@ -107,16 +102,13 @@ void exception_registration()
     ERR_OBJECT_DECL(pni::core,type_error);
     ERR_OBJECT_DECL(pni::core,key_error);
 
-    
-    ERR_REGISTRATION(pni::io::nx,nxfile_error);
-    ERR_REGISTRATION(pni::io::nx,nxfield_error);
-    ERR_REGISTRATION(pni::io::nx,nxgroup_error);
-    ERR_REGISTRATION(pni::io::nx,nxattribute_error);
-    ERR_REGISTRATION(pni::io::nx,nxselection_error);
-    ERR_REGISTRATION(pni::io::nx,nxfilter_error);
-    ERR_REGISTRATION(pni::io::nx,nxbackend_error);
-    ERR_REGISTRATION(pni::io::nx,nxlink_error);
-    ERR_REGISTRATION(pni::io::nx,nxobject_error);
+   
+    ERR_REGISTRATION(pni::io,io_error);
+    ERR_REGISTRATION(pni::io,link_error);
+    ERR_REGISTRATION(pni::io,parser_error);
+    ERR_REGISTRATION(pni::io,invalid_object_error);
+    ERR_REGISTRATION(pni::io,object_error);
+    ERR_REGISTRATION(pni::core,file_error);
     ERR_REGISTRATION(pni::core,shape_mismatch_error);
     ERR_REGISTRATION(pni::core,index_error);
     ERR_REGISTRATION(pni::core,size_mismatch_error);
