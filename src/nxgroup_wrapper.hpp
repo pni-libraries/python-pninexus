@@ -63,11 +63,8 @@ template<typename GTYPE> class nxgroup_wrapper
         nxgroup_wrapper<group_type>
         create_group(const string &n,const string &nxclass=string()) const
         {
-            typedef pni::io::nx::group_type<group_type> l_group_type;
-            typedef NXGroupWrapper<l_group_type>        l_group_wrapper;
 
-            l_group_wrapper group(this->_object.create_group(n,nxclass));
-            return group;
+            return this->_object.create_group(n,nxclass);
         }
 
         //---------------------------------------------------------------------

@@ -39,14 +39,14 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::io::nx::h5;
 
-#include "NXObjectWrapper.hpp"
-#include "NXGroupWrapper.hpp"
-#include "NXAttributeWrapper.hpp"
-#include "NXFileWrapper.hpp"
-#include "NXFieldWrapper.hpp"
-#include "ChildIterator.hpp"
-#include "AttributeIterator.hpp"
-#include "NXWrapperErrors.hpp"
+//#include "NXObjectWrapper.hpp"
+//#include "NXGroupWrapper.hpp"
+//#include "NXAttributeWrapper.hpp"
+//#include "NXFileWrapper.hpp"
+//#include "NXFieldWrapper.hpp"
+//#include "ChildIterator.hpp"
+//#include "AttributeIterator.hpp"
+//#include "NXWrapperErrors.hpp"
 #include "bool_converter.hpp"
 #include "numpy_scalar_converter.hpp"
 
@@ -69,9 +69,10 @@ BOOST_PYTHON_MODULE(nxh5)
     exception_registration();
    
     //wrap NX-attribute object
-    wrap_nxattribute<pni::io::nx::h5::nxattribute>();
+    //wrap_nxattribute<pni::io::nx::h5::nxattribute>();
 
     //wrap NX-object
+    /*
     wrap_nxobject<pni::io::nx::h5::nxobject>("NXObject");
     wrap_attributeiterator
         <NXObjectWrapper<pni::io::nx::h5::nxgroup>,
@@ -82,23 +83,30 @@ BOOST_PYTHON_MODULE(nxh5)
     wrap_attributeiterator
         <NXObjectWrapper<pni::io::nx::h5::nxfile>,
          NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFiledAttributeIterator");
+         */
 
     //wrap NX-group
+    /*
     wrap_nxobject<pni::io::nx::h5::nxgroup>("NXObject_GroupInstance");
     wrap_nxgroup<pni::io::nx::h5::nxgroup>("NXGroup");
     wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxgroup>
         >("NXGroupChildIterator");
+        */
 
     //wrap NX-field
+    /*
     wrap_nxobject<pni::io::nx::h5::nxfield>("NXObject_FieldInstance");
     wrap_nxfield<pni::io::nx::h5::nxfield>("NXField");
+    */
 
     //wrap NX-file
+    /*
     wrap_nxobject<pni::io::nx::h5::nxfile>("NXObject_FileInstance");
     wrap_nxgroup<pni::io::nx::h5::nxfile>("NXGroup_FileInstance");
     wrap_nxfile<pni::io::nx::h5::nxfile>("NXFile");
     wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxfile>
         >("NXFileChildIterator");
+        */
 
     //create wrapper for NXDefalteFilter
 
