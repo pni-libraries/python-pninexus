@@ -41,12 +41,12 @@ using namespace pni::io::nx::h5;
 
 //#include "NXObjectWrapper.hpp"
 //#include "NXGroupWrapper.hpp"
-//#include "NXAttributeWrapper.hpp"
+#include "nxattribute_wrapper.hpp"
 //#include "NXFileWrapper.hpp"
 //#include "NXFieldWrapper.hpp"
 //#include "ChildIterator.hpp"
 //#include "AttributeIterator.hpp"
-//#include "NXWrapperErrors.hpp"
+#include "NXWrapperErrors.hpp"
 #include "bool_converter.hpp"
 #include "numpy_scalar_converter.hpp"
 
@@ -69,7 +69,7 @@ BOOST_PYTHON_MODULE(nxh5)
     exception_registration();
    
     //wrap NX-attribute object
-    //wrap_nxattribute<pni::io::nx::h5::nxattribute>();
+    wrap_nxattribute<pni::io::nx::h5::nxattribute>();
 
     //wrap NX-object
     /*
