@@ -57,7 +57,7 @@ class array_reader
             //read data to the numpy buffer
             //we can safely use the pointer as the target array is created 
             //from the properties of the field and thus the size must match
-            readable.read(numpy::get_data<T>(narray));
+            readable.read(readable.size(),numpy::get_data<T>(narray));
             return narray;
         }
 };

@@ -54,35 +54,35 @@ class array_writer
 
             //select the data type to use for writing the array data
             if(tid == type_id_t::UINT8)
-                w.write(numpy::get_data<const uint8>(o));
+                w.write(w.size(),numpy::get_data<const uint8>(o));
             else if(tid == type_id_t::INT8)
-                w.write(numpy::get_data<const int8>(o));
+                w.write(w.size(),numpy::get_data<const int8>(o));
             else if(tid == type_id_t::UINT16)
-                w.write(numpy::get_data<const uint16>(o));
+                w.write(w.size(),numpy::get_data<const uint16>(o));
             else if(tid == type_id_t::INT16)
-                w.write(numpy::get_data<const int16>(o));
+                w.write(w.size(),numpy::get_data<const int16>(o));
             else if(tid == type_id_t::UINT32)
-                w.write(numpy::get_data<const uint32>(o)); 
+                w.write(w.size(),numpy::get_data<const uint32>(o)); 
             else if(tid == type_id_t::INT32)
-                w.write(numpy::get_data<const int32>(o));
+                w.write(w.size(),numpy::get_data<const int32>(o));
             else if(tid == type_id_t::UINT64)
-                w.write(numpy::get_data<const uint64>(o)); 
+                w.write(w.size(),numpy::get_data<const uint64>(o)); 
             else if(tid == type_id_t::INT64)
-                w.write(numpy::get_data<const int64>(o)); 
+                w.write(w.size(),numpy::get_data<const int64>(o)); 
             else if(tid == type_id_t::FLOAT32)
-                w.write(numpy::get_data<const float32>(o)); 
+                w.write(w.size(),numpy::get_data<const float32>(o)); 
             else if(tid == type_id_t::FLOAT64)
-                w.write(numpy::get_data<const float64>(o)); 
+                w.write(w.size(),numpy::get_data<const float64>(o)); 
             else if(tid == type_id_t::FLOAT128)
-                w.write(numpy::get_data<const float128>(o));
+                w.write(w.size(),numpy::get_data<const float128>(o));
             else if(tid == type_id_t::COMPLEX32)
-                w.write(numpy::get_data<const complex32>(o));
+                w.write(w.size(),numpy::get_data<const complex32>(o));
             else if(tid == type_id_t::COMPLEX64)
-                w.write(numpy::get_data<const complex64>(o)); 
+                w.write(w.size(),numpy::get_data<const complex64>(o)); 
             else if(tid == type_id_t::COMPLEX128)
-                w.write(numpy::get_data<const complex128>(o));
+                w.write(w.size(),numpy::get_data<const complex128>(o));
             else if(tid == type_id_t::BOOL)
-                w.write(numpy::get_data<const bool_t>(o)); 
+                w.write(w.size(),numpy::get_data<const bool_t>(o)); 
             else if(tid == type_id_t::STRING)
             {
                 auto shape = numpy::get_shape<shape_t>(o);

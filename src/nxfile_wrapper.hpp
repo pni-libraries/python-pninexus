@@ -23,137 +23,119 @@
 
 #pragma once
 
-#include "NXObjectWrapper.hpp"
-#include "NXGroupWrapper.hpp"
+#include <pni/io/nx/nxobject_traits.hpp>
 
-/*! 
-\ingroup wrappers
-\brief NXFile wrapper template
+//! 
+//! \ingroup wrappers
+//! \brief NXFile wrapper template
+//! 
+//! This template can be used to create NXFile wrappers.
+//!
+using namespace pni::io::nx;
 
-This template can be used to create NXFile wrappers.
-*/
-template<typename FTYPE> class NXFileWrapper:public NXGroupWrapper<FTYPE>
+template<typename FTYPE> class nxfile_wrapper
 {
     public:
-        //=========================public types================================
-        typedef FTYPE type_t;
-        typedef NXFileWrapper<type_t> file_wrapper_t;
-        typedef NXGroupWrapper<type_t> group_wrapper_t;
-        typedef NXObjectWrapper<type_t> object_wrapper_t;
+        typedef FTYPE file_type;
+        typedef typename nxobject_trait<nximp_code_map<FTYPE>::icode>::group_type group_type;
+        typedef nxfile_wrapper<file_type> wrapper_type;
+    private:
+        file_type _file;
+    public:
         //==================constructor and destructor=========================
         //! default constructor
-        NXFileWrapper():NXGroupWrapper<type_t>(){}
+        nxfile_wrapper(){}
 
         //----------------------------------------------------------------------
         //! copy constructor
-        NXFileWrapper(const file_wrapper_t &o):NXGroupWrapper<type_t>(o){}
+        nxfile_wrapper(const wrapper_type &o):_file(o._file){}
 
         //----------------------------------------------------------------------
         //! move constructor
-        NXFileWrapper(file_wrapper_t &&f):NXGroupWrapper<type_t>(std::move(f)){}
+        nxfile_wrapper(wrapper_type &&o):_file(std::move(o._file)){}
 
         //----------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit NXFileWrapper(type_t &&f):NXGroupWrapper<type_t>(std::move(f)){}
+        explicit nxfile_wrapper(file_type &&file):_file(std::move(file)){}
 
         //----------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
-        explicit NXFileWrapper(const type_t &f):NXGroupWrapper<type_t>(f){}
-
-        //----------------------------------------------------------------------
-        //! destructor
-        ~NXFileWrapper() { }
-
-        //=======================assignment operators===========================
-        //! copy assignment
-        file_wrapper_t &operator=(const file_wrapper_t &f)
-        {
-            if(this != &f) group_wrapper_t::operator=(f);
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
-        //! move assignment
-        file_wrapper_t &operator=(file_wrapper_t &&f)
-        {
-            if(this != &f) group_wrapper_t::operator=(std::move(f));
-            return *this;
-        }
+        explicit nxfile_wrapper(const file_type &file):_file(file){}
 
         //---------------------------------------------------------------------
         //! check read only status
-        int is_readonly() const { return this->_object.is_readonly(); }
+        int is_readonly() const { return _file.is_readonly(); }
 
         //---------------------------------------------------------------------
         //! flush data to disk
-        void flush() const  { this->_object.flush(); }
+        void flush() const  { _file.flush(); }
 
         //---------------------------------------------------------------------
-        size_t open_fields() const { return this->_object.open_fields(); }
+        //! check if file is valid
+        bool is_valid() const { return _file.is_valid(); }
 
-        size_t open_groups() const { return this->_object.open_groups(); }
+        //---------------------------------------------------------------------
+        group_type root() const { return group_type(_file.root()); }
+
 };
 
 //-----------------------------------------------------------------------------
-/*! 
-\ingroup wrappers  
-\brief create a file
-
-This template wraps the static create_file method of FType. 
-\param n name of the new file
-\param ov if true overwrite existing file
-\param s split size (feature not implemented yet)
-\return new instance of NXFileWrapper
-*/
-template<typename FTYPE> NXFileWrapper<FTYPE> create_file(const string &n, 
-                                              bool ov,size_t s)
+//! 
+//! \ingroup wrappers  
+//! \brief create a file
+//! 
+//! This template wraps the static create_file method of FType. 
+//! \param n name of the new file
+//! \param ov if true overwrite existing file
+//! \param s split size (feature not implemented yet)
+//! \return new instance of NXFileWrapper
+//!
+template<typename FTYPE> 
+nxfile_wrapper<FTYPE> create_file(const string &n,bool ov,size_t s)
 {
-    NXFileWrapper<FTYPE> file;
     try
     {
-        file = NXFileWrapper<FTYPE>(FTYPE::create_file(n,ov,s));
+        return nxfile_wrapper<FTYPE>(FTYPE::create_file(n,ov,s));
     }
-    catch(pni::io::nx::nxfile_error &error)
+    catch(pni::core::file_error &error)
     {
         std::cerr<<error<<std::endl;
         error.append(EXCEPTION_RECORD);
         throw error;
     }
-
-    return file;
 }
 
 //------------------------------------------------------------------------------
-/*! 
-\ingroup wrappers  
-\brief open a file
-
-Template wraps the static open_file method of NXFile. 
-\param n name of the file
-\param ro if true open the file read only
-\return new instance of NXFileWrapper
-*/
-template<typename FType> NXFileWrapper<FType> open_file(const string &n, bool ro)
+//! 
+//! \ingroup wrappers  
+//! \brief open a file
+//! 
+//! Template wraps the static open_file method of NXFile. 
+//! \param n name of the file
+//! \param ro if true open the file read only
+//! \return new instance of NXFileWrapper
+//!
+template<typename FTYPE> 
+nxfile_wrapper<FTYPE> open_file(const string &n, bool ro)
 {
-    return NXFileWrapper<FType>(FType::open_file(n,ro)); 
+    return nxfile_wrapper<FTYPE>(FTYPE::open_file(n,ro)); 
 }
 
 //------------------------------------------------------------------------------
-/*! 
-\ingroup wrappers
-\brief create NXFile wrapper 
-
-Tempalte function creates a wrappers for the NXFile type FType. 
-\param class_name name of the newly created type in Python
-*/
-template<typename FTYPE> void wrap_nxfile(const string &class_name)
+//! 
+//! \ingroup wrappers
+//! \brief create NXFile wrapper 
+//! 
+//! Tempalte function creates a wrappers for the NXFile type FType. 
+//!
+template<typename FTYPE> void wrap_nxfile()
 {
-    class_<NXFileWrapper<FTYPE>,bases<NXGroupWrapper<FTYPE> > >(class_name.c_str())
+    typedef typename nxfile_wrapper<FTYPE>::wrapper_type wrapper_type;
+
+    class_<wrapper_type>("nxfile")
         .def(init<>())
-        .add_property("readonly",&NXFileWrapper<FTYPE>::is_readonly)
-        .add_property("open_fields",&NXFileWrapper<FTYPE>::open_fields)
-        .add_property("open_groups",&NXFileWrapper<FTYPE>::open_groups)
-        .def("flush",&NXFileWrapper<FTYPE>::flush)
+        .add_property("readonly",&wrapper_type::is_readonly)
+        .def("flush",&wrapper_type::flush)
         ;
 
     //need some functions

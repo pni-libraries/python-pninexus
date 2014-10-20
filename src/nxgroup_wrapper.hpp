@@ -1,5 +1,5 @@
 //
-// (c) Copyright 2014 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+// (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 // This file is part of python-pniio.
 //
@@ -17,7 +17,7 @@
 // along with pyton-pniio.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-// Created on: Oct 1, 2014
+// Created on: Feb 17, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
@@ -25,12 +25,16 @@
 
 #include <pni/io/nx/nx.hpp>
 #include <pni/core/utilities.hpp>
+#include <pni/io/nx/nxobject_traits.hpp>
+#include <pni/io/nx/algorithms/create_field.hpp>
 
 #include "nxwrapper_utils.hpp"
-#include "NXFieldWrapper.hpp"
-#include "NXObjectWrapper.hpp"
-#include "ChildIterator.hpp"
-#include "AttributeIterator.hpp"
+#include "nxfield_wrapper.hpp"
+//#include "NXObjectWrapper.hpp"
+#include "child_iterator.hpp"
+//#include "AttributeIterator.hpp"
+
+using namespace pni::io::nx;
 
 //! 
 //! \ingroup wrappers  
@@ -38,13 +42,45 @@
 //! 
 //! Class template to create wrappers for NXGroup types.
 //!
-template<typename GTYPE> class nxgroup_wrapper
+template<typename GTYPE> 
+class nxgroup_wrapper
 {
     public:
         typedef GTYPE group_type;
+
+        static const nximp_code imp_id = nximp_code_map<group_type>::icode;
+        typedef typename nxobject_trait<imp_id>::field_type field_type;
+        typedef typename nxobject_trait<imp_id>::object_type object_type;
+        typedef typename nxobject_trait<imp_id>::deflate_type deflate_type;
+        typedef nxfield_wrapper<field_type> field_wrapper_type;
+        typedef nxgroup_wrapper<group_type> wrapper_type;
     private:
-        group_type _imp;
+        group_type _group;
     public:
+        //================constructors and destructor==========================
+        //! default constructor
+        nxgroup_wrapper(){}
+
+        //---------------------------------------------------------------------
+        //! copy constructor
+        nxgroup_wrapper(const wrapper_type &o): _group(o._group)
+        {}
+
+        //---------------------------------------------------------------------
+        //! move constructor
+        nxgroup_wrapper(wrapper_type &&o):_group(std::move(o._group))
+        {}
+
+        //---------------------------------------------------------------------
+        //! conversion copy constructor
+        explicit nxgroup_wrapper(const group_type &g):_group(g)
+        {}
+
+        //---------------------------------------------------------------------
+        //! conversion move constructor
+        explicit nxgroup_wrapper(group_type &&g):_group(std::move(g))
+        {}
+
         //---------------------------------------------------------------------
         //!
         //! \brief create group 
@@ -60,11 +96,10 @@ template<typename GTYPE> class nxgroup_wrapper
         //! \param nxclass optional argument with the Nexus class
         //! \return new instance of NXGroupWrapper
         //!
-        nxgroup_wrapper<group_type>
+        group_type
         create_group(const string &n,const string &nxclass=string()) const
         {
-
-            return this->_object.create_group(n,nxclass);
+            return group_type(_group.create_group(n,nxclass));
         }
 
         //---------------------------------------------------------------------
@@ -99,16 +134,13 @@ template<typename GTYPE> class nxgroup_wrapper
         //! \param filter a filter object for data compression
         //! \return instance of a field wrapper
         //!
-        NXFieldWrapper<pni::io::nx::field_type<group_type>>
+        field_type
         create_field(const string &name,
                      const string &type_code,
                      const object &shape=object(),
                      const object &chunk=object(),
                      const object &filter=object()) const
         {
-            typedef pni::io::nx::field_type<GTYPE> field_type;
-            typedef pni::io::nx::deflate_type<GTYPE> deflate_type;
-            typedef NXFieldWrapper<field_type> wrapper_type;
             using pni::io::nx::create_field;
             
             field_type field;
@@ -128,23 +160,21 @@ template<typename GTYPE> class nxgroup_wrapper
                 //create a field without a filter
                 if(shape.is_none())
                     //this corresponds to create_field<T>(name);
-                    field = create_field(this->_object,name,type_id);
+                    field = create_field(object_type(_group),type_id,name);
                 else if(!shape.is_none() && chunk.is_none())
                 {
-                    //create_field<T>(name,shape);
                     auto s = List2Container<shape_t>(list(shape));
-                    field = create_field(this->_object,name,type_id,s);
+                    field = create_field(object_type(_group),type_id,name,s);
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
-                    //create_field<T>(name,shape,chunk);
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field = create_field(this->_object,name,type_id,s,c);
+                    field = create_field(object_type(_group),type_id,name,s,c);
                 }
                 else
                 {
-                    throw pni::io::nx::nxgroup_error(EXCEPTION_RECORD,
+                    throw pni::io::object_error(EXCEPTION_RECORD,
                             "Cannot create field from arguments!");
                 }
             }
@@ -160,23 +190,25 @@ template<typename GTYPE> class nxgroup_wrapper
                 if(!shape.is_none() && chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
-                    field = create_field(this->_object,name,type_id,s,deflate_object());
+                    shape_t c(s);
+                    c.front() = 0;
+                    field = create_field(object_type(_group),type_id,name,s,c,deflate_object());
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field = create_field(this->_object,name,type_id,s,c,deflate_object());
+                    field = create_field(object_type(_group),type_id,name,s,c,deflate_object());
                 }
                 else
                 {
-                    throw pni::io::nx::nxgroup_error(EXCEPTION_RECORD,
+                    throw pni::io::object_error(EXCEPTION_RECORD,
                             "Cannot create field from arguments!");
                 }
                     //throw an exception here
             }
 
-            return wrapper_type(field);
+            return field;
         }
 
         //-------------------------------------------------------------------------
@@ -196,24 +228,18 @@ template<typename GTYPE> class nxgroup_wrapper
         //!
         object open_by_name(const string &n) const
         {
-            typedef pni::io::nx::object_type<group_type> object_t;
-            typedef pni::io::nx::group_type<group_type>  l_group_t;
-            typedef NXGroupWrapper<l_group_t> l_group_wrapper_t;
-            typedef pni::io::nx::field_type<group_type> field_t;
-            typedef NXFieldWrapper<field_t> field_wrapper_t;
            
             //open the NXObject 
-            object_t nxobject = this->_object.open(n);
+            object_type nxobject = _group.at(n);
 
             //we use here copy construction thus we do not have to care
             //of the original nxobject goes out of scope and gets destroyed.
-            if(nxobject.object_type() == pni::io::nx::nxobject_type::NXFIELD)
-               return object(field_wrapper_t(field_t(nxobject)));
+            if(is_field(nxobject)) 
+                return object(field_wrapper_type(as_field(nxobject)));
 
-            if(nxobject.object_type() == pni::io::nx::nxobject_type::NXGROUP)
-                return object(l_group_wrapper_t(l_group_t(nxobject)));
+            if(is_group(nxobject)) 
+                return object(wrapper_type(as_group(nxobject)));
 
-            nxobject.close();
             //this here is to avoid compiler warnings
             return object();
 
@@ -232,10 +258,15 @@ template<typename GTYPE> class nxgroup_wrapper
         //!
         object open(size_t i) const
         {
-            typedef pni::io::nx::object_type<group_type> object_t;
-            object_t nxobject = this->_object.open(i);
+            object_type nxobject = _group.at(i);
 
-            return open_by_name(nxobject.path());
+            if(is_field(nxobject)) 
+                return object(field_wrapper_type(as_field(nxobject)));
+
+            if(is_group(nxobject)) 
+                return object(wrapper_type(as_group(nxobject)));
+
+            return object();
         }
 
         //--------------------------------------------------------------------------
@@ -245,7 +276,7 @@ template<typename GTYPE> class nxgroup_wrapper
         //! Returns true if the object defined by path 'n'. 
         //! \return true if object exists, false otherwise
         //!
-        bool exists(const string &n) const { return this->_object.exists(n); }
+        bool exists(const string &n) const { return _group.has_child(n); }
 
         //--------------------------------------------------------------------------
         //!
@@ -254,7 +285,7 @@ template<typename GTYPE> class nxgroup_wrapper
         //! Return the number of child objects linked below this group.
         //! \return number of child objects
         //!
-        size_t nchildren() const { return this->_object.nchildren(); }
+        size_t nchildren() const { return _group.size(); }
 
         //---------------------------------------------------------------------
         //!
@@ -265,7 +296,7 @@ template<typename GTYPE> class nxgroup_wrapper
         //!
         void link(const string &p,const string &n) const
         {
-            pni::io::nx::link(p,this->_object,n);
+            pni::io::nx::link(p,_group,n);
 
             //this->_object.link(p,n);
         }
@@ -279,9 +310,9 @@ template<typename GTYPE> class nxgroup_wrapper
         //!
         //! \return instance of ChildIterator
         //!
-        ChildIterator<group_wrapper,object> get_child_iterator() const
+        child_iterator<wrapper_type> get_child_iterator() const
         {
-            return ChildIterator<group_wrapper,object>(*this);
+            return child_iterator<wrapper_type>(*this);
         }
 
 };
@@ -359,29 +390,27 @@ static const char __group_childs_docstr[] =
 //! Template function to create a new wrapper for an NXGroup type GType.
 //! \param class_name name for the Python class
 //!
-template<typename GTYPE> 
-void wrap_nxgroup(const string &class_name)
+template<typename GTYPE> void wrap_nxgroup()
 {
-    typedef typename NXGroupWrapper<GTYPE>::group_wrapper group_wrapper_t;
-    typedef typename NXGroupWrapper<GTYPE>::object_wrapper object_wrapper_t;
+    typedef nxgroup_wrapper<GTYPE> wrapper_type;
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
-    class_<group_wrapper_t,bases<object_wrapper_t> >(class_name.c_str())
+    class_<wrapper_type>("nxgroup")
         .def(init<>())
-        .def("open",&group_wrapper_t::open_by_name,__group_open_docstr)
-        .def("__getitem__",&group_wrapper_t::open)
-        .def("__getitem__",&group_wrapper_t::open_by_name)
-        .def("create_group",&group_wrapper_t::create_group,
+        .def("open",&wrapper_type::open_by_name,__group_open_docstr)
+        .def("__getitem__",&wrapper_type::open)
+        .def("__getitem__",&wrapper_type::open_by_name)
+        .def("create_group",&wrapper_type::create_group,
                 ("n",arg("nxclass")=string()),__group_create_group_docstr)
-        .def("create_field",&group_wrapper_t::create_field,
+        .def("create_field",&wrapper_type::create_field,
                 ("name","type_code",arg("shape")=object(),arg("chunk")=object(),
                  arg("filter")=object()),__group_create_field_docstr)
-        .def("exists",&group_wrapper_t::exists,__group_exists_docstr)
-        .def("link",&group_wrapper_t::link,__group_link_docstr)
-        .def("__iter__",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
-        .add_property("nchildren",&group_wrapper_t::nchildren,__group_nchilds_docstr)   
-        .add_property("children",&group_wrapper_t::get_child_iterator,__group_childs_docstr)
+        .def("exists",&wrapper_type::exists,__group_exists_docstr)
+        .def("link",&wrapper_type::link,__group_link_docstr)
+        .def("__iter__",&wrapper_type::get_child_iterator,__group_childs_docstr)
+        .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
+        .add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
         ;
 #pragma GCC diagnostic pop
 }

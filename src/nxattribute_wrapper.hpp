@@ -233,12 +233,13 @@ static const char __attribute_write_docstr[] =
 "function is either a single scalar object or an instance of a numpy\n"
 "array.";
 
-/*! 
-\ingroup wrappers
-\brief create new NXAttribute wrapper
-
-Template function to create a new wrapper for the NXAttribute type AType.
-*/
+//! 
+//! \ingroup wrappers
+//! \brief create new NXAttribute wrapper
+//! 
+//! Template function to create a new wrapper for the NXAttribute type 
+//! AType.
+//!
 template<typename ATYPE> void wrap_nxattribute()
 {
     typedef nxattribute_wrapper<ATYPE> wrapper_type;

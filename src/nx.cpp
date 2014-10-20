@@ -39,12 +39,11 @@ using namespace boost::python;
 //import here the namespace for the nxh5 module
 using namespace pni::io::nx::h5;
 
-//#include "NXObjectWrapper.hpp"
-//#include "NXGroupWrapper.hpp"
+#include "nxgroup_wrapper.hpp"
 #include "nxattribute_wrapper.hpp"
-//#include "NXFileWrapper.hpp"
-//#include "NXFieldWrapper.hpp"
-//#include "ChildIterator.hpp"
+#include "nxfile_wrapper.hpp"
+#include "nxfield_wrapper.hpp"
+#include "child_iterator.hpp"
 //#include "AttributeIterator.hpp"
 #include "NXWrapperErrors.hpp"
 #include "bool_converter.hpp"
@@ -70,6 +69,17 @@ BOOST_PYTHON_MODULE(nxh5)
    
     //wrap NX-attribute object
     wrap_nxattribute<pni::io::nx::h5::nxattribute>();
+    
+    //wrap NX-file
+    wrap_nxfile<pni::io::nx::h5::nxfile>();
+    
+    //wrap NX-field
+    wrap_nxfield<pni::io::nx::h5::nxfield>();
+    
+    //wrap NX-group
+    wrap_nxgroup<pni::io::nx::h5::nxgroup>();
+    wrap_childiterator<nxgroup_wrapper<pni::io::nx::h5::nxgroup>>("NXGroupChildIterator");
+
 
     //wrap NX-object
     /*
@@ -85,31 +95,10 @@ BOOST_PYTHON_MODULE(nxh5)
          NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFiledAttributeIterator");
          */
 
-    //wrap NX-group
-    /*
-    wrap_nxobject<pni::io::nx::h5::nxgroup>("NXObject_GroupInstance");
-    wrap_nxgroup<pni::io::nx::h5::nxgroup>("NXGroup");
-    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxgroup>
-        >("NXGroupChildIterator");
-        */
 
-    //wrap NX-field
-    /*
-    wrap_nxobject<pni::io::nx::h5::nxfield>("NXObject_FieldInstance");
-    wrap_nxfield<pni::io::nx::h5::nxfield>("NXField");
-    */
-
-    //wrap NX-file
-    /*
-    wrap_nxobject<pni::io::nx::h5::nxfile>("NXObject_FileInstance");
-    wrap_nxgroup<pni::io::nx::h5::nxfile>("NXGroup_FileInstance");
-    wrap_nxfile<pni::io::nx::h5::nxfile>("NXFile");
-    wrap_childiterator<NXGroupWrapper<pni::io::nx::h5::nxfile>
-        >("NXFileChildIterator");
-        */
 
     //create wrapper for NXDefalteFilter
-
+    /*
     uint32 (nxdeflate_filter::*get_compression_rate)() const =
         &nxdeflate_filter::compression_rate;
     void (nxdeflate_filter::*set_compression_rate)(uint32) =
@@ -120,5 +109,6 @@ BOOST_PYTHON_MODULE(nxh5)
         .add_property("rate",get_compression_rate,set_compression_rate)
         .add_property("shuffle",get_shuffle,set_shuffle)
         ;
+        */
 
 }

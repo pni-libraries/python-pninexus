@@ -23,8 +23,7 @@
 #pragma once
 
 #include <boost/python/slice.hpp>
-#include <pni/io/nx/nxexceptions.hpp>
-#include "NXObjectWrapper.hpp"
+#include <pni/io/exceptions.hpp>
 #include "nxwrapper_utils.hpp"
 #include "nxio_operations.hpp"
 #include "numpy_utils.hpp"
@@ -35,60 +34,34 @@
 //! 
 //! Template to produce wrappers for NXField types.
 //!
-template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
+template<typename FIELDT> class nxfield_wrapper
 {
     public:
-        //====================public types=====================================
-        //! field type
-        typedef FIELDT type_t;
-        //! field wrapper type
-        typedef NXFieldWrapper<type_t> field_wrapper_t;
-        //! object wrapper belonging to the field wrapper
-        typedef NXObjectWrapper<type_t> object_wrapper_t;
+        typedef FIELDT field_type;
+        typedef nxfield_wrapper<field_type> wrapper_type;
+    private:
+        field_type _field;
+    public:
         //=============constrcutors and destructor=============================
         //! default constructor
-        NXFieldWrapper():NXObjectWrapper<type_t>(){}
+        nxfield_wrapper(){}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        NXFieldWrapper(const field_wrapper_t &f):NXObjectWrapper<type_t>(f) {}
+        nxfield_wrapper(const wrapper_type &f):_field(f._field) {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        NXFieldWrapper(field_wrapper_t &&f):
-            NXObjectWrapper<type_t>(std::move(f))
-        {}
+        nxfield_wrapper(wrapper_type &&f):_field(std::move(f._field)) {}
 
         //--------------------------------------------------------------------
         //! copy constructor from wrapped type
-        explicit NXFieldWrapper(const type_t &o):NXObjectWrapper<type_t>(o)
-        {}
+        explicit nxfield_wrapper(const field_type &o):_field(o) {}
 
         //!-------------------------------------------------------------------
         //! move constructor from wrapped type
-        explicit NXFieldWrapper(type_t &&o):
-            NXObjectWrapper<type_t>(std::move(o))
+        explicit nxfield_wrapper(field_type &&o):_field(std::move(o))
         {}
-
-        //---------------------------------------------------------------------
-        //! destructor
-        ~NXFieldWrapper() { } 
-
-        //=========================assignment operators========================
-        //! copy assignment operator
-        field_wrapper_t &operator=(const field_wrapper_t &o)
-        {
-            if(this != &o) object_wrapper_t::operator=(o);
-            return *this;
-        }
-
-        //---------------------------------------------------------------------
-        //! move assignment
-        field_wrapper_t &operator=(field_wrapper_t &&o)
-        {
-            if(this != &o) object_wrapper_t::operator=(std::move(o));
-            return *this;
-        }
 
         //=================wrap some conviencen methods========================
         //!
@@ -102,7 +75,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         //!
         string type_id() const 
         { 
-            return numpy::type_str(this->_object.type_id()); 
+            return numpy::type_str(_field.type_id()); 
         }
 
         //---------------------------------------------------------------------
@@ -118,7 +91,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         //!
         tuple shape() const
         {
-            auto shape = this->_object.template shape<shape_t>();
+            auto shape = _field.template shape<shape_t>();
             return tuple(Container2List(shape));
         }
 
@@ -138,14 +111,14 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             {
                 //write a scalar to the field
                 //scalar field - here we can use any scalar type to write data
-                io_write<scalar_writer>(this->_object,o);
+                io_write<scalar_writer>(_field,o);
             }
             else if(numpy::is_array(o))
             {
                 //write a numpy array to the field
                 //multidimensional field - the input must be a numpy array
                 //check if the passed object is a numpy array
-                io_write<array_writer>(this->_object,o);
+                io_write<array_writer>(_field,o);
             }
             else
                 throw type_error(EXCEPTION_RECORD,
@@ -166,17 +139,17 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         //!
         object read() const
         {
-            if(this->_object.size() == 1)
+            if(_field.size() == 1)
             {
                 //the field contains only a single value - can return a
                 //primitive python object
-                return io_read<scalar_reader>(this->_object);                
+                return io_read<scalar_reader>(_field);                
             }
             else
             {
                 //the field contains multidimensional data  - we return a numpy
                 //array
-                return io_read<array_reader>(this->_object);
+                return io_read<array_reader>(_field);
             }
 
             //should be rather rare
@@ -202,19 +175,19 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
             typedef std::vector<pni::core::slice> selection_type;
 
             //first we need to create a selection
-            selection_type selection = create_selection(t,this->_object);
+            selection_type selection = create_selection(t,_field);
 
             //once the selection is build we can start to create the 
             //return value
-            if(this->_object(selection).size()==1)
+            if(_field(selection).size()==1)
                 //in this case we return a primitive python value
-                return io_read<scalar_reader>(this->_object(selection));
+                return io_read<scalar_reader>(_field(selection));
             else
                 //a numpy array will be returned
-                return io_read<array_reader>(this->_object(selection));
+                return io_read<array_reader>(_field(selection));
 
             //throw an exception if we cannot handle the user request
-            throw pni::io::nx::nxfield_error(EXCEPTION_RECORD,
+            throw pni::io::object_error(EXCEPTION_RECORD,
                                              "cannot handle user request");
 
             return object(); //make the compiler happy
@@ -272,12 +245,12 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         void __setitem__tuple(const tuple &t,const object &o)
         {
             typedef std::vector<pni::core::slice> selection_type;
-            selection_type selection = create_selection(t,this->_object);
+            selection_type selection = create_selection(t,_field);
 
             if(is_scalar(o))
-                io_write<scalar_writer>(this->_object(selection),o);
+                io_write<scalar_writer>(_field(selection),o);
             else if(numpy::is_array(o))
-                io_write<array_writer>(this->_object(selection),o);
+                io_write<array_writer>(_field(selection),o);
             else
                 throw type_error(EXCEPTION_RECORD,
                         "Object must be either a numpy arry or a "
@@ -292,7 +265,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         //! \param d dimension index
         //! \param s extend by which to grow the field
         //!
-        void grow(size_t d=0,size_t s=1) { this->_object.grow(d,s); }
+        void grow(size_t d=0,size_t s=1) { _field.grow(d,s); }
 
         //-----------------------------------------------------------------------
         //!
@@ -302,7 +275,7 @@ template<typename FIELDT> class NXFieldWrapper:public NXObjectWrapper<FIELDT>
         //!
         //! \return total number of elements.
         //!
-        size_t size() const { return this->_object.size(); }
+        size_t size() const { return _field.size(); }
         
 };
 
@@ -322,28 +295,27 @@ static const char __field_grow_docstr[]=
 
 static const char __field_size_docstr[] = "total number of elements in the field\n";
 
-/*! 
-\ingroup wrappers
-\brief create new NXField wrapper
-
-Template function to create a wrapper for NXField type FType. 
-\param class_name Python name of the new class
-*/
-template<typename FIELDT> void wrap_nxfield(const string &class_name)
+//! 
+//! \ingroup wrappers
+//! \brief create new NXField wrapper
+//! 
+//! Template function to create a wrapper for NXField type FType. 
+//! \param class_name Python name of the new class
+//!
+template<typename FIELDT> void wrap_nxfield()
 {
-    typedef typename NXFieldWrapper<FIELDT>::field_wrapper_t field_wrapper_t; 
-    typedef typename NXFieldWrapper<FIELDT>::object_wrapper_t object_wrapper_t;
+    typedef nxfield_wrapper<FIELDT> wrapper_type; 
 
-    class_<field_wrapper_t,bases<object_wrapper_t > >(class_name.c_str())
+    class_<wrapper_type >("nxfield")
         .def(init<>())
-        .add_property("dtype",&field_wrapper_t::type_id,__field_dtype_docstr)
-        .add_property("shape",&field_wrapper_t::shape,__field_shape_docstr)
-        .add_property("size",&field_wrapper_t::size,__field_size_docstr)
-        .def("write",&field_wrapper_t::write)
-        .def("read",&field_wrapper_t::read)
-        .def("__getitem__",&field_wrapper_t::__getitem__)
-        .def("__setitem__",&field_wrapper_t::__setitem__)
-        .def("grow",&field_wrapper_t::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
+        .add_property("dtype",&wrapper_type::type_id,__field_dtype_docstr)
+        .add_property("shape",&wrapper_type::shape,__field_shape_docstr)
+        .add_property("size",&wrapper_type::size,__field_size_docstr)
+        .def("write",&wrapper_type::write)
+        .def("read",&wrapper_type::read)
+        .def("__getitem__",&wrapper_type::__getitem__)
+        .def("__setitem__",&wrapper_type::__setitem__)
+        .def("grow",&wrapper_type::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
         ;
 }
 
