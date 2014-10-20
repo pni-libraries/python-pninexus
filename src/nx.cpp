@@ -45,7 +45,7 @@ using namespace pni::io::nx::h5;
 #include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
 //#include "AttributeIterator.hpp"
-#include "NXWrapperErrors.hpp"
+#include "nxwrapper_errors.hpp"
 #include "bool_converter.hpp"
 #include "numpy_scalar_converter.hpp"
 

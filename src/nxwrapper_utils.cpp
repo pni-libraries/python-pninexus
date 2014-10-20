@@ -26,7 +26,7 @@
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
 #include "nxwrapper_utils.hpp"
-#include "NXWrapperErrors.hpp"
+#include "nxwrapper_errors.hpp"
 #include "numpy_utils.hpp"
 
 

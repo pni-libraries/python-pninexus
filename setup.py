@@ -44,7 +44,7 @@ if(debug):
 
 files = ["src/nx.cpp",
          "src/nxwrapper_utils.cpp",
-         "src/NXWrapperErrors.cpp",
+         "src/nxwrapper_errors.cpp",
          "src/bool_converter.cpp",
          "src/numpy_scalar_converter.cpp",
          "src/numpy_utils.cpp"]

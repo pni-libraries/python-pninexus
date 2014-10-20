@@ -31,7 +31,7 @@ extern "C"{
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nx.hpp>
 
-#include "NXWrapperErrors.hpp"
+#include "nxwrapper_errors.hpp"
 
 using namespace pni::core;
 using namespace boost::python;

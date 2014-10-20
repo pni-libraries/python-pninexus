@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "NXWrapperErrors.hpp"
+#include "nxwrapper_errors.hpp"
 
 //! 
 //! \ingroup iterators  
