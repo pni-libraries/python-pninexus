@@ -53,6 +53,12 @@ files = ["src/bool_converter.cpp",
          "src/utils.cpp",
          "src/core.cpp"]
 
+header_files = ["src/bool_converter.hpp",
+                "src/error_utils.hpp",
+                "src/numpy_scalar_converter.hpp",
+                "src/numpy_utils.hpp",
+                "src/utils.hpp"]
+
 #-----------------------------------------------------------------------------
 # setup for the pnicore extension
 #-----------------------------------------------------------------------------
@@ -71,8 +77,10 @@ setup(name="libpnicore-python",
         author_email="eugen.wintersberger@desy.de",
         description="Python wrapper for libpnicore",
         version = "1.0.0",
+        requires = ["numpy"],
         ext_package="pni.core",
         ext_modules=[pnicore_ext],
+        data_files=[('include/pni/core/python',header_files)],
         packages = ["pni","pni.core"],
         url="https://code.google.com/p/pni-libraries/",
         script_args = args
