@@ -25,7 +25,7 @@ PROJECT_NAME           = "libpninx-python"
 PROJECT_NUMBER         =
 PROJECT_BRIEF          = "Python bindings for libpninx"
 PROJECT_LOGO           =
-OUTPUT_DIRECTORY       = ./
+OUTPUT_DIRECTORY       = .
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -148,7 +148,7 @@ IGNORE_PREFIX          =
 #---------------------------------------------------------------------------
 
 GENERATE_HTML          = YES
-HTML_OUTPUT            = html
+HTML_OUTPUT            = ./devel
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            =
 HTML_FOOTER            =
