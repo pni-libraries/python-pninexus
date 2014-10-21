@@ -31,6 +31,7 @@ pnicore        = package('pnicore')
 include_dirs = pnicore.include_dirs
 library_dirs = pnicore.library_dirs
 libraries    = pnicore.libraries
+libraries.append('boost_python')
 
 #-----------------------------------------------------------------------------
 # set compiler options
@@ -48,14 +49,14 @@ if(debug):
 files = ["src/bool_converter.cpp",
          "src/numpy_scalar_converter.cpp",
          "src/numpy_utils.cpp",
-         "src/nxwrapper_errors.cpp",
-         "src/nxwrapper_utils.cpp",
-         "src/pnicore.cpp"]
+         "src/errors.cpp",
+         "src/utils.cpp",
+         "src/core.cpp"]
 
 #-----------------------------------------------------------------------------
 # setup for the pnicore extension
 #-----------------------------------------------------------------------------
-pnicore_ext = Extension("pnicore",files,
+pnicore_ext = Extension("core",files,
                         include_dirs = include_dirs,
                         library_dirs = library_dirs,
                         libraries = libraries,
