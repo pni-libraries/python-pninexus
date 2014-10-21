@@ -30,9 +30,7 @@
 
 #include "nxwrapper_utils.hpp"
 #include "nxfield_wrapper.hpp"
-//#include "NXObjectWrapper.hpp"
 #include "child_iterator.hpp"
-//#include "AttributeIterator.hpp"
 
 using namespace pni::io::nx;
 
@@ -134,7 +132,7 @@ class nxgroup_wrapper
         //! \param filter a filter object for data compression
         //! \return instance of a field wrapper
         //!
-        field_type
+        field_wrapper_type
         create_field(const string &name,
                      const string &type_code,
                      const object &shape=object(),
@@ -143,7 +141,6 @@ class nxgroup_wrapper
         {
             using pni::io::nx::create_field;
             
-            field_type field;
             type_id_t type_id;
             try
             {
@@ -159,18 +156,26 @@ class nxgroup_wrapper
             {
                 //create a field without a filter
                 if(shape.is_none())
+                {
                     //this corresponds to create_field<T>(name);
-                    field = create_field(object_type(_group),type_id,name);
+                    field_type field = create_field(object_type(_group),
+                                                    type_id,name);
+                    return field_wrapper_type(field);
+                }
                 else if(!shape.is_none() && chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
-                    field = create_field(object_type(_group),type_id,name,s);
+                    field_type field = create_field(object_type(_group),
+                                                     type_id,name,s);
+                    return field_wrapper_type(field);
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field = create_field(object_type(_group),type_id,name,s,c);
+                    field_type field = create_field(object_type(_group),
+                                                    type_id,name,s,c);
+                    return field_wrapper_type(field);
                 }
                 else
                 {
@@ -192,13 +197,20 @@ class nxgroup_wrapper
                     auto s = List2Container<shape_t>(list(shape));
                     shape_t c(s);
                     c.front() = 0;
-                    field = create_field(object_type(_group),type_id,name,s,c,deflate_object());
+                    field_type field = create_field(object_type(_group),
+                                                    type_id,
+                                                    name,s,c,
+                                                    deflate_object());
+                    return field_wrapper_type(field);
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field = create_field(object_type(_group),type_id,name,s,c,deflate_object());
+                    field_type field = create_field(object_type(_group),
+                                                    type_id,name,s,c,
+                                                    deflate_object());
+                    return field_wrapper_type(field);
                 }
                 else
                 {
@@ -208,7 +220,6 @@ class nxgroup_wrapper
                     //throw an exception here
             }
 
-            return field;
         }
 
         //-------------------------------------------------------------------------
@@ -287,6 +298,27 @@ class nxgroup_wrapper
         //!
         size_t nchildren() const { return _group.size(); }
 
+        //--------------------------------------------------------------------
+        bool is_valid() const { return _group.is_valid(); } 
+
+        //--------------------------------------------------------------------
+        void close() { _group.close(); }
+
+        //--------------------------------------------------------------------
+        string filename() const { return _group.filename(); }
+
+        //--------------------------------------------------------------------
+        string name() const { return _group.name(); }
+
+        //--------------------------------------------------------------------
+        wrapper_type parent() const
+        {
+            return wrapper_type(_group.parent());
+        }
+
+        //--------------------------------------------------------------------
+        size_t __len__() const { return _group.size(); }
+
         //---------------------------------------------------------------------
         //!
         //! \brief create links
@@ -297,8 +329,6 @@ class nxgroup_wrapper
         void link(const string &p,const string &n) const
         {
             pni::io::nx::link(p,_group,n);
-
-            //this->_object.link(p,n);
         }
 
         //----------------------------------------------------------------------
@@ -407,10 +437,17 @@ template<typename GTYPE> void wrap_nxgroup()
                 ("name","type_code",arg("shape")=object(),arg("chunk")=object(),
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&wrapper_type::exists,__group_exists_docstr)
+        .def("close",&wrapper_type::close)
+        .def("is_valid",&wrapper_type::is_valid)
+        .def("__len__",&wrapper_type::__len__)
+
         .def("link",&wrapper_type::link,__group_link_docstr)
         .def("__iter__",&wrapper_type::get_child_iterator,__group_childs_docstr)
         .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
         .add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
+        .add_property("filename",&wrapper_type::filename)
+        .add_property("name",&wrapper_type::name)
+        .add_property("parent",&wrapper_type::parent)
         ;
 #pragma GCC diagnostic pop
 }

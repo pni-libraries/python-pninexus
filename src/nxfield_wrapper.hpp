@@ -24,9 +24,14 @@
 
 #include <boost/python/slice.hpp>
 #include <pni/io/exceptions.hpp>
+#include <pni/io/nx/nxobject_traits.hpp>
 #include "nxwrapper_utils.hpp"
 #include "nxio_operations.hpp"
 #include "numpy_utils.hpp"
+
+using namespace pni::io::nx;
+
+template<typename GTYPE> class nxgroup_wrapper;
 
 //!
 //! \ingroup wrappers
@@ -38,7 +43,11 @@ template<typename FIELDT> class nxfield_wrapper
 {
     public:
         typedef FIELDT field_type;
+        
+        static const nximp_code imp_id = nximp_code_map<field_type>::icode;
         typedef nxfield_wrapper<field_type> wrapper_type;
+        typedef typename nxobject_trait<imp_id>::group_type group_type;
+        typedef nxgroup_wrapper<group_type> group_wrapper_type;
     private:
         field_type _field;
     public:
@@ -277,6 +286,27 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         size_t size() const { return _field.size(); }
         
+        //--------------------------------------------------------------------
+        bool is_valid() const { return _field.is_valid(); } 
+
+        //--------------------------------------------------------------------
+        void close() { _field.close(); }
+
+        //--------------------------------------------------------------------
+        string filename() const { return _field.filename(); }
+
+        //--------------------------------------------------------------------
+        string name() const { return _field.name(); }
+
+        //--------------------------------------------------------------------
+        group_wrapper_type parent() const
+        {
+            return group_wrapper_type(group_type(_field.parent()));
+        }
+
+        //--------------------------------------------------------------------
+        size_t __len__() const { return _field.size(); }
+        
 };
 
 //-------------------------------documentation strings-------------------------
@@ -311,11 +341,16 @@ template<typename FIELDT> void wrap_nxfield()
         .add_property("dtype",&wrapper_type::type_id,__field_dtype_docstr)
         .add_property("shape",&wrapper_type::shape,__field_shape_docstr)
         .add_property("size",&wrapper_type::size,__field_size_docstr)
+        .add_property("filename",&wrapper_type::filename)
+        .add_property("name",&wrapper_type::name)
+        .add_property("parent",&wrapper_type::parent)
         .def("write",&wrapper_type::write)
         .def("read",&wrapper_type::read)
         .def("__getitem__",&wrapper_type::__getitem__)
         .def("__setitem__",&wrapper_type::__setitem__)
         .def("grow",&wrapper_type::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
+        .def("close",&wrapper_type::close)
+        .def("is_valid",&wrapper_type::is_valid)
         ;
 }
 

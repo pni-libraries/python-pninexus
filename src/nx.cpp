@@ -98,17 +98,17 @@ BOOST_PYTHON_MODULE(nxh5)
 
 
     //create wrapper for NXDefalteFilter
-    /*
-    uint32 (nxdeflate_filter::*get_compression_rate)() const =
-        &nxdeflate_filter::compression_rate;
-    void (nxdeflate_filter::*set_compression_rate)(uint32) =
-        &nxdeflate_filter::compression_rate;
-    bool (nxdeflate_filter::*get_shuffle)() const = &nxdeflate_filter::shuffle;
-    void (nxdeflate_filter::*set_shuffle)(bool) = &nxdeflate_filter::shuffle;
-    class_<nxdeflate_filter>("NXDeflateFilter")
+    uint32 (pni::io::nx::h5::nxdeflate_filter::*get_compression_rate)() const =
+           &pni::io::nx::h5::nxdeflate_filter::compression_rate;
+    void (pni::io::nx::h5::nxdeflate_filter::*set_compression_rate)(uint32) =
+          &pni::io::nx::h5::nxdeflate_filter::compression_rate;
+    bool (pni::io::nx::h5::nxdeflate_filter::*get_shuffle)() const =
+        &pni::io::nx::h5::nxdeflate_filter::shuffle;
+    void (pni::io::nx::h5::nxdeflate_filter::*set_shuffle)(bool) =
+        &pni::io::nx::h5::nxdeflate_filter::shuffle;
+    class_<pni::io::nx::h5::nxdeflate_filter>("deflate_filter")
         .add_property("rate",get_compression_rate,set_compression_rate)
         .add_property("shuffle",get_shuffle,set_shuffle)
         ;
-        */
 
 }
