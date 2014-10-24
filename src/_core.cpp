@@ -36,7 +36,7 @@ using namespace boost::python;
 extern void exception_registration();
 
 //=================implementation of the python extension======================
-BOOST_PYTHON_MODULE(core)
+BOOST_PYTHON_MODULE(_core)
 {
     
     //this is absolutely necessary - otherwise the nympy API functions do not

@@ -21,17 +21,17 @@
 ##     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 ##
 
-from core import memory_allocation_error
-from core import memory_not_allocated_error
-from core import shape_mismatch_error
-from core import size_mismatch_error
-from core import index_error
-from core import key_error
-from core import file_error
-from core import type_error
-from core import value_error
-from core import range_error
-from core import not_implemented_error
-from core import iterator_error
-from core import cli_argument_error
-from core import cli_error
+from _core import memory_allocation_error
+from _core import memory_not_allocated_error
+from _core import shape_mismatch_error
+from _core import size_mismatch_error
+from _core import index_error
+from _core import key_error
+from _core import file_error
+from _core import type_error
+from _core import value_error
+from _core import range_error
+from _core import not_implemented_error
+from _core import iterator_error
+from _core import cli_argument_error
+from _core import cli_error
