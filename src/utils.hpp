@@ -20,19 +20,47 @@
 // Created on: Feb 17, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
+#pragma once
 
-//helper functions to create wrappers
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
+#include <vector>
+#include <pni/core/types.hpp>
+#include <pni/core/arrays.hpp>
+#include <pni/core/python/utils.hpp>
+
+#include <pni/io/nx/nx.hpp>
 
 #include <boost/python/extract.hpp>
-#include <boost/python/slice.hpp>
-#include "nxwrapper_utils.hpp"
-#include "nxwrapper_errors.hpp"
-#include "numpy_utils.hpp"
 
 
+using namespace boost::python;
 
-//------------------------------------------------------------------------------
-std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &field)
+
+//-----------------------------------------------------------------------------
+//! 
+//! \ingroup utils  
+//! \brief selection from tuple 
+//! 
+//! Adopts the selection of a field according to a tuple with indices and 
+//! slices.  In order to succeed the tuple passed to this function must contain 
+//! only indices, slices, and a single ellipsis.
+//! 
+//! \throws type_error if one of typle element is from an unsupported type
+//! \throws index_error if more than one ellipsis is contained in the tuple or 
+//! if an index exceeds the number of elements along the correpsonding field 
+//! dimension.
+//! \throws ShapeMissmatchError if the size of the tuple exceeds the rank of 
+//! the field from which the selection should be drawn.
+//! \param t tuple with indices and slices
+//! \param f reference to the field for which to create the selection
+//! \return vector with slices
+//!
+template<typename FTYPE>
+std::vector<pni::core::slice> create_selection(const tuple &t,const FTYPE &field)
 {
     //obtain a selection object
     std::vector<pni::core::slice> selection;
@@ -66,7 +94,7 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
         if(index.check())
         {
             if(index<0)
-                selection.push_back(pni::core::slice(field.shape<shape_t>()[i]+index));
+                selection.push_back(pni::core::slice(field.template shape<shape_t>()[i]+index));
             else
                 selection.push_back(pni::core::slice(index));
 
@@ -84,7 +112,7 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
             if(__start.check())
             {
                 start = __start();
-                if(start < 0) start = field.shape<shape_t>()[i]+start;
+                if(start < 0) start = field.template shape<shape_t>()[i]+start;
             }
             else
                 start = 0;
@@ -101,10 +129,10 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
             if(__stop.check())
             {
                 stop = __stop();
-                if(stop < 0) stop = field.shape<shape_t>()[i]+stop;
+                if(stop < 0) stop = field.template shape<shape_t>()[i]+stop;
             }
             else
-                stop = field.shape<shape_t>()[i];
+                stop = field.template shape<shape_t>()[i];
 
             selection.push_back(pni::core::slice(start,stop,step));
             continue;
@@ -125,7 +153,7 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
         {
             has_ellipsis = true;
             while(i<j+ellipsis_size)
-                selection.push_back(pni::core::slice(0,field.shape<shape_t>()[i++]));
+                selection.push_back(pni::core::slice(0,field.template shape<shape_t>()[i++]));
 
             //here we have to do some magic: as the value of i is already
             //increased to the next position simply continueing the loop would
@@ -139,83 +167,4 @@ std::vector<pni::core::slice> create_selection(const tuple &t,const nxfield &fie
 
     return selection;
 
-}
-
-//-----------------------------------------------------------------------------
-size_t nested_list_rank(const object &o)
-{
-    size_t rank = 0;
-    extract<list> l(o);
-
-    //check if conversion was successful
-    if(l.check())
-    {
-        //if the list has an element
-        if(len(l))
-            rank = 1 + nested_list_rank(l()[0]);
-        else 
-            rank = 1; //list has no element
-    }
-    else
-        rank = 0; //object is not a list
-
-    return rank;
-}
-
-//-----------------------------------------------------------------------------
-bool is_unicode(const object &o)
-{
-    if(PyUnicode_Check(o.ptr())) return true;
-    return false;
-}
-
-//-----------------------------------------------------------------------------
-object unicode2str(const object &o)
-{
-    PyObject *ptr = PyUnicode_AsUTF8String(o.ptr());
-    return object(handle<>(ptr));
-}
-
-//----------------------------------------------------------------------------
-bool is_int(const object &o)
-{
-    return PyInt_CheckExact(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_bool(const object &o)
-{
-    return PyBool_Check(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_long(const object &o)
-{
-    return PyLong_CheckExact(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_float(const object &o)
-{
-    return PyFloat_CheckExact(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_complex(const object &o)
-{
-    return PyComplex_CheckExact(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_string(const object &o)
-{
-    return PyString_CheckExact(o.ptr()) ? true : false;
-}
-
-//----------------------------------------------------------------------------
-bool is_scalar(const object &o)
-{
-    return is_unicode(o) || is_int(o) || is_bool(o) || is_long(o) ||
-           is_float(o) || ::is_complex(o) || is_string(o) ||
-           numpy::is_scalar(o);
 }

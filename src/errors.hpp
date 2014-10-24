@@ -1,5 +1,5 @@
 //
-// (c) Copyright 2014 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+// (c) Copyright 2011 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 // This file is part of python-pniio.
 //
@@ -17,47 +17,46 @@
 // along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-// Created on: May 14, 2014
+// Declearation of exception classes and translation functions.
+//
+// Created on: March 15, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
+#pragma once
 
-#include "bool_converter.hpp"
-
-bool_t_to_python_converter::bool_t_to_python_converter()
-{
-    to_python_converter<bool_t,bool_t_to_python_converter>();
-}
+#include <pni/core/types.hpp>
 
 //----------------------------------------------------------------------------
-PyObject *bool_t_to_python_converter::convert(const bool_t &v)
-{
-    return incref(object(bool(v)).ptr());
-}
+//! 
+//! \ingroup errors
+//! \brief exception to stop iteration
+//! 
+//! This C++ exception will be translated to StopIteration which is expected 
+//! by the Python interpreter when an iterator reaches the last element in 
+//! the container.
+//!
+class ChildIteratorStop:public std::exception
+{ };
 
 //----------------------------------------------------------------------------
-python_to_bool_t_converter::python_to_bool_t_converter()
-{
-    convns::registry::push_back(
-    &convertible,
-    &construct,
-    type_id<bool_t>()
-            );
-}
+//! 
+//! \ingroup errors  
+//! \brief exception to stop iteration
+//! 
+//! This C++ exception will be translated to the StopIteration Python 
+//! exception expected by the Python interpreter if an iterator reaches its 
+//! last position.
+//!
+class AttributeIteratorStop:public std::exception
+{ };
 
 //----------------------------------------------------------------------------
-void* python_to_bool_t_converter::convertible(PyObject *obj_ptr)
-{
-    if(!PyBool_Check(obj_ptr)) return nullptr;
-    return obj_ptr;
-}
-   
-//----------------------------------------------------------------------------
-void python_to_bool_t_converter::construct(PyObject *obj_ptr,rvalue_type *data)
-{
-    bool value = obj_ptr == Py_True ? true : false;
+//! 
+//! \ingroup errors  
+//! \brief register exception translators
+//! 
+//! This function is called by the module in order to register all exception
+//! translators.
+//!
+void exception_registration();
 
-    void *storage = ((storage_type*)data)->storage.bytes;
-    
-    new (storage) bool_t(value);
-    data->convertible = storage;
-}

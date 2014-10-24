@@ -1,4 +1,4 @@
-#setup script for libpninx-python package
+#setup script for libpniio-python package
 import sys
 import os
 from distutils.core import setup
@@ -43,11 +43,8 @@ if(debug):
 
 
 files = ["src/nx.cpp",
-         "src/nxwrapper_utils.cpp",
-         "src/nxwrapper_errors.cpp",
-         "src/bool_converter.cpp",
-         "src/numpy_scalar_converter.cpp",
-         "src/numpy_utils.cpp"]
+         "src/errors.cpp"
+         ]
 
 nxh5 = Extension("nxh5",files,
                  include_dirs = include_dirs,
@@ -60,7 +57,7 @@ setup(name="libpniio-python",
         author="Eugen Wintersberger",
         author_email="eugen.wintersberger@desy.de",
         description="Python wrapper for libpniio",
-        version = "0.9.666",
+        version = "1.0.0",
         ext_package="pni.io.nx.h5",
         ext_modules=[nxh5],
         packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],

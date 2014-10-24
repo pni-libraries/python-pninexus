@@ -45,9 +45,7 @@ using namespace pni::io::nx::h5;
 #include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
 //#include "AttributeIterator.hpp"
-#include "nxwrapper_errors.hpp"
-#include "bool_converter.hpp"
-#include "numpy_scalar_converter.hpp"
+#include "errors.hpp"
 
 
 
@@ -59,10 +57,9 @@ BOOST_PYTHON_MODULE(nxh5)
     //work.
     import_array();
 
+    import("pni.core.core");
+
     //register converter
-    bool_t_to_python_converter();
-    python_to_bool_t_converter();
-    numpy_scalar_converter();
 
     //register exception translators
     exception_registration();

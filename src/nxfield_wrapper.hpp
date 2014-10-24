@@ -25,10 +25,11 @@
 #include <boost/python/slice.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
-#include "nxwrapper_utils.hpp"
+#include <pni/core/python/utils.hpp>
+#include <pni/core/python/numpy_utils.hpp>
 #include "nxio_operations.hpp"
-#include "numpy_utils.hpp"
 
+#include "utils.hpp"
 using namespace pni::io::nx;
 
 template<typename GTYPE> class nxgroup_wrapper;

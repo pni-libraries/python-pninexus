@@ -22,7 +22,7 @@
 //
 #pragma once
 
-#include "numpy_utils.hpp"
+#include <pni/core/python/numpy_utils.hpp>
 
 //! 
 //! \ingroup ioclasses  

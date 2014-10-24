@@ -27,23 +27,23 @@ extern "C"{
 #include<Python.h>
 }
 #include <pni/core/error.hpp>
+#include <pni/core/python/error_utils.hpp>
 #include <boost/python.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nx.hpp>
 
-#include "nxwrapper_errors.hpp"
+#include "errors.hpp"
 
-using namespace pni::core;
 using namespace boost::python;
 
 //import here the namespace for the nxh5 module
-using namespace pni::io::nx::h5;
+using namespace pni::io;
 
-ERR_TRANSLATOR(pni::io,io_error)
-ERR_TRANSLATOR(pni::io,link_error)
-ERR_TRANSLATOR(pni::io,object_error)
-ERR_TRANSLATOR(pni::io,parser_error)
-ERR_TRANSLATOR(pni::io,invalid_object_error)
+ERR_TRANSLATOR(io_error)
+ERR_TRANSLATOR(link_error)
+ERR_TRANSLATOR(object_error)
+ERR_TRANSLATOR(parser_error)
+ERR_TRANSLATOR(invalid_object_error)
 
 //-----------------------------------------------------------------------------
 #pragma GCC diagnostic push
@@ -64,18 +64,6 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
 #pragma GCC diagnostic pop
 
 
-//====================General purpose exceptions===============================
-ERR_TRANSLATOR(pni::core,file_error)
-ERR_TRANSLATOR(pni::core,shape_mismatch_error)
-ERR_TRANSLATOR(pni::core,index_error)
-ERR_TRANSLATOR(pni::core,size_mismatch_error)
-ERR_TRANSLATOR(pni::core,memory_not_allocated_error)
-ERR_TRANSLATOR(pni::core,memory_allocation_error)
-ERR_TRANSLATOR(pni::core,type_error)
-ERR_TRANSLATOR(pni::core,key_error)
-
-
-
 //-----------------------------------------------------------------------------
 void exception_registration()
 {
@@ -88,34 +76,17 @@ void exception_registration()
         .def(self_ns::str(self_ns::self))
         ;
 
-    ERR_OBJECT_DECL(pni::io,io_error);
-    ERR_OBJECT_DECL(pni::io,link_error);
-    ERR_OBJECT_DECL(pni::io,parser_error);
-    ERR_OBJECT_DECL(pni::io,invalid_object_error);
-    ERR_OBJECT_DECL(pni::io,object_error);
-    ERR_OBJECT_DECL(pni::core,file_error);
-    ERR_OBJECT_DECL(pni::core,shape_mismatch_error);
-    ERR_OBJECT_DECL(pni::core,index_error);
-    ERR_OBJECT_DECL(pni::core,size_mismatch_error);
-    ERR_OBJECT_DECL(pni::core,memory_allocation_error);
-    ERR_OBJECT_DECL(pni::core,memory_not_allocated_error);
-    ERR_OBJECT_DECL(pni::core,type_error);
-    ERR_OBJECT_DECL(pni::core,key_error);
-
+    ERR_OBJECT_DECL(io_error);
+    ERR_OBJECT_DECL(link_error);
+    ERR_OBJECT_DECL(parser_error);
+    ERR_OBJECT_DECL(invalid_object_error);
+    ERR_OBJECT_DECL(object_error);
    
-    ERR_REGISTRATION(pni::io,io_error);
-    ERR_REGISTRATION(pni::io,link_error);
-    ERR_REGISTRATION(pni::io,parser_error);
-    ERR_REGISTRATION(pni::io,invalid_object_error);
-    ERR_REGISTRATION(pni::io,object_error);
-    ERR_REGISTRATION(pni::core,file_error);
-    ERR_REGISTRATION(pni::core,shape_mismatch_error);
-    ERR_REGISTRATION(pni::core,index_error);
-    ERR_REGISTRATION(pni::core,size_mismatch_error);
-    ERR_REGISTRATION(pni::core,memory_allocation_error);
-    ERR_REGISTRATION(pni::core,memory_not_allocated_error);
-    ERR_REGISTRATION(pni::core,type_error);
-    ERR_REGISTRATION(pni::core,key_error);
+    ERR_REGISTRATION(io_error);
+    ERR_REGISTRATION(link_error);
+    ERR_REGISTRATION(parser_error);
+    ERR_REGISTRATION(invalid_object_error);
+    ERR_REGISTRATION(object_error);
 
 
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
