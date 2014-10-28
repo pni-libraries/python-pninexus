@@ -4,8 +4,10 @@ import os
 from distutils.core import setup
 from distutils.extension import Extension
 from distutils.fancy_getopt import FancyGetopt
+from distutils.ccompiler import new_compiler
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
+import sysconfig
 
 #-----------------------------------------------------------------------------
 # manage command line arguments
@@ -20,6 +22,10 @@ debug = False
 for o,v in op.get_option_order():
     if o == "debug":
         debug = True
+
+#obtain the default compiler
+cc = new_compiler()
+
 
 #-----------------------------------------------------------------------------
 # load pnicore configuration with pkg-config
@@ -43,6 +49,18 @@ if(debug):
     extra_compile_args.append('-O0')
     extra_compile_args.append('-g')
 
+#-----------------------------------------------------------------------------
+# build shared library code
+#-----------------------------------------------------------------------------
+libincludes = include_dirs
+libincludes.append(sysconfig.get_config_var('INCLUDEPY'))
+libsources = [ "src/numpy_utils.cpp", "src/errors.cpp", "src/utils.cpp",]
+libargs = extra_compile_args
+libargs.append('-fPIC')
+libobjects = cc.compile(libsources,
+                        include_dirs=libincludes,
+                        extra_preargs=extra_compile_args)
+cc.link_shared_lib(libobjects,"core_api")
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
 #-----------------------------------------------------------------------------
