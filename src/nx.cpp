@@ -57,8 +57,6 @@ BOOST_PYTHON_MODULE(nxh5)
     //work.
     import_array();
 
-    import("pni.core.core");
-
     //register converter
 
     //register exception translators

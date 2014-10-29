@@ -4,20 +4,6 @@ from nxh5 import nxfile
 from nxh5 import nxfield
 from nxh5 import deflate_filter
 
-from nxh5 import file_error
-from nxh5 import shape_mismatch_error 
-from nxh5 import index_error 
-from nxh5 import size_mismatch_error 
-from nxh5 import memory_allocation_error 
-from nxh5 import type_error 
-from nxh5 import key_error 
-
-from nxh5 import nxfile_error 
-from nxh5 import nxgroup_error 
-from nxh5 import nxfield_error 
-from nxh5 import nxattribute_error 
-from nxh5 import nxfilter_error 
-
 
 #import helper methods
 from nxh5 import __create_file
