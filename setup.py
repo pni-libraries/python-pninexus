@@ -26,12 +26,15 @@ for o,v in op.get_option_order():
     if o == "debug":
         debug = True
 
+core_path = '/home/wintersb/Development/HDRI/install/lib/python/pni/core'
 #add pniio libraries and flags
 pniio        = package('pniio')
 include_dirs = pniio.include_dirs
 library_dirs = pniio.library_dirs
+library_dirs.append(core_path)
 libraries    = pniio.libraries
 libraries.append('boost_python')
+libraries.append(':_core.so')
 include_dirs.extend(get_numpy_include_dirs())
 
 extra_compile_args = ['-std=c++11','-Wall','-Wextra',
@@ -50,6 +53,7 @@ nxh5 = Extension("nxh5",files,
                  include_dirs = include_dirs,
                  library_dirs = library_dirs,
                  libraries = libraries,
+                 runtime_library_dirs=[core_path],
                  language="c++",
                  extra_compile_args = extra_compile_args)
 
