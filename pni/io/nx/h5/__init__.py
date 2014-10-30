@@ -2,7 +2,12 @@
 from nxh5 import nxgroup
 from nxh5 import nxfile
 from nxh5 import nxfield
+from nxh5 import nxattribute
 from nxh5 import deflate_filter
+from nxh5 import io_error
+from nxh5 import link_error
+from nxh5 import parser_error
+from nxh5 import invalid_object_error
 
 
 #import helper methods

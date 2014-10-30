@@ -24,6 +24,7 @@
 #pragma once
 
 #include <pni/io/nx/nxobject_traits.hpp>
+#include "errors.hpp"
 
 using namespace pni::io::nx;
 
@@ -34,22 +35,34 @@ class nxattribute_manager_wrapper
         typedef AMT manager_type;
         typedef typename manager_type::attribute_type attribute_type;
 
+        typedef typename manager_type::iterator iterator;
+
         typedef nxattribute_manager_wrapper<manager_type> wrapper_type;
 
     private:
         manager_type _manager;
-
+        
+        size_t _index;
+        attribute_type _attr;
     public:
        
         //--------------------------------------------------------------------
         explicit nxattribute_manager_wrapper(const manager_type &m):
-            _manager(m)
-        {}
+            _manager(m),
+            _index(0),
+            _attr()
+        {
+            if(_manager.size()) _attr = _manager[_index];
+        }
 
         //--------------------------------------------------------------------
         explicit nxattribute_manager_wrapper(const wrapper_type &w):
-            _manager(w._manager)
-        {}
+            _manager(w._manager),
+            _index(0),
+            _attr()
+        {
+            if(_manager.size()) _attr= _manager[_index];
+        }
 
         //--------------------------------------------------------------------
         size_t size() const 
@@ -69,8 +82,34 @@ class nxattribute_manager_wrapper
             return _manager[i];
         }
         //--------------------------------------------------------------------
-
         
+        object __iter__()
+        {
+            return object(this);
+        }
+
+
+        void increment()
+        {
+            _index++;
+            if(_index < _manager.size()) _attr = _manager[_index];
+        }
+
+        attribute_type next()
+        {
+            //check if iteration is still possible
+            if(_index >= _manager.size())
+            {
+                //raise exception here
+                throw(AttributeIteratorStop());
+                return(attribute_type());
+            }
+
+            attribute_type attr(_attr);
+            this->increment();
+
+            return attr;
+        }
 
 };
 
@@ -85,6 +124,9 @@ template<typename AMT> void wrap_nxattribute_manager(const string &name)
         .def("__getitem__",&wrapper_type::get_by_name)
         .def("__getitem__",&wrapper_type::get_by_index)
         .def("__len__",&wrapper_type::size)
+        .def("__iter__",&wrapper_type::__iter__)
+        .def("next",&wrapper_type::next)
+        .def("increment",&wrapper_type::increment)
         ;
 #pragma GCC diagnostic pop
 }
