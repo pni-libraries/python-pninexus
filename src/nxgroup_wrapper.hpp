@@ -29,7 +29,6 @@
 #include <pni/io/nx/algorithms/create_field.hpp>
 
 #include <pni/core/python/utils.hpp>
-#include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
 
 using namespace pni::io::nx;
@@ -45,13 +44,13 @@ class nxgroup_wrapper
 {
     public:
         typedef GTYPE group_type;
+        typedef nxgroup_wrapper<group_type> wrapper_type;
 
         static const nximp_code imp_id = nximp_code_map<group_type>::icode;
         typedef typename nxobject_trait<imp_id>::field_type field_type;
         typedef typename nxobject_trait<imp_id>::object_type object_type;
         typedef typename nxobject_trait<imp_id>::deflate_type deflate_type;
-        typedef nxfield_wrapper<field_type> field_wrapper_type;
-        typedef nxgroup_wrapper<group_type> wrapper_type;
+
     private:
         group_type _group;
     public:
@@ -132,7 +131,7 @@ class nxgroup_wrapper
         //! \param filter a filter object for data compression
         //! \return instance of a field wrapper
         //!
-        field_wrapper_type
+        field_type
         create_field(const string &name,
                      const string &type_code,
                      const object &shape=object(),
@@ -152,30 +151,24 @@ class nxgroup_wrapper
                 error.append(EXCEPTION_RECORD); throw error;
             }
 
+            field_type field;
+            object_type parent(_group);
             if(filter.is_none())
             {
                 //create a field without a filter
                 if(shape.is_none())
-                {
                     //this corresponds to create_field<T>(name);
-                    field_type field = create_field(object_type(_group),
-                                                    type_id,name);
-                    return field_wrapper_type(field);
-                }
+                    field = create_field(parent, type_id,name);
                 else if(!shape.is_none() && chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
-                    field_type field = create_field(object_type(_group),
-                                                     type_id,name,s);
-                    return field_wrapper_type(field);
+                    field =  create_field(parent,type_id,name,s);
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field_type field = create_field(object_type(_group),
-                                                    type_id,name,s,c);
-                    return field_wrapper_type(field);
+                    field =  create_field(parent,type_id,name,s,c);
                 }
                 else
                 {
@@ -197,20 +190,15 @@ class nxgroup_wrapper
                     auto s = List2Container<shape_t>(list(shape));
                     shape_t c(s);
                     c.front() = 0;
-                    field_type field = create_field(object_type(_group),
-                                                    type_id,
-                                                    name,s,c,
-                                                    deflate_object());
-                    return field_wrapper_type(field);
+                    field = create_field(parent,type_id,name,s,c,
+                                         deflate_object());
                 }
                 else if(!shape.is_none() && !chunk.is_none())
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     auto c = List2Container<shape_t>(list(chunk));
-                    field_type field = create_field(object_type(_group),
-                                                    type_id,name,s,c,
-                                                    deflate_object());
-                    return field_wrapper_type(field);
+                    field = create_field(parent,type_id,name,s,c,
+                                                deflate_object());
                 }
                 else
                 {
@@ -219,6 +207,7 @@ class nxgroup_wrapper
                 }
                     //throw an exception here
             }
+            return field;
 
         }
 
@@ -237,23 +226,9 @@ class nxgroup_wrapper
         //! \param n name of the object to open
         //! \return Python object for NXGroup or NXField.
         //!
-        object open_by_name(const string &n) const
+        object_type open_by_name(const string &n) const
         {
-           
-            //open the NXObject 
-            object_type nxobject = _group.at(n);
-
-            //we use here copy construction thus we do not have to care
-            //of the original nxobject goes out of scope and gets destroyed.
-            if(is_field(nxobject)) 
-                return object(field_wrapper_type(as_field(nxobject)));
-
-            if(is_group(nxobject)) 
-                return object(wrapper_type(as_group(nxobject)));
-
-            //this here is to avoid compiler warnings
-            return object();
-
+            return _group.at(n);
         }
 
         //---------------------------------------------------------------------
@@ -267,17 +242,9 @@ class nxgroup_wrapper
         //! \param i index of the child
         //! \return child object
         //!
-        object open(size_t i) const
+        object_type open_by_index(size_t i) const
         {
-            object_type nxobject = _group.at(i);
-
-            if(is_field(nxobject)) 
-                return object(field_wrapper_type(as_field(nxobject)));
-
-            if(is_group(nxobject)) 
-                return object(wrapper_type(as_group(nxobject)));
-
-            return object();
+            return _group.at(i);
         }
 
         //--------------------------------------------------------------------------
@@ -311,9 +278,9 @@ class nxgroup_wrapper
         string name() const { return _group.name(); }
 
         //--------------------------------------------------------------------
-        wrapper_type parent() const
+        object_type parent() const
         {
-            return wrapper_type(_group.parent());
+            return _group.parent();
         }
 
         //--------------------------------------------------------------------
@@ -429,7 +396,7 @@ template<typename GTYPE> void wrap_nxgroup()
     class_<wrapper_type>("nxgroup")
         .def(init<>())
         .def("open",&wrapper_type::open_by_name,__group_open_docstr)
-        .def("__getitem__",&wrapper_type::open)
+        .def("__getitem__",&wrapper_type::open_by_index)
         .def("__getitem__",&wrapper_type::open_by_name)
         .def("create_group",&wrapper_type::create_group,
                 ("n",arg("nxclass")=string()),__group_create_group_docstr)

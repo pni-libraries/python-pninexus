@@ -36,15 +36,16 @@
 //!
 template<typename CT> class child_iterator
 {
+    public:
+        typedef typename CT::object_type     value_type;    //!< type of the elements
+        typedef CT  iterable_type; //!< container type
     private:
         const CT *_parent; //!< parent object of the interator
         size_t     _nlinks; //!< total number of links
         size_t     _index;  //!< actual index 
-        object     _item;   //!< the actual object to which the 
+        value_type     _item;   //!< the actual object to which the 
                             //!< interator referes
     public:
-        typedef object     value_type;    //!< type of the elements
-        typedef CT  iterable_type; //!< container type
         //=======================constructors and destructor====================
         //! default constructor
         child_iterator():
@@ -62,7 +63,7 @@ template<typename CT> class child_iterator
             _index(start_index),
             _item()
         {
-            if(_index < _nlinks) _item = _parent->open(_index);
+            if(_index < _nlinks) _item = _parent->open_by_index(_index);
         }
 
         //---------------------------------------------------------------------
@@ -75,7 +76,7 @@ template<typename CT> class child_iterator
         {
             _index++;
             if(_index < _nlinks)
-                _item = _parent->open(_index);
+                _item = _parent->open_by_index(_index);
         }
 
         //---------------------------------------------------------------------
