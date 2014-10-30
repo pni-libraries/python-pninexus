@@ -37,7 +37,7 @@ using namespace pni::core;
 using namespace boost::python;
 
 //import here the namespace for the nxh5 module
-using namespace pni::io::nx::h5;
+using namespace pni::io::nx;
 
 #include "nxgroup_wrapper.hpp"
 #include "nxattribute_wrapper.hpp"
@@ -46,34 +46,40 @@ using namespace pni::io::nx::h5;
 #include "child_iterator.hpp"
 //#include "AttributeIterator.hpp"
 #include "errors.hpp"
+#include "nxobject_to_python_converter.hpp"
 
 
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(nxh5)
 {
-    
+    typedef nxobject_to_python_converter<h5::nxobject,
+                                         h5::nxgroup,
+                                         h5::nxfield,
+                                         h5::nxattribute> object_converter_type;
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     import_array();
 
     //register converter
+    to_python_converter<h5::nxobject,object_converter_type>();
+    //register_nxobject_to_python_converter<h5::nxobject>();
 
     //register exception translators
     exception_registration();
    
     //wrap NX-attribute object
-    wrap_nxattribute<pni::io::nx::h5::nxattribute>();
+    wrap_nxattribute<h5::nxattribute>();
     
     //wrap NX-file
-    wrap_nxfile<pni::io::nx::h5::nxfile>();
+    wrap_nxfile<h5::nxfile>();
     
     //wrap NX-field
-    wrap_nxfield<pni::io::nx::h5::nxfield>();
+    wrap_nxfield<h5::nxfield>();
     
     //wrap NX-group
-    wrap_nxgroup<pni::io::nx::h5::nxgroup>();
-    wrap_childiterator<nxgroup_wrapper<pni::io::nx::h5::nxgroup>>("NXGroupChildIterator");
+    wrap_nxgroup<h5::nxgroup>();
+    wrap_childiterator<nxgroup_wrapper<h5::nxgroup>>("NXGroupChildIterator");
 
 
     //wrap NX-object
@@ -93,15 +99,15 @@ BOOST_PYTHON_MODULE(nxh5)
 
 
     //create wrapper for NXDefalteFilter
-    uint32 (pni::io::nx::h5::nxdeflate_filter::*get_compression_rate)() const =
-           &pni::io::nx::h5::nxdeflate_filter::compression_rate;
-    void (pni::io::nx::h5::nxdeflate_filter::*set_compression_rate)(uint32) =
-          &pni::io::nx::h5::nxdeflate_filter::compression_rate;
-    bool (pni::io::nx::h5::nxdeflate_filter::*get_shuffle)() const =
-        &pni::io::nx::h5::nxdeflate_filter::shuffle;
-    void (pni::io::nx::h5::nxdeflate_filter::*set_shuffle)(bool) =
-        &pni::io::nx::h5::nxdeflate_filter::shuffle;
-    class_<pni::io::nx::h5::nxdeflate_filter>("deflate_filter")
+    uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =
+           &h5::nxdeflate_filter::compression_rate;
+    void (h5::nxdeflate_filter::*set_compression_rate)(uint32) =
+          &h5::nxdeflate_filter::compression_rate;
+    bool (h5::nxdeflate_filter::*get_shuffle)() const =
+        &h5::nxdeflate_filter::shuffle;
+    void (h5::nxdeflate_filter::*set_shuffle)(bool) =
+        &h5::nxdeflate_filter::shuffle;
+    class_<h5::nxdeflate_filter>("deflate_filter")
         .add_property("rate",get_compression_rate,set_compression_rate)
         .add_property("shuffle",get_shuffle,set_shuffle)
         ;

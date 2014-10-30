@@ -37,7 +37,8 @@ template<typename FTYPE> class nxfile_wrapper
 {
     public:
         typedef FTYPE file_type;
-        typedef typename nxobject_trait<nximp_code_map<FTYPE>::icode>::group_type group_type;
+        static const nximp_code imp_id = nximp_code_map<FTYPE>::icode;
+        typedef typename nxobject_trait<imp_id>::object_type object_type;
         typedef nxfile_wrapper<file_type> wrapper_type;
     private:
         file_type _file;
@@ -75,7 +76,11 @@ template<typename FTYPE> class nxfile_wrapper
         bool is_valid() const { return _file.is_valid(); }
 
         //---------------------------------------------------------------------
-        group_type root() const { return group_type(_file.root()); }
+        //! close the file
+        void close() { _file.close(); }
+
+        //---------------------------------------------------------------------
+        object_type root() const { return _file.root(); }
 
 };
 
@@ -135,7 +140,10 @@ template<typename FTYPE> void wrap_nxfile()
     class_<wrapper_type>("nxfile")
         .def(init<>())
         .add_property("readonly",&wrapper_type::is_readonly)
+        .add_property("is_valid",&wrapper_type::is_valid)
         .def("flush",&wrapper_type::flush)
+        .def("close",&wrapper_type::close)
+        .def("root",&wrapper_type::root)
         ;
 
     //need some functions
