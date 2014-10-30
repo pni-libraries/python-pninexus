@@ -48,6 +48,8 @@ using namespace pni::io::nx;
 #include "errors.hpp"
 #include "nxobject_to_python_converter.hpp"
 #include "nxgroup_to_python_converter.hpp"
+#include "nxfield_to_python_converter.hpp"
+#include "nxattribute_to_python_converter.hpp"
 
 
 
@@ -59,6 +61,9 @@ BOOST_PYTHON_MODULE(nxh5)
                                          h5::nxfield,
                                          h5::nxattribute> object_converter_type;
     typedef nxgroup_to_python_converter<h5::nxgroup> group_converter_type;
+    typedef nxfield_to_python_converter<h5::nxfield> field_converter_type;
+    typedef nxattribute_to_python_converter<h5::nxattribute>
+        attribute_converter_type;
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     import_array();
@@ -66,6 +71,8 @@ BOOST_PYTHON_MODULE(nxh5)
     //register converter
     to_python_converter<h5::nxobject,object_converter_type>();
     to_python_converter<h5::nxgroup,group_converter_type>();
+    to_python_converter<h5::nxfield,field_converter_type>();
+    to_python_converter<h5::nxattribute,attribute_converter_type>();
 
     //register exception translators
     exception_registration();
@@ -82,23 +89,6 @@ BOOST_PYTHON_MODULE(nxh5)
     //wrap NX-group
     wrap_nxgroup<h5::nxgroup>();
     wrap_childiterator<nxgroup_wrapper<h5::nxgroup>>("NXGroupChildIterator");
-
-
-    //wrap NX-object
-    /*
-    wrap_nxobject<pni::io::nx::h5::nxobject>("NXObject");
-    wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::nxgroup>,
-         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXGroupAttributeIterator");
-    wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::nxfield>,
-         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFieldAttributeIterator");
-    wrap_attributeiterator
-        <NXObjectWrapper<pni::io::nx::h5::nxfile>,
-         NXAttributeWrapper<pni::io::nx::h5::nxattribute> >("NXFiledAttributeIterator");
-         */
-
-
 
     //create wrapper for NXDefalteFilter
     uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =

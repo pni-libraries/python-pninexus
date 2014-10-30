@@ -25,7 +25,7 @@
 #include <pni/core/types.hpp>
 #include <boost/python.hpp>
 
-#include "nxgroup_wrapper.hpp"
+#include "nxattribute_wrapper.hpp"
 
 using namespace pni::core;
 using namespace pni::io::nx;
@@ -34,28 +34,26 @@ using namespace boost::python;
 //----------------------------------------------------------------------------
 //!
 //! \ingroup pnicore_converters
-//! \brief convert nxgroup instances to their wrapper type
+//! \brief convert nattribute instances to their wrapper type
 //! 
-//! Convert an instance of nxgroup to its corresponding wrapper type.
-//!
-//! \tparam GTYPE group type
+//! Converts instances of nxattribute to their nxattribute_wrapper counterpart 
+//! on the python side. 
 //! 
-template< typename GTYPE > 
-struct nxgroup_to_python_converter
+//! \tparam ATYPE attribute type
+//! 
+template< typename ATYPE > 
+struct nxattribute_to_python_converter
 {
-    typedef GTYPE group_type;
-    typedef nxgroup_wrapper<group_type> group_wrapper_type;
+    typedef ATYPE attribute_type;
+    typedef nxattribute_wrapper<attribute_type> attribute_wrapper_type;
 
     //------------------------------------------------------------------------
     //!
-    //! \brief conversion method
-    //! 
-    //! \param v instance of bool_t
-    //! \return Python boolean object
+    //! \brief perform the conversion
     //!
-    static PyObject *convert(const group_type &v)
+    static PyObject *convert(const attribute_type &v)
     {
-        return incref(object(group_wrapper_type(v)).ptr());
+        return incref(object(attribute_wrapper_type(v)).ptr());
     }
 
 };

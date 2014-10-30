@@ -25,7 +25,7 @@
 #include <pni/core/types.hpp>
 #include <boost/python.hpp>
 
-#include "nxgroup_wrapper.hpp"
+#include "nxfield_wrapper.hpp"
 
 using namespace pni::core;
 using namespace pni::io::nx;
@@ -34,17 +34,18 @@ using namespace boost::python;
 //----------------------------------------------------------------------------
 //!
 //! \ingroup pnicore_converters
-//! \brief convert nxgroup instances to their wrapper type
+//! \brief convert nxfield instances to their wrapper type
 //! 
-//! Convert an instance of nxgroup to its corresponding wrapper type.
-//!
-//! \tparam GTYPE group type
+//! Converts instances of nxfield to their nxfield_wrapper counterpart 
+//! on the python side. 
 //! 
-template< typename GTYPE > 
-struct nxgroup_to_python_converter
+//! \tparam FTYPE field type
+//! 
+template< typename FTYPE > 
+struct nxfield_to_python_converter
 {
-    typedef GTYPE group_type;
-    typedef nxgroup_wrapper<group_type> group_wrapper_type;
+    typedef FTYPE field_type;
+    typedef nxfield_wrapper<field_type> field_wrapper_type;
 
     //------------------------------------------------------------------------
     //!
@@ -53,9 +54,9 @@ struct nxgroup_to_python_converter
     //! \param v instance of bool_t
     //! \return Python boolean object
     //!
-    static PyObject *convert(const group_type &v)
+    static PyObject *convert(const field_type &v)
     {
-        return incref(object(group_wrapper_type(v)).ptr());
+        return incref(object(field_wrapper_type(v)).ptr());
     }
 
 };

@@ -65,7 +65,7 @@ template<typename FTYPE> class nxfile_wrapper
 
         //---------------------------------------------------------------------
         //! check read only status
-        int is_readonly() const { return _file.is_readonly(); }
+        bool is_readonly() const { return _file.is_readonly(); }
 
         //---------------------------------------------------------------------
         //! flush data to disk
