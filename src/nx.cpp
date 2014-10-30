@@ -47,6 +47,7 @@ using namespace pni::io::nx;
 //#include "AttributeIterator.hpp"
 #include "errors.hpp"
 #include "nxobject_to_python_converter.hpp"
+#include "nxgroup_to_python_converter.hpp"
 
 
 
@@ -57,13 +58,14 @@ BOOST_PYTHON_MODULE(nxh5)
                                          h5::nxgroup,
                                          h5::nxfield,
                                          h5::nxattribute> object_converter_type;
+    typedef nxgroup_to_python_converter<h5::nxgroup> group_converter_type;
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     import_array();
 
     //register converter
     to_python_converter<h5::nxobject,object_converter_type>();
-    //register_nxobject_to_python_converter<h5::nxobject>();
+    to_python_converter<h5::nxgroup,group_converter_type>();
 
     //register exception translators
     exception_registration();
