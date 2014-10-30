@@ -4,8 +4,6 @@ import os
 from distutils.core import setup
 from distutils.extension import Extension
 from distutils.fancy_getopt import FancyGetopt
-from distutils.ccompiler import new_compiler
-from distutils.command.build_ext import build_ext as _build_ext
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 import sysconfig
@@ -24,23 +22,6 @@ debug = False
 for o,v in op.get_option_order():
     if o == "debug":
         debug = True
-
-#obtain the default compiler
-cc = new_compiler()
-
-class build_ext(_build_ext):
-    def run(self):
-        _inc_dirs = include_dirs
-        _inc_dirs.append(sysconfig.get_config_var('INCLUDEPY'))
-        _cc_args = extra_compile_args
-        _cc_args.append('-fPIC')
-        libsources = [ "src/numpy_utils.cpp", "src/errors.cpp", "src/utils.cpp",]
-        libobjects = cc.compile(libsources,
-                                include_dirs=_inc_dirs,
-                                extra_preargs=_cc_args)
-        cc.link_shared_lib(libobjects,"core_api")
-
-        _build_ext.run(self)
 
 #-----------------------------------------------------------------------------
 # load pnicore configuration with pkg-config
@@ -72,8 +53,8 @@ if(debug):
 #-----------------------------------------------------------------------------
 files = ["src/bool_converter.cpp",
          "src/numpy_scalar_converter.cpp",
-         "src/numpy_utils.cpp",
          "src/errors.cpp",
+         "src/numpy_utils.cpp",
          "src/utils.cpp",
          "src/_core.cpp"]
 
@@ -116,6 +97,5 @@ setup(name="libpnicore-python",
         url="https://code.google.com/p/pni-libraries/",
         license = "GPL",
         script_args = args,
-        cmdclass={'build_ext':build_ext}
         )
 
