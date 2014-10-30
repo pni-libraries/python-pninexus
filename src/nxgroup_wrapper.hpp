@@ -30,6 +30,7 @@
 
 #include <pni/core/python/utils.hpp>
 #include "child_iterator.hpp"
+#include "nxattribute_manager_wrapper.hpp"
 
 using namespace pni::io::nx;
 
@@ -51,32 +52,50 @@ class nxgroup_wrapper
         typedef typename nxobject_trait<imp_id>::object_type object_type;
         typedef typename nxobject_trait<imp_id>::deflate_type deflate_type;
 
+        typedef decltype(group_type::attributes) attribute_manager_type;
+        typedef nxattribute_manager_wrapper<attribute_manager_type>
+            attribute_manager_wrapper;
+
     private:
         group_type _group;
     public:
         //================constructors and destructor==========================
         //! default constructor
-        nxgroup_wrapper(){}
+        nxgroup_wrapper():
+            _group(),
+            attributes(_group.attributes)
+        {}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        nxgroup_wrapper(const wrapper_type &o): _group(o._group)
+        nxgroup_wrapper(const wrapper_type &o): 
+            _group(o._group),
+            attributes(_group.attributes)
         {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        nxgroup_wrapper(wrapper_type &&o):_group(std::move(o._group))
+        nxgroup_wrapper(wrapper_type &&o):
+            _group(std::move(o._group)),
+            attributes(_group.attributes)
         {}
 
         //---------------------------------------------------------------------
         //! conversion copy constructor
-        explicit nxgroup_wrapper(const group_type &g):_group(g)
+        explicit nxgroup_wrapper(const group_type &g):
+            _group(g),
+            attributes(_group.attributes)
         {}
 
         //---------------------------------------------------------------------
         //! conversion move constructor
-        explicit nxgroup_wrapper(group_type &&g):_group(std::move(g))
+        explicit nxgroup_wrapper(group_type &&g):
+            _group(std::move(g)),
+            attributes(_group.attributes)
         {}
+
+        //---------------------------------------------------------------------
+        attribute_manager_wrapper attributes;
 
         //---------------------------------------------------------------------
         //!
@@ -415,6 +434,9 @@ template<typename GTYPE> void wrap_nxgroup()
         .add_property("filename",&wrapper_type::filename)
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
+        .def_readonly("attributes",&wrapper_type::attributes)
+        //.add_property("attributes",make_function(&wrapper_type::attributes,
+         //       return_internal_reference<>()))
         ;
 #pragma GCC diagnostic pop
 }

@@ -44,12 +44,12 @@ using namespace pni::io::nx;
 #include "nxfile_wrapper.hpp"
 #include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
-//#include "AttributeIterator.hpp"
 #include "errors.hpp"
 #include "nxobject_to_python_converter.hpp"
 #include "nxgroup_to_python_converter.hpp"
 #include "nxfield_to_python_converter.hpp"
 #include "nxattribute_to_python_converter.hpp"
+#include "nxattribute_manager_wrapper.hpp"
 
 
 
@@ -89,6 +89,7 @@ BOOST_PYTHON_MODULE(nxh5)
     //wrap NX-group
     wrap_nxgroup<h5::nxgroup>();
     wrap_childiterator<nxgroup_wrapper<h5::nxgroup>>("NXGroupChildIterator");
+    wrap_nxattribute_manager<decltype(h5::nxgroup::attributes)>("nxgroup_attributes");
 
     //create wrapper for NXDefalteFilter
     uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =
