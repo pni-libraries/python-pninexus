@@ -31,6 +31,7 @@
 #include <pni/core/python/utils.hpp>
 #include "child_iterator.hpp"
 #include "nxattribute_manager_wrapper.hpp"
+#include "utils.hpp"
 
 using namespace pni::io::nx;
 
@@ -172,28 +173,12 @@ class nxgroup_wrapper
 
             field_type field;
             object_type parent(_group);
+            shapes_type shapes = get_shapes(shape,chunk);
             if(filter.is_none())
             {
-                //create a field without a filter
-                if(shape.is_none())
-                    //this corresponds to create_field<T>(name);
-                    field = create_field(parent, type_id,name);
-                else if(!shape.is_none() && chunk.is_none())
-                {
-                    auto s = List2Container<shape_t>(list(shape));
-                    field =  create_field(parent,type_id,name,s);
-                }
-                else if(!shape.is_none() && !chunk.is_none())
-                {
-                    auto s = List2Container<shape_t>(list(shape));
-                    auto c = List2Container<shape_t>(list(chunk));
-                    field =  create_field(parent,type_id,name,s,c);
-                }
-                else
-                {
-                    throw pni::io::object_error(EXCEPTION_RECORD,
-                            "Cannot create field from arguments!");
-                }
+                //this corresponds to create_field<T>(name);
+                field = create_field(parent, type_id,name,shapes.first,
+                                         shapes.second);
             }
             else
             {
@@ -203,28 +188,10 @@ class nxgroup_wrapper
                 if(!deflate_object.check())
                     throw type_error(EXCEPTION_RECORD,
                                      "Filter is not an instance of filter class!");
-
-                if(!shape.is_none() && chunk.is_none())
-                {
-                    auto s = List2Container<shape_t>(list(shape));
-                    shape_t c(s);
-                    c.front() = 1;
-                    field = create_field(parent,type_id,name,s,c,
-                                         deflate_object());
-                }
-                else if(!shape.is_none() && !chunk.is_none())
-                {
-                    auto s = List2Container<shape_t>(list(shape));
-                    auto c = List2Container<shape_t>(list(chunk));
-                    field = create_field(parent,type_id,name,s,c,
-                                                deflate_object());
-                }
-                else
-                {
-                    throw pni::io::object_error(EXCEPTION_RECORD,
-                            "Cannot create field from arguments!");
-                }
-                    //throw an exception here
+            
+                field =
+                    create_field(parent,type_id,name,shapes.first,shapes.second,
+                                     deflate_object());
             }
             return field;
 

@@ -51,3 +51,27 @@ ssize_t get_index(ssize_t python_index,ssize_t n_elements)
     else
         return python_index;
 }
+
+//----------------------------------------------------------------------------
+shapes_type get_shapes(const object &s,const object &c)
+{
+    shape_t shape,chunk;
+
+    if(s.is_none())
+    {
+        shape = shape_t{1};
+        chunk = shape;
+    }
+    else
+    {
+        shape = List2Container<shape_t>(list(s));
+        chunk = shape;
+        
+        if(c.is_none()) 
+            chunk.front() = 1;
+        else
+            chunk = List2Container<shape_t>(list(c));
+    }
+    
+    return shapes_type{shape,chunk};
+}

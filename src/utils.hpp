@@ -40,6 +40,10 @@ using namespace pni::core;
 
 typedef std::vector<pni::core::slice> slices_type;
 
+typedef std::pair<shape_t,shape_t> shapes_type; 
+
+shapes_type get_shapes(const object &s,const object &c);
+
 //!
 //! \ingroup utils
 //! \brief get tuple from arguments
