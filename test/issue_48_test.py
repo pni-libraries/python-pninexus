@@ -8,7 +8,7 @@ import pni.io.nx.h5 as nx
 class Issue_48_Test(unittest.TestCase):
     def setUp(self):
         self.nxfile = nx.create_file("issue_48_test.nx",overwrite=True)
-        self.root   = self.nxfile["/"]
+        self.root   = self.nxfile.root()
 
     def tearDown(self):
         self.root.close()

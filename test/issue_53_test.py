@@ -3,6 +3,7 @@
 import unittest
 
 import pni.io.nx.h5 as nx
+from pni.core import size_mismatch_error
 
 class Issue_53_Test(unittest.TestCase):
     def setUp(self):
@@ -12,12 +13,12 @@ class Issue_53_Test(unittest.TestCase):
         self.nxfile.close()
 
     def test_issue(self):
-        deflate = nx.NXDeflateFilter()
+        deflate = nx.deflate_filter()
         deflate.rate = 5
         deflate.shuffle = True
-        root = self.nxfile["/"]
+        root = self.nxfile.root()
 
-        self.assertRaises(nx.SizeMismatchError,
+        self.assertRaises(size_mismatch_error,
                           root.create_field,"test","string",[],[],deflate)
 
 

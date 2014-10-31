@@ -28,14 +28,14 @@ for t in  nxfield_test.types:
 
 #===========================running regression tests==========================
 print "====================Regressions tests================================="
-#import issue_53_test
-#import issue_48_test
-#reg_suite = unittest.TestSuite()
-#reg_suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(issue_53_test))
-#reg_suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(issue_48_test))
-#
-#reg_runner = unittest.TextTestRunner()
-#reg_result = reg_runner.run(reg_suite)
+import issue_53_test
+import issue_48_test
+reg_suite = unittest.TestSuite()
+reg_suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(issue_53_test))
+reg_suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(issue_48_test))
+
+reg_runner = unittest.TextTestRunner()
+reg_result = reg_runner.run(reg_suite)
 
 
 
