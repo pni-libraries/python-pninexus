@@ -24,20 +24,94 @@
 
 extern "C"{
 #include<Python.h>
-#include<numpy/arrayobject.h>
 }
 
 #include <vector>
 #include <pni/core/types.hpp>
-#include <pni/core/arrays.hpp>
 #include <pni/core/python/utils.hpp>
 
-#include <pni/io/nx/nx.hpp>
-
 #include <boost/python/extract.hpp>
+#include <boost/python/slice.hpp>
+#include <boost/python/stl_iterator.hpp>
 
 
 using namespace boost::python;
+using namespace pni::core;
+
+//!
+//! \ingroup utils
+//! \brief get tuple from arguments
+//! 
+//! Function solves the problem of wrapping all arguments passed to a function
+//! as Python objects into a tuple. 
+//! 
+tuple get_tuple_from_args(const object &args);
+
+//!
+//! \ingroup utils
+//! \brief get the size of an ellipsis
+//!
+//! Ellipsis are used in Python to denote an entire range of dimensions. 
+//! This can drastically reduce the writing effort an make code even independent
+//! of a particular number of dimensions of a container. 
+//!
+//! This function template determines the number of dimensions an ellipsis spans
+//! 
+template<
+         typename LISTT,
+         typename ATYPE
+        >
+size_t get_ellipsis_size(const LISTT &index,const ATYPE &mda)
+{
+    //sanity check - if the total number of elements in the index sequence
+    //exceeds the rank of the array type something is wrong and an exception 
+    //is thrown.
+    if(len(index) > mda.rank())
+        throw shape_mismatch_error(EXCEPTION_RECORD,
+                "Index size exceeds rank of C++ array type!");
+
+    //generate iterator for the index sequence
+    stl_input_iterator<object> begin(index),end;
+
+    //count number of non-ellipsis objects in the index sequence
+    size_t n = std::count_if(begin,end,[](const object &o)
+                                         { return !is_ellipsis(o); });
+
+    //if n is equal to the total length of the sequence there is no 
+    //ellipsis at all an we can return 0
+    if(n == len(index)) return 0;
+
+    return mda.rank()-n;
+}
+
+//----------------------------------------------------------------------------
+//!
+//! \ingroup utils
+//! \brief check if object is ellipsis
+//!
+//! Function returns true if an object refers to the Py_Ellipsis singleton.
+//!
+//! \param o python object
+//! \return true if o referes to Py_Ellipsis, false otherwiwse
+//!
+bool is_ellipsis(const object &o);
+
+//----------------------------------------------------------------------------
+//!
+//! \tparam SEQUENCET sequence type 
+template<typename SEQUENCET> bool has_ellipsis(const SEQUENCET &sequence)
+{
+    stl_input_iterator<object> begin(sequence),end;
+
+    bool result = false;
+
+    for(auto iter=begin;iter!=end;++iter)
+    {
+        if(iter->ptr() == (PyObject*)Py_Ellipsis) return true;
+    }
+    
+    return result;
+}
 
 
 //-----------------------------------------------------------------------------

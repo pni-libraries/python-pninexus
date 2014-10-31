@@ -28,6 +28,7 @@
 #include <pni/core/python/utils.hpp>
 #include <pni/core/python/numpy_utils.hpp>
 #include "nxio_operations.hpp"
+#include "nxattribute_manager_wrapper.hpp"
 
 #include "utils.hpp"
 using namespace pni::io::nx;
@@ -49,29 +50,50 @@ template<typename FIELDT> class nxfield_wrapper
         typedef nxfield_wrapper<field_type> wrapper_type;
         typedef typename nxobject_trait<imp_id>::group_type group_type;
         typedef nxgroup_wrapper<group_type> group_wrapper_type;
+
+        typedef decltype(field_type::attributes) attribute_manager_type;
+        typedef nxattribute_manager_wrapper<attribute_manager_type>
+            attribute_manager_wrapper;
     private:
         field_type _field;
     public:
         //=============constrcutors and destructor=============================
         //! default constructor
-        nxfield_wrapper(){}
+        nxfield_wrapper():
+            _field(),
+            attributes(_field.attributes)
+        {}
 
         //---------------------------------------------------------------------
         //! copy constructor
-        nxfield_wrapper(const wrapper_type &f):_field(f._field) {}
+        nxfield_wrapper(const wrapper_type &f):
+            _field(f._field),
+            attributes(_field.attributes)
+        {}
 
         //---------------------------------------------------------------------
         //! move constructor
-        nxfield_wrapper(wrapper_type &&f):_field(std::move(f._field)) {}
+        nxfield_wrapper(wrapper_type &&f):
+            _field(std::move(f._field)),
+            attributes(_field.attributes)
+        {}
 
         //--------------------------------------------------------------------
         //! copy constructor from wrapped type
-        explicit nxfield_wrapper(const field_type &o):_field(o) {}
+        explicit nxfield_wrapper(const field_type &o):
+            _field(o),
+            attributes(_field.attributes)
+        {}
 
         //!-------------------------------------------------------------------
         //! move constructor from wrapped type
-        explicit nxfield_wrapper(field_type &&o):_field(std::move(o))
+        explicit nxfield_wrapper(field_type &&o):
+            _field(std::move(o)),
+            attributes(_field.attributes)
         {}
+
+        //---------------------------------------------------------------------
+        attribute_manager_wrapper attributes;
 
         //=================wrap some conviencen methods========================
         //!

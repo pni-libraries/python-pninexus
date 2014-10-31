@@ -25,8 +25,12 @@
 
 #include <pni/io/nx/nxobject_traits.hpp>
 #include "errors.hpp"
+#include <pni/core/types.hpp>
+#include <pni/core/error.hpp>
+#include <pni/core/python/utils.hpp>
 
 using namespace pni::io::nx;
+using namespace pni::core;
 
 template<typename AMT>
 class nxattribute_manager_wrapper
@@ -65,6 +69,68 @@ class nxattribute_manager_wrapper
         }
 
         //--------------------------------------------------------------------
+        bool exists(const string &name) const
+        {
+            return _manager.exists(name);
+        }
+
+        //--------------------------------------------------------------------
+        void remove(const string &name) const
+        {
+            _manager.remove(name);
+        }
+
+        //--------------------------------------------------------------------
+        attribute_type create(const string &name,const string &type,
+                              const object &shape,
+                              bool overwrite)
+        {
+            auto s = Tuple2Container<shape_t>(tuple(shape));
+
+            if(s.empty())
+                s = shape_t{1};
+            
+            type_id_t tid = type_id_from_str(type);
+
+            if(tid == type_id_t::UINT8)
+                return _manager.template create<uint8>(name,s,overwrite);
+            else if(tid == type_id_t::INT8)
+                return _manager.template create<int8>(name,s,overwrite);
+            else if(tid == type_id_t::UINT16)
+                return _manager.template create<uint16>(name,s,overwrite);
+            else if(tid == type_id_t::INT16)
+                return _manager.template create<int16>(name,s,overwrite);
+            else if(tid == type_id_t::UINT32)
+                return _manager.template create<uint32>(name,s,overwrite);
+            else if(tid == type_id_t::INT32)
+                return _manager.template create<int32>(name,s,overwrite);
+            else if(tid == type_id_t::UINT64)
+                return _manager.template create<uint64>(name,s,overwrite);
+            else if(tid == type_id_t::INT64)
+                return _manager.template create<int64>(name,s,overwrite);
+            else if(tid == type_id_t::FLOAT32)
+                return _manager.template create<float32>(name,s,overwrite);
+            else if(tid == type_id_t::FLOAT64)
+                return _manager.template create<float64>(name,s,overwrite);
+            else if(tid == type_id_t::FLOAT128)
+                return _manager.template create<float128>(name,s,overwrite);
+            else if(tid == type_id_t::COMPLEX32)
+                return _manager.template create<complex32>(name,s,overwrite);
+            else if(tid == type_id_t::COMPLEX64)
+                return _manager.template create<complex64>(name,s,overwrite);
+            else if(tid == type_id_t::COMPLEX128)
+                return _manager.template create<complex128>(name,s,overwrite);
+            else if(tid == type_id_t::BOOL)
+                return _manager.template create<bool_t>(name,s,overwrite);
+            else if(tid == type_id_t::STRING)
+                return _manager.template create<string>(name,s,overwrite);
+            else 
+                type_error(EXCEPTION_RECORD,"Unkonwn type string!");
+
+            return attribute_type(); //just to make the compiler happy
+        }
+
+        //--------------------------------------------------------------------
         size_t size() const 
         {
             return _manager.size();
@@ -82,19 +148,20 @@ class nxattribute_manager_wrapper
             return _manager[i];
         }
         //--------------------------------------------------------------------
-        
         object __iter__()
         {
+            //we return by value here and thus create a new object anyhow
             return object(this);
         }
 
-
+        //--------------------------------------------------------------------
         void increment()
         {
             _index++;
             if(_index < _manager.size()) _attr = _manager[_index];
         }
 
+        //--------------------------------------------------------------------
         attribute_type next()
         {
             //check if iteration is still possible
@@ -127,6 +194,10 @@ template<typename AMT> void wrap_nxattribute_manager(const string &name)
         .def("__iter__",&wrapper_type::__iter__)
         .def("next",&wrapper_type::next)
         .def("increment",&wrapper_type::increment)
+        .def("create",&wrapper_type::create,("name","type",arg("shape")=list(),
+                     arg("overwrite")=false))
+        .def("remove",&wrapper_type::remove)
+        .def("exists",&wrapper_type::exists)
         ;
 #pragma GCC diagnostic pop
 }

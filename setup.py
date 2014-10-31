@@ -46,7 +46,8 @@ if(debug):
 
 
 files = ["src/nx.cpp",
-         "src/errors.cpp"
+         "src/errors.cpp",
+         "src/utils.cpp",
          ]
 
 nxh5 = Extension("nxh5",files,

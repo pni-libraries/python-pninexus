@@ -33,6 +33,7 @@ extern "C"{
 using namespace pni::core;
 
 #include "nxio_operations.hpp"
+#include "utils.hpp"
 
 //! 
 //! \ingroup wrappers  
@@ -204,6 +205,16 @@ template<typename ATYPE> class nxattribute_wrapper
                         "Python scalar!");
         }
 
+        //---------------------------------------------------------------------
+        object __getitem__(const object &args) const
+        {
+            tuple t = get_tuple_from_args(args); 
+            has_ellipsis(t);
+
+            return object();
+
+        }
+
 };
 
 //=============================================================================
@@ -253,6 +264,7 @@ template<typename ATYPE> void wrap_nxattribute()
                               &wrapper_type::write,__attribute_value_docstr)
         .def("close",&wrapper_type::close,__attribute_close_docstr)
         .def("write",&wrapper_type::write,__attribute_write_docstr)
+        .def("__getitem__",&wrapper_type::__getitem__)
         ;
 
 }
