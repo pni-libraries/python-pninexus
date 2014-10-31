@@ -208,7 +208,7 @@ class nxgroup_wrapper
                 {
                     auto s = List2Container<shape_t>(list(shape));
                     shape_t c(s);
-                    c.front() = 0;
+                    c.front() = 1;
                     field = create_field(parent,type_id,name,s,c,
                                          deflate_object());
                 }

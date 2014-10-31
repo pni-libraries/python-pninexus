@@ -367,13 +367,13 @@ template<typename FIELDT> void wrap_nxfield()
         .add_property("filename",&wrapper_type::filename)
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
+        .add_property("is_valid",&wrapper_type::is_valid)
         .def("write",&wrapper_type::write)
         .def("read",&wrapper_type::read)
         .def("__getitem__",&wrapper_type::__getitem__)
         .def("__setitem__",&wrapper_type::__setitem__)
         .def("grow",&wrapper_type::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
         .def("close",&wrapper_type::close)
-        .def("is_valid",&wrapper_type::is_valid)
         ;
 }
 
