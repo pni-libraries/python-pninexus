@@ -84,15 +84,7 @@ namespace numpy
     //------------------------------------------------------------------------
     pni::core::string type_str(pni::core::type_id_t id)
     {
-
-        if(id == pni::core::type_id_t::COMPLEX32) 
-            return "complex64";
-        else if(id == pni::core::type_id_t::COMPLEX64)
-            return "complex128";
-        else if(id == pni::core::type_id_t::COMPLEX128)
-            return "complex256";
-        else
-            return pni::core::str_from_type_id(id);
+        return pni::core::str_from_type_id(id);
     }
 
     //------------------------------------------------------------------------
