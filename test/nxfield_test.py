@@ -3,10 +3,10 @@ import numpy
 import numpy.random as random
 
 import pni.io.nx.h5 as nx
-from pni.io.nx.h5 import NXFile
-from pni.io.nx.h5 import NXGroup
-from pni.io.nx.h5 import NXField
-from pni.io.nx.h5 import NXDeflateFilter
+from pni.io.nx.h5 import nxfile
+from pni.io.nx.h5 import nxgroup
+from pni.io.nx.h5 import nxfield
+from pni.io.nx.h5 import deflate_filter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 import data_generator as data_gen
@@ -35,7 +35,7 @@ class nxfield_test(unittest.TestCase):
     
     def setUp(self):
         self.gf = create_file("NXFieldTest.h5",overwrite=True)
-        self.root = self.gf["/"]
+        self.root = self.gf.root()
         self.dg = data_gen.create(self._typecode,5,40)
 
     def tearDown(self):
@@ -46,7 +46,7 @@ class nxfield_test(unittest.TestCase):
         """
         IO of a scalar with a scalar field
         """
-        f = self.gf.create_field("data",self._typecode)
+        f = self.root.create_field("data",self._typecode)
 
         #use the read() and write() methods
         s_write = self.dg()
@@ -66,7 +66,7 @@ class nxfield_test(unittest.TestCase):
         """
         Testing IO of a scalar broadcasted on a multidimensional field
         """
-        f = self.gf.create_field("data",self._typecode,
+        f = self.root.create_field("data",self._typecode,
                                  shape=(3,4))
 
         s_write = self.dg()
@@ -76,7 +76,7 @@ class nxfield_test(unittest.TestCase):
         self.assertTrue(all(x==s_write for x in s_read.flat))
 
     def test_scalar_to_mdim_field_partial_io(self):
-        f = self.gf.create_field("data",self._typecode,
+        f = self.root.create_field("data",self._typecode,
                                  shape=(3,4))
         
         s1_write = self.dg()
@@ -106,7 +106,7 @@ class nxfield_test(unittest.TestCase):
 
     def test_array_to_mdim_field_io(self):
         shape = (3,4)
-        f = self.gf.create_field("data",self._typecode,
+        f = self.root.create_field("data",self._typecode,
                                  shape=shape)
         write = self.dg(shape)
         f.write(write)
@@ -121,7 +121,7 @@ class nxfield_test(unittest.TestCase):
 
     def test_array_to_mdim_field_partial_io(self):
         shape = (3,4)
-        f = self.gf.create_field("data",self._typecode,shape=shape)
+        f = self.root.create_field("data",self._typecode,shape=shape)
 
         write1 = self.dg((4,))
         
@@ -139,8 +139,8 @@ class nxfield_test(unittest.TestCase):
 
 
     def test_numeric_io(self):
-        f1 = self.gf.create_field("data1","float64",shape=(3,1))
-        self.assertTrue(f1.valid)
+        f1 = self.root.create_field("data1","float64",shape=(3,1))
+        self.assertTrue(f1.is_valid)
         self.assertTrue(len(f1.shape) == 2)
         self.assertTrue(f1.size == 3)
 
@@ -159,7 +159,7 @@ class nxfield_test(unittest.TestCase):
         a = f1[...]
         self.assertTrue(a.shape == (3,))
 
-        f2 = self.gf.create_field("data2","float64",shape=(3,))
+        f2 = self.root.create_field("data2","float64",shape=(3,))
         self.assertTrue(f2.shape == (3,))
         self.assertTrue(f2.size == 3)
         self.assertTrue(len(f2.shape) == 1)
@@ -169,7 +169,7 @@ class nxfield_test(unittest.TestCase):
         self.assertTrue(a.shape == (3,))
 
     def test_negative_index(self):
-        f1 = self.gf.create_field("data1","uint16",shape=(20,))
+        f1 = self.root.create_field("data1","uint16",shape=(20,))
 
         f1[...] = numpy.arange(0,20,dtype="uint16")
 
@@ -188,7 +188,7 @@ class nxfield_test(unittest.TestCase):
         self.assertTrue(f1[10] == 100)
     
     def test_io(self):
-        f = self.gf.create_field("log","string")
+        f = self.root.create_field("log","string")
         f.write("hello world this is a text")
         f.write("another text")
         f[0] = "yet another text"
@@ -197,7 +197,7 @@ class nxfield_test(unittest.TestCase):
         f.write(u"unicode text")
 
     def test_string_array(self):
-        f = self.gf.create_field("text","string",shape=(2,2))
+        f = self.root.create_field("text","string",shape=(2,2))
         data = numpy.array([["hello","world"],["this","is a text"]])
         f.write(data)
 

@@ -3,7 +3,7 @@
 import unittest
 import nxfile_test
 import nxgroup_test
-#import NXFieldTest
+import nxfield_test
 import nxfield_common_test
 
 suite = unittest.TestSuite()
@@ -16,14 +16,14 @@ result = runner.run(suite)
 
 #=================running test for fields==================================
 #
-#for t in  NXFieldTest.types:
-#    print "Running unit test for nxfield with type ",t
-#    suite = unittest.TestSuite()
-#    NXFieldTest.nxfield_test._typecode = t
-#    suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(NXFieldTest))
-#
-#    runner = unittest.TextTestRunner()
-#    result = runner.run(suite)
+for t in  nxfield_test.types:
+    print "Running unit test for nxfield with type ",t
+    suite = unittest.TestSuite()
+    nxfield_test.nxfield_test._typecode = t
+    suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(nxfield_test))
+
+    runner = unittest.TextTestRunner()
+    result = runner.run(suite)
 
 
 #===========================running regression tests==========================
