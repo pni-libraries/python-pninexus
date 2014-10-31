@@ -8,6 +8,7 @@ from nxh5 import io_error
 from nxh5 import link_error
 from nxh5 import parser_error
 from nxh5 import invalid_object_error
+from nxh5 import object_error
 
 
 #import helper methods
