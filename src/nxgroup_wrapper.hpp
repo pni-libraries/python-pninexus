@@ -434,6 +434,7 @@ template<typename GTYPE> void wrap_nxgroup()
         .add_property("filename",&wrapper_type::filename)
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
+        .add_property("size",&wrapper_type::__len__)
         .def_readonly("attributes",&wrapper_type::attributes)
         ;
 #pragma GCC diagnostic pop

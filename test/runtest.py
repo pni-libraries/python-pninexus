@@ -2,13 +2,13 @@
 
 import unittest
 import nxfile_test
-#import NXGroupTest
+import nxgroup_test
 #import NXFieldTest
 #import nxfield_common_test
 
 suite = unittest.TestSuite()
 suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(nxfile_test))
-#suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(NXGroupTest))
+suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(nxgroup_test))
 #suite.addTests(unittest.defaultTestLoader.loadTestsFromModule(nxfield_common_test))
 runner = unittest.TextTestRunner()
 result = runner.run(suite)

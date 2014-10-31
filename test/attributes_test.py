@@ -1,7 +1,7 @@
 import numpy
 import platform
 
-class AttributeTest(object):
+class attributes_test(object):
 
     def scalar_attribute_test(self,ts,parent,name,tc,value):
         """
@@ -15,7 +15,7 @@ class AttributeTest(object):
         """
 
         #create the attribute
-        attr = parent.attr(name,tc)
+        attr = parent.attributes.create(name,tc)
 
         #test inquery properties
         ts.assertTrue(attr.dtype == tc)
@@ -32,9 +32,10 @@ class AttributeTest(object):
 
     def array_attribute_test(self,ts,parent,name,tc,shape,value):
         #create the attribute
-        attr = parent.attr(name,tc,shape)
+        attr = parent.attributes.create(name,tc,shape)
 
         #test inquery properties
+        print tc,attr.dtype
         ts.assertTrue(attr.dtype == tc)
         ts.assertTrue(attr.valid)
         ts.assertEqual(attr.shape,shape)
@@ -60,9 +61,9 @@ class AttributeTest(object):
         self.scalar_attribute_test(ts,parent,"float64_attr","float64",-2034.13)
         self.scalar_attribute_test(ts,parent,"float128_attr","float128",-13423542.23434)
 
-        self.scalar_attribute_test(ts,parent,"complex32_attr","complex64",1+123.j)
-        self.scalar_attribute_test(ts,parent,"complex64_attr","complex128",1+123.j)
-        self.scalar_attribute_test(ts,parent,"complex128_attr","complex256",1+123.j)
+        self.scalar_attribute_test(ts,parent,"complex32_attr","complex32",1+123.j)
+        self.scalar_attribute_test(ts,parent,"complex64_attr","complex64",1+123.j)
+        self.scalar_attribute_test(ts,parent,"complex128_attr","complex128",1+123.j)
 
         self.scalar_attribute_test(ts,parent,"text","string","hello world this is a text")
         self.scalar_attribute_test(ts,parent,"unicode","string",u"hello world")
@@ -102,13 +103,13 @@ class AttributeTest(object):
             self.array_attribute_test(ts,parent,"float128_attr","float128",shape,data)
         
         data = numpy.ones(shape,dtype="complex64")
-        self.array_attribute_test(ts,parent,"complex32_attr","complex64",shape,data)
+        self.array_attribute_test(ts,parent,"complex32_attr","complex32",shape,data)
         data = numpy.ones(shape,dtype="complex128")
-        self.array_attribute_test(ts,parent,"complex64_attr","complex128",shape,data)
+        self.array_attribute_test(ts,parent,"complex64_attr","complex64",shape,data)
 
         if platform.architecture()[0] != '32bit':
             data = numpy.ones(shape,dtype="complex256")
-            self.array_attribute_test(ts,parent,"complex128_attr","complex256",shape,data)
+            self.array_attribute_test(ts,parent,"complex128_attr","complex128",shape,data)
 
         data = numpy.ones(shape,dtype="bool")
         self.array_attribute_test(ts,parent,"flag_attr","bool",shape,data)
