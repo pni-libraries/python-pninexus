@@ -38,6 +38,8 @@ extern "C"{
 using namespace boost::python;
 using namespace pni::core;
 
+typedef std::vector<pni::core::slice> slices_type;
+
 //!
 //! \ingroup utils
 //! \brief get tuple from arguments
@@ -47,6 +49,19 @@ using namespace pni::core;
 //! 
 tuple get_tuple_from_args(const object &args);
 
+//----------------------------------------------------------------------------
+//!
+//! \ingroup utils
+//! \brief check if object is ellipsis
+//!
+//! Function returns true if an object refers to the Py_Ellipsis singleton.
+//!
+//! \param o python object
+//! \return true if o referes to Py_Ellipsis, false otherwiwse
+//!
+bool is_ellipsis(const object &o);
+
+//----------------------------------------------------------------------------
 //!
 //! \ingroup utils
 //! \brief get the size of an ellipsis
@@ -87,30 +102,70 @@ size_t get_ellipsis_size(const LISTT &index,const ATYPE &mda)
 //----------------------------------------------------------------------------
 //!
 //! \ingroup utils
-//! \brief check if object is ellipsis
-//!
-//! Function returns true if an object refers to the Py_Ellipsis singleton.
-//!
-//! \param o python object
-//! \return true if o referes to Py_Ellipsis, false otherwiwse
-//!
-bool is_ellipsis(const object &o);
+//! \brief check if an object is a slice
+//! 
+//! Function returns true if the object is a slice instance. 
+//! 
+bool is_slice(const object &o);
 
 //----------------------------------------------------------------------------
 //!
-//! \tparam SEQUENCET sequence type 
-template<typename SEQUENCET> bool has_ellipsis(const SEQUENCET &sequence)
+//! \ingroup utils
+//! \brief return the positive index
+//!
+//! Python allows negative index values to mark an index which should be counted
+//! from backward. This function returns the corresponding positive index 
+//! to a possibly negative Python index.
+//!
+//! \param python_index the original python index value
+//! \param n_elements the number of elements in this particular dimension
+//! \return positive index value
+//! 
+ssize_t get_positive_index(ssize_t python_index,ssize_t n_elements);
+
+//----------------------------------------------------------------------------
+
+template<typename ATYPE>
+std::vector<pni::core::slice> get_slices(const tuple& index,const ATYPE &array)
 {
-    stl_input_iterator<object> begin(sequence),end;
+    std::vector<pni::core::slice> slices;
+    //determine the size of a possible ellipsis
+    size_t ellipsis_size = get_ellipsis_size(index,array);
 
-    bool result = false;
+    //get the shape of the input array
+    auto shape = array.template shape<shape_t>();
+   
+    //get iterators for the index tuple
+    stl_input_iterator<object> begin(index),end;
 
-    for(auto iter=begin;iter!=end;++iter)
+    //get an interator for the array type shape 
+    auto shape_iter = shape.begin();
+
+    //loop over the index tuple
+    for(auto index_iter = begin;index_iter!=end;++index_iter,++shape_iter)
     {
-        if(iter->ptr() == (PyObject*)Py_Ellipsis) return true;
+        if(is_int(*index_iter)) 
+        {   //handle ingeger
+            extract<boost::python::ssize_t> index(*index_iter);
+            slices.push_back(pni::core::slice(get_positive_index(index,*shape_iter)));
+        }
+        else if(is_ellipsis(*index_iter)) 
+        {   //handle ellipsis
+            std::generate_n(std::back_inserter(slices),ellipsis_size,
+                            [&shape_iter](){ 
+                            return pni::core::slice(0,*shape_iter++);});
+        }
+        else if(is_slice(*index_iter))
+        {   //handle slice argument
+            extract<boost::python::slice> slice(*index_iter);
+        }
+        else
+            throw type_error(EXCEPTION_RECORD,
+                    "Unkonwn index type!");
+
     }
-    
-    return result;
+
+    return slices;
 }
 
 

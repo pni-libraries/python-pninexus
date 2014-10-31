@@ -435,8 +435,6 @@ template<typename GTYPE> void wrap_nxgroup()
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
         .def_readonly("attributes",&wrapper_type::attributes)
-        //.add_property("attributes",make_function(&wrapper_type::attributes,
-         //       return_internal_reference<>()))
         ;
 #pragma GCC diagnostic pop
 }

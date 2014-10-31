@@ -209,7 +209,6 @@ template<typename ATYPE> class nxattribute_wrapper
         object __getitem__(const object &args) const
         {
             tuple t = get_tuple_from_args(args); 
-            has_ellipsis(t);
 
             return object();
 

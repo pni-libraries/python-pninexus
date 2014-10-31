@@ -47,26 +47,19 @@ class nxattribute_manager_wrapper
         manager_type _manager;
         
         size_t _index;
-        attribute_type _attr;
     public:
        
         //--------------------------------------------------------------------
         explicit nxattribute_manager_wrapper(const manager_type &m):
             _manager(m),
-            _index(0),
-            _attr()
-        {
-            if(_manager.size()) _attr = _manager[_index];
-        }
+            _index(0)
+        { }
 
         //--------------------------------------------------------------------
         explicit nxattribute_manager_wrapper(const wrapper_type &w):
             _manager(w._manager),
-            _index(0),
-            _attr()
-        {
-            if(_manager.size()) _attr= _manager[_index];
-        }
+            _index(w._index)
+        { }
 
         //--------------------------------------------------------------------
         bool exists(const string &name) const
@@ -158,7 +151,6 @@ class nxattribute_manager_wrapper
         void increment()
         {
             _index++;
-            if(_index < _manager.size()) _attr = _manager[_index];
         }
 
         //--------------------------------------------------------------------
@@ -172,7 +164,7 @@ class nxattribute_manager_wrapper
                 return(attribute_type());
             }
 
-            attribute_type attr(_attr);
+            attribute_type attr(_manager[_index]);
             this->increment();
 
             return attr;
