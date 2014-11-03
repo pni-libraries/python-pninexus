@@ -96,11 +96,15 @@ attribute name & description \\
 \hline \hline
 {\tt name} & returns the name of the group \\
 \hline
-{\tt path} & returns the full nexus path of the group\\
-\hline
 {\tt parent} & returns the groups parent group \\
 \hline
 {\tt size} & the number of children a group has \\
+\hline
+{\tt filename} & name of the file the group belongs to \\
+\hline
+{\tt attributes} & property providing access to the groups attributes (see 
+section~\ref{section:nexus:attributes}) \\
+\hline
 \end{tabular}
 \end{center}
 
@@ -307,7 +311,7 @@ while True:
 
 \end{minted}
 
-\section{Working with attributes}
+\section{Working with attributes}\label{section:nexus:attributes}
 
 Fields and groups can have attributes attached which provide additional
 metadata. In fact Nexus makes heavy use of attributes to store additional 
@@ -339,7 +343,7 @@ optional {\tt shape} keyword argument
 a = field.attributes.create("temperature",type="float32",shape=(4,4))
 \end{minted}
 If an attribute already exists it can be overwritten using the {\tt overwrite}
-keyword argument (its default value is {\tt False}). 
+keyword argument ({\tt False} by default). 
 \begin{minted}{python}
 a = field.attributes.create("temperature",type="float32",shape=(4,4))
 a = field.attributes.create("temperature",type="int32",shape=(3,5),
@@ -347,6 +351,27 @@ a = field.attributes.create("temperature",type="int32",shape=(3,5),
 \end{minted}
 
 \subsection{Attribute inquiry}
+
+Like fields and groups attributes have a couple of properties which can be
+queried to obtain metadata for a particular attribute instance
+\begin{center}
+    \begin{tabular}{l|p{0.65\linewidth}}
+        property & description\\
+        \hline\hline
+        {\tt shape} & a tuple with the number of elements along each dimension
+        of the attribute \\
+        \hline
+        {\tt dtype} & the string representation of the attributes data type  \\
+        \hline
+        {\tt is\_valid} & true if the attribute is a valid object \\
+        \hline
+        {\tt name} & the name of the attribute (the key which can be used 
+        to retrieve the attribute from its parent) \\
+        \hline
+        {\tt value} & provides access to the attributes data \\
+        \hline
+    \end{tabular}
+\end{center}
 
 \subsection{Reading and writing attributes}
 
