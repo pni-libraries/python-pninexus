@@ -59,11 +59,13 @@ class nxgroup_wrapper
 
     private:
         group_type _group;
+        size_t _index;
     public:
         //================constructors and destructor==========================
         //! default constructor
         nxgroup_wrapper():
             _group(),
+            _index(0),
             attributes(_group.attributes)
         {}
 
@@ -71,6 +73,7 @@ class nxgroup_wrapper
         //! copy constructor
         nxgroup_wrapper(const wrapper_type &o): 
             _group(o._group),
+            _index(o._index),
             attributes(_group.attributes)
         {}
 
@@ -78,6 +81,7 @@ class nxgroup_wrapper
         //! move constructor
         nxgroup_wrapper(wrapper_type &&o):
             _group(std::move(o._group)),
+            _index(o._index),
             attributes(_group.attributes)
         {}
 
@@ -85,6 +89,7 @@ class nxgroup_wrapper
         //! conversion copy constructor
         explicit nxgroup_wrapper(const group_type &g):
             _group(g),
+            _index(0),
             attributes(_group.attributes)
         {}
 
@@ -92,6 +97,7 @@ class nxgroup_wrapper
         //! conversion move constructor
         explicit nxgroup_wrapper(group_type &&g):
             _group(std::move(g)),
+            _index(0),
             attributes(_group.attributes)
         {}
 
@@ -175,11 +181,10 @@ class nxgroup_wrapper
             object_type parent(_group);
             shapes_type shapes = get_shapes(shape,chunk);
             if(filter.is_none())
-            {
-                //this corresponds to create_field<T>(name);
-                field = create_field(parent, type_id,name,shapes.first,
-                                         shapes.second);
-            }
+                field = create_field(parent, type_id,
+                                     name,
+                                     shapes.first,
+                                     shapes.second);
             else
             {
                 //extract filter
@@ -189,9 +194,8 @@ class nxgroup_wrapper
                     throw type_error(EXCEPTION_RECORD,
                                      "Filter is not an instance of filter class!");
             
-                field =
-                    create_field(parent,type_id,name,shapes.first,shapes.second,
-                                     deflate_object());
+                field = create_field(parent,type_id,name,shapes.first,
+                                     shapes.second,deflate_object());
             }
             return field;
 
@@ -283,19 +287,32 @@ class nxgroup_wrapper
         {
             pni::io::nx::link(p,_group,n);
         }
+        
+        //----------------------------------------------------------------------
+        void increment()
+        {
+            _index ++;
+        }
 
         //----------------------------------------------------------------------
-        //!
-        //! \brief get child iterator
-        //!
-        //! Returns an iterator over all child objects linked below this 
-        //! group.
-        //!
-        //! \return instance of ChildIterator
-        //!
-        child_iterator<wrapper_type> get_child_iterator() const
+        object __iter__() const
         {
-            return child_iterator<wrapper_type>(*this);
+            return object(this);
+        }
+
+        //----------------------------------------------------------------------
+        object_type next()
+        {
+            if(_index >= _group.size())
+            {
+                throw(ChildIteratorStop());
+                return object_type();
+            }
+
+            object_type child(_group[_index]);
+            increment();
+
+            return child;
         }
 
 };
@@ -395,9 +412,11 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("__len__",&wrapper_type::__len__)
 
         .def("link",&wrapper_type::link,__group_link_docstr)
-        .def("__iter__",&wrapper_type::get_child_iterator,__group_childs_docstr)
-        .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
-        .add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
+        .def("__iter__",&wrapper_type::__iter__,__group_childs_docstr)
+        .def("increment",&wrapper_type::increment)
+        .def("next",&wrapper_type::next)
+//        .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
+//#.add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
         .add_property("filename",&wrapper_type::filename)
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)

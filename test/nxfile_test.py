@@ -14,11 +14,9 @@ class nxfile_test(unittest.TestCase):
     filename2 = "nxfiletest2.nxs"
 
     def setUp(self):
-        print "setUp ...."
         self._file = create_file(self.filename,overwrite=True)
 
     def tearDown(self):
-        print "treaDown ..."
         self._file.flush()
         self._file.close()
 
@@ -33,8 +31,6 @@ class nxfile_test(unittest.TestCase):
             pass
 
     def test_creation(self):
-        print "NXFileTest.test_creation() ............................"
-
         #this should work as the file does not exist yet
         f = create_file(self.filename2)
         self.assertTrue(f.is_valid)
@@ -49,8 +45,6 @@ class nxfile_test(unittest.TestCase):
         f.close()
 
     def test_open(self):
-        print "NXFileTest::test_open() ................................"
-
         #open the file in read only mode
         f = open_file(self.filename)
         root = f.root()
