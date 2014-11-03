@@ -44,7 +44,6 @@ using namespace pni::io::nx;
 #include "nxfile_wrapper.hpp"
 #include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
-#include "errors.hpp"
 #include "nxobject_to_python_converter.hpp"
 #include "nxgroup_to_python_converter.hpp"
 #include "nxfield_to_python_converter.hpp"
@@ -54,7 +53,7 @@ using namespace pni::io::nx;
 
 
 //=================implementation of the python extension======================
-BOOST_PYTHON_MODULE(nxh5)
+BOOST_PYTHON_MODULE(_nxh5)
 {
     typedef nxobject_to_python_converter<h5::nxobject,
                                          h5::nxgroup,
@@ -74,9 +73,6 @@ BOOST_PYTHON_MODULE(nxh5)
     to_python_converter<h5::nxfield,field_converter_type>();
     to_python_converter<h5::nxattribute,attribute_converter_type>();
 
-    //register exception translators
-    exception_registration();
-   
     //wrap NX-attribute object
     wrap_nxattribute<h5::nxattribute>();
     

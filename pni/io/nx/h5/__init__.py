@@ -1,19 +1,14 @@
 #from nxh5 import NXObject_NXObject as NXObject
-from nxh5 import nxgroup
-from nxh5 import nxfile
-from nxh5 import nxfield
-from nxh5 import nxattribute
-from nxh5 import deflate_filter
-from nxh5 import io_error
-from nxh5 import link_error
-from nxh5 import parser_error
-from nxh5 import invalid_object_error
-from nxh5 import object_error
+from _nxh5 import nxgroup
+from _nxh5 import nxfile
+from _nxh5 import nxfield
+from _nxh5 import nxattribute
+from _nxh5 import deflate_filter
 
 
 #import helper methods
-from nxh5 import __create_file
-from nxh5 import __open_file
+from _nxh5 import __create_file
+from _nxh5 import __open_file
 
 def create_file(fname,overwrite=False,splitsize=0):
     """
