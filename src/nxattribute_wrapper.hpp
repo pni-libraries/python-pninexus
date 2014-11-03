@@ -208,10 +208,15 @@ template<typename ATYPE> class nxattribute_wrapper
         //---------------------------------------------------------------------
         object __getitem__(const object &args) const
         {
-            tuple t = get_tuple_from_args(args); 
+            object data = read(); //read all attribute data - remember we 
+                                  //cannot do partial IO on attributes
 
-            return object();
-
+            //call here the __getitem__ method of the return value and return 
+            //its result
+            if(numpy::is_array(data))
+                return data[args];
+            else
+                return data;
         }
 
 };

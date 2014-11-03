@@ -25,10 +25,11 @@ class attributes_test(object):
             
         #test data io
         attr.value = value
+        read = attr[...]
         if tc=="string":
-            ts.assertEqual(attr.value,value)
+            ts.assertEqual(read,value)
         else:
-            ts.assertAlmostEqual(attr.value,value)
+            ts.assertAlmostEqual(read,value)
 
     def array_attribute_test(self,ts,parent,name,tc,shape,value):
         #create the attribute
@@ -41,10 +42,20 @@ class attributes_test(object):
         ts.assertEqual(attr.shape,shape)
         ts.assertTrue(attr.name == name)
             
-        #test data io
+        #----------------test data io ----------------------------------------
+        #write data
         attr.value = value
+
+        #read data
+        read = attr[...]
         for i in range(value.size):
-            ts.assertAlmostEqual(value.flat[i],attr.value.flat[i])
+            ts.assertAlmostEqual(value.flat[i],read.flat[i])
+
+        #try with partial IO
+        read = attr[:,0]
+        for i in range(read.size):
+            ts.assertAlmostEqual(value[:,0].flat[i],read.flat[i])
+
 
     def test_scalar_attribute(self,ts,parent):
 
