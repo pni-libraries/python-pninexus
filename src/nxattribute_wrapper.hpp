@@ -208,15 +208,32 @@ template<typename ATYPE> class nxattribute_wrapper
         //---------------------------------------------------------------------
         object __getitem__(const object &args) const
         {
+            std::cout<<"read original data"<<std::endl;
             object data = read(); //read all attribute data - remember we 
                                   //cannot do partial IO on attributes
 
+            std::cout<<"apply selection"<<std::endl;
             //call here the __getitem__ method of the return value and return 
             //its result
             if(numpy::is_array(data))
                 return data[args];
             else
                 return data;
+        }
+
+        //---------------------------------------------------------------------
+        void __setitem__(const object &index,const object &value)
+        {
+            object data = read(); //first we read everything from the attribute
+
+            if(numpy::is_array(data))
+                data[index] = value;
+            else
+                data = value;
+
+            //finally we have to write the data back
+            write(data);
+            
         }
 
 };
@@ -269,6 +286,7 @@ template<typename ATYPE> void wrap_nxattribute()
         .def("close",&wrapper_type::close,__attribute_close_docstr)
         .def("write",&wrapper_type::write,__attribute_write_docstr)
         .def("__getitem__",&wrapper_type::__getitem__)
+        .def("__setitem__",&wrapper_type::__setitem__)
         ;
 
 }

@@ -83,6 +83,9 @@ object io_read(const OType &readable)
         readable.read(data);
            
         size_t itemsize = numpy::max_string_size(data);
+        
+        if(!itemsize) itemsize=1;
+
         object array = numpy::create_array(tid,shape,int(itemsize));
         numpy::copy_string_to_array(data,array);
         return array;
