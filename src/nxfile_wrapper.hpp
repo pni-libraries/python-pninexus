@@ -96,11 +96,11 @@ template<typename FTYPE> class nxfile_wrapper
 //! \return new instance of NXFileWrapper
 //!
 template<typename FTYPE> 
-nxfile_wrapper<FTYPE> create_file(const string &n,bool ov,size_t s)
+nxfile_wrapper<FTYPE> create_file(const string &n,bool ov)
 {
     try
     {
-        return nxfile_wrapper<FTYPE>(FTYPE::create_file(n,ov,s));
+        return nxfile_wrapper<FTYPE>(FTYPE::create_file(n,ov));
     }
     catch(pni::core::file_error &error)
     {

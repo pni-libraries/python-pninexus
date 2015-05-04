@@ -47,6 +47,7 @@ class nxfile_test(unittest.TestCase):
     def test_open(self):
         #open the file in read only mode
         f = open_file(self.filename)
+        self.assertTrue(f.readonly)
         root = f.root()
         self.assertRaises(object_error,root.attributes.create,
                           "temperature","uint16")

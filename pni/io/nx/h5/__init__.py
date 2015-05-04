@@ -10,20 +10,19 @@ from _nxh5 import deflate_filter
 from _nxh5 import __create_file
 from _nxh5 import __open_file
 
-def create_file(fname,overwrite=False,splitsize=0):
+def create_file(fname,overwrite=False):
     """
-    create_file(fname,overwrite=False,splitsize=0):
+    create_file(fname,overwrite=False):
     Creates a new Nexus file. 
 
     arguments:
     fname ....... name of the file
     overwrite ... if true an existing file with the same name will be overwriten
-    splitsize ... (feature not implemented - keep 0)
 
     return:
     Returns a new object of type NXFile.
     """
-    return __create_file(fname,overwrite,splitsize)
+    return __create_file(fname,overwrite)
 
 def open_file(fname,readonly=True):
     """

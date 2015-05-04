@@ -36,7 +36,7 @@ for o,v in op.get_option_order():
 #-------------------------------------------------------------------------
 # set up compiler and linker paths and flags
 #-------------------------------------------------------------------------
-core_path = '/home/wintersb/Development/HDRI/install/lib/python/pni/core'
+core_path = '/home/eugen/Development/DESY/lib/python2.7/site-packages/pni/core'
 #add pniio libraries and flags
 pniio        = package('pniio')
 include_dirs = pniio.include_dirs

@@ -81,6 +81,7 @@ BOOST_PYTHON_MODULE(_nxh5)
     
     //wrap NX-field
     wrap_nxfield<h5::nxfield>();
+    wrap_nxattribute_manager<decltype(h5::nxfield::attributes)>("nxfield_attributes");
     
     //wrap NX-group
     wrap_nxgroup<h5::nxgroup>();
