@@ -6,7 +6,6 @@ from distutils.extension import Extension
 from distutils.fancy_getopt import FancyGetopt
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
-import sysconfig
 
 #-----------------------------------------------------------------------------
 # manage command line arguments
@@ -16,7 +15,6 @@ cliopts.append(("debug",None,"append debuging options"))
 
 op = FancyGetopt(option_table=cliopts)
 args,opts = op.getopt()
-print args
 
 debug = False
 for o,v in op.get_option_order():
