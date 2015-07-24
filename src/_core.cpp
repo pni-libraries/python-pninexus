@@ -35,13 +35,23 @@ using namespace boost::python;
 
 extern void exception_registration();
 
+#if PY_MAJOR_VERSION >= 3
+int
+#else 
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
+
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_core)
 {
     
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
-    import_array();
+    init_numpy();
 
     //register converter
     bool_t_to_python_converter();

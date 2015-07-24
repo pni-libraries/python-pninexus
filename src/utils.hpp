@@ -22,23 +22,10 @@
 //
 #pragma once
 
-extern "C"{
-#include<Python.h>
-#define NO_IMPORT_ARRAY
-#include<numpy/arrayobject.h>
-}
-
-#include <vector>
-#include <pni/core/types.hpp>
-#include <pni/core/arrays.hpp>
-
 
 #include <boost/python/extract.hpp>
 #include <boost/python/list.hpp>
 #include <boost/python/tuple.hpp>
-
-using namespace boost::python;
-
 
 //-----------------------------------------------------------------------------
 //! 
@@ -50,9 +37,9 @@ using namespace boost::python;
 //! \param c instance of CTYPE
 //! \return python list with 
 //!
-template<typename CTYPE> list Container2List(const CTYPE &c)
+template<typename CTYPE> boost::python::list Container2List(const CTYPE &c)
 {
-    list l;
+    boost::python::list l;
     if(c.size()==0) return l;
 
     for(auto iter=c.begin();iter!=c.end();++iter)
@@ -72,17 +59,17 @@ template<typename CTYPE> list Container2List(const CTYPE &c)
 //! \param l python list object
 //! \return instance of 
 //!
-template<typename CTYPE> CTYPE List2Container(const list &l)
+template<typename CTYPE> CTYPE List2Container(const boost::python::list &l)
 {
     //if the list is empty we return an empty container
-    if(!len(l)) return CTYPE();
+    if(!boost::python::len(l)) return CTYPE();
 
     //otherwise we need to copy some content
     CTYPE c(len(l));
 
     size_t index=0;
     for(typename CTYPE::iterator iter=c.begin();iter!=c.end();++iter)
-        *iter = extract<typename CTYPE::value_type>(l[index++]);
+        *iter = boost::python::extract<typename CTYPE::value_type>(l[index++]);
 
     return c;
 }
@@ -100,9 +87,9 @@ template<typename CTYPE> CTYPE List2Container(const list &l)
 //! \param t tuple object
 //! \return instance of type CTYPE
 //!
-template<typename CTYPE> CTYPE Tuple2Container(const tuple &t)
+template<typename CTYPE> CTYPE Tuple2Container(const boost::python::tuple &t)
 {
-    return List2Container<CTYPE>(list(t));
+    return List2Container<CTYPE>(boost::python::list(t));
 }
 
 //-----------------------------------------------------------------------------
@@ -114,28 +101,28 @@ template<typename CTYPE> CTYPE Tuple2Container(const tuple &t)
 //! \param o instance to check
 //! \return true if o is a unicode object, false otherwise
 //!
-bool is_unicode(const object &o);
+bool is_unicode(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_int(const object &o);
+bool is_int(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_bool(const object &o);
+bool is_bool(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_long(const object &o);
+bool is_long(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_float(const object &o);
+bool is_float(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_complex(const object &o);
+bool is_complex(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_string(const object &o);
+bool is_string(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
-bool is_scalar(const object &o);
+bool is_scalar(const boost::python::object &o);
 
 //-----------------------------------------------------------------------------
 //!
@@ -148,5 +135,5 @@ bool is_scalar(const object &o);
 //! \param o python unicode object
 //! \return python string object
 //!
-object unicode2str(const object &o);
+boost::python::object unicode2str(const boost::python::object &o);
 

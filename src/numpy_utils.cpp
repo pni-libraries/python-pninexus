@@ -26,15 +26,9 @@
 namespace numpy
 {
 
-    void init_array() 
-    { 
-        import_array(); 
-    }
-
     //------------------------------------------------------------------------
     bool is_array(const object &o)
     {
-        init_array();
         //if the object is not allocated we assume that it is not an array
         if(o.ptr())
             return PyArray_CheckExact(o.ptr());
@@ -45,7 +39,6 @@ namespace numpy
     //------------------------------------------------------------------------
     bool is_scalar(const object &o)
     {
-        init_array();
         if(o.ptr())
             return PyArray_CheckScalar(o.ptr());
         else

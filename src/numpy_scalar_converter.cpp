@@ -21,13 +21,18 @@
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
-#include "numpy_scalar_converter.hpp"
+#define NO_IMPORT_ARRAY
+extern "C"
+{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+#include<numpy/arrayscalars.h>
+}
 
+#include "numpy_scalar_converter.hpp"
 
 numpy_scalar_converter::numpy_scalar_converter()
 {
-    import_array();
-
     convns::registry::push_back(
     &convertible,&construct<uint8>,boost::python::type_id<uint8>());
     convns::registry::push_back(

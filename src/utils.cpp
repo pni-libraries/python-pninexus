@@ -23,11 +23,20 @@
 
 //helper functions to create wrappers
 
-#include <boost/python/extract.hpp>
+//#define NO_IMPORT_ARRAY
+extern "C"{
+#include<Python.h>
+}
+
+#include <pni/core/types.hpp>
+
+
 #include <boost/python/slice.hpp>
 #include "utils.hpp"
 #include "error_utils.hpp"
 #include "numpy_utils.hpp"
+
+using namespace boost::python;
 
 //-----------------------------------------------------------------------------
 bool is_unicode(const object &o)
@@ -46,7 +55,11 @@ object unicode2str(const object &o)
 //----------------------------------------------------------------------------
 bool is_int(const object &o)
 {
+#if PY_MAJOR_VERSION >= 3
+    return PyLong_CheckExact(o.ptr()) ? true : false;
+#else
     return PyInt_CheckExact(o.ptr()) ? true : false;
+#endif
 }
 
 //----------------------------------------------------------------------------
@@ -76,7 +89,11 @@ bool is_complex(const object &o)
 //----------------------------------------------------------------------------
 bool is_string(const object &o)
 {
+#if PY_MAJOR_VERSION >= 3
+    return PyBytes_CheckExact(o.ptr()) ? true : false; 
+#else
     return PyString_CheckExact(o.ptr()) ? true : false;
+#endif
 }
 
 //----------------------------------------------------------------------------

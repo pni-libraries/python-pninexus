@@ -24,6 +24,7 @@
 
 extern "C"{
 #include<Python.h>
+#define NO_IMPORT_ARRA
 #include<numpy/arrayobject.h>
 }
 
