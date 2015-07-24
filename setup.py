@@ -1,25 +1,11 @@
 #setup script for python-pnicore
 import sys
 import os
-from distutils.core import setup
-from distutils.extension import Extension
-from distutils.fancy_getopt import FancyGetopt
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 
-#-----------------------------------------------------------------------------
-# manage command line arguments
-#-----------------------------------------------------------------------------
-cliopts =[]
-cliopts.append(("debug",None,"append debuging options"))
+from setuptools import setup, find_packages, Extension
 
-op = FancyGetopt(option_table=cliopts)
-args,opts = op.getopt()
-
-debug = False
-for o,v in op.get_option_order():
-    if o == "debug":
-        debug = True
 
 #-----------------------------------------------------------------------------
 # load pnicore configuration with pkg-config
@@ -39,9 +25,6 @@ libraries.append('boost_python')
 extra_compile_args = ['-std=c++11','-Wall','-Wextra',
                       '-fdiagnostics-show-option']
 extra_compile_args.extend(pnicore.compiler_flags)
-if(debug):
-    extra_compile_args.append('-O0')
-    extra_compile_args.append('-g')
 
 #-----------------------------------------------------------------------------
 # build shared library code
@@ -78,23 +61,22 @@ pnicore_ext = Extension("core._core",
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
-setup(name="libpnicore-python",
-        author="Eugen Wintersberger",
-        author_email="eugen.wintersberger@desy.de",
-        description="Python wrapper for libpnicore",
-        long_description="This package provides some basic functionality "+
-                         "which will be used by all Python extensions of "+
-                         "PNI libraries",
-        maintainer = "Eugen Wintersberger",
-        maintainer_email = "eugen.wintersberger@desy.de",
-        version = "1.0.0",
+setup(name="python-pnicore",
+      author="Eugen Wintersberger",
+      author_email="eugen.wintersberger@desy.de",
+      description="Python wrapper for libpnicore",
+      long_description="This package provides some basic functionality "+
+                       "which will be used by all Python extensions of "+
+                       "PNI libraries",
+      maintainer = "Eugen Wintersberger",
+      maintainer_email = "eugen.wintersberger@desy.de",
+      license = "GPLv2",
+      version = "1.0.0",
         requires = ["numpy"],
         ext_package="pni",
         ext_modules=[pnicore_ext],
-        data_files=[('include/pni/core/python',header_files)],
-        packages = ["pni","pni.core"],
-        url="https://code.google.com/p/pni-libraries/",
-        license = "GPL",
-        script_args = args,
+      data_files=[('include/pni/core/python',header_files)],
+      packages = find_packages(exclude=["test"]),
+      url="https://code.google.com/p/pni-libraries/"
         )
 
