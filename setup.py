@@ -65,6 +65,14 @@ ex_trans_test = Extension("test.ex_trans_test",
                           libraries = libraries,
                           extra_compile_args = extra_compile_args)
 
+
+utils_test = Extension("test.utils_test",
+                          ["test/utils_test.cpp"],
+                          language="c++",
+                          include_dirs = include_dirs,
+                          library_dirs = library_dirs,
+                          libraries = libraries,
+                          extra_compile_args = extra_compile_args)
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
@@ -80,7 +88,7 @@ setup(name="python-pnicore",
       license = "GPLv2",
       version = "1.0.0",
         requires = ["numpy"],
-        ext_modules=[pnicore_ext,ex_trans_test],
+        ext_modules=[pnicore_ext,ex_trans_test,utils_test],
       data_files=[('include/pni/core/python',header_files)],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",

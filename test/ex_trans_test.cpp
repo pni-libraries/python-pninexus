@@ -1,5 +1,5 @@
 //
-// (c) Copyright 2014 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+// (c) Copyright 2015 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 // This file is part of python-pnicore.
 //
@@ -17,7 +17,7 @@
 // along with python-pnicore.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-//  Created on: Oct 21, 2014
+//  Created on: Fri 24, 2015
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
