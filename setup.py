@@ -48,7 +48,7 @@ header_files = ["src/bool_converter.hpp",
 #-----------------------------------------------------------------------------
 # setup for the pnicore extension
 #-----------------------------------------------------------------------------
-pnicore_ext = Extension("core._core",
+pnicore_ext = Extension("pni.core._core",
                         files,
                         include_dirs = include_dirs,
                         library_dirs = library_dirs,
@@ -57,6 +57,13 @@ pnicore_ext = Extension("core._core",
                         extra_compile_args = extra_compile_args)
 
 #need to build some extra test modules
+ex_trans_test = Extension("test.ex_trans_test",
+                          ["test/ex_trans_test.cpp"],
+                          language="c++",
+                          include_dirs = include_dirs,
+                          library_dirs = library_dirs,
+                          libraries = libraries,
+                          extra_compile_args = extra_compile_args)
 
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
@@ -73,10 +80,9 @@ setup(name="python-pnicore",
       license = "GPLv2",
       version = "1.0.0",
         requires = ["numpy"],
-        ext_package="pni",
-        ext_modules=[pnicore_ext],
+        ext_modules=[pnicore_ext,ex_trans_test],
       data_files=[('include/pni/core/python',header_files)],
-      packages = find_packages(exclude=["test"]),
+      packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",
       test_suite="test"
         )
