@@ -25,17 +25,10 @@
 extern "C"
 {
 #include<Python.h>
-#include<numpy/arrayscalars.h>
+#include<numpy/arrayobject.h>
 }
 
-#include <pni/core/types.hpp>
 #include <boost/python.hpp>
-
-using namespace pni::core;
-using namespace boost::python;
-
-//converter namespace
-namespace convns = boost::python::converter; 
 
 //----------------------------------------------------------------------------
 //!
@@ -45,8 +38,8 @@ namespace convns = boost::python::converter;
 //!
 struct numpy_scalar_converter
 {
-    typedef convns::rvalue_from_python_stage1_data     rvalue_type;
-    typedef convns::rvalue_from_python_storage<bool_t> storage_type;
+    typedef boost::python::converter::rvalue_from_python_stage1_data     rvalue_type;
+    typedef boost::python::converter::rvalue_from_python_storage<char> storage_type;
     //!
     //! \brief constructor
     //! 

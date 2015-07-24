@@ -26,10 +26,15 @@ extern "C"
 {
 #include<Python.h>
 #include<numpy/arrayobject.h>
-#include<numpy/arrayscalars.h>
 }
 
+#include <pni/core/types.hpp>
 #include "numpy_scalar_converter.hpp"
+
+//converter namespace
+using namespace pni::core;
+using namespace boost::python;
+namespace convns = boost::python::converter; 
 
 numpy_scalar_converter::numpy_scalar_converter()
 {

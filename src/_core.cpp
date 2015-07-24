@@ -27,9 +27,6 @@ extern "C"{
 }
 
 #include <boost/python.hpp>
-
-using namespace boost::python;
-
 #include "bool_converter.hpp"
 #include "numpy_scalar_converter.hpp"
 
@@ -45,6 +42,7 @@ init_numpy()
     import_array();
 }
 
+using namespace boost::python;
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_core)
 {

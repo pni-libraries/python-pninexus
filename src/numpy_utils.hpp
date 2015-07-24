@@ -24,7 +24,7 @@
 
 extern "C"{
 #include<Python.h>
-#define NO_IMPORT_ARRA
+#define NO_IMPORT_ARRAY
 #include<numpy/arrayobject.h>
 }
 
@@ -33,8 +33,6 @@ extern "C"{
 #include <pni/core/arrays.hpp>
 
 #include <boost/python/extract.hpp>
-
-using namespace boost::python;
 
 namespace numpy
 {
@@ -100,7 +98,7 @@ namespace numpy
     //! Checks if an object is a numpy array. 
     //! \return true if object is a numpy array
     //!
-    bool is_array(const object &o);
+    bool is_array(const boost::python::object &o);
 
     //------------------------------------------------------------------------
     //!
@@ -111,7 +109,7 @@ namespace numpy
     //! \param o python object
     //! \return result
     //!
-    bool is_scalar(const object &o);
+    bool is_scalar(const boost::python::object &o);
 
     //------------------------------------------------------------------------
     //!
@@ -120,7 +118,7 @@ namespace numpy
     //! 
     //! Return the type id of an array or scalar numpy object.
     //! 
-    pni::core::type_id_t type_id(const object &o);
+    pni::core::type_id_t type_id(const boost::python::object &o);
 
     //------------------------------------------------------------------------
     //!
@@ -140,7 +138,7 @@ namespace numpy
     //! \ingroup pnicore_numpy
     //! \briefa get type string
     //!
-    pni::core::string type_str(const object &o);
+    pni::core::string type_str(const boost::python::object &o);
 
     //-------------------------------------------------------------------------
     //!
@@ -155,7 +153,7 @@ namespace numpy
     //! \return instance of CTYPE with shape data
     //! 
     template<typename CTYPE> 
-    CTYPE get_shape(const object &o)
+    CTYPE get_shape(const boost::python::object &o)
     {
         typedef typename CTYPE::value_type value_type;
 
@@ -182,7 +180,7 @@ namespace numpy
     //! \param o array object
     //! \return number of elements
     //!
-    size_t get_size(const object &o);
+    size_t get_size(const boost::python::object &o);
 
     //-------------------------------------------------------------------------
     //!
@@ -197,7 +195,7 @@ namespace numpy
     //! \return pointer to data
     //! 
     template<typename T> 
-    T *get_data(const object &o)
+    T *get_data(const boost::python::object &o)
     {
         return (T*)PyArray_DATA(o.ptr());
     }
@@ -218,7 +216,7 @@ namespace numpy
              typename T,
              typename CTYPE
             > 
-    object create_array(const CTYPE &s)
+    boost::python::object create_array(const CTYPE &s)
     {
         PyObject *ptr = nullptr;
         //create the buffer for with the shape information
@@ -228,9 +226,9 @@ namespace numpy
         ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),
                                           dims.data(),pni2numpy_type<T>::typenum));
 
-        handle<> h(ptr);
+        boost::python::handle<> h(ptr);
 
-        return object(h);
+        return boost::python::object(h);
     }
    
     //--------------------------------------------------------------------------
@@ -238,7 +236,8 @@ namespace numpy
     //! \ingroup pnicore_numpy
     //!
     template< typename CTYPE > 
-    object create_array(pni::core::type_id_t tid,const CTYPE &s,int itemsize=0)
+    boost::python::object 
+    create_array(pni::core::type_id_t tid,const CTYPE &s,int itemsize=0)
     {
         PyObject *ptr = nullptr;
         //create the buffer for with the shape information
@@ -257,14 +256,9 @@ namespace numpy
                              nullptr));
                              
 
-        /*
-        ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),
-                                          dims.data(),type_id2numpy_id.at(tid)));
-                                          */
+        boost::python::handle<> h(ptr);
 
-        handle<> h(ptr);
-
-        return object(h);
+        return boost::python::object(h);
     }
 
     //-------------------------------------------------------------------------
@@ -284,7 +278,7 @@ namespace numpy
     //! 
     //! 
     template<typename ATYPE>
-    object create_array_from_array(const ATYPE &array)
+    boost::python::object create_array_from_array(const ATYPE &array)
     {
         typedef typename ATYPE::value_type value_type;
 
@@ -295,7 +289,7 @@ namespace numpy
 
     //------------------------------------------------------------------------
     template<typename FTYPE>
-    object create_array_from_field(const FTYPE &field)
+    boost::python::object create_array_from_field(const FTYPE &field)
     {
         pni::core::type_id_t tid = field.type_id();
         auto shape = field.template shape<pni::core::shape_t>();
@@ -316,7 +310,7 @@ namespace numpy
     //! \param container instance of the destination container
     //!
     template<typename DTYPE>
-    void copy_string_from_array(const object &o,DTYPE &container)
+    void copy_string_from_array(const boost::python::object &o,DTYPE &container)
     {
         typedef typename DTYPE::value_type value_type;
         typedef pni2numpy_type<value_type> pni2numpy;
@@ -350,7 +344,7 @@ namespace numpy
 
     //------------------------------------------------------------------------
     template<typename DTYPE>
-    void copy_string_to_array(const DTYPE &source,object &dest)
+    void copy_string_to_array(const DTYPE &source,boost::python::object &dest)
     {
         typedef typename DTYPE::value_type value_type;
         typedef pni2numpy_type<value_type> pni2numpy;

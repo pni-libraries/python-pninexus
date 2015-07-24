@@ -23,6 +23,12 @@
 
 #include "bool_converter.hpp"
 
+using namespace pni::core;
+using namespace boost::python;
+
+//converter namespace
+namespace convns = boost::python::converter; 
+
 //----------------------------------------------------------------------------
 bool_t_to_python_converter::bool_t_to_python_converter()
 {

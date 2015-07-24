@@ -23,6 +23,8 @@
 
 #include "numpy_utils.hpp"
 
+using namespace boost::python;
+
 namespace numpy
 {
 

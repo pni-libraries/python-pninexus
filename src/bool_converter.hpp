@@ -22,14 +22,12 @@
 //
 #pragma once
 
+extern "C"{
+#include <Python.h>
+}
+
 #include <pni/core/types.hpp>
 #include <boost/python.hpp>
-
-using namespace pni::core;
-using namespace boost::python;
-
-//converter namespace
-namespace convns = boost::python::converter; 
 
 //----------------------------------------------------------------------------
 //!
@@ -55,7 +53,7 @@ struct bool_t_to_python_converter
     //! \param v instance of bool_t
     //! \return Python boolean object
     //!
-    static PyObject *convert(const bool_t &v);
+    static PyObject *convert(const pni::core::bool_t &v);
 
 };
 
@@ -69,8 +67,8 @@ struct bool_t_to_python_converter
 //!
 struct python_to_bool_t_converter
 {
-    typedef convns::rvalue_from_python_stage1_data     rvalue_type;
-    typedef convns::rvalue_from_python_storage<bool_t> storage_type;
+    typedef boost::python::converter::rvalue_from_python_stage1_data     rvalue_type;
+    typedef boost::python::converter::rvalue_from_python_storage<pni::core::bool_t> storage_type;
     //!
     //! \brief constructor
     //! 
