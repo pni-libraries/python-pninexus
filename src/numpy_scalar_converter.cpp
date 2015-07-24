@@ -21,13 +21,6 @@
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
-#define NO_IMPORT_ARRAY
-extern "C"
-{
-#include<Python.h>
-#include<numpy/arrayobject.h>
-}
-
 #include <pni/core/types.hpp>
 #include "numpy_scalar_converter.hpp"
 

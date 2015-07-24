@@ -22,12 +22,8 @@
 //
 #pragma once
 
-extern "C"{
-#include <Python.h>
-}
-
-#include <pni/core/types.hpp>
 #include <boost/python.hpp>
+#include <pni/core/types.hpp>
 
 //----------------------------------------------------------------------------
 //!

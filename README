@@ -15,6 +15,7 @@ To install the package the following libraries must be installed
 .) boost_python 
 .) python including developer packages (header files and libraries)
 .) numpy including its header files
+.) setuptools to build the package
 
 The installation runs via distutils using the well known
 

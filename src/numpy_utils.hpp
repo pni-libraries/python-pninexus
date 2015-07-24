@@ -22,9 +22,12 @@
 //
 #pragma once
 
-extern "C"{
-#include<Python.h>
+#include <boost/python/extract.hpp>
+
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
 #define NO_IMPORT_ARRAY
+extern "C"{
 #include<numpy/arrayobject.h>
 }
 
@@ -32,7 +35,6 @@ extern "C"{
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
 
-#include <boost/python/extract.hpp>
 
 namespace numpy
 {

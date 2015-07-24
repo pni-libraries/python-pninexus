@@ -22,13 +22,16 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
+
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+#define NO_IMPORT_ARRAY
 extern "C"
 {
-#include<Python.h>
 #include<numpy/arrayobject.h>
 }
 
-#include <boost/python.hpp>
 
 //----------------------------------------------------------------------------
 //!

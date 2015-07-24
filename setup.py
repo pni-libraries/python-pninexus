@@ -77,6 +77,7 @@ setup(name="python-pnicore",
         ext_modules=[pnicore_ext],
       data_files=[('include/pni/core/python',header_files)],
       packages = find_packages(exclude=["test"]),
-      url="https://code.google.com/p/pni-libraries/"
+      url="https://github.com/pni-libraries/python-pnicore",
+      test_suite="test"
         )
 

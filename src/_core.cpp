@@ -21,6 +21,8 @@
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
 extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
