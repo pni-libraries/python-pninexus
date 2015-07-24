@@ -67,12 +67,13 @@ header_files = ["src/bool_converter.hpp",
 #-----------------------------------------------------------------------------
 pnicore_ext = Extension("core._core",
                         files,
-                        #                        define_macros=[('NPY_NO_DEPRECATED_API','NPY_1_7_API_VERSION')],
                         include_dirs = include_dirs,
                         library_dirs = library_dirs,
                         libraries = libraries,
                         language="c++",
                         extra_compile_args = extra_compile_args)
+
+#need to build some extra test modules
 
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
