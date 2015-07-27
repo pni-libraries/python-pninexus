@@ -83,7 +83,8 @@ utils_test = Extension("test.utils_test",
 
 numpy_utils_test = Extension("test.numpy_utils_test",
                              ["test/numpy_utils_test.cpp",
-                              "test/check_type_id_from_object.cpp"
+                              "test/check_type_id_from_object.cpp",
+                              "test/check_type_str_from_object.cpp"
                              ],
                              language="c++",
                              include_dirs = include_dirs,

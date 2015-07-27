@@ -21,28 +21,36 @@
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
-#include <boost/python.hpp>
-#include <vector>
-#include <list>
-
 #include "../src/numpy_utils.hpp"
-#include "../src/init_numpy.hpp"
-#include "../src/utils.hpp"
-#include "check_type_id_from_object.hpp"
+#include <pni/core/types.hpp>
 #include "check_type_str_from_object.hpp"
 
-
 using namespace boost::python; 
+using namespace pni::core;
+
+#define CHECK_TYPE_STR_FROM_OBJECT_DEF(type,name)\
+    CHECK_TYPE_STR_FROM_OBJECT_PROTOTYPE(type)\
+    {\
+        return numpy::type_str(o)== name;\
+    }
+
+CHECK_TYPE_STR_FROM_OBJECT_DEF(uint8,"uint8")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(int8,"int8")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(uint16,"uint16")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(int16,"int16")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(uint32,"uint32")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(int32,"int32")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(uint64,"uint64")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(int64,"int64")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(float32,"float32")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(float64,"float64")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(float128,"float128")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(complex32,"complex32")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(complex64,"complex64")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(complex128,"complex128")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(string,"string")
+CHECK_TYPE_STR_FROM_OBJECT_DEF(bool_t,"bool")
 
 
-BOOST_PYTHON_MODULE(numpy_utils_test)
-{
-    init_numpy();
-    def("is_array",numpy::is_array);
-    def("is_scalar",numpy::is_scalar);
-
-    CHECK_TYPE_ID_FROM_OBJECT_EXPOSE();
-    CHECK_TYPE_STR_FROM_OBJECT_EXPOSE();
-}
 
 

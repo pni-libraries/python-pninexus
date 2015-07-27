@@ -32,5 +32,23 @@ class test_numpy_utils(unittest.TestCase):
         self.assertTrue(nu_test.check_type_id_complex128_from_object(numpy.array(1,dtype="complex256")))
         self.assertTrue(nu_test.check_type_id_string_from_object(numpy.array("hello",dtype="string")))
         self.assertTrue(nu_test.check_type_id_bool_from_object(numpy.array(True,dtype="bool")))
+    
+    def test_check_type_str_from_object(self):
+        self.assertTrue(nu_test.check_type_str_uint8_from_object(numpy.array(1,dtype="uint8")))
+        self.assertTrue(nu_test.check_type_str_int8_from_object(numpy.array(1,dtype="int8")))
+        self.assertTrue(nu_test.check_type_str_uint16_from_object(numpy.array(1,dtype="uint16")))
+        self.assertTrue(nu_test.check_type_str_int16_from_object(numpy.array(1,dtype="int16")))
+        self.assertTrue(nu_test.check_type_str_uint32_from_object(numpy.array(1,dtype="uint32")))
+        self.assertTrue(nu_test.check_type_str_int32_from_object(numpy.array(1,dtype="int32")))
+        self.assertTrue(nu_test.check_type_str_uint64_from_object(numpy.array(1,dtype="uint64")))
+        self.assertTrue(nu_test.check_type_str_int64_from_object(numpy.array(1,dtype="int64")))
+        self.assertTrue(nu_test.check_type_str_float32_from_object(numpy.array(1,dtype="float32")))
+        self.assertTrue(nu_test.check_type_str_float64_from_object(numpy.array(1,dtype="float64")))
+        self.assertTrue(nu_test.check_type_str_float128_from_object(numpy.array(1,dtype="float128")))
+        self.assertTrue(nu_test.check_type_str_complex32_from_object(numpy.array(1,dtype="complex64")))
+        self.assertTrue(nu_test.check_type_str_complex64_from_object(numpy.array(1,dtype="complex128")))
+        self.assertTrue(nu_test.check_type_str_complex128_from_object(numpy.array(1,dtype="complex256")))
+        self.assertTrue(nu_test.check_type_str_string_from_object(numpy.array("hello",dtype="string")))
+        self.assertTrue(nu_test.check_type_str_bool_from_object(numpy.array(True,dtype="bool")))
 
 
