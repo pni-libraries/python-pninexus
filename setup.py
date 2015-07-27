@@ -1,4 +1,5 @@
 #setup script for python-pnicore
+from __future__ import print_function
 import sys
 import os
 from numpy.distutils.misc_util import get_numpy_include_dirs
@@ -23,7 +24,7 @@ pnicore        = package('pnicore')
 include_dirs = pnicore.include_dirs
 library_dirs = pnicore.library_dirs
 libraries    = pnicore.libraries
-libraries.append('boost_python')
+libraries.append('boost_python-py{version[0]}{version[1]}'.format(version=sys.version_info))
 
 #-----------------------------------------------------------------------------
 # set compiler options
@@ -71,14 +72,19 @@ ex_trans_test = Extension("test.ex_trans_test",
                           extra_compile_args = extra_compile_args)
 
 object_dir = os.path.join(get_build_dir(),"pni","core")
+core_name = ":_core"
+soabi = sysconfig.get_config_var("SOABI")
+if soabi: 
+    core_name += "."+soabi+".so"
+else:
+    core_name += ".so"
 
 utils_test = Extension("test.utils_test",
                           ["test/utils_test.cpp"],
                           language="c++",
                           include_dirs = include_dirs,
                           library_dirs = library_dirs+[object_dir],
-                          libraries = libraries+[":_core.so"],
-                          runtime_lib_dirs=["pni/core"],
+                          libraries = libraries+[core_name],
                           extra_compile_args = extra_compile_args)
 
 numpy_utils_test = Extension("test.numpy_utils_test",
@@ -89,8 +95,7 @@ numpy_utils_test = Extension("test.numpy_utils_test",
                              language="c++",
                              include_dirs = include_dirs,
                              library_dirs = library_dirs+[object_dir],
-                             libraries = libraries+[":_core.so"],
-                             runtime_lib_dirs=["pni/core"],
+                             libraries = libraries+[core_name],
                              extra_compile_args = extra_compile_args)
 #-----------------------------------------------------------------------------
 # setup for the pnicore package

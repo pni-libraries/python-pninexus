@@ -1,7 +1,7 @@
 
 import pni.core
 import unittest
-import numpy_utils_test as nu_test
+from . import numpy_utils_test as nu_test
 import numpy
 
 class test_numpy_utils(unittest.TestCase):

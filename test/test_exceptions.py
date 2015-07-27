@@ -1,7 +1,11 @@
 import unittest
+import sys
 
 import pni.core
-import ex_trans_test;
+if sys.version_info[0] >= 3:
+    import test.ex_trans_test as ex_trans_test
+else:
+    import ex_trans_test as ex_trans_test
 
 class test_exceptions(unittest.TestCase):
     def test_throw_memory_allocation_error(self):
