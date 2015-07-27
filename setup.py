@@ -40,12 +40,14 @@ files = ["src/bool_converter.cpp",
          "src/errors.cpp",
          "src/numpy_utils.cpp",
          "src/utils.cpp",
+         "src/init_numpy.cpp",
          "src/_core.cpp"]
 
 header_files = ["src/bool_converter.hpp",
                 "src/error_utils.hpp",
                 "src/numpy_scalar_converter.hpp",
                 "src/numpy_utils.hpp",
+                "src/init_numpy.hpp",
                 "src/utils.hpp"]
 
 #-----------------------------------------------------------------------------
@@ -78,6 +80,17 @@ utils_test = Extension("test.utils_test",
                           libraries = libraries+[":_core.so"],
                           runtime_lib_dirs=["pni/core"],
                           extra_compile_args = extra_compile_args)
+
+numpy_utils_test = Extension("test.numpy_utils_test",
+                             ["test/numpy_utils_test.cpp",
+                              "test/check_type_id_from_object.cpp"
+                             ],
+                             language="c++",
+                             include_dirs = include_dirs,
+                             library_dirs = library_dirs+[object_dir],
+                             libraries = libraries+[":_core.so"],
+                             runtime_lib_dirs=["pni/core"],
+                             extra_compile_args = extra_compile_args)
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
@@ -93,7 +106,7 @@ setup(name="python-pnicore",
       license = "GPLv2",
       version = "1.0.0",
         requires = ["numpy"],
-        ext_modules=[pnicore_ext,ex_trans_test,utils_test],
+        ext_modules=[pnicore_ext,ex_trans_test,utils_test,numpy_utils_test],
       data_files=[('include/pni/core/python',header_files)],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",

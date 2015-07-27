@@ -64,7 +64,7 @@ namespace numpy
             case PyArray_FLOAT32:    return pni::core::type_id_t::FLOAT32;
             case PyArray_FLOAT64:    return pni::core::type_id_t::FLOAT64;
             case PyArray_LONGDOUBLE: return pni::core::type_id_t::FLOAT128;
-            case NPY_CFLOAT:      return pni::core::type_id_t::COMPLEX32;
+            case NPY_COMPLEX64:      return pni::core::type_id_t::COMPLEX32;
             case NPY_CDOUBLE:     return pni::core::type_id_t::COMPLEX64;
             case NPY_CLONGDOUBLE: return pni::core::type_id_t::COMPLEX128;
             case NPY_BOOL:   return pni::core::type_id_t::BOOL;

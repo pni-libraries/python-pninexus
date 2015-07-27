@@ -1,5 +1,5 @@
 //
-// (c) Copyright 2014 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
+// (c) Copyright 2015 DESY, Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 // This file is part of python-pnicore.
 //
@@ -17,39 +17,30 @@
 // along with python-pnicore.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-//  Created on: Oct 21, 2014
+//  Created on: Mon 27, 2015
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
-#define NO_IMPORT_ARRAY
-extern "C"{
-#include<Python.h>
-#include<numpy/arrayobject.h>
-}
-
 #include <boost/python.hpp>
-#include "bool_converter.hpp"
-#include "numpy_scalar_converter.hpp"
-#include "init_numpy.hpp"
+#include <vector>
+#include <list>
 
-extern void exception_registration();
+#include "../src/numpy_utils.hpp"
+#include "../src/init_numpy.hpp"
+#include "../src/utils.hpp"
+#include "check_type_id_from_object.hpp"
 
-using namespace boost::python;
-//=================implementation of the python extension======================
-BOOST_PYTHON_MODULE(_core)
+
+using namespace boost::python; 
+
+
+BOOST_PYTHON_MODULE(numpy_utils_test)
 {
-    
-    //this is absolutely necessary - otherwise the nympy API functions do not
-    //work.
     init_numpy();
+    def("is_array",numpy::is_array);
+    def("is_scalar",numpy::is_scalar);
 
-    //register converter
-    bool_t_to_python_converter();
-    python_to_bool_t_converter();
-    numpy_scalar_converter();
-
-    //register exception translators
-    exception_registration();
+    CHECK_TYPE_ID_FROM_OBJECT_EXPOSE();
 }
+
+
