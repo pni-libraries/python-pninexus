@@ -3,8 +3,14 @@ import sys
 import os
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
-
 from setuptools import setup, find_packages, Extension
+import sysconfig
+
+def get_build_dir():
+    build_dir = "lib.{platform}-{version[0]}.{version[1]}"
+
+    return os.path.join("build",build_dir.format(platform = sysconfig.get_platform(),
+                                                 version = sys.version_info))
 
 
 #-----------------------------------------------------------------------------
@@ -26,9 +32,6 @@ extra_compile_args = ['-std=c++11','-Wall','-Wextra',
                       '-fdiagnostics-show-option']
 extra_compile_args.extend(pnicore.compiler_flags)
 
-#-----------------------------------------------------------------------------
-# build shared library code
-#-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
 #-----------------------------------------------------------------------------
@@ -65,13 +68,15 @@ ex_trans_test = Extension("test.ex_trans_test",
                           libraries = libraries,
                           extra_compile_args = extra_compile_args)
 
+object_dir = os.path.join(get_build_dir(),"pni","core")
 
 utils_test = Extension("test.utils_test",
                           ["test/utils_test.cpp"],
                           language="c++",
                           include_dirs = include_dirs,
-                          library_dirs = library_dirs,
-                          libraries = libraries,
+                          library_dirs = library_dirs+[object_dir],
+                          libraries = libraries+[":_core.so"],
+                          runtime_lib_dirs=["pni/core"],
                           extra_compile_args = extra_compile_args)
 #-----------------------------------------------------------------------------
 # setup for the pnicore package

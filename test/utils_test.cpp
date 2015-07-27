@@ -63,11 +63,21 @@ bool vector_from_list(const object &l)
     return true;
 }
 
-
+//-----------------------------------------------------------------------------
 BOOST_PYTHON_MODULE(utils_test)
 {
     def("list_from_vector",list_from_vector);
     def("list_from_list",list_from_list);
     def("vector_from_list",vector_from_list);
+    def("is_unicode",is_unicode);
+    def("unicode2str",unicode2str);
+    def("is_int",is_int);
+    def("is_bool",is_bool);
+    def("is_long",is_long);
+    def("is_float",is_float);
+    def("is_complex",is_complex);
+    def("is_string",is_string);
+    def("is_scalar",is_scalar);
+
 }
 
