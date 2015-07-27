@@ -4,6 +4,13 @@ import unittest
 from . import numpy_utils_test as nu_test
 import numpy
 
+from . import config
+
+if config.PY_MAJOR_VERSION >= 3:
+    from . import py3_test_data as test_data
+else:
+    from . import py2_test_data as test_data 
+
 class test_numpy_utils(unittest.TestCase):
     def test_is_array(self):
         self.assertTrue(nu_test.is_array(numpy.arange(1,10)))
@@ -30,7 +37,7 @@ class test_numpy_utils(unittest.TestCase):
         self.assertTrue(nu_test.check_type_id_complex32_from_object(numpy.array(1,dtype="complex64")))
         self.assertTrue(nu_test.check_type_id_complex64_from_object(numpy.array(1,dtype="complex128")))
         self.assertTrue(nu_test.check_type_id_complex128_from_object(numpy.array(1,dtype="complex256")))
-        self.assertTrue(nu_test.check_type_id_string_from_object(numpy.array("hello",dtype="string")))
+        self.assertTrue(nu_test.check_type_id_string_from_object(numpy.array(test_data.str_string,dtype="string")))
         self.assertTrue(nu_test.check_type_id_bool_from_object(numpy.array(True,dtype="bool")))
     
     def test_check_type_str_from_object(self):

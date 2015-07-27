@@ -116,6 +116,7 @@ setup(name="python-pnicore",
       data_files=[('include/pni/core/python',header_files)],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",
-      test_suite="test"
+      test_suite="test",
+      test_loader = "unittest:TestLoader"
         )
 
