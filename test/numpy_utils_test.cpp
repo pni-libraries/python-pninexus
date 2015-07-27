@@ -25,6 +25,7 @@
 #include <vector>
 #include <list>
 
+#include <pni/core/types.hpp>
 #include "../src/numpy_utils.hpp"
 #include "../src/init_numpy.hpp"
 #include "../src/utils.hpp"
@@ -33,6 +34,14 @@
 
 
 using namespace boost::python; 
+using namespace pni::core;
+
+list get_shape(const object &o)
+{
+    auto s =  numpy::get_shape<shape_t>(o);
+
+    return Container2List(s);
+}
 
 
 BOOST_PYTHON_MODULE(numpy_utils_test)
@@ -43,6 +52,9 @@ BOOST_PYTHON_MODULE(numpy_utils_test)
 
     CHECK_TYPE_ID_FROM_OBJECT_EXPOSE();
     CHECK_TYPE_STR_FROM_OBJECT_EXPOSE();
+
+    def("get_shape",get_shape);
+    def("get_size",numpy::get_size);
 }
 
 

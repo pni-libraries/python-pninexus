@@ -51,4 +51,24 @@ class test_numpy_utils(unittest.TestCase):
         self.assertTrue(nu_test.check_type_str_string_from_object(numpy.array("hello",dtype="string")))
         self.assertTrue(nu_test.check_type_str_bool_from_object(numpy.array(True,dtype="bool")))
 
+    def test_get_shape(self):
+        s = nu_test.get_shape(numpy.ones((2,5),dtype="uint8"))
+        self.assertEqual(len(s),2)
+        self.assertEqual(s[0],2)
+        self.assertEqual(s[1],5)
+
+        s = nu_test.get_shape(numpy.ones((10),dtype="int16"))
+        self.assertEqual(len(s),1)
+        self.assertEqual(s[0],10)
+        
+        s = nu_test.get_shape(numpy.array(10))
+        self.assertEqual(len(s),0)
+
+        self.assertRaises(pni.core.type_error,nu_test.get_shape,1)
+
+    def test_get_size(self):
+        self.assertEqual(nu_test.get_size(numpy.ones((2,5),dtype="uint8")),10)
+        self.assertEqual(nu_test.get_size(numpy.ones((10),dtype="int16")),10)
+        self.assertEqual(nu_test.get_size(numpy.array(10)),1)
+
 

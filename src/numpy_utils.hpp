@@ -157,6 +157,7 @@ namespace numpy
     template<typename CTYPE> 
     CTYPE get_shape(const boost::python::object &o)
     {
+        using namespace pni::core;
         typedef typename CTYPE::value_type value_type;
 
         if(!is_array(o))
