@@ -19,7 +19,7 @@ class test_exceptions(unittest.TestCase):
                           ex_trans_test.throw_shape_mismatch_error)
     
     def test_throw_size_mismatch_error(self):
-        self.assertRaises(pni.core.size_mismatch_error,
+        self.assertRaises(pni.core.SizeMismatchError,
                           ex_trans_test.throw_size_mismatch_error)
 
     def test_throw_index_error(self):
@@ -29,7 +29,7 @@ class test_exceptions(unittest.TestCase):
         self.assertRaises(KeyError,ex_trans_test.throw_key_error)
 
     def test_throw_file_error(self):
-        self.assertRaises(pni.core.file_error,
+        self.assertRaises(pni.core.FileError,
                           ex_trans_test.throw_file_error)
 
     def test_throw_type_error(self):
@@ -39,22 +39,22 @@ class test_exceptions(unittest.TestCase):
         self.assertRaises(ValueError,ex_trans_test.throw_value_error)
 
     def test_throw_range_error(self):
-        self.assertRaises(pni.core.range_error,
+        self.assertRaises(pni.core.RangeError,
                           ex_trans_test.throw_range_error)
 
     def test_throw_not_implemented_error(self):
-        self.assertRaises(pni.core.not_implemented_error,
+        self.assertRaises(NotImplementedError,
                           ex_trans_test.throw_not_implemented_error)
 
     def test_throw_iterator_error(self):
-        self.assertRaises(pni.core.iterator_error,
+        self.assertRaises(pni.core.IteratorError,
                           ex_trans_test.throw_iterator_error)
     
     def test_throw_cli_argument_error(self):
-        self.assertRaises(pni.core.cli_argument_error,
+        self.assertRaises(pni.core.CliArgumentError,
                           ex_trans_test.throw_cli_argument_error)
     
     def test_throw_cli_error(self):
-        self.assertRaises(pni.core.cli_error,
+        self.assertRaises(pni.core.CliError,
                           ex_trans_test.throw_cli_error)
 

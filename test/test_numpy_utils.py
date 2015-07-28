@@ -80,13 +80,7 @@ class test_numpy_utils(unittest.TestCase):
         s = nu_test.get_shape(numpy.array(10))
         self.assertEqual(len(s),0)
 
-        try:
-            nu_test.get_shape(1)
-            self.assertTrue(False)
-        except pni.core.type_error:
-            self.assertTrue(True)
-        except:
-            self.assertTrue(False)
+        self.assertRaises(TypeError,nu_test.get_shape,1)
 
     def test_get_size(self):
         self.assertEqual(nu_test.get_size(numpy.ones((2,5),dtype="uint8")),10)

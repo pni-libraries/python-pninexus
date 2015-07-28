@@ -103,77 +103,96 @@ void value_error_translator(value_error const& error)
     PyErr_SetString(PyExc_ValueError,stream.str().c_str());
 }
 
+void not_implemented_error_translator(not_implemented_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_NotImplementedError,stream.str().c_str());
+}
+
+
 //====================General purpose exceptions===============================
-//ERR_TRANSLATOR(memory_allocation_error)
-//ERR_TRANSLATOR(memory_not_allocated_error)
-//ERR_TRANSLATOR(shape_mismatch_error)
-ERR_TRANSLATOR(size_mismatch_error)
-//ERR_TRANSLATOR(index_error)
-//ERR_TRANSLATOR(key_error)
-ERR_TRANSLATOR(file_error)
-//ERR_TRANSLATOR(type_error)
-//ERR_TRANSLATOR(value_error)
-ERR_TRANSLATOR(range_error)
-ERR_TRANSLATOR(not_implemented_error)
-ERR_TRANSLATOR(iterator_error)
-ERR_TRANSLATOR(cli_argument_error)
-ERR_TRANSLATOR(cli_error)
 
-static PyObject *PyExc_ShapeMismatchError;
-
+static object ShapeMismatchError;
+static object SizeMismatchError;
+static object FileError;
+static object RangeError;
+static object IteratorError;
+static object CliArgumentError;
+static object CliError;
 
 void shape_mismatch_error_translator(shape_mismatch_error const& error)
 {
     std::stringstream stream;
     stream<<error<<std::endl;
-    PyErr_SetString(PyExc_ShapeMismatchError,stream.str().c_str());
+    PyErr_SetString(ShapeMismatchError.ptr(),stream.str().c_str());
 }
 
+void size_mismatch_error_translator(size_mismatch_error const &error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(SizeMismatchError.ptr(),stream.str().c_str());
+}
+
+void file_error_translator(file_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(FileError.ptr(),stream.str().c_str());
+}
+
+void range_error_translator(range_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(RangeError.ptr(),stream.str().c_str());
+}
+
+void iterator_error_translator(iterator_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(IteratorError.ptr(),stream.str().c_str());
+}
+
+void cli_argument_error_translator(cli_argument_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(CliArgumentError.ptr(),stream.str().c_str());
+}
+
+void cli_error_translator(cli_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(CliError.ptr(),stream.str().c_str());
+}
 
 //-----------------------------------------------------------------------------
 void exception_registration()
 {
-    //define the base class for all exceptions
-    const string &(exception::*exception_get_description)() const =
-        &exception::description;
-    class_<exception>("Exception")
-        .def(init<>())
-        .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
-        .def(self_ns::str(self_ns::self))
-        ;
+    ShapeMismatchError = object(handle<>(PyErr_NewException("pni.core.ShapeMismatchError",nullptr,nullptr)));
+    scope().attr("ShapeMismatchError") = ShapeMismatchError;
 
-    PyExc_ShapeMismatchError = PyErr_NewException("pni.core.ShapeMismatchError",nullptr,nullptr);
-    scope().attr("ShapeMismatchError") = object(handle<>(borrowed(PyExc_ShapeMismatchError)));
+    SizeMismatchError = object(handle<>(PyErr_NewException("pni.core.SizeMismatchError",nullptr,nullptr)));
+    scope().attr("SizeMismatchError") = SizeMismatchError;
+    
+    FileError = object(handle<>(PyErr_NewException("pni.core.FileError",nullptr,nullptr)));
+    scope().attr("FileError") = FileError;
 
-    //ERR_OBJECT_DECL(memory_allocation_error);
-    //ERR_OBJECT_DECL(memory_not_allocated_error);
-    //ERR_OBJECT_DECL(shape_mismatch_error);
-    ERR_OBJECT_DECL(size_mismatch_error);
-    //ERR_OBJECT_DECL(index_error);
-    //ERR_OBJECT_DECL(key_error);
-    ERR_OBJECT_DECL(file_error);
-    //ERR_OBJECT_DECL(type_error);
-    //ERR_OBJECT_DECL(value_error);
-    ERR_OBJECT_DECL(range_error);
-    ERR_OBJECT_DECL(not_implemented_error);
-    ERR_OBJECT_DECL(iterator_error);
-    ERR_OBJECT_DECL(cli_argument_error);
-    ERR_OBJECT_DECL(cli_error);
-   
-    //ERR_REGISTRATION(memory_allocation_error);
-    //ERR_REGISTRATION(memory_not_allocated_error);
-    //ERR_REGISTRATION(shape_mismatch_error);
-    ERR_REGISTRATION(size_mismatch_error);
-    //ERR_REGISTRATION(index_error);
-    //ERR_REGISTRATION(key_error);
-    ERR_REGISTRATION(file_error);
-    //ERR_REGISTRATION(type_error);
-    //ERR_REGISTRATION(value_error);
-    ERR_REGISTRATION(range_error);
-    ERR_REGISTRATION(not_implemented_error);
-    ERR_REGISTRATION(iterator_error);
-    ERR_REGISTRATION(cli_argument_error);
-    ERR_REGISTRATION(cli_error);
+    RangeError = object(handle<>(PyErr_NewException("pni.core.RangeError",nullptr,nullptr)));
+    scope().attr("RangeError") = RangeError;
+    
+    IteratorError = object(handle<>(PyErr_NewException("pni.core.IteratorError",nullptr,nullptr)));
+    scope().attr("IteratorError") = IteratorError;
+    
+    CliArgumentError = object(handle<>(PyErr_NewException("pni.core.CliArgumentError",nullptr,nullptr)));
+    scope().attr("CliArgumentError") = CliArgumentError;
+
+    CliError = object(handle<>(PyErr_NewException("pni.core.CliError",nullptr,nullptr)));
+    scope().attr("CliError") = CliError;
 
     register_exception_translator<memory_allocation_error>(memory_allocation_error_translator);
     register_exception_translator<memory_not_allocated_error>(memory_not_allocated_error_translator);
@@ -182,5 +201,12 @@ void exception_registration()
     register_exception_translator<type_error>(type_error_translator);
     register_exception_translator<value_error>(value_error_translator);
     register_exception_translator<shape_mismatch_error>(shape_mismatch_error_translator);
+    register_exception_translator<size_mismatch_error>(size_mismatch_error_translator);
+    register_exception_translator<file_error>(file_error_translator);
+    register_exception_translator<range_error>(range_error_translator);
+    register_exception_translator<not_implemented_error>(not_implemented_error_translator);
+    register_exception_translator<iterator_error>(iterator_error_translator);
+    register_exception_translator<cli_argument_error>(cli_argument_error_translator);
+    register_exception_translator<cli_error>(cli_error_translator);
 
 }

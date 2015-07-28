@@ -21,19 +21,11 @@
 ##     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 ##
 
-#from ._core import memory_allocation_error
-#from ._core import memory_not_allocated_error
-#from ._core import shape_mismatch_error
 from ._core import ShapeMismatchError
-from ._core import size_mismatch_error
-#from ._core import index_error
-#from ._core import key_error
-from ._core import file_error
-#from ._core import type_error
-#from ._core import value_error
-from ._core import range_error
-from ._core import not_implemented_error
-from ._core import iterator_error
-from ._core import cli_argument_error
-from ._core import cli_error
+from ._core import SizeMismatchError
+from ._core import FileError
+from ._core import RangeError
+from ._core import IteratorError
+from ._core import CliArgumentError
+from ._core import CliError
 
