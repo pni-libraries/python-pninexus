@@ -9,15 +9,13 @@ else:
 
 class test_exceptions(unittest.TestCase):
     def test_throw_memory_allocation_error(self):
-        self.assertRaises(pni.core.memory_allocation_error,
-                          ex_trans_test.throw_memory_allocation_error)
+        self.assertRaises(MemoryError,ex_trans_test.throw_memory_allocation_error)
 
     def test_throw_memory_not_allocated_error(self):
-        self.assertRaises(pni.core.memory_not_allocated_error,
-                          ex_trans_test.throw_memory_not_allocated_error)
+        self.assertRaises(MemoryError,ex_trans_test.throw_memory_not_allocated_error)
     
     def test_throw_shape_mismatch_error(self):
-        self.assertRaises(pni.core.shape_mismatch_error,
+        self.assertRaises(pni.core.ShapeMismatchError,
                           ex_trans_test.throw_shape_mismatch_error)
     
     def test_throw_size_mismatch_error(self):
@@ -25,24 +23,20 @@ class test_exceptions(unittest.TestCase):
                           ex_trans_test.throw_size_mismatch_error)
 
     def test_throw_index_error(self):
-        self.assertRaises(pni.core.index_error,
-                          ex_trans_test.throw_index_error)
+        self.assertRaises(IndexError,ex_trans_test.throw_index_error)
 
     def test_throw_key_error(self):
-        self.assertRaises(pni.core.key_error,
-                          ex_trans_test.throw_key_error)
+        self.assertRaises(KeyError,ex_trans_test.throw_key_error)
 
     def test_throw_file_error(self):
         self.assertRaises(pni.core.file_error,
                           ex_trans_test.throw_file_error)
 
     def test_throw_type_error(self):
-        self.assertRaises(pni.core.type_error,
-                          ex_trans_test.throw_type_error)
+        self.assertRaises(TypeError,ex_trans_test.throw_type_error)
 
     def test_throw_value_error(self):
-        self.assertRaises(pni.core.value_error,
-                          ex_trans_test.throw_value_error)
+        self.assertRaises(ValueError,ex_trans_test.throw_value_error)
 
     def test_throw_range_error(self):
         self.assertRaises(pni.core.range_error,

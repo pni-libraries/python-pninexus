@@ -25,6 +25,7 @@ extern "C"{
 #include<Python.h>
 }
 
+#include <sstream>
 #include <pni/core/error.hpp>
 #include <boost/python.hpp>
 
@@ -33,21 +34,100 @@ extern "C"{
 using namespace pni::core;
 using namespace boost::python;
 
+//
+// Translation map between PNI and Python exceptions
+// 
+//   C++ exception             -> Python 3.X           -> Python 2.X
+// memory_allocation_error     -> PyExc_MemoryError    -> PyExc_MemoryError
+// memory_not_allocated_error  -> PyExc_MemoryError    -> PyExc_MemoryError
+// shape_mismatch_error        -> 
+// size_mismatch_error         ->
+// index_error                 -> PyExc_IndexError     -> PyExc_IndexError
+// key_error                   -> PyExc_KeyError       -> PyExc_IndexError
+// file_error                  -> 
+// type_error                  -> PyExc_TypeError      -> PyExc_TypeError
+// value_error                 -> PyExc_ValueError     -> PyExc_ValueError
+// range_error                 -> 
+// not_implemented_error       -> PyExc_NotImplementedError -> PyExc_NotImplementedError
+// iterator_error              -> 
+// cli_argument_error          -> 
+// cli_error                   -> 
+
+
+//-----------------------------------------------------------------------------
+void memory_allocation_error_translator(memory_allocation_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_MemoryError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void memory_not_allocated_error_translator(memory_not_allocated_error const
+        &error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_MemoryError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void index_error_translator(index_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_IndexError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void key_error_translator(key_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_KeyError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void type_error_translator(type_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_TypeError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void value_error_translator(value_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_ValueError,stream.str().c_str());
+}
+
 //====================General purpose exceptions===============================
-ERR_TRANSLATOR(memory_allocation_error)
-ERR_TRANSLATOR(memory_not_allocated_error)
-ERR_TRANSLATOR(shape_mismatch_error)
+//ERR_TRANSLATOR(memory_allocation_error)
+//ERR_TRANSLATOR(memory_not_allocated_error)
+//ERR_TRANSLATOR(shape_mismatch_error)
 ERR_TRANSLATOR(size_mismatch_error)
-ERR_TRANSLATOR(index_error)
-ERR_TRANSLATOR(key_error)
+//ERR_TRANSLATOR(index_error)
+//ERR_TRANSLATOR(key_error)
 ERR_TRANSLATOR(file_error)
-ERR_TRANSLATOR(type_error)
-ERR_TRANSLATOR(value_error)
+//ERR_TRANSLATOR(type_error)
+//ERR_TRANSLATOR(value_error)
 ERR_TRANSLATOR(range_error)
 ERR_TRANSLATOR(not_implemented_error)
 ERR_TRANSLATOR(iterator_error)
 ERR_TRANSLATOR(cli_argument_error)
 ERR_TRANSLATOR(cli_error)
+
+static PyObject *PyExc_ShapeMismatchError;
+
+
+void shape_mismatch_error_translator(shape_mismatch_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_ShapeMismatchError,stream.str().c_str());
+}
 
 
 //-----------------------------------------------------------------------------
@@ -62,35 +142,45 @@ void exception_registration()
         .def(self_ns::str(self_ns::self))
         ;
 
-    ERR_OBJECT_DECL(memory_allocation_error);
-    ERR_OBJECT_DECL(memory_not_allocated_error);
-    ERR_OBJECT_DECL(shape_mismatch_error);
+    PyExc_ShapeMismatchError = PyErr_NewException("pni.core.ShapeMismatchError",nullptr,nullptr);
+    scope().attr("ShapeMismatchError") = object(handle<>(borrowed(PyExc_ShapeMismatchError)));
+
+    //ERR_OBJECT_DECL(memory_allocation_error);
+    //ERR_OBJECT_DECL(memory_not_allocated_error);
+    //ERR_OBJECT_DECL(shape_mismatch_error);
     ERR_OBJECT_DECL(size_mismatch_error);
-    ERR_OBJECT_DECL(index_error);
-    ERR_OBJECT_DECL(key_error);
+    //ERR_OBJECT_DECL(index_error);
+    //ERR_OBJECT_DECL(key_error);
     ERR_OBJECT_DECL(file_error);
-    ERR_OBJECT_DECL(type_error);
-    ERR_OBJECT_DECL(value_error);
+    //ERR_OBJECT_DECL(type_error);
+    //ERR_OBJECT_DECL(value_error);
     ERR_OBJECT_DECL(range_error);
     ERR_OBJECT_DECL(not_implemented_error);
     ERR_OBJECT_DECL(iterator_error);
     ERR_OBJECT_DECL(cli_argument_error);
     ERR_OBJECT_DECL(cli_error);
    
-    ERR_REGISTRATION(memory_allocation_error);
-    ERR_REGISTRATION(memory_not_allocated_error);
-    ERR_REGISTRATION(shape_mismatch_error);
+    //ERR_REGISTRATION(memory_allocation_error);
+    //ERR_REGISTRATION(memory_not_allocated_error);
+    //ERR_REGISTRATION(shape_mismatch_error);
     ERR_REGISTRATION(size_mismatch_error);
-    ERR_REGISTRATION(index_error);
-    ERR_REGISTRATION(key_error);
+    //ERR_REGISTRATION(index_error);
+    //ERR_REGISTRATION(key_error);
     ERR_REGISTRATION(file_error);
-    ERR_REGISTRATION(type_error);
-    ERR_REGISTRATION(value_error);
+    //ERR_REGISTRATION(type_error);
+    //ERR_REGISTRATION(value_error);
     ERR_REGISTRATION(range_error);
     ERR_REGISTRATION(not_implemented_error);
     ERR_REGISTRATION(iterator_error);
     ERR_REGISTRATION(cli_argument_error);
     ERR_REGISTRATION(cli_error);
 
+    register_exception_translator<memory_allocation_error>(memory_allocation_error_translator);
+    register_exception_translator<memory_not_allocated_error>(memory_not_allocated_error_translator);
+    register_exception_translator<index_error>(index_error_translator);
+    register_exception_translator<key_error>(key_error_translator);
+    register_exception_translator<type_error>(type_error_translator);
+    register_exception_translator<value_error>(value_error_translator);
+    register_exception_translator<shape_mismatch_error>(shape_mismatch_error_translator);
 
 }
