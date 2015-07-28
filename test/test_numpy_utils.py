@@ -37,7 +37,13 @@ class test_numpy_utils(unittest.TestCase):
         self.assertTrue(nu_test.check_type_id_complex32_from_object(numpy.array(1,dtype="complex64")))
         self.assertTrue(nu_test.check_type_id_complex64_from_object(numpy.array(1,dtype="complex128")))
         self.assertTrue(nu_test.check_type_id_complex128_from_object(numpy.array(1,dtype="complex256")))
-        self.assertTrue(nu_test.check_type_id_string_from_object(numpy.array(test_data.str_string,dtype="string")))
+        if config.PY_MAJOR_VERSION >= 3:
+            self.assertTrue(nu_test.check_type_id_string_from_object(
+                            numpy.array(test_data.uc_string,dtype="unicode")))
+        else:
+            self.assertTrue(nu_test.check_type_id_string_from_object(
+                            numpy.array(test_data.str_string,dtype="string")))
+
         self.assertTrue(nu_test.check_type_id_bool_from_object(numpy.array(True,dtype="bool")))
     
     def test_check_type_str_from_object(self):
@@ -55,7 +61,10 @@ class test_numpy_utils(unittest.TestCase):
         self.assertTrue(nu_test.check_type_str_complex32_from_object(numpy.array(1,dtype="complex64")))
         self.assertTrue(nu_test.check_type_str_complex64_from_object(numpy.array(1,dtype="complex128")))
         self.assertTrue(nu_test.check_type_str_complex128_from_object(numpy.array(1,dtype="complex256")))
-        self.assertTrue(nu_test.check_type_str_string_from_object(numpy.array("hello",dtype="string")))
+        if config.PY_MAJOR_VERSION >= 3:
+            self.assertTrue(nu_test.check_type_str_string_from_object(numpy.array("hello",dtype="unicode")))
+        else:
+            self.assertTrue(nu_test.check_type_str_string_from_object(numpy.array("hello",dtype="string")))
         self.assertTrue(nu_test.check_type_str_bool_from_object(numpy.array(True,dtype="bool")))
 
     def test_get_shape(self):
@@ -71,7 +80,13 @@ class test_numpy_utils(unittest.TestCase):
         s = nu_test.get_shape(numpy.array(10))
         self.assertEqual(len(s),0)
 
-        self.assertRaises(pni.core.type_error,nu_test.get_shape,1)
+        try:
+            nu_test.get_shape(1)
+            self.assertTrue(False)
+        except pni.core.type_error:
+            self.assertTrue(True)
+        except:
+            self.assertTrue(False)
 
     def test_get_size(self):
         self.assertEqual(nu_test.get_size(numpy.ones((2,5),dtype="uint8")),10)

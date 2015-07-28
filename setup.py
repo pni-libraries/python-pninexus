@@ -97,6 +97,7 @@ numpy_utils_test = Extension("test.numpy_utils_test",
                              library_dirs = library_dirs+[object_dir],
                              libraries = libraries+[core_name],
                              extra_compile_args = extra_compile_args)
+
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------

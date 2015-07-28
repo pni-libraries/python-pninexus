@@ -68,7 +68,11 @@ namespace numpy
             case NPY_CDOUBLE:     return pni::core::type_id_t::COMPLEX64;
             case NPY_CLONGDOUBLE: return pni::core::type_id_t::COMPLEX128;
             case NPY_BOOL:   return pni::core::type_id_t::BOOL;
+#if PY_MAJOR_VERSION >= 3
+            case NPY_UNICODE: return pni::core::type_id_t::STRING;
+#else
             case NPY_STRING: return pni::core::type_id_t::STRING;
+#endif
             default:
                 throw pni::core::type_error(pni::core::EXCEPTION_RECORD,
                 "Type of numpy array cannot be handled!");
