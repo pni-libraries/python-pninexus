@@ -26,10 +26,9 @@ extern "C"{
 }
 
 #include <sstream>
+#include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
 #include <boost/python.hpp>
-
-#include "error_utils.hpp"
 
 using namespace pni::core;
 using namespace boost::python;

@@ -33,7 +33,6 @@ extern "C"{
 
 #include <boost/python/slice.hpp>
 #include "utils.hpp"
-#include "error_utils.hpp"
 #include "numpy_utils.hpp"
 
 using namespace boost::python;
