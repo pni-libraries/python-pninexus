@@ -21,6 +21,12 @@
 ##     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 ##
 
+"""
+Author:
+    Eugen Wintersberger <eugen.witnersberger@desy.de>
+
+"""
+
 from ._core import ShapeMismatchError
 from ._core import SizeMismatchError
 from ._core import FileError
@@ -28,4 +34,3 @@ from ._core import RangeError
 from ._core import IteratorError
 from ._core import CliArgumentError
 from ._core import CliError
-

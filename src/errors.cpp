@@ -169,28 +169,71 @@ void cli_error_translator(cli_error const& error)
     PyErr_SetString(CliError.ptr(),stream.str().c_str());
 }
 
+static char *ShapeMismatchError_Doc=
+"Wraps the `pni::core::shape_mismatch_error` C++ exception. This exception "
+" is typically thrown iperations where two array or array-like objects are "
+"involved which are supposed to have the same shape in order for the "
+"operation to succeed.";
+
+static char *SizeMismatchError_Doc=
+"Wraps the `pni::core::size_mismatch_error` C++ exception. This exception"
+" is typically thrown by operations wher two containers involved are "
+"supposed to have the same size (number of elements) in order for the "
+"operation to succeed.";
+
+static char *FileError_Doc=
+"Wraps the `pni::core::file_error` C++ exception. Thrown by operations from"
+" libpnicore and its related libraries in situations where a file cannot"
+" be opened or is in any other case faulty or access is denied.";
+
+static char *RangeError_Doc=
+"Wraps the `pni::core::range_error` C++ exception. Thrown in situations where"
+" a numeric value must be within a particular range.";
+
+static char *IteratorError_Doc=
+"Wraps the `pni::core::iterator_error` C++ exception. Thrown by the iterators"
+" provided by libpnicore in situations where something went wrong like an"
+" element cannot be dereferenced. Do not confuse this with the Python "
+" exception used to terminate iteration over a container!";
+
+static char *CliArgumentError_Doc=
+"Wraps the `pni::core::cli_argument_error` C++ exception. Thrown when a "
+" command line argument has an invalid value or is ill formatted.";
+
+static char *CliError_Doc=
+"Wraps the `pni::core::cli_error` C++ exception. Thrown in case of a "
+"general command line error.";
+
+object new_exception(char *name,char *doc)
+{
+    return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,nullptr,nullptr)));
+}
+
 //-----------------------------------------------------------------------------
 void exception_registration()
 {
-    ShapeMismatchError = object(handle<>(PyErr_NewException("pni.core.ShapeMismatchError",nullptr,nullptr)));
+    ShapeMismatchError = new_exception("pni.core.ShapeMismatchError",
+                                       ShapeMismatchError_Doc);
     scope().attr("ShapeMismatchError") = ShapeMismatchError;
 
-    SizeMismatchError = object(handle<>(PyErr_NewException("pni.core.SizeMismatchError",nullptr,nullptr)));
+    SizeMismatchError = new_exception("pni.core.SizeMismatchError",
+                                      SizeMismatchError_Doc);
     scope().attr("SizeMismatchError") = SizeMismatchError;
     
-    FileError = object(handle<>(PyErr_NewException("pni.core.FileError",nullptr,nullptr)));
+    FileError = new_exception("pni.core.FileError",FileError_Doc);
     scope().attr("FileError") = FileError;
 
-    RangeError = object(handle<>(PyErr_NewException("pni.core.RangeError",nullptr,nullptr)));
+    RangeError = new_exception("pni.core.RangeError",RangeError_Doc);
     scope().attr("RangeError") = RangeError;
     
-    IteratorError = object(handle<>(PyErr_NewException("pni.core.IteratorError",nullptr,nullptr)));
+    IteratorError = new_exception("pni.core.IteratorError",IteratorError_Doc);
     scope().attr("IteratorError") = IteratorError;
     
-    CliArgumentError = object(handle<>(PyErr_NewException("pni.core.CliArgumentError",nullptr,nullptr)));
+    CliArgumentError = new_exception("pni.core.CliArgumentError",
+                                     CliArgumentError_Doc);
     scope().attr("CliArgumentError") = CliArgumentError;
 
-    CliError = object(handle<>(PyErr_NewException("pni.core.CliError",nullptr,nullptr)));
+    CliError = new_exception("pni.core.CliError",CliError_Doc);
     scope().attr("CliError") = CliError;
 
     register_exception_translator<memory_allocation_error>(memory_allocation_error_translator);
