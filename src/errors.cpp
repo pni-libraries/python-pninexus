@@ -33,27 +33,88 @@ extern "C"{
 using namespace pni::core;
 using namespace boost::python;
 
-//
-// Translation map between PNI and Python exceptions
-// 
-//   C++ exception             -> Python 3.X           -> Python 2.X
-// memory_allocation_error     -> PyExc_MemoryError    -> PyExc_MemoryError
-// memory_not_allocated_error  -> PyExc_MemoryError    -> PyExc_MemoryError
-// shape_mismatch_error        -> 
-// size_mismatch_error         ->
-// index_error                 -> PyExc_IndexError     -> PyExc_IndexError
-// key_error                   -> PyExc_KeyError       -> PyExc_IndexError
-// file_error                  -> 
-// type_error                  -> PyExc_TypeError      -> PyExc_TypeError
-// value_error                 -> PyExc_ValueError     -> PyExc_ValueError
-// range_error                 -> 
-// not_implemented_error       -> PyExc_NotImplementedError -> PyExc_NotImplementedError
-// iterator_error              -> 
-// cli_argument_error          -> 
-// cli_error                   -> 
+//=============================================================================
+// Static variables holding the custom exceptions provided by this module
+//=============================================================================
+
+//!
+//! \ingroup error_management
+//! \brief static ShapeMismatchError instance
+static object ShapeMismatchError;
+//! \ingroup error_management
+//! \brief static SizeMismatchError instance in error_management
+static object SizeMismatchError;
+//! \ingroup error_management
+//! \brief static FileError instance
+static object FileError;
+//! \ingroup error_management
+//! \brief static RangeError instance
+static object RangeError;
+//! \ingroup error_management
+//! \brief static IteratorError instance 
+static object IteratorError;
+//! \ingroup error_management
+//! \brief static CliArgumentError instance
+static object CliArgumentError;
+//! \ingroup error_management
+//! \brief static CliError instance
+static object CliError;
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.ShapeMismatchError`
+static char *ShapeMismatchError_Doc=
+"Wraps the `pni::core::shape_mismatch_error` C++ exception. This exception "
+" is typically thrown iperations where two array or array-like objects are "
+"involved which are supposed to have the same shape in order for the "
+"operation to succeed.";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.SizeMismatchError`
+static char *SizeMismatchError_Doc=
+"Wraps the `pni::core::size_mismatch_error` C++ exception. This exception"
+" is typically thrown by operations wher two containers involved are "
+"supposed to have the same size (number of elements) in order for the "
+"operation to succeed.";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.FileError`
+static char *FileError_Doc=
+"Wraps the `pni::core::file_error` C++ exception. Thrown by operations from"
+" libpnicore and its related libraries in situations where a file cannot"
+" be opened or is in any other case faulty or access is denied.";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.RangeError`
+static char *RangeError_Doc=
+"Wraps the `pni::core::range_error` C++ exception. Thrown in situations where"
+" a numeric value must be within a particular range.";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.IteratorError`
+static char *IteratorError_Doc=
+"Wraps the `pni::core::iterator_error` C++ exception. Thrown by the iterators"
+" provided by libpnicore in situations where something went wrong like an"
+" element cannot be dereferenced. Do not confuse this with the Python "
+" exception used to terminate iteration over a container!";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.CliArgumentError`
+static char *CliArgumentError_Doc=
+"Wraps the `pni::core::cli_argument_error` C++ exception. Thrown when a "
+" command line argument has an invalid value or is ill formatted.";
+
+//! \ingroup error_management
+//! \brief documentation string for `pni.core.CliError`
+static char *CliError_Doc=
+"Wraps the `pni::core::cli_error` C++ exception. Thrown in case of a "
+"general command line error.";
 
 
 //-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `memory_allocation_error` to `MemoryError`
+//! 
 void memory_allocation_error_translator(memory_allocation_error const& error)
 {
     std::stringstream stream;
@@ -62,8 +123,10 @@ void memory_allocation_error_translator(memory_allocation_error const& error)
 }
 
 //-----------------------------------------------------------------------------
-void memory_not_allocated_error_translator(memory_not_allocated_error const
-        &error)
+//!
+//! \ingroup error_management
+//! \brief translates `memory_not_allocated_error` to `MemoryError`
+void memory_not_allocated_error_translator(memory_not_allocated_error const &error)
 {
     std::stringstream stream;
     stream<<error<<std::endl;
@@ -71,6 +134,9 @@ void memory_not_allocated_error_translator(memory_not_allocated_error const
 }
 
 //-----------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief translates `index_error` to `IndexError`
 void index_error_translator(index_error const& error)
 {
     std::stringstream stream;
@@ -79,6 +145,9 @@ void index_error_translator(index_error const& error)
 }
 
 //-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `key_error` to `KeyError`
 void key_error_translator(key_error const& error)
 {
     std::stringstream stream;
@@ -87,6 +156,9 @@ void key_error_translator(key_error const& error)
 }
 
 //-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `type_error` to `TypeError`
 void type_error_translator(type_error const& error)
 {
     std::stringstream stream;
@@ -95,6 +167,9 @@ void type_error_translator(type_error const& error)
 }
 
 //-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `value_error` to `ValueError`
 void value_error_translator(value_error const& error)
 {
     std::stringstream stream;
@@ -102,6 +177,10 @@ void value_error_translator(value_error const& error)
     PyErr_SetString(PyExc_ValueError,stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `not_implemented_error` to `NotImplementedError`
 void not_implemented_error_translator(not_implemented_error const& error)
 {
     std::stringstream stream;
@@ -110,16 +189,11 @@ void not_implemented_error_translator(not_implemented_error const& error)
 }
 
 
-//====================General purpose exceptions===============================
 
-static object ShapeMismatchError;
-static object SizeMismatchError;
-static object FileError;
-static object RangeError;
-static object IteratorError;
-static object CliArgumentError;
-static object CliError;
-
+//------------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief translates `shape_mismatch_error` to `pni.core.ShapeMismatchError`
 void shape_mismatch_error_translator(shape_mismatch_error const& error)
 {
     std::stringstream stream;
@@ -127,6 +201,10 @@ void shape_mismatch_error_translator(shape_mismatch_error const& error)
     PyErr_SetString(ShapeMismatchError.ptr(),stream.str().c_str());
 }
 
+//------------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `size_mismatch_error` to `pni.core.SizeMismatchError`
 void size_mismatch_error_translator(size_mismatch_error const &error)
 {
     std::stringstream stream;
@@ -134,6 +212,10 @@ void size_mismatch_error_translator(size_mismatch_error const &error)
     PyErr_SetString(SizeMismatchError.ptr(),stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief translates `file_error` to `pni.core.FileError`
 void file_error_translator(file_error const& error)
 {
     std::stringstream stream;
@@ -141,6 +223,10 @@ void file_error_translator(file_error const& error)
     PyErr_SetString(FileError.ptr(),stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//!
+//! \ingroup error_managment
+//! \brief translates `range_error` to `pni.core.RangeError`
 void range_error_translator(range_error const& error)
 {
     std::stringstream stream;
@@ -148,6 +234,10 @@ void range_error_translator(range_error const& error)
     PyErr_SetString(RangeError.ptr(),stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief translates `iterator_error` to `pni.core.IteratorError`
 void iterator_error_translator(iterator_error const& error)
 {
     std::stringstream stream;
@@ -155,6 +245,10 @@ void iterator_error_translator(iterator_error const& error)
     PyErr_SetString(IteratorError.ptr(),stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief translates `cli_argument_error` to `pni.core.CliArgumentError`
 void cli_argument_error_translator(cli_argument_error const& error)
 {
     std::stringstream stream;
@@ -162,6 +256,10 @@ void cli_argument_error_translator(cli_argument_error const& error)
     PyErr_SetString(CliArgumentError.ptr(),stream.str().c_str());
 }
 
+//-----------------------------------------------------------------------------
+//! 
+//! \ingroup error_management
+//! \brief translates `cli_error` to `pni.core.CliError`
 void cli_error_translator(cli_error const& error)
 {
     std::stringstream stream;
@@ -169,47 +267,32 @@ void cli_error_translator(cli_error const& error)
     PyErr_SetString(CliError.ptr(),stream.str().c_str());
 }
 
-static char *ShapeMismatchError_Doc=
-"Wraps the `pni::core::shape_mismatch_error` C++ exception. This exception "
-" is typically thrown iperations where two array or array-like objects are "
-"involved which are supposed to have the same shape in order for the "
-"operation to succeed.";
 
-static char *SizeMismatchError_Doc=
-"Wraps the `pni::core::size_mismatch_error` C++ exception. This exception"
-" is typically thrown by operations wher two containers involved are "
-"supposed to have the same size (number of elements) in order for the "
-"operation to succeed.";
-
-static char *FileError_Doc=
-"Wraps the `pni::core::file_error` C++ exception. Thrown by operations from"
-" libpnicore and its related libraries in situations where a file cannot"
-" be opened or is in any other case faulty or access is denied.";
-
-static char *RangeError_Doc=
-"Wraps the `pni::core::range_error` C++ exception. Thrown in situations where"
-" a numeric value must be within a particular range.";
-
-static char *IteratorError_Doc=
-"Wraps the `pni::core::iterator_error` C++ exception. Thrown by the iterators"
-" provided by libpnicore in situations where something went wrong like an"
-" element cannot be dereferenced. Do not confuse this with the Python "
-" exception used to terminate iteration over a container!";
-
-static char *CliArgumentError_Doc=
-"Wraps the `pni::core::cli_argument_error` C++ exception. Thrown when a "
-" command line argument has an invalid value or is ill formatted.";
-
-static char *CliError_Doc=
-"Wraps the `pni::core::cli_error` C++ exception. Thrown in case of a "
-"general command line error.";
-
+//!
+//! \ingroup error_management
+//! \brief exception creation utility function
+//! 
+//! This utility function is used inside exception_registration() to create
+//! the new exceptions. It was written just to shorten the code within 
+//! exception_registration() and does nothing special. 
+//!
+//! \param name the name of the new exception
+//! \param doc the doc string of the new exception
+//! \return boost::python::object for the new exception
+//!
 object new_exception(char *name,char *doc)
 {
     return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,nullptr,nullptr)));
 }
 
 //-----------------------------------------------------------------------------
+//!
+//! \ingroup error_management
+//! \brief register all translators create exceptions
+//!
+//! This function is called by `pni.core`s initialization function and 
+//! creates all new exceptions and registers the translator functions. 
+//! 
 void exception_registration()
 {
     ShapeMismatchError = new_exception("pni.core.ShapeMismatchError",

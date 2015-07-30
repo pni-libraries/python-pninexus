@@ -35,9 +35,11 @@ extern "C"
 
 //----------------------------------------------------------------------------
 //!
-//! \ingroup pnicore_converter
+//! \ingroup converter_doc
 //! \brief converts numpy scalars to POD data
 //!
+//! Numpy scalars need some special handling. Though they are a kind of 
+//! numpy array they should be converted to a POD C++ type. 
 //!
 struct numpy_scalar_converter
 {
@@ -46,7 +48,7 @@ struct numpy_scalar_converter
     //!
     //! \brief constructor
     //! 
-    //! Registers the converter for the boost::python runtime.
+    //! Registers the converter at the boost::python runtime.
     //!
     numpy_scalar_converter();
 

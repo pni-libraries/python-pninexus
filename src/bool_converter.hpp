@@ -27,24 +27,28 @@
 
 //----------------------------------------------------------------------------
 //!
-//! \ingroup pnicore_converters
+//! \ingroup converter_doc
 //! \brief convert bool_t to a python object
 //! 
 //! A converter structure to convert a value of bool_t from the C++ domain
-//! to a Python bool object in the Python domain.
+//! to a Python bool object in the Python domain. This converter is 
+//! necessary as there is no built in procedure to handle bool_t in Python.
 //!
 struct bool_t_to_python_converter
 {
     //! 
     //! \brief constructor
     //! 
-    //! When a converter is instantiated the converter is registered. 
+    //! The constructor not only instantiates a converter it also registers
+    //! it with the boost::python framework.
     //!
     bool_t_to_python_converter();
 
     //------------------------------------------------------------------------
     //!
     //! \brief conversion method
+    //! 
+    //! Convert an instance of bool_t to a Python bool object.
     //! 
     //! \param v instance of bool_t
     //! \return Python boolean object
@@ -55,7 +59,7 @@ struct bool_t_to_python_converter
 
 //----------------------------------------------------------------------------
 //!
-//! \ingroup pnicore_converters
+//! \ingroup converter_doc
 //! \brief convert Python bool object to bool_t
 //!
 //! Converts a Python boolean object to bool_t.  This is used in cases where 
@@ -68,7 +72,7 @@ struct python_to_bool_t_converter
     //!
     //! \brief constructor
     //! 
-    //! Registers the converter for the boost::python runtime.
+    //! Registers the converter at the boost::python runtime.
     //!
     python_to_bool_t_converter();
 
