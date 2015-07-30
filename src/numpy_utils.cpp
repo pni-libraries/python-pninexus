@@ -50,31 +50,37 @@ namespace numpy
     //------------------------------------------------------------------------
     pni::core::type_id_t type_id(const object &o)
     {
+        using namespace pni::core; 
+
+        if(!numpy::is_array(o) && !numpy::is_scalar(o))
+            throw type_error(EXCEPTION_RECORD,
+                    "Python object must be a numpy array or scalar!");
+
         //select the data type to use for writing the array data
         switch(PyArray_TYPE(o.ptr()))
         {
-            case PyArray_UINT8:  return pni::core::type_id_t::UINT8;
-            case PyArray_INT8:   return pni::core::type_id_t::INT8;
-            case PyArray_UINT16: return pni::core::type_id_t::UINT16;
-            case PyArray_INT16:  return pni::core::type_id_t::INT16;
-            case PyArray_UINT32: return pni::core::type_id_t::UINT32;
-            case PyArray_INT32:  return pni::core::type_id_t::INT32;
-            case PyArray_UINT64: return pni::core::type_id_t::UINT64;
-            case PyArray_INT64:  return pni::core::type_id_t::INT64;
-            case PyArray_FLOAT32:    return pni::core::type_id_t::FLOAT32;
-            case PyArray_FLOAT64:    return pni::core::type_id_t::FLOAT64;
-            case PyArray_LONGDOUBLE: return pni::core::type_id_t::FLOAT128;
-            case NPY_COMPLEX64:      return pni::core::type_id_t::COMPLEX32;
-            case NPY_CDOUBLE:     return pni::core::type_id_t::COMPLEX64;
-            case NPY_CLONGDOUBLE: return pni::core::type_id_t::COMPLEX128;
-            case NPY_BOOL:   return pni::core::type_id_t::BOOL;
+            case PyArray_UINT8:      return type_id_t::UINT8;
+            case PyArray_INT8:       return type_id_t::INT8;
+            case PyArray_UINT16:     return type_id_t::UINT16;
+            case PyArray_INT16:      return type_id_t::INT16;
+            case PyArray_UINT32:     return type_id_t::UINT32;
+            case PyArray_INT32:      return type_id_t::INT32;
+            case PyArray_UINT64:     return type_id_t::UINT64;
+            case PyArray_INT64:      return type_id_t::INT64;
+            case PyArray_FLOAT32:    return type_id_t::FLOAT32;
+            case PyArray_FLOAT64:    return type_id_t::FLOAT64;
+            case PyArray_LONGDOUBLE: return type_id_t::FLOAT128;
+            case NPY_COMPLEX64:      return type_id_t::COMPLEX32;
+            case NPY_CDOUBLE:        return type_id_t::COMPLEX64;
+            case NPY_CLONGDOUBLE:    return type_id_t::COMPLEX128;
+            case NPY_BOOL:           return type_id_t::BOOL;
 #if PY_MAJOR_VERSION >= 3
-            case NPY_UNICODE: return pni::core::type_id_t::STRING;
+            case NPY_UNICODE: return type_id_t::STRING;
 #else
-            case NPY_STRING: return pni::core::type_id_t::STRING;
+            case NPY_STRING:  return type_id_t::STRING;
 #endif
             default:
-                throw pni::core::type_error(pni::core::EXCEPTION_RECORD,
+                throw type_error(EXCEPTION_RECORD,
                 "Type of numpy array cannot be handled!");
         };
 
@@ -95,6 +101,11 @@ namespace numpy
     //------------------------------------------------------------------------
     size_t get_size(const object &o)
     {
+        using namespace pni::core;
+        if(!is_array(o))
+            throw type_error(EXCEPTION_RECORD,
+                    "Argument must be a numpy array!");
+
         return PyArray_SIZE(o.ptr());
     }
 //end of namespace

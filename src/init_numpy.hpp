@@ -29,6 +29,13 @@ extern "C"{
 #include <numpy/arrayobject.h>
 }
 
+//!
+//! \ingroup devel_doc
+//! \brief numpy initialization function
+//! 
+//! This function must be called in any case before any of the numpy 
+//! utility functions is called. Currently this function is called by 
+//! the initialization function of the `pni.core` package. 
 #if PY_MAJOR_VERSION >= 3
 int
 #else 

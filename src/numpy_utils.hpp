@@ -36,11 +36,15 @@ extern "C"{
 #include <pni/core/arrays.hpp>
 
 
+//!
+//! \ingroup pub_api devel_doc
+//! \brief numpy utility namespace 
+//!
 namespace numpy
 {
 
     //! 
-    //! \ingroup pnicore_numpy  
+    //! \ingroup devel_doc  
     //! \brief type mape for numpy types
     //! 
     //! This type-map maps PNI types as defines in pni/utils/Types.hpp to 
@@ -73,28 +77,34 @@ namespace numpy
     CREATE_PNI2NUMPY_TYPE(pni::core::string,NPY_STRING)
     CREATE_PNI2NUMPY_TYPE(pni::core::bool_t,NPY_BOOL)
 
+    //!
+    //! \ingroup devel_doc
+    //! \brief map between type_id_t and numpy types
+    //!
+    //! A static map between `libpnicore` `type_id_t` values and `numpy` 
+    //! data types.
     static const std::map<pni::core::type_id_t,int> type_id2numpy_id = {
-        {pni::core::type_id_t::UINT8,NPY_UINT8},
-        {pni::core::type_id_t::INT8,NPY_INT8},
-        {pni::core::type_id_t::UINT16,NPY_UINT16},
-        {pni::core::type_id_t::INT16,NPY_INT16},
-        {pni::core::type_id_t::UINT32,NPY_UINT32},
-        {pni::core::type_id_t::INT32,NPY_INT32},
-        {pni::core::type_id_t::UINT64,NPY_UINT64},
-        {pni::core::type_id_t::INT64,NPY_INT64},
-        {pni::core::type_id_t::FLOAT32,NPY_FLOAT},
-        {pni::core::type_id_t::FLOAT64,NPY_DOUBLE},
+        {pni::core::type_id_t::UINT8,  NPY_UINT8},
+        {pni::core::type_id_t::INT8,   NPY_INT8},
+        {pni::core::type_id_t::UINT16, NPY_UINT16},
+        {pni::core::type_id_t::INT16,  NPY_INT16},
+        {pni::core::type_id_t::UINT32, NPY_UINT32},
+        {pni::core::type_id_t::INT32,  NPY_INT32},
+        {pni::core::type_id_t::UINT64, NPY_UINT64},
+        {pni::core::type_id_t::INT64,  NPY_INT64},
+        {pni::core::type_id_t::FLOAT32, NPY_FLOAT},
+        {pni::core::type_id_t::FLOAT64, NPY_DOUBLE},
         {pni::core::type_id_t::FLOAT128,NPY_LONGDOUBLE},
-        {pni::core::type_id_t::COMPLEX32,NPY_CFLOAT},
-        {pni::core::type_id_t::COMPLEX64,NPY_CDOUBLE},
+        {pni::core::type_id_t::COMPLEX32, NPY_CFLOAT},
+        {pni::core::type_id_t::COMPLEX64, NPY_CDOUBLE},
         {pni::core::type_id_t::COMPLEX128,NPY_CLONGDOUBLE},
         {pni::core::type_id_t::STRING,NPY_STRING},
-        {pni::core::type_id_t::BOOL,NPY_BOOL}
+        {pni::core::type_id_t::BOOL,  NPY_BOOL}
     };
 
     //-------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief check if object is numpy array
     //! 
     //! Checks if an object is a numpy array. 
@@ -104,10 +114,14 @@ namespace numpy
 
     //------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief check if object is a numpy scalar
     //!
-    //! Retrun true if the object is a numpy scalar. False otherwise
+    //! Retrun true if the object is a numpy scalar. False otherwise. 
+    //! This function is quite similar to the general is_scalar function. 
+    //! In fact, is_scalar is calling this function to check whether or not 
+    //! an object is a numpy scalar. 
+    //! 
     //! \param o python object
     //! \return result
     //!
@@ -115,20 +129,28 @@ namespace numpy
 
     //------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief get type_id of a numpy object
     //! 
-    //! Return the type id of an array or scalar numpy object.
+    //! Return the `libpnicore` type ID from a numpy scalar or array. 
+    //! 
+    //! \throws type_error if the Python type has no counterpart in 
+    //! `libpnicore` or if the object is not an array or scalar 
+    //! 
+    //! \param o reference to the Python scalar or array
+    //! \return type ID of the scalar or array element type
     //! 
     pni::core::type_id_t type_id(const boost::python::object &o);
 
     //------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief get type string
     //! 
-    //! This function is necessary as numpy uses a different string
-    //! representation for complex numbers. 
+    //! Returns the numpy string representation for a particular `libpnicore` 
+    //! data type. This function is necessary as numpy uses a different string
+    //! representation for complex numbers (thus we cannot use the
+    //! corresponding function provided by `libpnicore`). 
     //!
     //! \param id type id for which to obtain the string rep.
     //! \return string representation of the type
@@ -137,19 +159,22 @@ namespace numpy
 
     //-------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \briefa get type string
+    //! 
+    //! Return the string representation 
     //!
     pni::core::string type_str(const boost::python::object &o);
 
     //-------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief get the shape of a numpy array
     //! 
     //! Return the number of elements along each dimension of a numpy array 
-    //! stored in a user determined container.
+    //! stored in a user determined C++ container type.
     //!
+    //! \throws type_error if the object is not a numpy array
     //! \tparam CTYPE container type for the shape data
     //! \param o object with numpy array
     //! \return instance of CTYPE with shape data
@@ -175,7 +200,7 @@ namespace numpy
 
     //------------------------------------------------------------------------
     //! 
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief get number of elements
     //! 
     //! Returns the number of elements stored in the array.
@@ -187,7 +212,7 @@ namespace numpy
 
     //-------------------------------------------------------------------------
     //!
-    //! \ingroup pnicore_numpy
+    //! \ingroup pub_api
     //! \brief get pointer to data
     //!
     //! Returns a pointer to the data stored in a numpy array. The pointer is
@@ -200,16 +225,23 @@ namespace numpy
     template<typename T> 
     T *get_data(const boost::python::object &o)
     {
+        using namespace pni::core;
+        if(!is_array(o))
+            throw type_error(EXCEPTION_RECORD,
+                    "Argument must be a numpy array!");
+
         return (T*)PyArray_DATA(o.ptr());
     }
 
     //------------------------------------------------------------------------
     //! 
-    //! \ingroup pnicore_numpy  
+    //! \ingroup pub_api
     //! \brief create a numpy array 
     //!
     //! This template function creates a new numpy array from shape and type
     //! information. This should be a rather simple thing.
+    //! If T does not have a numpy counterpart a compile time error will occur.
+    //!
     //! \tparam T data type to use for the numpy array
     //! \tparam CTYPE container type for the shape
     //! \param s instance of CTYPE with the required shape
@@ -265,6 +297,16 @@ namespace numpy
     }
 
     //-------------------------------------------------------------------------
+    //!
+    //! \ingroup pub_api
+    //! \brief get maximum string size from a container 
+    //! 
+    //! Return the maximum size of all strings stored in a container. 
+    //! 
+    //! \tparam CTYPE container type with strings
+    //! \param strings reference to the string container
+    //! \return maximum string size
+    //! 
     template<typename CTYPE>
     size_t max_string_size(const CTYPE &strings)
     {
