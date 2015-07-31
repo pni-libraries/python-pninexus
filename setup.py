@@ -5,6 +5,8 @@ import os
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 from setuptools import setup, find_packages, Extension
+from distutils.command.install import install
+from distutils.command.install_headers import install_headers
 import sysconfig
 
 def get_build_dir():
@@ -12,7 +14,6 @@ def get_build_dir():
 
     return os.path.join("build",build_dir.format(platform = sysconfig.get_platform(),
                                                  version = sys.version_info))
-
 
 #-----------------------------------------------------------------------------
 # load pnicore configuration with pkg-config
@@ -98,10 +99,18 @@ numpy_utils_test = Extension("test.numpy_utils_test",
                              libraries = libraries+[core_name],
                              extra_compile_args = extra_compile_args)
 
+class pnicore_install(install):
+    def run(self):
+        install.run(self)
+        h = install_headers(self.distribution)
+        print(h.distribution)
+        h.run()
+
+
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
-setup(name="python-pnicore",
+setup(name="pnicore",
       author="Eugen Wintersberger",
       author_email="eugen.wintersberger@desy.de",
       description="Python wrapper for libpnicore",
@@ -110,14 +119,15 @@ setup(name="python-pnicore",
                        "PNI libraries",
       maintainer = "Eugen Wintersberger",
       maintainer_email = "eugen.wintersberger@desy.de",
+      headers=["src/numpy_utils.hpp"],
       license = "GPLv2",
       version = "1.0.0",
         requires = ["numpy"],
         ext_modules=[pnicore_ext,ex_trans_test,utils_test,numpy_utils_test],
-      data_files=[('include/pni/core/python',header_files)],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",
       test_suite="test",
-      test_loader = "unittest:TestLoader"
+      test_loader = "unittest:TestLoader",
+      cmdclass={"install":pnicore_install}
         )
 
