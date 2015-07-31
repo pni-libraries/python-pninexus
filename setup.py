@@ -45,12 +45,6 @@ files = ["src/bool_converter.cpp",
          "src/init_numpy.cpp",
          "src/_core.cpp"]
 
-header_files = ["src/bool_converter.hpp",
-                "src/error_utils.hpp",
-                "src/numpy_scalar_converter.hpp",
-                "src/numpy_utils.hpp",
-                "src/init_numpy.hpp",
-                "src/utils.hpp"]
 
 #-----------------------------------------------------------------------------
 # setup for the pnicore extension
@@ -99,17 +93,23 @@ numpy_utils_test = Extension("test.numpy_utils_test",
                              libraries = libraries+[core_name],
                              extra_compile_args = extra_compile_args)
 
+
+#-----------------------------------------------------------------------------
+# customized version of the `install` command. The original version shipped 
+# with distutils does not install header files even if they are mentioned
+# in the project setup. 
+#
+# We thus call `install_headers` manually.
+#-----------------------------------------------------------------------------
 class pnicore_install(install):
     def run(self):
         install.run(self)
-        h = install_headers(self.distribution)
-        print(h.distribution)
-        h.run()
 
 
 #-----------------------------------------------------------------------------
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
+
 setup(name="pnicore",
       author="Eugen Wintersberger",
       author_email="eugen.wintersberger@desy.de",
@@ -119,15 +119,19 @@ setup(name="pnicore",
                        "PNI libraries",
       maintainer = "Eugen Wintersberger",
       maintainer_email = "eugen.wintersberger@desy.de",
-      headers=["src/numpy_utils.hpp"],
+      headers = ["src/bool_converter.hpp",
+                 "src/numpy_scalar_converter.hpp",
+                 "src/numpy_utils.hpp",
+                 "src/init_numpy.hpp",
+                 "src/utils.hpp"],
       license = "GPLv2",
       version = "1.0.0",
-        requires = ["numpy"],
-        ext_modules=[pnicore_ext,ex_trans_test,utils_test,numpy_utils_test],
+      requires = ["numpy"],
+      ext_modules=[pnicore_ext,ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pnicore",
       test_suite="test",
       test_loader = "unittest:TestLoader",
       cmdclass={"install":pnicore_install}
-        )
+    )
 
