@@ -1,0 +1,43 @@
+/*! \page installation Installing the Python bindings
+
+Installation of the Python bindings for \c libpninx is rather simple and follows
+the standard procedure for Python extensions. 
+
+\section install_sources Install from source code
+
+\subsection install_obt_code Obtaining the code
+
+According to PNI software release policy there are no tarballs with the source
+code available. The only way to obtain the source code is via the \c git
+repository of the project. The latest stable version can be obtained directly
+from the master branch of the repository. To obtain the sources clone the git
+repository with
+\code
+$> git clone git://git.code.sf.net/p/libpninxpython/code libpninxpython
+\endcode
+which clones the repository below the \c libpninxpython directory. 
+
+
+\subsection install_build Building the Python extension
+
+The installation follows now the standard Python rules. To build and code use
+\code
+$> python setup.py build 
+\endcode
+Installation can be done with
+\code
+$> python setup.py install
+\endcode
+which installs the Python bindings to the default location of your Python
+installation. If a custom location should be used use the \c --home option 
+like this
+\code
+$> python setup.py install --home=/home/eugen/Development/HDRI/install 
+\endcode
+
+
+\section install_binaries Install pre-build binary packages
+
+Binary packages will be available for various Linux Distributions as well as for
+OSX and Windows. 
+*/

@@ -1,0 +1,160 @@
+/*! \page userdoc User Documentation
+
+This part of the documentation is intended for developers who simply want to use
+the Python bindings to write Nexus files from within their applications.
+To use the binding you need to import the appropriate package. 
+This can be done with
+\code
+import pni.nx.h5 
+\endcode
+
+
+
+\section userdoc_files Handling files
+
+To create a new or open an existing nexus file the Python package provides two
+utility functions \c create_file and \c open_file. For both functions
+the first positional argument is mandatory. It is a string with the name (path)
+of the file top create or open.
+The following example shows the basic usage of \c create_file
+\includelineno nxfile_ex1.py 
+
+In addition to the filename \c create_file takes two optional keyword
+arguments:
+
+ - \c overwrite which is a boolean value. If \c true an already existing 
+ file with the same name will be truncated (its content will be deleted). 
+ If \c false the original file remains untouched and an exception will be thrown.
+ - \c splitsize NOT IMPLEMENTED YET.
+
+\c open_file has only one additional keyword argument: \c readonly.  If set to
+\c true the file will be opened in read-only mode.  In the following example the
+script tries to open a file. If this fails an exception of type \c
+nx.NXFileError will be thrown, caught by the except statement and the file is
+newly created.
+\includelineno nxfile_ex2.py
+The Nexus standard defines a couple of attributes that must be attached to the
+root group of a file. You do not have to take care about these attributes. They
+are managed automatically by the library. 
+
+\section userdoc_groups Groups 
+
+Groups are the fundamental organizational entity within a Nexus file.  They can
+be created by instances of \c NXGroup or \c NXFile using their \c create_group
+method. This method takes basically one argument: the name or path of the group
+to create.  It is important to understand how its name determines where the
+newly created group will be located within the file. For the following examples
+we assume that \c g in the code snippets is an instance of \c NXGroup
+representing a group with the absolute path \c /scan_1/instrument.  In the
+simplest case a group can be created with
+\code
+g.create_group("tth")
+\endcode
+which will creates a new group with path \c /scan\_1/instrument/tth (the new
+group thus resides directly below \c g).  Intermediate groups are created
+automatically. So for instance 
+\code
+g.create_group("monochromator/positioner")
+\endcode
+will create a new group with path \c
+/scan_1/instrument/monochromator/positioner.  The group \c monochromator does
+not have to exist prior to the above call.  By using an absolute path for the
+name the new group will be created wherever the path of the new group points to. 
+\code
+g.create_group("/scan_1/sample/omega")
+\endcode
+The \c create_group method accepts also the optional keyword argument \c nxclass
+which describes the Nexus object the newly created group shall represent. This
+is typically a Nexus base class. See the Nexus reference manual for more
+information on base classes.
+
+The next examples shows how the basic parameters of a group can be obtained from
+several properties related with an instance of \c NXGroup. 
+\includelineno nxgroup_ex1.py
+the output of the program reads
+\code
+group name:  instrument
+group path:  /scan_1/instrument
+group base:  /scan_1
+\endcode
+The name property returns the name of a group. The name is the last element of
+the full path of a group. The full path can be obtained from the \c path
+attribute. Finally, the \c base property returns the path of the groups parent.
+Groups posses a property named \c children which can be used to iterate over the
+child objects (groups and fields) located 
+\includelineno nxgroup_ex2.py
+Leading to the following output
+\code
+/scan_1/instrument
+/scan_1/monitor
+/scan_1/sample
+\endcode
+
+
+\section userdoc_attributes Attributes
+
+Attributes can be attached to instances of type \c NXGroup, \c NXFile, and \c
+NXField. These instances of \c NXAttribute can be used to store metadata.
+Attributes are virtually very similar to \c NXField though they do not have all
+the features a field has.  An attribute can be created using the \c attr method
+provided by the types mentioned before
+\code
+a = obj.attr("text","string")
+\endcode
+This method has two mandatory parameters: the name of the attribute and its
+type. The type is passed as a \c NUMPY type code string.  By default this method
+creates a scalar attribute which is capable to hold a single value of the chosen
+data type.  Additionally the keyword argument \c shape can be passed to this
+function to create a multidimensional data type.  The following call to \c attr
+creates a 3x3 array attribute of a 64Bit floating point type
+\code
+a = obj.attr("strain","float64",shape=(3,3))
+\endcode
+An attribute can be obtained from an object using either the \c attr method with
+only one argument: the name of the attribute, or the attribute manager member
+provided by each instance of \c NXGruop, \c NXField, or \c NXFile.  So to
+retrieve the \c strain attribute created previously we can either use
+\code
+a = obj.attr("strain")
+\endcode
+or
+\code
+a = obj.attributes["strain"]
+\endcode
+Each attribute object has four properties
+
+\li \c name the name of the attribute
+\li \c dtype the 
+\li \c shape a tuple with the number of elements along each dimension
+\li \c value the data value of the attribute
+
+In the case of a scalar attribute the \c shape property is an empty tuple.
+Except for the \c value property all properties are read only.  The value
+property can be used to read and write data to the attribute object.  The
+following example shall demonstrate who the \c value property of an attribute
+object can be used
+\includelineno nxattr_ex1.py
+Alternatively the attributes attached to an object can be accessed using the
+attribute manager member that is held by each instance of \c NXField, \c NXFile,
+and \c NXGroup. This object returns an iterator over all attributes attached to
+a particular object
+\includelineno nxattr_ex2.py
+
+
+\section userdoc_fields Storing data into fields
+
+The primary data holding facility in the Nexus world are fields. These objects
+are of type \c NXField and can be created by instances of \c NXGroup and \c
+NXFile using their \c create_field method. This method is quite similar to the 
+\c attr method mentioned in the previous section. To create a scalar attribute 
+one can simply us
+\code
+f = g.create_field("data","int16")
+\endcode
+
+
+\includelineno simple_io.py
+
+\subsection userdoc_fields_filter Using filters in fields
+
+*/

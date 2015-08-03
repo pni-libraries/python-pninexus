@@ -1,0 +1,43 @@
+\documentclass{scrbook}
+\usepackage{minted}
+\usepackage{todonotes}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+%%%---------------------------------------------------------------------------
+%%% setup some title content
+%%%---------------------------------------------------------------------------
+\title{{\Huge PNIIO Python bindings}\\
+       Version 1.0.0}
+\author{Eugen Wintersberger}
+
+%%%---------------------------------------------------------------------------
+%%% define some custom commands
+%%%---------------------------------------------------------------------------
+\newcommand{\cpp}{\texttt{C++}}
+\newcommand{\pniio}{\texttt{pniio}}
+\newcommand{\pypniio}{\texttt{python-pniio}}
+
+
+%%%---------------------------------------------------------------------------
+%%% start with the main document
+%%%---------------------------------------------------------------------------
+\begin{document}
+\maketitle
+\tableofcontents
+\listoftodos
+
+\chapter{Introduction}
+\input{tex/introduction.tex}
+
+\chapter{The top level node of the package}
+\input{tex/general.tex}
+
+\chapter{Reading non-Nexus data}
+
+\chapter{Basic Nexus support}
+\input{tex/nexus.tex}
+
+\chapter{Nexus algorithms}
+
+\end{document}

@@ -1,0 +1,378 @@
+%%%nexus documentation
+
+At the current status (version 1.0.0) the \pniio\ library does only support
+Nexus using the HDF5 storage backend. In order to use the provided Nexus
+functionality import the package with something like this
+\begin{minted}{python}
+import pni.io.nx.h5 as nexus
+\end{minted}
+
+\section{Working with Nexus files}
+
+The most fundamental thing you may want to do is to create, open, and close
+files. File creation and closing could look like this 
+\begin{minted}{python}
+import pni.io.nx.h5 as nexus
+
+f = nexus.create_file("test.nxs")
+#... do some work here
+f.close()
+\end{minted}
+
+If the file you try to create already exists an exception will be thrown. To
+override this behavior the {\tt create\_file} function has a boolean 
+keyword argument {\tt overwrite} 
+\begin{minted}{python}
+f = nexus.create_file("text.nxs",overwrite=True)
+\end{minted}
+When using {\tt overwrite=True} an already existing file will be overwritten. 
+Existing files can be opened using the {\tt open\_file} function
+\begin{minted}{python}
+f = nexus.create_file("test.nxs")
+\end{minted}
+which by default opens an existing file in read-only mode. Use
+\begin{minted}{python}
+f = nexus.create_file("test.nxs",readonly=False)
+\end{minted}
+to open the file for reading and writing.
+The file object returned by {\tt create\_file} and {\tt open\_file} 
+provides only very limited functionality. 
+In order to do some useful work you have to obtain the root node of the 
+Nexus tree (in HDF5 this is the root group of the file) with
+\begin{minted}{python}
+root = f.root()
+\end{minted}
+
+\todo[inline]{add here split option}
+
+%%%===========================================================================
+%%% describe groups
+%%%===========================================================================
+\section{Working with groups}
+
+Groups are the fundamental containers in Nexus. They can hold other groups as
+well as fields. 
+
+\subsection{Creating groups}
+There are several ways how to create groups and fields. The most natural one is
+to use the {\tt create\_group} method of a group instance. 
+The former one is rather easy to use
+\begin{minted}{python}
+g = root_group.create_group("entry_1")
+e = root_group.create_group("entry_2","NXentry")
+\end{minted}
+The first call creates a group of name {\tt entry\_1} while the second 
+one create a group of name {\tt entry\_2} of type {\tt NXentry}. 
+The type of a group is determined by an attribute name {\tt NX\_class}
+attached to the group (see more about attributes below).
+
+The {\tt create\_group} method can only create groups which are direct
+children of the their parent group. So using 
+\begin{minted}{python}
+g = root_group.create_group("entry/instrument/detector")
+\end{minted}
+will fail if {\tt entry} and/or {\tt instrument} do not exist. 
+For such situations the {\tt create\_group} function can be used
+\begin{minted}{python}
+path = "entry:NXentry/instrument:NXinstrument/detector:NXdetector"
+group = create_group(parent_group,path,intermediates=True)
+\end{minted}
+where the first argument is the parent group, the second the group to create
+as a Nexus path. If the keyword argument {\tt intermediates} is set to
+{\tt True} all the intermediate groups will be created if they do not exist. 
+By default the {\tt intermediates} argument is set to {\tt False} 
+so that the {\tt create\_group} function behaves like its class member 
+counterpart.
+
+\subsection{Group inquiry}
+
+If we want to know how many children a group has we can use either
+\mint{python}|group.size| or \mint{python}|len(group)|
+In both cases the number of children stored in the group will be returned.
+There are other read only attributes for groups which you are may interested in
+\begin{center}
+\begin{tabular}{l|l}
+attribute name & description \\
+\hline \hline
+{\tt name} & returns the name of the group \\
+\hline
+{\tt parent} & returns the groups parent group \\
+\hline
+{\tt size} & the number of children a group has \\
+\hline
+{\tt filename} & name of the file the group belongs to \\
+\hline
+{\tt attributes} & property providing access to the groups attributes (see 
+section~\ref{section:nexus:attributes}) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Iterating groups}
+
+As groups are containers they can be iterated. The {\tt python-pniio}
+package provides two ways how to iterate over the contents of a Nexus group. 
+The first case is a simple iteration over all direct children of the group
+\begin{minted}{python}
+for child in group:
+    print child.path
+\end{minted}
+The result should be rather obvious. The second way how to iterate over a group
+is to use the \emph{flat} iterator provided by an attribute of same name. 
+In this case we iterate recursively over a group including all its child groups
+\begin{minted}{python}
+for child in group.flat:
+    print child.path
+\end{minted}
+which will print the path of all elements in the entire subtree below group.
+
+%%%===========================================================================
+%%% describe fields
+%%%===========================================================================
+\section{Working with fields}
+
+Nexus fields are the data holding instance in a Nexus files. On can imagine a
+field like a multidimensional array stored on disk. In fact the field class 
+used in this python package is designed to behave a little like the famous numpy
+arrays. So they should be rather easy to use. 
+
+The simplest way to create a field would look like this
+\begin{minted}{python}
+name = entry.create_field("name",type="str")
+\end{minted}
+which creates a 1D field with a single element of type string. The first
+argument is mandatory as it describes the name of the field.
+Like with the {\tt create\_group} method {\tt create\_field} can only create
+a direct child of its parent group. The method accepts three more keyword 
+arguments: {\tt shape}, {\tt chunk}, and {\tt filter}. 
+{\tt shape} determines the shape of the field after it has been created. 
+{\tt chunk} is the chunk shape used for the field and finally {\tt filter} 
+can be a filter instance used to compress the data during writing. 
+It is important to note that the {\tt create\_field} method will always set a
+chunk size, even when none is provided by the user. This is a requirement 
+in order to get fields which can be grown (see next section). 
+In the next example we will use all the keyword arguments
+\begin{minted}{python}
+import pni.io.nx.h5 as nx
+
+file = nx.open_file("data.nxs",readonly=False)
+root = file.root();
+
+path = "/:NXentry/:NXinstrument/:NXdetector"
+detector = get_object(root,path)
+
+#create a deflate filter with compression level 5
+filter = nx.deflate_filter(5)
+
+detector.create_field("data",
+                      type="uint16",
+                      shape=(0,1024,2048),  #set the initial field size
+                      chunk=(1,1024,2048),  #set the chunk size
+                      filter = filter)
+\end{minted}
+There are two things which are important here. Please note that the first
+element in the shape of the field is $0$. This means its total size will be $0$
+and no data can be stored. This is a quite reasonable approach if one does not 
+know how many elements (lets say image frames) will be stored in the field. 
+One starts with $0$ and grows the field every time a new frame shall be stored. 
+Unlike the {\tt shape} argument the {\tt chunk} argument must not have $0$
+elements. In the example above we make the chunk size exactly one image frame
+which is a reasonable choice for most applications. 
+Finally the above example adds a deflate filter to the field (the same filter
+used for gzip) with a compression level of $5$. 
+
+To create fields including non-existing intermediate groups use the {\tt
+create\_field} function. We could rewrite the last example like this
+\begin{minted}{python}
+import pni.io.nx.h5 as nx
+
+file = nx.open_file("data.nxs",readonly=False)
+root = file.root();
+
+path = "/entry:NXentry/instrument:NXinstrument/detector:NXdetector"
+
+#create a deflate filter with compression level 5
+filter = nx.deflate_filter(5)
+
+field = nx.create_field(root, path, type="uint16", shape=(0,1024,2048),  
+                        chunk=(1,1024,2048), filter = filter)
+\end{minted}
+In this case none of the intermediate groups ({\tt entyr}, {\tt instrument},
+ or {\tt detector}) must exist. They will be created automatically.
+
+
+%%%---------------------------------------------------------------------------
+\subsection{Field inquiry and manipulation}
+
+Like groups, fields have some public attributes which can be used to determine
+some of the properties of a field 
+
+\begin{center}
+\begin{tabular}{l|l}
+attribute name & description \\
+\hline \hline
+{\tt name} & returns the name of the group \\
+\hline
+{\tt path} & returns the full nexus path of the group\\
+\hline
+{\tt parent} & returns the groups parent group \\
+\hline
+{\tt size} & number of elements stored in the field \\
+\hline
+{\tt type} & data type of the elements \\
+\hline
+{\tt shape} & a tuple with the number of elements along each dimension \\
+\end{tabular}
+\end{center}
+
+Unlike numpy arrays, the shape of fields cannot be manipulated arbitrarily. 
+This is due to limitations of the underlying HDF5 file format. 
+Fortunately this is not a big issue. The most important manipulation (and
+currently also the only one implemented) is to \emph{grow} a field. 
+
+\begin{minted}{python}
+#create the data field for the detector
+field = detector.create_field("data",...)
+
+#main measurement loop
+while True:
+    data = get_data(...)    #retrieve data
+
+    field.grow(0,1)         #grow field along dimension 0 by 1 element
+   
+    write_data(...)         #save data in newly appended slot
+   
+    #break the loop if the measurement is done
+    if not measurement_running: break
+
+\end{minted}
+The grow method of a field takes two positional arguments: the first is the 
+dimension along we want to grow the field and the second is the number of 
+elements by which we want to enlarge it.
+
+\begin{figure}
+    \centering
+    \begin{minipage}[c]{0.7\linewidth}
+    \missingfigure{Need a good figure here for describing the growth of a field}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.29\linewidth}
+    \label{fig:field_grow}
+    \caption{{\small Show how the field grows}}
+    \end{minipage}
+\end{figure}
+
+%%%---------------------------------------------------------------------------
+\subsection{Reading and writing data}
+
+Fields behave a little like numpy arrays with the exception that the data is not
+in memory but stored on disk. Reading and writing data works like with numpy
+arrays. The best way to understand how this works is to have a look on a small
+example. 
+The next code snipped shows a typical use case where a bunch of image frames is
+stored in a field and we want to iterate over the individual frames. 
+The code should be rather self explaining
+\begin{minted}{python}
+import pni.io.nx.h5 as nx
+
+file = nx.open_file("run_01.nxs")
+root_group = file.root()
+
+frame_path = "/:NXentry/:NXinstrument/:NXdetector/data"
+
+#retrieve frames from the file
+frames = nx.get_object(root_group,frame_path)
+
+#iterate over the frames
+for frame_index in frames.shape[0]:
+    frame_data = frames[frame_index,...]
+    result = do_som_work(frame_data)
+\end{minted}
+Note here that the ellipse (\dots) used for retrieving the data will make 
+the code independent from the actual rank of a frame.
+
+Reading works just the other way around by assigning a numpy array or a scalar
+or a list to a field. In the next snipped the example from the section about
+field manipulation will be completed 
+\begin{minted}{python}
+#create the data field for the detector
+field = detector.create_field("data",...)
+
+#main measurement loop
+while True:
+    data = get_data(...)    #retrieve data
+
+    field.grow(0,1)         #grow field along dimension 0 by 1 element
+   
+    field[-1,...] = data    #save data in newly appended slot
+   
+    #break the loop if the measurement is done
+    if not measurement_running: break
+
+\end{minted}
+
+\section{Working with attributes}\label{section:nexus:attributes}
+
+Fields and groups can have attributes attached which provide additional
+metadata. In fact Nexus makes heavy use of attributes to store additional 
+information about a field or group. It is thus not recommended to use 
+attributes too excessively as one may runs into name conflicts with future Nexus
+development. 
+Attributes can be accessed for fields  and groups via the {\tt attributes}
+member of the field and group classes. Attributes behave basically like fields
+with some restrictions
+\begin{itemize}
+    \item they cannot grow
+    \item one cannot apply compression to attributes.
+\end{itemize}
+Due to this restrictions one should not use attributes to store large amounts of
+data. 
+
+To create attributes use the {\tt create} method of the {\tt attributes} member
+\begin{minted}{python}
+import pni.io.nx.h5 as nx
+
+field = ....
+
+a = field.attributes.create("temperature",type="float32")
+\end{minted}
+which would create a scalar attribute of name {\tt temperature} and with a
+32-bit floating point type. Multidimensional attributes can be created with the
+optional {\tt shape} keyword argument
+\begin{minted}{python}
+a = field.attributes.create("temperature",type="float32",shape=(4,4))
+\end{minted}
+If an attribute already exists it can be overwritten using the {\tt overwrite}
+keyword argument ({\tt False} by default). 
+\begin{minted}{python}
+a = field.attributes.create("temperature",type="float32",shape=(4,4))
+a = field.attributes.create("temperature",type="int32",shape=(3,5),
+                            overwrite=True)
+\end{minted}
+
+\subsection{Attribute inquiry}
+
+Like fields and groups attributes have a couple of properties which can be
+queried to obtain metadata for a particular attribute instance
+\begin{center}
+    \begin{tabular}{l|p{0.65\linewidth}}
+        property & description\\
+        \hline\hline
+        {\tt shape} & a tuple with the number of elements along each dimension
+        of the attribute \\
+        \hline
+        {\tt dtype} & the string representation of the attributes data type  \\
+        \hline
+        {\tt is\_valid} & true if the attribute is a valid object \\
+        \hline
+        {\tt name} & the name of the attribute (the key which can be used 
+        to retrieve the attribute from its parent) \\
+        \hline
+        {\tt value} & provides access to the attributes data \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Reading and writing attributes}
+
+

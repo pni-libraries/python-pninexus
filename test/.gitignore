@@ -1,0 +1,7 @@
+*.h5
+*.pyc
+lib
+*.o
+*.nx
+pypninxtest
+.sconf_temp

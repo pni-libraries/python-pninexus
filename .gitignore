@@ -1,4 +1,8 @@
 build
 *.pyc
 *.swp
-pni/core/*.so
+*.so
+*.log
+build
+dist
+MANIFEST

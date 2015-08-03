@@ -1,0 +1,10 @@
+Content of the doc directory
+============================
+
+The subdirectories contain
+
+devel/ - doxygen documentation for the wrapper code. Only intended for 
+         wrapper developers
+
+ug/ - the latex users guide. This is what every user of python-pniio 
+      should read.
