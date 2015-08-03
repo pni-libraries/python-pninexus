@@ -38,6 +38,7 @@ using namespace boost::python;
 
 //import here the namespace for the nxh5 module
 using namespace pni::io;
+using namespace pni::core;
 
 ERR_TRANSLATOR(io_error)
 ERR_TRANSLATOR(link_error)

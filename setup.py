@@ -1,4 +1,6 @@
 #setup script for libpniio-python package
+
+from __future__ import print_function
 import sys
 import os
 from distutils.core import setup
@@ -6,6 +8,9 @@ from distutils.extension import Extension
 from distutils.fancy_getopt import FancyGetopt
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
+print(sys.path)
+
+from pni import core
 
 
 #-------------------------------------------------------------------------
@@ -36,12 +41,11 @@ for o,v in op.get_option_order():
 #-------------------------------------------------------------------------
 # set up compiler and linker paths and flags
 #-------------------------------------------------------------------------
-core_path = '/home/eugen/Development/DESY/lib/python2.7/site-packages/pni/core'
 #add pniio libraries and flags
 pniio        = package('pniio')
 include_dirs = pniio.include_dirs
 library_dirs = pniio.library_dirs
-library_dirs.append(core_path)
+library_dirs.append(pni.core.__path__)
 libraries    = pniio.libraries
 libraries.append('boost_python')
 libraries.append(':_core.so')
