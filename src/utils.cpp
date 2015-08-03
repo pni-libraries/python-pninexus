@@ -23,6 +23,9 @@
 
 #include "utils.hpp"
 
+using namespace boost::python;
+using namespace pni::core;
+
 tuple get_tuple_from_args(const object &args)
 {
     if(PyTuple_Check(args.ptr())) 

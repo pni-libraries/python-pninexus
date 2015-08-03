@@ -3,14 +3,13 @@
 from __future__ import print_function
 import sys
 import os
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup
+from setuptools import Extension
 from distutils.fancy_getopt import FancyGetopt
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
-print(sys.path)
 
-from pni import core
+import pni.core
 
 
 #-------------------------------------------------------------------------
@@ -45,7 +44,7 @@ for o,v in op.get_option_order():
 pniio        = package('pniio')
 include_dirs = pniio.include_dirs
 library_dirs = pniio.library_dirs
-library_dirs.append(pni.core.__path__)
+library_dirs.extend(pni.core.__path__)
 libraries    = pniio.libraries
 libraries.append('boost_python')
 libraries.append(':_core.so')
@@ -71,7 +70,7 @@ nxh5 = Extension("io.nx.h5._nxh5",nxh5_files,
                  include_dirs = include_dirs,
                  library_dirs = library_dirs,
                  libraries = libraries,
-                 runtime_library_dirs=[core_path],
+                 #runtime_library_dirs=[core_path],
                  language="c++",
                  extra_compile_args = extra_compile_args)
 
@@ -83,7 +82,7 @@ io = Extension("io._io",io_files,
                  include_dirs = include_dirs,
                  library_dirs = library_dirs,
                  libraries = libraries,
-                 runtime_library_dirs=[core_path],
+                 #runtime_library_dirs=[core_path],
                  language="c++",
                  extra_compile_args = extra_compile_args)
 
@@ -95,6 +94,7 @@ setup(name="libpniio-python",
         author_email="eugen.wintersberger@desy.de",
         description="Python wrapper for libpniio",
         version = "1.0.0",
+        package_dir = {"":"packages"},
         ext_package="pni",
         ext_modules=[nxh5,io],
         packages = ["pni","pni.io","pni.io.nx","pni.io.nx.h5"],

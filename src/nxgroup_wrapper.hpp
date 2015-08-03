@@ -28,7 +28,7 @@
 #include <pni/io/nx/nxobject_traits.hpp>
 #include <pni/io/nx/algorithms/create_field.hpp>
 
-#include <pni/core/python/utils.hpp>
+#include <pnicore/utils.hpp>
 #include "child_iterator.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 #include "utils.hpp"

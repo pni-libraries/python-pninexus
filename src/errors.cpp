@@ -27,7 +27,6 @@ extern "C"{
 #include<Python.h>
 }
 #include <pni/core/error.hpp>
-#include <pni/core/python/error_utils.hpp>
 #include <boost/python.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nx.hpp>
@@ -40,54 +39,117 @@ using namespace boost::python;
 using namespace pni::io;
 using namespace pni::core;
 
-ERR_TRANSLATOR(io_error)
-ERR_TRANSLATOR(link_error)
-ERR_TRANSLATOR(object_error)
-ERR_TRANSLATOR(parser_error)
-ERR_TRANSLATOR(invalid_object_error)
+static object PyExc_LinkError;
+static object PyExc_ObjectError;
+static object PyExc_ParserError;
+static object PyExc_InvalidObjectError;
+
+
+static char *LinkError_Doc = 
+"Raised in case of errors during link creation or access.";
+
+static char *ObjectError_Doc = 
+"Raised in case of errors during object creation, movement, or copying.";
+
+static char *ParserError_Doc=
+"Raised in case of a parser error during data input.";
+
+static char *InvalidObjectError_Doc=
+"Raised when an instance tries to access an invalid NeXus object.";
 
 //-----------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void ChildIteratorStop_translator(ChildIteratorStop const &error)
+void io_error_translator(io_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_IOError,stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void link_error_translator(link_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_LinkError.ptr(),stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void object_error_translator(object_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_ObjectError.ptr(),stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void parser_error_translator(parser_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_ParserError.ptr(),stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void invalid_object_error_translator(invalid_object_error const& error)
+{
+    std::stringstream stream;
+    stream<<error<<std::endl;
+    PyErr_SetString(PyExc_InvalidObjectError.ptr(),stream.str().c_str());
+}
+
+//-----------------------------------------------------------------------------
+void ChildIteratorStop_translator(ChildIteratorStop const &)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
-#pragma GCC diagnostic pop
 
 //-----------------------------------------------------------------------------
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-void AttributeIteratorStop_translator(AttributeIteratorStop const &error)
+void AttributeIteratorStop_translator(AttributeIteratorStop const &)
 {
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
-#pragma GCC diagnostic pop
+
+
+//!
+//! \ingroup error_management
+//! \brief exception creation utility function
+//! 
+//! This utility function is used inside exception_registration() to create
+//! the new exceptions. It was written just to shorten the code within 
+//! exception_registration() and does nothing special. 
+//!
+//! \param name the name of the new exception
+//! \param doc the doc string of the new exception
+//! \return boost::python::object for the new exception
+//!
+object new_exception(char *name,char *doc)
+{
+    return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,nullptr,nullptr)));
+}
 
 
 //-----------------------------------------------------------------------------
 void exception_registration()
 {
-    //define the base class for all exceptions
-    const string &(exception::*exception_get_description)() const =
-        &exception::description;
-    class_<exception>("Exception")
-        .def(init<>())
-        .add_property("description",make_function(exception_get_description,return_value_policy<copy_const_reference>()))
-        .def(self_ns::str(self_ns::self))
-        ;
+    PyExc_LinkError = new_exception("pni.io.LinkError",LinkError_Doc);
+    scope().attr("LinkError") = PyExc_LinkError;
 
-    ERR_OBJECT_DECL(io_error);
-    ERR_OBJECT_DECL(link_error);
-    ERR_OBJECT_DECL(parser_error);
-    ERR_OBJECT_DECL(invalid_object_error);
-    ERR_OBJECT_DECL(object_error);
-   
-    ERR_REGISTRATION(io_error);
-    ERR_REGISTRATION(link_error);
-    ERR_REGISTRATION(parser_error);
-    ERR_REGISTRATION(invalid_object_error);
-    ERR_REGISTRATION(object_error);
+    PyExc_ObjectError = new_exception("pni.io.ObjectError",ObjectError_Doc);
+    scope().attr("ObjectError") = PyExc_ObjectError;
+
+    PyExc_ParserError = new_exception("pni.io.ParserError",ParserError_Doc);
+    scope().attr("ParserError")=PyExc_ParserError;
+
+    PyExc_InvalidObjectError = new_exception("pni.io.InvalidObjectError",
+                                             InvalidObjectError_Doc);
+    scope().attr("InvalidObjectError") = PyExc_InvalidObjectError;
+                            
+
+    register_exception_translator<io_error>(io_error_translator);
+    register_exception_translator<link_error>(link_error_translator);
+    register_exception_translator<parser_error>(parser_error_translator);
+    register_exception_translator<invalid_object_error>(invalid_object_error_translator);
+    register_exception_translator<object_error>(object_error_translator);
 
 
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);

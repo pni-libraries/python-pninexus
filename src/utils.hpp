@@ -28,21 +28,21 @@ extern "C"{
 
 #include <vector>
 #include <pni/core/types.hpp>
-#include <pni/core/python/utils.hpp>
+#include <pni/core/arrays/slice.hpp>
+#include <pnicore/utils.hpp>
 
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
 #include <boost/python/stl_iterator.hpp>
 
 
-using namespace boost::python;
-using namespace pni::core;
 
 typedef std::vector<pni::core::slice> slices_type;
 
-typedef std::pair<shape_t,shape_t> shapes_type; 
+typedef std::pair<pni::core::shape_t,pni::core::shape_t> shapes_type; 
 
-shapes_type get_shapes(const object &s,const object &c);
+shapes_type get_shapes(const boost::python::object &s,
+                       const boost::python::object &c);
 
 //!
 //! \ingroup utils
@@ -51,7 +51,7 @@ shapes_type get_shapes(const object &s,const object &c);
 //! Function solves the problem of wrapping all arguments passed to a function
 //! as Python objects into a tuple. 
 //! 
-tuple get_tuple_from_args(const object &args);
+boost::python::tuple get_tuple_from_args(const boost::python::object &args);
 
 //----------------------------------------------------------------------------
 //!
@@ -63,7 +63,7 @@ tuple get_tuple_from_args(const object &args);
 //! \param o python object
 //! \return true if o referes to Py_Ellipsis, false otherwiwse
 //!
-bool is_ellipsis(const object &o);
+bool is_ellipsis(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
 //!
@@ -82,6 +82,9 @@ template<
         >
 size_t get_ellipsis_size(const LISTT &index,const ATYPE &mda)
 {
+    using namespace boost::python;
+    using namespace pni::core;
+
     //sanity check - if the total number of elements in the index sequence
     //exceeds the rank of the array type something is wrong and an exception 
     //is thrown.
@@ -110,7 +113,7 @@ size_t get_ellipsis_size(const LISTT &index,const ATYPE &mda)
 //! 
 //! Function returns true if the object is a slice instance. 
 //! 
-bool is_slice(const object &o);
+bool is_slice(const boost::python::object &o);
 
 //----------------------------------------------------------------------------
 //!
@@ -130,8 +133,12 @@ ssize_t get_positive_index(ssize_t python_index,ssize_t n_elements);
 //----------------------------------------------------------------------------
 
 template<typename ATYPE>
-std::vector<pni::core::slice> get_slices(const tuple& index,const ATYPE &array)
+std::vector<pni::core::slice> 
+get_slices(const boost::python::tuple& index,const ATYPE &array)
 {
+    using namespace boost::python;
+    using namespace pni::core;
+
     std::vector<pni::core::slice> slices;
     //determine the size of a possible ellipsis
     size_t ellipsis_size = get_ellipsis_size(index,array);
@@ -193,8 +200,12 @@ std::vector<pni::core::slice> get_slices(const tuple& index,const ATYPE &array)
 //! \return vector with slices
 //!
 template<typename FTYPE>
-std::vector<pni::core::slice> create_selection(const tuple &t,const FTYPE &field)
+std::vector<pni::core::slice> 
+create_selection(const boost::python::tuple &t,const FTYPE &field)
 {
+    using namespace boost::python;
+    using namespace pni::core;
+
     //obtain a selection object
     std::vector<pni::core::slice> selection;
 

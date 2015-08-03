@@ -27,7 +27,7 @@
 #include "errors.hpp"
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
-#include <pni/core/python/utils.hpp>
+#include <pnicore/utils.hpp>
 
 using namespace pni::io::nx;
 using namespace pni::core;

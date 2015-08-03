@@ -25,8 +25,8 @@
 #include <boost/python/slice.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
-#include <pni/core/python/utils.hpp>
-#include <pni/core/python/numpy_utils.hpp>
+#include <pnicore/utils.hpp>
+#include <pnicore/numpy_utils.hpp>
 #include "nxio_operations.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 
