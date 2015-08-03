@@ -31,7 +31,8 @@ libraries.append('boost_python-py{version[0]}{version[1]}'.format(version=sys.ve
 # set compiler options
 #-----------------------------------------------------------------------------
 extra_compile_args = ['-std=c++11','-Wall','-Wextra',
-                      '-fdiagnostics-show-option']
+                      '-fdiagnostics-show-option',
+                      '-Wno-strict-prototypes']
 extra_compile_args.extend(pnicore.compiler_flags)
 
 #-----------------------------------------------------------------------------
@@ -47,9 +48,14 @@ core_files = ["src/core/bool_converter.cpp",
 
 nxh5_files = ["src/io/_nxh5.cpp",
               "src/io/utils.cpp",
+              "src/core/numpy_utils.cpp",
+              "src/core/init_numpy.cpp",
+              "src/core/utils.cpp"
              ]
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
+
+core_lib_dir=os.path.join(get_build_dir(),"pni","core")
 
 #-----------------------------------------------------------------------------
 # setup for the core extension
@@ -66,7 +72,6 @@ nxh5_ext = Extension("pni.io.nx.h5._nxh5",nxh5_files,
                      include_dirs = include_dirs+["src/"],
                      library_dirs = library_dirs,
                      libraries = libraries,
-                     #runtime_library_dirs=[core_path],
                      language="c++",
                      extra_compile_args = extra_compile_args)
 
@@ -95,8 +100,8 @@ utils_test = Extension("test.core.utils_test",
                       ["test/core/utils_test.cpp"],
                        language="c++",
                        include_dirs = include_dirs+["src/"],
-                       library_dirs = library_dirs,
-                       libraries = libraries,
+                       library_dirs = library_dirs+[core_lib_dir],
+                       libraries = libraries+[":_core.so"],
                        extra_compile_args = extra_compile_args)
 
 numpy_utils_test = Extension("test.core.numpy_utils_test",
@@ -106,8 +111,8 @@ numpy_utils_test = Extension("test.core.numpy_utils_test",
                              ],
                              language="c++",
                              include_dirs = include_dirs+["src/"],
-                             library_dirs = library_dirs,
-                             libraries = libraries,
+                             library_dirs = library_dirs+[core_lib_dir],
+                             libraries = libraries+[":_core.so"],
                              extra_compile_args = extra_compile_args)
 
 

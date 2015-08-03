@@ -1,7 +1,7 @@
 import unittest
 import os
 
-from pni.io import object_error
+from pni.io import ObjectError
 from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
@@ -38,7 +38,7 @@ class nxfile_test(unittest.TestCase):
         f.close()
    
         #this will throw an exception as the file already exists
-        self.assertRaises(object_error,create_file,self.filename2,False)
+        self.assertRaises(ObjectError,create_file,self.filename2,False)
         #this should work now
         f = create_file(self.filename2,overwrite=True)
         self.assertTrue(f.is_valid)
@@ -49,7 +49,7 @@ class nxfile_test(unittest.TestCase):
         f = open_file(self.filename)
         self.assertTrue(f.readonly)
         root = f.root()
-        self.assertRaises(object_error,root.attributes.create,
+        self.assertRaises(ObjectError,root.attributes.create,
                           "temperature","uint16")
         f.close()
         #open the file in read/write mode

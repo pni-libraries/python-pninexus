@@ -21,11 +21,15 @@
 //      Author: Eugen Wintersberger
 //
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+#define NO_IMPORT_ARRAY
 extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
 }
 
+#include <core/init_numpy.hpp>
 #include <boost/python.hpp>
 #include <iostream>
 #include <sstream>
@@ -65,7 +69,7 @@ BOOST_PYTHON_MODULE(_nxh5)
         attribute_converter_type;
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
-    import_array();
+    init_numpy();
 
     //register converter
     to_python_converter<h5::nxobject,object_converter_type>();

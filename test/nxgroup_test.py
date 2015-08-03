@@ -5,8 +5,7 @@ from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import nxgroup
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
-from pni.core import shape_mismatch_error
-from pni.core import key_error
+from pni.core import ShapeMismatchError
 
 from attributes_test import attributes_test
 
@@ -39,7 +38,7 @@ class nxgroup_test(unittest.TestCase):
 
     def test_open(self):
         #try to open a group that does not exist
-        self.assertRaises(key_error,self.root.__getitem__,"data")
+        self.assertRaises(KeyError,self.root.__getitem__,"data")
 
     def test_simple_attributes(self):
         g = self.root.create_group("dgroup")

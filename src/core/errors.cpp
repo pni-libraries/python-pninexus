@@ -62,7 +62,7 @@ static object CliError;
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.ShapeMismatchError`
-static char *ShapeMismatchError_Doc=
+static char const *ShapeMismatchError_Doc=
 "Wraps the `pni::core::shape_mismatch_error` C++ exception. This exception "
 " is typically thrown iperations where two array or array-like objects are "
 "involved which are supposed to have the same shape in order for the "
@@ -70,7 +70,7 @@ static char *ShapeMismatchError_Doc=
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.SizeMismatchError`
-static char *SizeMismatchError_Doc=
+static char const *SizeMismatchError_Doc=
 "Wraps the `pni::core::size_mismatch_error` C++ exception. This exception"
 " is typically thrown by operations wher two containers involved are "
 "supposed to have the same size (number of elements) in order for the "
@@ -78,20 +78,20 @@ static char *SizeMismatchError_Doc=
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.FileError`
-static char *FileError_Doc=
+static char const *FileError_Doc=
 "Wraps the `pni::core::file_error` C++ exception. Thrown by operations from"
 " libpnicore and its related libraries in situations where a file cannot"
 " be opened or is in any other case faulty or access is denied.";
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.RangeError`
-static char *RangeError_Doc=
+static char const *RangeError_Doc=
 "Wraps the `pni::core::range_error` C++ exception. Thrown in situations where"
 " a numeric value must be within a particular range.";
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.IteratorError`
-static char *IteratorError_Doc=
+static char const *IteratorError_Doc=
 "Wraps the `pni::core::iterator_error` C++ exception. Thrown by the iterators"
 " provided by libpnicore in situations where something went wrong like an"
 " element cannot be dereferenced. Do not confuse this with the Python "
@@ -99,13 +99,13 @@ static char *IteratorError_Doc=
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.CliArgumentError`
-static char *CliArgumentError_Doc=
+static char const *CliArgumentError_Doc=
 "Wraps the `pni::core::cli_argument_error` C++ exception. Thrown when a "
 " command line argument has an invalid value or is ill formatted.";
 
 //! \ingroup error_management
 //! \brief documentation string for `pni.core.CliError`
-static char *CliError_Doc=
+static char const *CliError_Doc=
 "Wraps the `pni::core::cli_error` C++ exception. Thrown in case of a "
 "general command line error.";
 
@@ -280,9 +280,11 @@ void cli_error_translator(cli_error const& error)
 //! \param doc the doc string of the new exception
 //! \return boost::python::object for the new exception
 //!
-object new_exception(char *name,char *doc)
+object new_exception(char const *name,char const *doc)
 {
-    return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,nullptr,nullptr)));
+    return object(handle<>(PyErr_NewExceptionWithDoc(const_cast<char*>(name),
+                                                     const_cast<char*>(doc),
+                                                     nullptr,nullptr)));
 }
 
 //-----------------------------------------------------------------------------
