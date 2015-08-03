@@ -5,3 +5,4 @@ lib
 *.nx
 pypninxtest
 .sconf_temp
+*.nxs
