@@ -13,10 +13,18 @@ from pni.io.nx.h5 import open_file
 #implementing test fixture
 class nxfield_creation_test_uint8(unittest.TestCase):
     _typecode="uint8"
+
+    def __init__(self,*args,**kwargs):
+        unittest.TestCase.__init__(self,*args,**kwargs)
+
+        self.filename = "nxfield_creation_test_{tc}.nxs".format(tc=self._typecode)
+        self.filename = os.path.join("test",self.filename)
+        self.gf = create_file(self.filename,overwrite=True)
+        self.gf.close()
+
     
     def setUp(self):
-        filename = "nxfield_creation_test_{tc}.nxs".format(tc=self._typecode)
-        self.gf = create_file(os.path.join("test",filename),overwrite=True)
+        self.gf = open_file(self.filename,readonly=False)
         self.root = self.gf.root()
 
     def tearDown(self):
@@ -25,24 +33,26 @@ class nxfield_creation_test_uint8(unittest.TestCase):
 
 
     def test_scalar_creation(self):
-        f = self.root.create_field("data",self._typecode)
+        f = self.root.create_field("scalar",self._typecode)
         self.assertTrue(f.is_valid)
         self.assertTrue(f.dtype==self._typecode)
         self.assertTrue(f.shape==(1,))
         self.assertTrue(f.size == 1)
 
     def test_multidim_creation_without_chunk(self):
-        f = self.root.create_field("data",self._typecode,
-                                  shape=(0,1024,1024))
+        f = self.root.create_field("multidim_without_chunk",
+                                   self._typecode,
+                                   shape=(0,1024,1024))
         self.assertTrue(f.is_valid)
         self.assertTrue(f.dtype==self._typecode)
         self.assertTrue(f.shape==(0,1024,1024))
         self.assertTrue(f.size == 0)
 
     def test_multidim_creation_with_chunk(self):
-        f = self.root.create_field("data",self._typecode,
-                                  shape=(0,1024,1024),
-                                  chunk=[1,1024,1024])
+        f = self.root.create_field("multidim_with_chunk",
+                                   self._typecode,
+                                   shape=(0,1024,1024),
+                                   chunk=[1,1024,1024])
         self.assertTrue(f.is_valid)
         self.assertTrue(f.dtype==self._typecode)
         self.assertTrue(f.shape==(0,1024,1024))
@@ -50,9 +60,10 @@ class nxfield_creation_test_uint8(unittest.TestCase):
 
     def test_multidim_creation_without_chunk_and_filter(self):
         comp = deflate_filter()
-        f = self.root.create_field("data",self._typecode,
-                                  shape=(0,1024,1024),
-                                  filter=comp)
+        f = self.root.create_field("multidim_withouth_chunk_with_filter",
+                                   self._typecode,
+                                   shape=(0,1024,1024),
+                                   filter=comp)
         self.assertTrue(f.is_valid)
         self.assertTrue(f.dtype==self._typecode)
         self.assertTrue(f.shape==(0,1024,1024))
@@ -61,17 +72,18 @@ class nxfield_creation_test_uint8(unittest.TestCase):
 
     def test_multdim_creation_with_chunk_and_filter(self):
         comp = deflate_filter()
-        f = self.root.create_field("data",self._typecode,
-                                  shape=(0,1024,1024),
-                                  chunk=[1,1024,1024],
-                                  filter=comp)
+        f = self.root.create_field("multidim_with_chunk_with_filter",
+                                   self._typecode,
+                                   shape=(0,1024,1024),
+                                   chunk=[1,1024,1024],
+                                   filter=comp)
         self.assertTrue(f.is_valid)
         self.assertTrue(f.dtype==self._typecode)
         self.assertTrue(f.shape==(0,1024,1024))
         self.assertTrue(f.size == 0)
 
     def test_grow_field(self):
-        f = self.root.create_field("data",self._typecode,shape=(3,4))
+        f = self.root.create_field("grow",self._typecode,shape=(3,4))
 
         self.assertTrue(f.shape == (3,4))
         self.assertTrue(f.size  == 12)
