@@ -1,0 +1,24 @@
+Install libpnicore python bindings
+==================================
+
+Description
+===========
+This package provides some functionality from the pnicore C++ library. 
+It hardly exports any user functionality but is quite useful for extension 
+developers as it provides some functionality that makes life easier. 
+
+Installation
+============
+To install the package the following libraries must be installed
+
+.) libpnicore including all its dependencies
+.) boost_python 
+.) python including developer packages (header files and libraries)
+.) numpy including its header files
+.) setuptools to build the package
+
+The installation runs via distutils using the well known
+
+$>python setup.py install
+
+along with all its options.

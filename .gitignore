@@ -1,0 +1,4 @@
+build
+*.pyc
+*.swp
+pni/core/*.so
