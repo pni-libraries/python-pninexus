@@ -27,7 +27,7 @@
 #include "errors.hpp"
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
-#include <pnicore/utils.hpp>
+#include <core/utils.hpp>
 
 using namespace pni::io::nx;
 using namespace pni::core;

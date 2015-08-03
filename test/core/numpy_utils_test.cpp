@@ -26,9 +26,9 @@
 #include <list>
 
 #include <pni/core/types.hpp>
-#include "../src/numpy_utils.hpp"
-#include "../src/init_numpy.hpp"
-#include "../src/utils.hpp"
+#include <core/numpy_utils.hpp>
+#include <core/init_numpy.hpp>
+#include <core/utils.hpp>
 #include "check_type_id_from_object.hpp"
 #include "check_type_str_from_object.hpp"
 

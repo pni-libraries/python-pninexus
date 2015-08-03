@@ -21,7 +21,7 @@
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
-#include "../src/numpy_utils.hpp"
+#include <core/numpy_utils.hpp>
 #include <pni/core/types.hpp>
 #include "check_type_id_from_object.hpp"
 

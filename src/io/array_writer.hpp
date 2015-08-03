@@ -24,8 +24,8 @@
 
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
-#include <pnicore/utils.hpp>
-#include <pnicore/numpy_utils.hpp>
+#include <core/utils.hpp>
+#include <core/numpy_utils.hpp>
 
 using namespace pni::core;
 

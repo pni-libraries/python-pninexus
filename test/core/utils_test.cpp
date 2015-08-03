@@ -25,7 +25,7 @@
 #include <vector>
 #include <list>
 
-#include "../src/utils.hpp"
+#include <core/utils.hpp>
 
 
 using namespace boost::python; 

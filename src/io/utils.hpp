@@ -29,7 +29,7 @@ extern "C"{
 #include <vector>
 #include <pni/core/types.hpp>
 #include <pni/core/arrays/slice.hpp>
-#include <pnicore/utils.hpp>
+#include <core/utils.hpp>
 
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
