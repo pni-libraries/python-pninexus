@@ -6,7 +6,6 @@ from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 from setuptools import setup, find_packages, Extension
 from distutils.command.install import install
-from distutils.command.install_headers import install_headers
 import sysconfig
 
 def get_build_dir():
