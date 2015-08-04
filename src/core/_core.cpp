@@ -23,7 +23,6 @@
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
-#define NO_IMPORT_ARRAY
 extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
@@ -32,9 +31,18 @@ extern "C"{
 #include <boost/python.hpp>
 #include "bool_converter.hpp"
 #include "numpy_scalar_converter.hpp"
-#include "init_numpy.hpp"
 
 extern void exception_registration();
+
+#if PY_MAJOR_VERSION >= 3
+int
+#else 
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
 
 using namespace boost::python;
 //=================implementation of the python extension======================

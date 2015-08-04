@@ -21,6 +21,13 @@
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
 #include <boost/python.hpp>
 #include <vector>
 #include <list>
@@ -29,6 +36,16 @@
 
 
 using namespace boost::python; 
+
+#if PY_MAJOR_VERSION >= 3
+int
+#else 
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
 
 
 //-----------------------------------------------------------------------------
@@ -66,6 +83,8 @@ bool vector_from_list(const object &l)
 //-----------------------------------------------------------------------------
 BOOST_PYTHON_MODULE(utils_test)
 {
+    init_numpy();
+
     def("list_from_vector",list_from_vector);
     def("list_from_list",list_from_list);
     def("vector_from_list",vector_from_list);

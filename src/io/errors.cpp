@@ -45,16 +45,16 @@ static object PyExc_ParserError;
 static object PyExc_InvalidObjectError;
 
 
-static char *LinkError_Doc = 
+static char const *LinkError_Doc = 
 "Raised in case of errors during link creation or access.";
 
-static char *ObjectError_Doc = 
+static char const *ObjectError_Doc = 
 "Raised in case of errors during object creation, movement, or copying.";
 
-static char *ParserError_Doc=
+static char const *ParserError_Doc=
 "Raised in case of a parser error during data input.";
 
-static char *InvalidObjectError_Doc=
+static char const *InvalidObjectError_Doc=
 "Raised when an instance tries to access an invalid NeXus object.";
 
 //-----------------------------------------------------------------------------
@@ -122,9 +122,11 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &)
 //! \param doc the doc string of the new exception
 //! \return boost::python::object for the new exception
 //!
-object new_exception(char *name,char *doc)
+object new_exception(char const *name,char const *doc)
 {
-    return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,nullptr,nullptr)));
+    return object(handle<>(PyErr_NewExceptionWithDoc(const_cast<char*>(name),
+                                                     const_cast<char*>(doc),
+                                                     nullptr,nullptr)));
 }
 
 

@@ -22,6 +22,10 @@
 //
 #pragma once
 
+extern "C" {
+#include <Python.h>
+}
+
 #include "array_writer.hpp"
 #include "array_reader.hpp"
 #include "scalar_reader.hpp"
@@ -150,6 +154,9 @@ void io_write(const OTYPE &writeable,const object &obj)
     else if(tid == type_id_t::STRING)
     {   
         //need to check if the object represents a unicode string
+#if PY_MAJOR_VERSION >= 3
+        IOOP::template write<string>(writeable,obj);
+#else
         object data;
         if(is_unicode(obj))
             data = unicode2str(obj);
@@ -157,6 +164,7 @@ void io_write(const OTYPE &writeable,const object &obj)
             data = obj;
 
         IOOP::template write<string>(writeable,data);
+#endif
     }
     else if(tid == type_id_t::BOOL)
         IOOP::template write<bool_t>(writeable,obj); 

@@ -21,15 +21,14 @@
 //      Author: Eugen Wintersberger
 //
 
+
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
-#define NO_IMPORT_ARRAY
 extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
 }
 
-#include <core/init_numpy.hpp>
 #include <boost/python.hpp>
 #include <iostream>
 #include <sstream>
@@ -37,10 +36,10 @@ extern "C"{
 #include <pni/io/nx/nx.hpp>
 #include <pni/io/exceptions.hpp>
 
-using namespace pni::core;
-using namespace boost::python;
 
 //import here the namespace for the nxh5 module
+using namespace pni::core;
+using namespace boost::python;
 using namespace pni::io::nx;
 
 #include "nxgroup_wrapper.hpp"
@@ -55,6 +54,15 @@ using namespace pni::io::nx;
 #include "nxattribute_manager_wrapper.hpp"
 
 
+#if PY_MAJOR_VERSION >= 3
+int
+#else 
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)

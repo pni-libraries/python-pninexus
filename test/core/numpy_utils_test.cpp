@@ -21,13 +21,19 @@
 //      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
 #include <boost/python.hpp>
 #include <vector>
 #include <list>
 
 #include <pni/core/types.hpp>
 #include <core/numpy_utils.hpp>
-#include <core/init_numpy.hpp>
 #include <core/utils.hpp>
 #include "check_type_id_from_object.hpp"
 #include "check_type_str_from_object.hpp"
@@ -35,6 +41,16 @@
 
 using namespace boost::python; 
 using namespace pni::core;
+
+#if PY_MAJOR_VERSION >= 3
+int
+#else 
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
 
 list get_shape(const object &o)
 {
