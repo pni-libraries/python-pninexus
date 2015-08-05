@@ -7,7 +7,7 @@ from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.core import ShapeMismatchError
 
-from attributes_test import attributes_test
+from .attributes_test import attributes_test
 
 def write_attribute(a,v):
     a.value = v
@@ -18,7 +18,7 @@ class nxgroup_test(unittest.TestCase):
     attr_tester = attributes_test()
 
     def setUp(self):
-        self.gf = create_file("nxgroup_test.nxs",overwrite=True)
+        self.gf = create_file("test/nxgroup_test.nxs",overwrite=True)
         self.root = self.gf.root()
 
     def tearDown(self):

@@ -124,9 +124,14 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &)
 //!
 object new_exception(char const *name,char const *doc)
 {
+#if PY_MAJOR_VERSION >= 3
+    return object(handle<>(PyErr_NewExceptionWithDoc(name,doc,
+                                                     nullptr,nullptr)));
+#else
     return object(handle<>(PyErr_NewExceptionWithDoc(const_cast<char*>(name),
                                                      const_cast<char*>(doc),
                                                      nullptr,nullptr)));
+#endif
 }
 
 

@@ -1,14 +1,14 @@
 #from nxh5 import NXObject_NXObject as NXObject
-from _nxh5 import nxgroup
-from _nxh5 import nxfile
-from _nxh5 import nxfield
-from _nxh5 import nxattribute
-from _nxh5 import deflate_filter
+from ._nxh5 import nxgroup
+from ._nxh5 import nxfile
+from ._nxh5 import nxfield
+from ._nxh5 import nxattribute
+from ._nxh5 import deflate_filter
 
 
 #import helper methods
-from _nxh5 import __create_file
-from _nxh5 import __open_file
+from ._nxh5 import __create_file
+from ._nxh5 import __open_file
 
 def create_file(fname,overwrite=False):
     """

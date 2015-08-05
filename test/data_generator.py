@@ -31,11 +31,16 @@ for all data types supported by pniio.
 
 import numpy as np
 import numpy.random as random
+from functools import reduce
+from .core import config
+
+
 
 #these are the typecodes supported by pniii
 _typecodes=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
             "float32","float64","float128","complex32","complex64","complex128",
-            "string","bool"]
+            "bool"]
+
 
 class type_desc(object):
     """Container for type information
@@ -71,8 +76,17 @@ _type_desc = {"uint8":type_desc(np.dtype("uint8"),np.uint8),
               "complex32": type_desc(np.dtype("complex64"),np.complex64),
               "complex64": type_desc(np.dtype("complex128"),np.complex128),
               "complex128": type_desc(np.dtype("complex256"),np.complex256),
-              "string": type_desc(np.dtype("string"),np.str_),
               "bool":   type_desc(np.dtype("bool"),np.bool_)}
+
+
+if config.PY_MAJOR_VERSION>=3:
+    _typecodes += "unicode"
+    _type_desc["string"] = type_desc(np.dtype("unicode"),np.unicode_)
+else:
+    _typecodes += "string"
+    _type_desc["string"] = type_desc(np.dtype("string"),np.str_)
+
+
 
 
 #-----------------------------------------------------------------------------
@@ -242,7 +256,7 @@ def create(typecode,min_val=0,max_val=100):
         g = generator(complex_generator_func,min_val,max_val)
     elif tdesc.dtype.kind == 'b':
         g = generator(bool_generator_func)
-    elif tdesc.dtype.kind == 'S':
+    elif tdesc.dtype.kind == 'S' or tdesc.dtype.kind == 'U':
         g = generator(string_generator_func,min_val,max_val)
     else:
         TypeError,'unsupported type code'

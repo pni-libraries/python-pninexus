@@ -38,20 +38,19 @@ extra_compile_args.extend(pnicore.compiler_flags)
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
 #-----------------------------------------------------------------------------
+common_sources = ["src/core/numpy_utils.cpp",
+                  "src/core/utils.cpp",
+                  # "src/core/init_numpy.cpp"
+                  ]
+
 core_files = ["src/core/bool_converter.cpp",
               "src/core/numpy_scalar_converter.cpp",
               "src/core/errors.cpp",
-              "src/core/numpy_utils.cpp",
-              "src/core/utils.cpp",
-              "src/core/init_numpy.cpp",
-              "src/core/_core.cpp"]
+              "src/core/_core.cpp"]+common_sources
 
 nxh5_files = ["src/io/_nxh5.cpp",
               "src/io/utils.cpp",
-              "src/core/numpy_utils.cpp",
-              "src/core/init_numpy.cpp",
-              "src/core/utils.cpp"
-             ]
+             ]+common_sources
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
@@ -79,7 +78,6 @@ io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
                    libraries = libraries,
-                   #runtime_library_dirs=[core_path],
                    language="c++",
                    extra_compile_args = extra_compile_args)
 
@@ -97,22 +95,22 @@ ex_trans_test = Extension("test.core.ex_trans_test",
 
 
 utils_test = Extension("test.core.utils_test",
-                      ["test/core/utils_test.cpp"],
+                      ["test/core/utils_test.cpp"]+common_sources,
                        language="c++",
                        include_dirs = include_dirs+["src/"],
-                       library_dirs = library_dirs+[core_lib_dir],
-                       libraries = libraries+[":_core.so"],
+                       library_dirs = library_dirs,
+                       libraries = libraries,
                        extra_compile_args = extra_compile_args)
 
 numpy_utils_test = Extension("test.core.numpy_utils_test",
                              ["test/core/numpy_utils_test.cpp",
                               "test/core/check_type_id_from_object.cpp",
                               "test/core/check_type_str_from_object.cpp"
-                             ],
+                             ]+common_sources,
                              language="c++",
                              include_dirs = include_dirs+["src/"],
-                             library_dirs = library_dirs+[core_lib_dir],
-                             libraries = libraries+[":_core.so"],
+                             library_dirs = library_dirs,
+                             libraries = libraries,
                              extra_compile_args = extra_compile_args)
 
 

@@ -1,6 +1,7 @@
 import unittest
 import numpy
 import numpy.random as random
+import os
 
 import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import nxfile
@@ -29,12 +30,13 @@ scalars={"uint8":numpy.uint8,"int8":numpy.int8,
 
 
 #implementing test fixture
-class nxfield_test(unittest.TestCase):
+class nxfield_test_uint16(unittest.TestCase):
 
     _typecode = "uint16"
     
     def setUp(self):
-        self.gf = create_file("NXFieldTest.h5",overwrite=True)
+        filename = "nxfield_test_{tc}.nxs".format(tc=self._typecode)
+        self.gf = create_file(os.path.join("test",filename),overwrite=True)
         self.root = self.gf.root()
         self.dg = data_gen.create(self._typecode,5,40)
 
@@ -135,7 +137,7 @@ class nxfield_test(unittest.TestCase):
 
 
     def test_numeric_io(self):
-        f1 = self.root.create_field("data1","float64",shape=(3,1))
+        f1 = self.root.create_field("data1",self._typecode,shape=(3,1))
         self.assertTrue(f1.is_valid)
         self.assertTrue(len(f1.shape) == 2)
         self.assertTrue(f1.size == 3)
@@ -165,9 +167,9 @@ class nxfield_test(unittest.TestCase):
         self.assertTrue(a.shape == (3,))
 
     def test_negative_index(self):
-        f1 = self.root.create_field("data1","uint16",shape=(20,))
+        f1 = self.root.create_field("data1",self._typecode,shape=(20,))
 
-        f1[...] = numpy.arange(0,20,dtype="uint16")
+        f1[...] = numpy.arange(0,20,dtype=self._typecode)
 
         #test for a single negative index
         self.assertTrue(f1[-1] == 19)

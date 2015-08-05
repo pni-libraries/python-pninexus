@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy
 import platform
 
@@ -36,7 +37,7 @@ class attributes_test(object):
         attr = parent.attributes.create(name,tc,shape)
 
         #test inquery properties
-        print tc,attr.dtype
+        print(tc,attr.dtype)
         ts.assertTrue(attr.dtype == tc)
         ts.assertTrue(attr.valid)
         ts.assertEqual(attr.shape,shape)
@@ -77,7 +78,7 @@ class attributes_test(object):
         self.scalar_attribute_test(ts,parent,"complex128_attr","complex128",1+123.j)
 
         self.scalar_attribute_test(ts,parent,"text","string","hello world this is a text")
-        self.scalar_attribute_test(ts,parent,"unicode","string",u"hello world")
+        self.scalar_attribute_test(ts,parent,"unicode","string","hello world")
         self.scalar_attribute_test(ts,parent,"flag","bool",True)
 
     def test_array_attribute(self,ts,parent):
