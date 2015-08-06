@@ -28,6 +28,7 @@
 #define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
 #define NO_IMPORT_ARRAY
 extern "C"{
+#include<Python.h>
 #include<numpy/arrayobject.h>
 }
 
@@ -74,7 +75,11 @@ namespace numpy
     CREATE_PNI2NUMPY_TYPE(pni::core::complex32,NPY_CFLOAT)
     CREATE_PNI2NUMPY_TYPE(pni::core::complex64,NPY_CDOUBLE)
     CREATE_PNI2NUMPY_TYPE(pni::core::complex128,NPY_CLONGDOUBLE)
+#if PY_MAJOR_VERSION >= 3
+    CREATE_PNI2NUMPY_TYPE(pni::core::string,NPY_UNICODE)
+#else
     CREATE_PNI2NUMPY_TYPE(pni::core::string,NPY_STRING)
+#endif
     CREATE_PNI2NUMPY_TYPE(pni::core::bool_t,NPY_BOOL)
 
     //!
@@ -98,7 +103,11 @@ namespace numpy
         {pni::core::type_id_t::COMPLEX32, NPY_CFLOAT},
         {pni::core::type_id_t::COMPLEX64, NPY_CDOUBLE},
         {pni::core::type_id_t::COMPLEX128,NPY_CLONGDOUBLE},
+#if PY_MAJOR_VERSION >= 3
+        {pni::core::type_id_t::STRING,NPY_UNICODE},
+#else
         {pni::core::type_id_t::STRING,NPY_STRING},
+#endif
         {pni::core::type_id_t::BOOL,  NPY_BOOL}
     };
 
@@ -190,10 +199,10 @@ namespace numpy
 
         const PyArrayObject *py_array = (const PyArrayObject *)o.ptr();
 
-        CTYPE shape(py_array->nd);
+        CTYPE shape(PyArray_NDIM(py_array));
         auto iter = shape.begin();
         for(size_t i=0;i<shape.size();++i)
-            *iter++ = (value_type)PyArray_DIM(o.ptr(),i);
+            *iter++ = (value_type)PyArray_DIM(py_array,i);
 
         return shape;
     }
@@ -226,11 +235,12 @@ namespace numpy
     T *get_data(const boost::python::object &o)
     {
         using namespace pni::core;
+
         if(!is_array(o))
             throw type_error(EXCEPTION_RECORD,
                     "Argument must be a numpy array!");
 
-        return (T*)PyArray_DATA(o.ptr());
+        return (T*)PyArray_DATA((PyArrayObject*)o.ptr());
     }
 
     //------------------------------------------------------------------------
@@ -388,6 +398,18 @@ namespace numpy
     }
 
     //------------------------------------------------------------------------
+    //!
+    //! \ingroup numpy_utils
+    //! \brief copy strings to a numpy array
+    //! 
+    //! Copy strings from a C++ container to a numpy array. We assume here that
+    //! the array has properly been created. 
+    //! 
+    //! \tparam DTYPE C++ container type
+    //! \param source reference to an instance of DTYPE from which to read the
+    //!               strings
+    //! \param dest numpy array where to store the data
+    //! 
     template<typename DTYPE>
     void copy_string_to_array(const DTYPE &source,boost::python::object &dest)
     {
@@ -395,11 +417,17 @@ namespace numpy
         typedef pni2numpy_type<value_type> pni2numpy;
 
         PyArrayObject *array = (PyArrayObject *)(dest.ptr());
+#if PY_MAJOR_VERSION >= 3
+        PyArray_Descr* dtype = PyArray_DescrFromType(NPY_UNICODE);
+#else
         PyArray_Descr* dtype = PyArray_DescrFromType(NPY_STRING);
+#endif
         
-        NpyIter *aiter = NpyIter_New(array,NPY_ITER_C_INDEX | NPY_ITER_READWRITE,
+        NpyIter *aiter = NpyIter_New(array,
+                         NPY_ITER_C_INDEX | NPY_ITER_READWRITE,
                          NPY_CORDER,
-                         NPY_SAME_KIND_CASTING,dtype);
+                         NPY_SAME_KIND_CASTING,
+                         dtype);
 
 
         NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(aiter,NULL);
@@ -407,7 +435,22 @@ namespace numpy
         auto citer = source.begin();
         do
         {
+#if PY_MAJOR_VERSION >= 3
+            // on Python 3 strings are UTF8 and each character requires 
+            // 4 Byte of memory. We have to take this into account
+            auto b = citer->begin(); 
+            auto e = citer->end();
+            size_t index = 0;
+            for(;b!=e;++b)
+            {
+                dataptr[0][4*index] = *b;
+                index++;
+            }
+#else
+            //on Python 2 strings are just lists of characters -> 
+            //a simple copy should be enough
             std::copy(citer->begin(),citer->end(),dataptr[0]);
+#endif
             citer++;
         }
         while((iternext(aiter))&&(citer!=source.end()));

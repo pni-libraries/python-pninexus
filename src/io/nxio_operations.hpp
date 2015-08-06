@@ -90,7 +90,14 @@ object io_read(const OType &readable)
         
         if(!itemsize) itemsize=1;
 
+#if PY_MAJOR_VERSION >= 3
+        //On Python 3 strings are UTF8 encoded, thus every character occupies
+        //at least 4 Byte of memory
+        object array = numpy::create_array(tid,shape,int(itemsize)*4);
+#else 
+        //On Python 2 strings are just array so char 
         object array = numpy::create_array(tid,shape,int(itemsize));
+#endif
         numpy::copy_string_to_array(data,array);
         return array;
     }
@@ -157,6 +164,9 @@ void io_write(const OTYPE &writeable,const object &obj)
 #if PY_MAJOR_VERSION >= 3
         IOOP::template write<string>(writeable,obj);
 #else
+        //in Python2 we have to take care about unicode. 
+        //In this case we convert the unicode data to string first. 
+        //This might not be the best approach
         object data;
         if(is_unicode(obj))
             data = unicode2str(obj);

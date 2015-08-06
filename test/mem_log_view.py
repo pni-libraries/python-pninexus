@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 
+from __future__ import print_function
 from matplotlib import pyplot as plt
 import numpy
 import sys
@@ -13,13 +14,13 @@ except:
 
 
 data = numpy.loadtxt(lfile)
-print data.shape
+print(data.shape)
 run = data[:,0]
 tmem = data[:,1]
 rmem = data[:,2]
 
-print "start memory: ",rmem[20]
-print "stop  memory: ",rmem[-1]
+print("start memory: ",rmem[20])
+print("stop  memory: ",rmem[-1])
 
 plt.figure()
 plt.plot(run,rmem)

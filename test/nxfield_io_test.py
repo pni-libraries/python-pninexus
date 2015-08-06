@@ -134,33 +134,33 @@ class nxfield_io_test_uint8(unittest.TestCase):
         f = self.root.create_field("array_to_mdim_field",
                                    self._typecode,shape=shape)
         write = self.dg(shape)
-#        f.write(write)
-#        read = f.read()
-#
-#        self.assertTrue(x==y for x,y in zip(read,write))
-#
-#        f[...] = write
-#        read = f[...]
-#
-#        self.assertTrue(x==y for x,y in zip(read,write))
+        f.write(write)
+        read = f.read()
+
+        self.assertTrue(x==y for x,y in zip(read,write))
+
+        f[...] = write
+        read = f[...]
+
+        self.assertTrue(x==y for x,y in zip(read,write))
 
     def test_array_to_mdim_field_partial_io(self):
         shape = (3,4)
         f = self.root.create_field("array_to_mdim_field_partial",
                                    self._typecode,shape=shape)
 
-#        write1 = self.dg((4,))
-#        
-#        f[0,:] = write1
-#        read   = f[0,:]
-#
-#        self.assertTrue(x==y for x,y in zip(read,write1))
-#
-#        write2 = self.dg((3,))
-#        f[:,1] = write2
-#        read   = f[:,1]
-#
-#        self.assertTrue(x==y for x,y in zip(read,write2))
+        write1 = self.dg((4,))
+        
+        f[0,:] = write1
+        read   = f[0,:]
+
+        self.assertTrue(x==y for x,y in zip(read,write1))
+
+        write2 = self.dg((3,))
+        f[:,1] = write2
+        read   = f[:,1]
+
+        self.assertTrue(x==y for x,y in zip(read,write2))
 
 class nxfield_io_test_uint16(nxfield_io_test_uint8):
     _typecode = "uint16"
@@ -200,9 +200,6 @@ class nxfield_io_test_complex64(nxfield_io_test_uint8):
 
 class nxfield_io_test_complex128(nxfield_io_test_uint8):
     _typecode = "complex128"
-
-class nxfield_io_test_string(nxfield_io_test_uint8):
-    _typecode = "string"
 
 class nxfield_io_test_bool(nxfield_io_test_uint8):
     _typecode = "bool"

@@ -414,7 +414,11 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("link",&wrapper_type::link,__group_link_docstr)
         .def("__iter__",&wrapper_type::__iter__,__group_childs_docstr)
         .def("increment",&wrapper_type::increment)
+#if PY_MAJOR_VERSION >= 3
+        .def("__next__",&wrapper_type::next)
+#else
         .def("next",&wrapper_type::next)
+#endif
 //        .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
 //#.add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
         .add_property("filename",&wrapper_type::filename)
