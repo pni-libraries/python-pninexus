@@ -184,7 +184,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'libpnicorePythonbindings.tex', u'libpnicore Python bindings Documentation',
+  ('index', 'pnipythonbindings.tex', u'PNI libraries Python bindings Documentation',
    u'Eugen Wintersberger', 'manual'),
 ]
 
