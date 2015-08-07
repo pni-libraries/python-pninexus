@@ -1,6 +1,6 @@
 
-The pni.core package
-=======================
+API documentation
+=================
 
 For a Python programmer this is most probably the most important part of this
 very short documentation. ``libpnicore`` provides a set of exception types
@@ -44,9 +44,31 @@ C++ exception                            Python exception
 For more detailed information about under which conditions these exceptions are 
 thrown, consult the `libpnicore` users guide.
 
-The API wrappers
-----------------
 
 .. automodule:: pni.core
    :members:
+   :undoc-members:
+
+The ``pni.io`` package
+======================
+
+.. automodule:: pni.io
+   :members:
+   :undoc-members:
+
+
+The ``pni.io.nx`` package
+=========================
+
+.. automodule:: pni.io.nx
+   :members: 
+   :undoc-members:
+
+
+
+The ``pni.io.nx.h5`` package
+============================
+
+.. automodule:: pni.io.nx
+   :members: 
    :undoc-members:

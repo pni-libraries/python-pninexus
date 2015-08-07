@@ -10,9 +10,9 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   
-   exception_wrappers
-   cpp_utilities
+
+   users_guide
+   api_guide
     
 
 
