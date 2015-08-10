@@ -28,12 +28,34 @@ From ``libpnicore`` only the exceptions are imported as they are used by
 The top level node of the package
 ---------------------------------
 
-Reading non nexus files
------------------------
+Reading legacy ASCII and binary files
+-------------------------------------
 
 Basic Nexus support
 -------------------
+At the current status (version 1.0.0) the ``libpniio`` does only support
+Nexus using the HDF5 storage backend. In order to use the provided Nexus
+functionality import the package with something like this
 
-NeXus algorithms
-----------------
+.. code-block:: python
+    
+    import pni.io.nx.h5 as nexus
+
+
+.. toctree::
+    :maxdepth: 1
+    
+    nexus_files
+    nexus_groups
+    nexus_fields
+    nexus_attributes
+
+
+Advanced NeXus
+--------------
+
+.. toctree::
+    :maxdepth: 1
+
+    nexus_xml
 

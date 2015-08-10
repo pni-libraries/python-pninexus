@@ -69,6 +69,14 @@ The ``pni.io.nx`` package
 The ``pni.io.nx.h5`` package
 ============================
 
-.. automodule:: pni.io.nx
+.. automodule:: pni.io.nx.h5
    :members: 
+   :undoc-members:
+
+.. autoclass:: pni.io.nx.h5.nxfile
+   :members:
+   :undoc-members:
+
+.. autoclass:: pni.io.nx.h5.nxgroup
+   :members:
    :undoc-members:
