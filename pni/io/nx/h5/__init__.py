@@ -37,20 +37,58 @@ from ._nxh5 import deflate_filter
 #import helper methods
 from ._nxh5 import __create_file
 from ._nxh5 import __open_file
+from ._nxh5 import __create_files
 
 def create_file(fname,overwrite=False):
-    """
-    create_file(fname,overwrite=False):
-    Creates a new Nexus file. 
+    """create a new NeXus file
 
-    arguments:
-    fname ....... name of the file
-    overwrite ... if true an existing file with the same name will be overwriten
+    This function creates a new NeXus file. All data will go o this file. If
+    the file already exists the pni.core.FileError exception will be thrown. 
+    In order to overwrite an existing file of equal name set the 
+    overwrite flag to True.
 
-    return:
-    Returns a new object of type NXFile.
+    Args:
+        fname (string):    the name of the file
+        overwrite (bool):  overwrite flag (default False)
+
+    Returns:
+        A new instance of nxfile.
+
+    Raises:
+        pni.core.FileError in case of problems
     """
     return __create_file(fname,overwrite)
+
+def create_files(fname,split_size,overwrite=False):
+    """create a split file
+
+    Create a new file which is splitted into subfiles of a given size. unlike
+    for the create_file function the file name argument is a C-style 
+    format string which includes a running index for the individual files. 
+
+    A valid filename could look like this 
+        data_file.%05i.nxs
+
+    which would lead to file names like 
+        data_file.00001.nxs
+        data_file.00002.nxs
+        data_file.00003.nxs
+
+
+    Args: 
+        fname (string):    Format string encoding the name of the files
+        split_size (long): Size of the individual files
+        overwrite (bool):  overwrite flag (default False)
+
+    Returns: 
+        A new instance of nxfile
+
+    Raises:
+        pni.core.FileError in case of problems
+     
+    """
+
+    return __create_files(fname,split_size,overwrite)
 
 def open_file(fname,readonly=True):
     """

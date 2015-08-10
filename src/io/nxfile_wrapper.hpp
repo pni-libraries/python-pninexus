@@ -127,6 +127,36 @@ nxfile_wrapper<FTYPE> open_file(const string &n, bool ro)
 }
 
 //------------------------------------------------------------------------------
+//!
+//! \ingroup wrappers
+//! \brief create split files
+//!
+//! Create a new file in split mode. 
+//! 
+//! \throws file_error in case of errors
+//! 
+//! \param n name of the file
+//! \param split_size the size at which to split files in MB
+//! \param ow overwrite flag
+//! \return new instance of nxfile
+//!
+template<typename FTYPE>
+nxfile_wrapper<FTYPE> create_files(const string &n,ssize_t split_size,
+                                   bool ow)
+{
+    try
+    {
+        return nxfile_wrapper<FTYPE>(FTYPE::create_files(n,split_size,ow));
+    }
+    catch(pni::core::file_error &error)
+    {
+        std::cerr<<error<<std::endl;
+        error.append(EXCEPTION_RECORD);
+        throw error;
+    }
+}
+
+//------------------------------------------------------------------------------
 //! 
 //! \ingroup wrappers
 //! \brief create NXFile wrapper 
@@ -149,5 +179,6 @@ template<typename FTYPE> void wrap_nxfile()
     //need some functions
     def("__create_file",&create_file<FTYPE>);
     def("__open_file",&open_file<FTYPE>);
+    def("__create_files",&create_files<FTYPE>);
 }
 

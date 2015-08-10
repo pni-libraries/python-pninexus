@@ -1,9 +1,11 @@
 import unittest
 import os
+import numpy
 
 from pni.io import ObjectError
 from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import create_file
+from pni.io.nx.h5 import create_files
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import nxgroup
 
@@ -56,6 +58,25 @@ class nxfile_test(unittest.TestCase):
         f = open_file(self.filename,readonly=False)
         self.assertTrue(f.is_valid)
         f.close()
+
+    def test_split_files(self):
+        fname = "test/nxfile_test_split.%05i.nxs"
+        f = create_files(fname,100,overwrite=True)
+        g = f.root();
+        d = g.create_field("data","uint64",shape=(0,1024,2048))
+        frame = numpy.ones((1024,2048),dtype="uint64")
+
+
+        for i in range(100):
+            d.grow()
+            d[-1,...] = frame
+            f.flush()
+
+
+        f.close()
+
+
+
 
 
 
