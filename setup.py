@@ -54,6 +54,9 @@ nxh5_files = ["src/io/_nxh5.cpp",
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
+nx_files = ["src/io/_nx.cpp","src/io/nxpath/element_dict_converter.cpp",
+            "src/io/nxpath/nxpath_wrapper.cpp"]
+
 core_lib_dir=os.path.join(get_build_dir(),"pni","core")
 
 #-----------------------------------------------------------------------------
@@ -75,6 +78,13 @@ nxh5_ext = Extension("pni.io.nx.h5._nxh5",nxh5_files,
                      extra_compile_args = extra_compile_args)
 
 io_ext = Extension("pni.io._io",io_files,
+                   include_dirs = include_dirs+["src/"],
+                   library_dirs = library_dirs,
+                   libraries = libraries,
+                   language="c++",
+                   extra_compile_args = extra_compile_args)
+
+nx_ext = Extension("pni.io.nx._nx",nx_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
                    libraries = libraries,
@@ -142,7 +152,7 @@ setup(name="pnicore",
       license = "GPLv2",
       version = "1.0.0",
       requires = ["numpy"],
-      ext_modules=[core_ext,nxh5_ext,io_ext,
+      ext_modules=[core_ext,nxh5_ext,io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pni",

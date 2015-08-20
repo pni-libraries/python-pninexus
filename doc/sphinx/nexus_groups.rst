@@ -28,8 +28,12 @@ children of the their parent group. So using
 
     g = root_group.create_group("entry/instrument/detector")
 
-will fail if ``entry`` and/or ``instrument`` do not exist. As NeXus data trees
-can become rather complicated 
+will fail if `entry` and/or `instrument` do not exist. It may sounds strange
+that one cannot create intermediate groups automatically a feature the HDF5
+library and the :py:mod:`h5py` wrapper support. However, we cannot use this
+feature as it creates groups only by name and does not add type support which 
+we would have to use in case of
+
 
 
 where the first argument is the parent group, the second the group to create as

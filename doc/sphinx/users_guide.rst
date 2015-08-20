@@ -31,8 +31,8 @@ The top level node of the package
 Reading legacy ASCII and binary files
 -------------------------------------
 
-Basic Nexus support
--------------------
+Nexus support
+-------------
 At the current status (version 1.0.0) the ``libpniio`` does only support
 Nexus using the HDF5 storage backend. In order to use the provided Nexus
 functionality import the package with something like this
@@ -41,6 +41,20 @@ functionality import the package with something like this
     
     import pni.io.nx.h5 as nexus
 
+Addressing objects in NeXus: the path
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    nexus_path
+
+
+The basic objects
+~~~~~~~~~~~~~~~~~
+
+These chapters describe the fundamental objects that mad up a NeXus 
+file. 
 
 .. toctree::
     :maxdepth: 1
@@ -50,6 +64,13 @@ functionality import the package with something like this
     nexus_fields
     nexus_attributes
 
+Linking objects
+~~~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+
+    nexus_links
 
 Advanced NeXus
 --------------
