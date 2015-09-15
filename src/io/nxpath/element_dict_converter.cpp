@@ -21,6 +21,10 @@
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
+extern "C"{
+#include <Python.h>
+}
+
 #include "element_dict_converter.hpp"
 
 using namespace pni::core;
@@ -39,7 +43,6 @@ nxpath_element_to_dict_converter::nxpath_element_to_dict_converter()
 //----------------------------------------------------------------------------
 PyObject *nxpath_element_to_dict_converter::convert(const nxpath::element_type &e)
 {
-    std::cerr<<"I am here"<<std::endl;
     dict d;
     d["name"] = e.first;
     d["base_class"] = e.second;
@@ -68,10 +71,19 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
 
 
     //check value types - must both be strings
-    if(!PyString_Check(object(d["name"]).ptr())) return nullptr;
-    if(!PyString_Check(object(d["base_class"]).ptr())) return nullptr;
+#if PY_MAJOR_VERSION >= 3
+    if(!PyUnicode_Check(object(d["name"]).ptr())) 
+#else
+    if(!PyString_Check(object(d["name"]).ptr())) 
+#endif
+        return nullptr;
 
-    std::cerr<<"Dictionary check done - we are all set!"<<std::endl;
+#if PY_MAJOR_VERSION >= 3
+    if(!PyUnicode_Check(object(d["base_class"]).ptr())) 
+#else
+    if(!PyString_Check(object(d["base_class"]).ptr())) 
+#endif
+        return nullptr;
 
     return obj_ptr;
 }
@@ -80,17 +92,28 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
 void dict_to_nxpath_element_converter::construct(PyObject *obj_ptr,
                                                  rvalue_type *data)
 {
+#if PY_MAJOR_VERSION >= 3
+    PyObject *name_key = PyUnicode_FromString("name");
+    PyObject *base_key = PyUnicode_FromString("base_class");
+#else
     PyObject *name_key = PyString_FromString("name");
     PyObject *base_key = PyString_FromString("base_class");
+#endif
     PyObject *name_item = PyDict_GetItem(obj_ptr,name_key);
     PyObject *base_item = PyDict_GetItem(obj_ptr,base_key);
+
+#if PY_MAJOR_VERSION >= 3
+    pni::core::string name(PyUnicode_AS_DATA(name_item));
+    pni::core::string base_class(PyUnicode_AS_DATA(base_item));
+#else
     pni::core::string name(PyString_AsString(name_item));
     pni::core::string base_class(PyString_AsString(base_item));
+#endif
+
     std::cout<<name<<std::endl;
     std::cout<<base_class<<std::endl;
 
     void *storage = ((storage_type*)data)->storage.bytes;
     new (storage) element_type(name,base_class);
     data->convertible = storage;
-    std::cerr<<"Done with dict to element type conversion!"<<std::endl;
 }

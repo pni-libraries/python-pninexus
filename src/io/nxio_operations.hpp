@@ -78,10 +78,12 @@ object io_read(const OType &readable)
 
     if(tid == type_id_t::STRING) 
     {
+        
+        //in case of a scalar string we can use the standard IO operator
+        if(readable.size()==1) return IOOP::template read<string>(readable);
+
+        //for arrays we need to do some magic
         auto shape = readable.template shape<shape_t>();
-        
-        if(readable.rank()==0 && readable.size()==1) shape = {1};
-        
         auto data = dynamic_array<string>::create(shape);
 
         readable.read(data);
@@ -93,7 +95,7 @@ object io_read(const OType &readable)
 #if PY_MAJOR_VERSION >= 3
         //On Python 3 strings are UTF8 encoded, thus every character occupies
         //at least 4 Byte of memory
-        object array = numpy::create_array(tid,shape,int(itemsize)*4);
+        object array = numpy::create_array(tid,shape,int(itemsize));
 #else 
         //On Python 2 strings are just array so char 
         object array = numpy::create_array(tid,shape,int(itemsize));

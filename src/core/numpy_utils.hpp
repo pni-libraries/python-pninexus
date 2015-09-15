@@ -371,7 +371,7 @@ namespace numpy
         typedef pni2numpy_type<value_type> pni2numpy;
 
         PyArrayObject *array = (PyArrayObject *)(o.ptr());
-        PyArray_Descr* dtype = PyArray_DescrFromType(pni2numpy::typenum);
+        PyArray_Descr* dtype = PyArray_DESCR(array);
         
         NpyIter *aiter = NpyIter_New(array,NPY_ITER_C_INDEX | NPY_ITER_READONLY,
                          NPY_CORDER,
@@ -393,7 +393,7 @@ namespace numpy
         while((iternext(aiter))&&(citer!=container.end()));
 
         //need to destroy the dtype here - decrement the reference counter
-        Py_DECREF(dtype);
+        //Py_DECREF(dtype);
         NpyIter_Deallocate(aiter);
     }
 
@@ -417,11 +417,7 @@ namespace numpy
         typedef pni2numpy_type<value_type> pni2numpy;
 
         PyArrayObject *array = (PyArrayObject *)(dest.ptr());
-#if PY_MAJOR_VERSION >= 3
-        PyArray_Descr* dtype = PyArray_DescrFromType(NPY_UNICODE);
-#else
-        PyArray_Descr* dtype = PyArray_DescrFromType(NPY_STRING);
-#endif
+        PyArray_Descr* dtype = PyArray_DESCR(array);
         
         NpyIter *aiter = NpyIter_New(array,
                          NPY_ITER_C_INDEX | NPY_ITER_READWRITE,
@@ -456,7 +452,7 @@ namespace numpy
         while((iternext(aiter))&&(citer!=source.end()));
 
         //need to destroy the dtype here - decrement the reference counter
-        Py_DECREF(dtype);
+        //Py_DECREF(dtype);
         NpyIter_Deallocate(aiter);
     }
 

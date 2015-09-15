@@ -109,6 +109,12 @@ void AttributeIteratorStop_translator(AttributeIteratorStop const &)
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
 
+//----------------------------------------------------------------------------
+void nxpath_iterator_stop_translator(nxpath_iterator_stop const &)
+{
+    PyErr_SetString(PyExc_StopIteration,"iteration stop");
+}
+
 
 //!
 //! \ingroup error_management
@@ -161,5 +167,6 @@ void exception_registration()
 
     register_exception_translator<ChildIteratorStop>(ChildIteratorStop_translator);
     register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
+    register_exception_translator<nxpath_iterator_stop>(nxpath_iterator_stop_translator);
 
 }
