@@ -81,11 +81,13 @@ nxpath_iterator get_iterator(const nxpath &p)
 
 void wrap_nxpath()
 {
+    //------------------iterator wrapper--------------------------------------
     class_<nxpath_iterator>("nxpath_iterator")
         .def("increment",&nxpath_iterator::increment)
         .def("__iter__",&nxpath_iterator::__iter__)
         .def("next",&nxpath_iterator::next);
 
+    //-------------------nxpath wrapper---------------------------------------
     void (nxpath::*set_filename)(const string &) = &nxpath::filename;
     string (nxpath::*get_filename)()const = &nxpath::filename;
     void (nxpath::*set_attribute)(const string &) = &nxpath::attribute;
@@ -96,16 +98,27 @@ void wrap_nxpath()
         .add_property("size",&nxpath::size)
         .add_property("filename",get_filename,set_filename)
         .add_property("attribute",get_attribute,set_attribute)
-        .def("append",&nxpath::push_back)
-        .def("prepend",&nxpath::push_front)
-        .def("pop_back",&nxpath::pop_back)
-        .def("pop_front",&nxpath::pop_front)
+        .def("_append",&nxpath::push_back)
+        .def("_prepend",&nxpath::push_front)
+        .def("_pop_back",&nxpath::pop_back)
+        .def("_pop_front",&nxpath::pop_front)
         .def("__str__",&nxpath::to_string)
         .def("__len__",&nxpath::size)
         .def("__iter__",&get_iterator);
 
 
     def("make_path",nxpath::from_string);
+
+    bool (*nxpath_match_str_str)(const string &,const string &) = &match;
+    bool (*nxpath_match_path_path)(const nxpath &,const nxpath &) = &match;
+    def("match",nxpath_match_str_str);
+    def("match",nxpath_match_path_path);
+
+    def("is_root_element",&is_root_element);
+    def("is_absolute",&is_absolute);
+    def("is_empty",&is_empty);
+    def("has_name",&has_name);
+    def("has_class",&has_class);
 
 }
 

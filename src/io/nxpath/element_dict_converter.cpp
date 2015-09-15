@@ -64,6 +64,7 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
     if(!PyDict_Check(obj_ptr)) return nullptr;
 
     //check the elements of the dictionary
+    Py_XINCREF(obj_ptr);
     handle<> h(obj_ptr);
     dict d(h);
     if((!d.has_key("name")) || (!d.has_key("base_class")))
@@ -92,6 +93,9 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
 void dict_to_nxpath_element_converter::construct(PyObject *obj_ptr,
                                                  rvalue_type *data)
 {
+    using namespace pni::core;
+
+    //build the key objects 
 #if PY_MAJOR_VERSION >= 3
     PyObject *name_key = PyUnicode_FromString("name");
     PyObject *base_key = PyUnicode_FromString("base_class");
@@ -99,21 +103,34 @@ void dict_to_nxpath_element_converter::construct(PyObject *obj_ptr,
     PyObject *name_key = PyString_FromString("name");
     PyObject *base_key = PyString_FromString("base_class");
 #endif
+
+    //retrieve the content of the dictionary 
     PyObject *name_item = PyDict_GetItem(obj_ptr,name_key);
     PyObject *base_item = PyDict_GetItem(obj_ptr,base_key);
 
 #if PY_MAJOR_VERSION >= 3
-    pni::core::string name(PyUnicode_AS_DATA(name_item));
-    pni::core::string base_class(PyUnicode_AS_DATA(base_item));
+    string name(PyUnicode_AS_DATA(name_item));
+    string base_class(PyUnicode_AS_DATA(base_item));
 #else
-    pni::core::string name(PyString_AsString(name_item));
-    pni::core::string base_class(PyString_AsString(base_item));
-#endif
+    string name;
+    string base_class; 
+    
+    if(PyString_Size(name_item))
+        name = string(PyString_AsString(name_item));
+    else
+        name = string();
 
-    std::cout<<name<<std::endl;
-    std::cout<<base_class<<std::endl;
+    if(PyString_Size(base_item))
+        base_class = string(PyString_AsString(base_item));
+    else
+        base_class = string();
+#endif
 
     void *storage = ((storage_type*)data)->storage.bytes;
     new (storage) element_type(name,base_class);
     data->convertible = storage;
+
+    //remove all temporary python objects
+    Py_DECREF(name_key);
+    Py_DECREF(base_key);
 }
