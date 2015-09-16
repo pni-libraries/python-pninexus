@@ -98,8 +98,8 @@ void wrap_nxpath()
         .add_property("size",&nxpath::size)
         .add_property("filename",get_filename,set_filename)
         .add_property("attribute",get_attribute,set_attribute)
-        .def("_append",&nxpath::push_back)
-        .def("_prepend",&nxpath::push_front)
+        .def("_push_back",&nxpath::push_back)
+        .def("_push_front",&nxpath::push_front)
         .def("_pop_back",&nxpath::pop_back)
         .def("_pop_front",&nxpath::pop_front)
         .def("__str__",&nxpath::to_string)
@@ -113,6 +113,7 @@ void wrap_nxpath()
     bool (*nxpath_match_path_path)(const nxpath &,const nxpath &) = &match;
     def("match",nxpath_match_str_str);
     def("match",nxpath_match_path_path);
+    def("join",&join);
 
     def("is_root_element",&is_root_element);
     def("is_absolute",&is_absolute);

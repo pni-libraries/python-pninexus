@@ -76,44 +76,54 @@ class nxpath_test(unittest.TestCase):
             self.assertEqual(ref["name"],e["name"])
             self.assertEqual(ref["base_class"],e["base_class"])
 
-    def test_append(self):
+    def test_push_back(self):
         p = nxpath()
         self.assertEqual(len(p),0)
         self.assertTrue(is_empty(p))
 
-        p.append(name="/",base_class="NXroot")
+        p.push_back(name="/",base_class="NXroot")
         self.assertEqual(len(p),1)
         print(p.front)
         self.assertTrue(is_root_element(p.front))
 
-        p.append(name="",base_class="NXentry")
+        p.push_back(":NXentry")
         self.assertEqual(len(p),2)
 
-        p.append(name="",base_class="NXinstrument")
+        p.push_back("","NXinstrument")
         self.assertEqual(len(p),3)
 
-        p.append(name="mythen",base_class="NXdetector")
+        p.push_back("mythen","NXdetector")
         self.assertEqual(len(p),4)
+        
+        p.push_back("data")
+        self.assertEqual(len(p),5)
 
-        self.assertEqual(p.__str__(),"/:NXentry/:NXinstrument/mythen:NXdetector")
+        self.assertEqual(p.__str__(),"/:NXentry/:NXinstrument/mythen:NXdetector/data")
 
-    def test_prepend(self):
+    def test_push_front(self):
         p = nxpath()
         self.assertTrue(is_empty(p))
-        
-        p.prepend(name="mythen",base_class="NXdetector")
+       
+        p.push_front("data")
         self.assertEqual(len(p),1)
-        
-        p.prepend(name="",base_class="NXinstrument")
-        self.assertEqual(len(p),2)
-        
-        p.prepend(name="",base_class="NXentry")
-        self.assertEqual(len(p),3)
+        self.assertEqual(p.__str__(),"data")
 
-        p.prepend(name="/",base_class="NXroot")
-        self.assertEqual(len(p),4)
+        p.push_front("mythen:NXdetector")
+        self.assertEqual(len(p),2)
+        self.assertEqual(p.__str__(),"mythen:NXdetector/data")
         
-        self.assertEqual(p.__str__(),"/:NXentry/:NXinstrument/mythen:NXdetector")
+        p.push_front(name="",base_class="NXinstrument")
+        self.assertEqual(len(p),3)
+        self.assertEqual(p.__str__(),":NXinstrument/mythen:NXdetector/data")
+        
+        p.push_front(":NXentry")
+        self.assertEqual(len(p),4)
+        self.assertEqual(p.__str__(),":NXentry/:NXinstrument/mythen:NXdetector/data")
+
+        p.push_front("/:NXroot")
+        self.assertEqual(len(p),5)
+        
+        self.assertEqual(p.__str__(),"/:NXentry/:NXinstrument/mythen:NXdetector/data")
         self.assertTrue(is_root_element(p.front))
 
     def test_pop_front(self):
@@ -146,5 +156,34 @@ class nxpath_test(unittest.TestCase):
         self.assertEqual(p.__str__(),"")
         self.assertRaises(IndexError,p.pop_back)
 
+    def test_add_path(self):
+        a = make_path("/:NXentry/:NXinstrument")
+        b = make_path(":NXdetector/data")
+        c = a+b
+        self.assertEqual(c.__str__(),"/:NXentry/:NXinstrument/:NXdetector/data")
+        self.assertEqual(a.__str__(),"/:NXentry/:NXinstrument")
+        self.assertEqual(b.__str__(),":NXdetector/data")
+        
+        b.push_front("/:NXroot")
+        self.assertRaises(ValueError,a.__add__,b)
+        b.pop_front()
+        b.filename="test.nxs"
+        self.assertRaises(ValueError,a.__add__,b)
 
+        self.assertRaises(TypeError,a.__add__,1)
+
+    def test_add_string(self):
+        
+        a = make_path(":NXentry")
+        c = a+":NXinstrument/"
+        self.assertEqual(c.__str__(),":NXentry/:NXinstrument")
+        c = "/"+a
+        self.assertEqual(c.__str__(),"/:NXentry")
+        self.assertTrue(is_root_element(c.front))
+
+        a += ":NXinstrument/data"
+        self.assertEqual(a.__str__(),":NXentry/:NXinstrument/data")
+
+
+        
         

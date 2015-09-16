@@ -108,21 +108,34 @@ be obtained via the, read-only, :py:attr:`filename` attribute.
 Functions and classes concerning NeXus paths are available from the 
 :py:mod:`pni.io.nx` package.
 A NeXus path is represented by an instance of :py:class:`nxpath`.  
-An instance can be constructed from the string representation of a path 
+The :py:func:`make_path` utiltiy function creates a new instance of a path
 
 .. code-block:: python 
 
-    from pni.io.nx import nxpath 
+    from pni.io.nx import nxpath,make_path
 
-    p = nxpath("/:NXentry/:NXinstrument/:NXdetector/data")
-    
+    p = make_path("/:NXentry/:NXinstrument/:NXdetector/data")
 
-The *file-* and *attribute-section* of the path is accessible via the 
-:py:attr:`filename` and :py:attr:`attribute` attributes of a path instance. 
+An empyt instance can be obtained by usint the default constructor 
+of :py:class:`nxpath`
 
 .. code-block:: python
 
-    path = .... 
+    from pni.io.nx import nxpath
+
+    p = nxpath()
+    
+
+The *file-* and *attribute-section* of the path is accessible via the 
+:py:attr:`filename` and :py:attr:`attribute` attributes of a path instance
+which are both read- and writeable 
+
+.. code-block:: python
+    
+    from __future__ import print_function
+    from pni.io.nx import make_path
+
+    path = make_path("test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units")
 
     print(path.filename)
     path.filename = "test.nxs"
@@ -130,64 +143,99 @@ The *file-* and *attribute-section* of the path is accessible via the
     print(path.attribute)
     path.attribute = "units"
 
-For the *object-section* a path acts like a stack. One can append elements to
-the beginning and the end of a path, pop elements from the path, access the 
-first and last element via the :py:attr:`front` and :py:attr:`back` attribute. 
+
+For the *object-section* a path acts like a stack whose first element is
+accessible via the :py:attr:`front` and the last element vai the 
+:py:attr:`back` attribute. These attributes are only readable. 
+
+.. code-block:: python
+
+    from __future__ import print_function
+    from pni.io.nx import make_path
+
+    path =  make_path("/:NXentry/:NXinstrument")
+
+    print(path.front) #output: {'name':'/','base_class':'NXroot'}
+    print(path.back)  #output: {'name':'','base_class':'NXinstrument'}
+
 
 The elements of the *object-section* are represented as Python dictionaries
 with keys ``name`` and ``base_class`` where the former one is the name of the group
 or field and the latter one, in the case of a group, is the value of the
-``NX_class`` attribute of the object.
+``NX_class`` attribute of the object. In the case of fields the ``base_class`` 
+entry is always an empty string.
 
 Appending and prepending elements to the *object-section*
 
 .. code-block:: python
 
-    path = nxpath()
+    from __future__ import print_function
+    from pni.io.nx make_path
+    path = make_path("/")
 
-    path.append("scan_1:NXentry")
-    path.append(name="instrument",base_class="NXinstrument")
+    path.push_back("scan_1:NXentry")
+    path.push_back(name="instrument",base_class="NXinstrument")
 
     print(path)
     #output: scan_1:NXentry/instrument:NXinstrument
 
-    path.prepend("/:NXroot")
+    path = make_path("scan_1:NXentry/:NXinstrument")
+    path.push_front("/:NXroot")
     print(path)
-    #output: /scan_1:NXentry/instrument:NXinstrument
+    #output: /scan_1:NXentry/:NXinstrument
 
 Using a path as a stack 
 
 .. code-block:: python
 
+    from __future__ import print_function
+    from pni.io.nx import make_path
+
     path = nxpath("/:NXentry/:NXinstrument/mythen:NXdetector/data")
     print(path)
     #output: /:NXentry/:NXinstrument/mythen:NXdetector/data
 
-    print(path.back)
+    print(path.front)
     #output: {name:"/",type:"NXroot"}
 
     #remove the root group
+    path.pop_front()
+    print(path)
+    #output: ":NXentry/:NXinstrument/mythen:NXdetector/data"
+
+    #remove the back entry
     path.pop_back()
-    print(":NXentry/:NXinstrument/mythen:NXdetector/data")
+    print(path)
+    #output: ":NXentry/:NXinstrument/mythen:NXdetector"
 
 
-Iteration of path elements
+
+One can iterate of the *object-section* of a path 
 
 .. code-block:: python
 
-    path = ....
+    from __future__ import print_function
+    from pni.io.nx import make_path
+    
+    path = make_path(":NXentry/:NXinstrument/:NXdetector/data")
 
     for e in path:
-        print(e["name"],p["type"])
+        print(e["name"],p["base_class"])
 
 Paths can be joined using the ``+`` operator 
 
 .. code-block:: python
+    
+    from __future__ import print_function
+    from pni.io.nx import make_path 
 
-    a = nxpath(...)
-    b = nxpath(...)
+    a = make_path("/:NXentry/:NXinstrument")
+    b = make_path(":NXdetector/data")
 
     c = a+b
+
+    print(c)
+    #output: /:NXentry/:NXinstrument/:NXdetector/data
 
 However, the two paths have to follow some rules in order to be joined 
 
@@ -200,4 +248,16 @@ natural if you think about them for a moment. For instance, how would you join
 two paths if the left hand side of the operator has an attribute section which
 is most naturally the terminal element of every path. 
 If any of these rules is violated a :py:exc:`ValueError` exception will be
-thrown.
+thrown. 
+
+One can also join a path object with a string representing a path  
+
+.. code-block:: python
+
+    from __future__ import print_function
+    from pni.io.nx import make_path
+
+    base_path     = make_path("/:NXentry/:NXinstrument/")
+    detector_path = base_path + ":NXdetector"
+
+
