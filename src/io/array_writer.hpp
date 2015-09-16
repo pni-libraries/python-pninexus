@@ -27,8 +27,6 @@
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
 
-using namespace pni::core;
-
 //! 
 //! \ingroup ioclasses  
 //! \brief write array data
@@ -49,6 +47,7 @@ class array_writer
         template<typename WTYPE>
         static void _write_numpy_array(const WTYPE &w,const object &o)
         {
+            using namespace pni::core;
             type_id_t tid = numpy::type_id(o);
 
             //select the data type to use for writing the array data
@@ -112,6 +111,8 @@ class array_writer
                 > 
         static void write(const WTYPE &w,const object &o)
         {
+            using namespace pni::core;
+
             if(!((w.size() == 1) && (numpy::get_size(o)==1)))
             {
                 auto w_shape = w.template shape<pni::core::shape_t>();

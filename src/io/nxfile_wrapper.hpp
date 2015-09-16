@@ -31,14 +31,14 @@
 //! 
 //! This template can be used to create NXFile wrappers.
 //!
-using namespace pni::io::nx;
-
 template<typename FTYPE> class nxfile_wrapper
 {
     public:
         typedef FTYPE file_type;
-        static const nximp_code imp_id = nximp_code_map<FTYPE>::icode;
-        typedef typename nxobject_trait<imp_id>::object_type object_type;
+        static const pni::io::nx::nximp_code imp_id = 
+                     pni::io::nx::nximp_code_map<FTYPE>::icode;
+        typedef typename pni::io::nx::nxobject_trait<imp_id>::object_type 
+                         object_type;
         typedef nxfile_wrapper<file_type> wrapper_type;
     private:
         file_type _file;
@@ -96,7 +96,7 @@ template<typename FTYPE> class nxfile_wrapper
 //! \return new instance of NXFileWrapper
 //!
 template<typename FTYPE> 
-nxfile_wrapper<FTYPE> create_file(const string &n,bool ov)
+nxfile_wrapper<FTYPE> create_file(const pni::core::string &n,bool ov)
 {
     try
     {
@@ -121,7 +121,7 @@ nxfile_wrapper<FTYPE> create_file(const string &n,bool ov)
 //! \return new instance of NXFileWrapper
 //!
 template<typename FTYPE> 
-nxfile_wrapper<FTYPE> open_file(const string &n, bool ro)
+nxfile_wrapper<FTYPE> open_file(const pni::core::string &n, bool ro)
 {
     return nxfile_wrapper<FTYPE>(FTYPE::open_file(n,ro)); 
 }
@@ -141,7 +141,8 @@ nxfile_wrapper<FTYPE> open_file(const string &n, bool ro)
 //! \return new instance of nxfile
 //!
 template<typename FTYPE>
-nxfile_wrapper<FTYPE> create_files(const string &n,ssize_t split_size,
+nxfile_wrapper<FTYPE> create_files(const pni::core::string &n,
+                                   ssize_t split_size,
                                    bool ow)
 {
     try

@@ -52,6 +52,7 @@ using namespace pni::io::nx;
 #include "nxfield_to_python_converter.hpp"
 #include "nxattribute_to_python_converter.hpp"
 #include "nxattribute_manager_wrapper.hpp"
+#include "xml_functions_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -99,6 +100,9 @@ BOOST_PYTHON_MODULE(_nxh5)
     wrap_nxgroup<h5::nxgroup>();
     wrap_childiterator<nxgroup_wrapper<h5::nxgroup>>("NXGroupChildIterator");
     wrap_nxattribute_manager<decltype(h5::nxgroup::attributes)>("nxgroup_attributes");
+
+    //create the XML function wrappers
+    create_xml_function_wrappers<h5::nxgroup>();
 
     //create wrapper for NXDefalteFilter
     uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =

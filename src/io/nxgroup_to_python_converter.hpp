@@ -27,10 +27,6 @@
 
 #include "nxgroup_wrapper.hpp"
 
-using namespace pni::core;
-using namespace pni::io::nx;
-using namespace boost::python;
-
 //----------------------------------------------------------------------------
 //!
 //! \ingroup pnicore_converters
@@ -55,6 +51,7 @@ struct nxgroup_to_python_converter
     //!
     static PyObject *convert(const group_type &v)
     {
+        using namespace boost::python;
         return incref(object(group_wrapper_type(v)).ptr());
     }
 

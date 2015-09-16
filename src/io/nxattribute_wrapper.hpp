@@ -30,7 +30,6 @@ extern "C"{
 #include <pni/core/arrays.hpp>
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
-using namespace pni::core;
 
 #include "nxio_operations.hpp"
 #include "utils.hpp"
@@ -93,10 +92,10 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         //! \return tuple with shape information
         //!
-        tuple shape() const
+        boost::python::tuple shape() const
         {
-            auto shape = _attribute.template shape<shape_t>();
-            return tuple(Container2List(shape));
+            auto shape = _attribute.template shape<pni::core::shape_t>();
+            return boost::python::tuple(Container2List(shape));
         }
 
         //---------------------------------------------------------------------
@@ -141,7 +140,7 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         //! \return attribute name
         //!
-        string name() const { return _attribute.name(); }
+        pni::core::string name() const { return _attribute.name(); }
 
         //=========================read methods================================
         //!
@@ -158,7 +157,7 @@ template<typename ATYPE> class nxattribute_wrapper
         //! \throws nxattribute_error in case of problems
         //! \return Python object with attribute data
         //!
-        object read() const
+        boost::python::object read() const
         {
             //if(this->_attribute.template shape<shape_t>().size() == 0)
             if(_attribute.size() == 1)
@@ -171,7 +170,7 @@ template<typename ATYPE> class nxattribute_wrapper
             "Found no appropriate procedure to read this attribute!");
 
             //this is only to avoid compiler warnings
-            return object();
+            return boost::python::object();
         }
 
         //=====================write methods===================================
@@ -191,8 +190,10 @@ template<typename ATYPE> class nxattribute_wrapper
         //! converted
         //! \param o object from which to write data
         //!
-        void write(object o) const
+        void write(boost::python::object o) const
         {
+            using namespace pni::core;
+
             //before we can write an object we need to find out what 
             //it really i
             if(is_scalar(o))
@@ -206,11 +207,12 @@ template<typename ATYPE> class nxattribute_wrapper
         }
 
         //---------------------------------------------------------------------
-        object __getitem__(const object &args) const
+        boost::python::object __getitem__(const boost::python::object &args) const
         {
             std::cout<<"read original data"<<std::endl;
-            object data = read(); //read all attribute data - remember we 
-                                  //cannot do partial IO on attributes
+            boost::python::object data = read(); //read all attribute data 
+                                                 //- remember we cannot do 
+                                                 //partial IO on attributes
 
             std::cout<<"apply selection"<<std::endl;
             //call here the __getitem__ method of the return value and return 
@@ -222,9 +224,11 @@ template<typename ATYPE> class nxattribute_wrapper
         }
 
         //---------------------------------------------------------------------
-        void __setitem__(const object &index,const object &value)
+        void __setitem__(const boost::python::object &index,
+                         const boost::python::object &value)
         {
-            object data = read(); //first we read everything from the attribute
+            boost::python::object data = read(); // first we read everything 
+                                                 // from the attribute
 
             if(numpy::is_array(data))
                 data[index] = value;

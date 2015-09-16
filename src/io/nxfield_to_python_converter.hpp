@@ -22,14 +22,9 @@
 //
 #pragma once
 
-#include <pni/core/types.hpp>
 #include <boost/python.hpp>
 
 #include "nxfield_wrapper.hpp"
-
-using namespace pni::core;
-using namespace pni::io::nx;
-using namespace boost::python;
 
 //----------------------------------------------------------------------------
 //!
@@ -56,6 +51,8 @@ struct nxfield_to_python_converter
     //!
     static PyObject *convert(const field_type &v)
     {
+        using namespace boost::python;
+
         return incref(object(field_wrapper_type(v)).ptr());
     }
 

@@ -29,9 +29,6 @@
 #include <pni/core/error.hpp>
 #include <core/utils.hpp>
 
-using namespace pni::io::nx;
-using namespace pni::core;
-
 template<typename AMT>
 class nxattribute_manager_wrapper
 {
@@ -62,22 +59,26 @@ class nxattribute_manager_wrapper
         { }
 
         //--------------------------------------------------------------------
-        bool exists(const string &name) const
+        bool exists(const pni::core::string &name) const
         {
             return _manager.exists(name);
         }
 
         //--------------------------------------------------------------------
-        void remove(const string &name) const
+        void remove(const pni::core::string &name) const
         {
             _manager.remove(name);
         }
 
         //--------------------------------------------------------------------
-        attribute_type create(const string &name,const string &type,
+        attribute_type create(const pni::core::string &name,
+                              const pni::core::string &type,
                               const object &shape,
                               bool overwrite)
         {
+            using namespace pni::core;
+            using namespace pni::io::nx; 
+
             auto s = Tuple2Container<shape_t>(tuple(shape));
 
             if(s.empty())
@@ -130,7 +131,7 @@ class nxattribute_manager_wrapper
         }
 
         //--------------------------------------------------------------------
-        attribute_type get_by_name(const string &name)
+        attribute_type get_by_name(const pni::core::string &name)
         {
             return _manager[name];
         }
@@ -172,7 +173,8 @@ class nxattribute_manager_wrapper
 
 };
 
-template<typename AMT> void wrap_nxattribute_manager(const string &name)
+template<typename AMT> 
+void wrap_nxattribute_manager(const pni::core::string &name)
 {
     typedef nxattribute_manager_wrapper<AMT> wrapper_type;
 

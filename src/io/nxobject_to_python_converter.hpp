@@ -36,9 +36,6 @@
 #include "nxgroup_wrapper.hpp"
 #include "nxattribute_wrapper.hpp"
 
-using namespace pni::core;
-using namespace pni::io::nx;
-using namespace boost::python;
 
 //converter namespace
 namespace convns = boost::python::converter; 
@@ -69,8 +66,8 @@ struct nxobject_to_python_converter
     typedef FTYPE field_type;
     typedef ATYPE attribute_type;
 
-    typedef nxfield_wrapper<field_type> field_wrapper_type;
-    typedef nxgroup_wrapper<group_type> group_wrapper_type;
+    typedef nxfield_wrapper<field_type>         field_wrapper_type;
+    typedef nxgroup_wrapper<group_type>         group_wrapper_type;
     typedef nxattribute_wrapper<attribute_type> attribute_wrapper_type;
 
     //------------------------------------------------------------------------
@@ -82,6 +79,9 @@ struct nxobject_to_python_converter
     //!
     static PyObject *convert(const OTYPE &v)
     {
+        using namespace pni::io::nx;
+        using namespace pni::core;
+
         if(is_group(v))
             return incref(object(group_wrapper_type(as_group(v))).ptr());
         else if(is_field(v))

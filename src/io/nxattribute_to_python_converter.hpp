@@ -22,14 +22,9 @@
 //
 #pragma once
 
-#include <pni/core/types.hpp>
 #include <boost/python.hpp>
-
 #include "nxattribute_wrapper.hpp"
 
-using namespace pni::core;
-using namespace pni::io::nx;
-using namespace boost::python;
 
 //----------------------------------------------------------------------------
 //!
@@ -53,6 +48,8 @@ struct nxattribute_to_python_converter
     //!
     static PyObject *convert(const attribute_type &v)
     {
+        using namespace boost::python;
+
         return incref(object(attribute_wrapper_type(v)).ptr());
     }
 

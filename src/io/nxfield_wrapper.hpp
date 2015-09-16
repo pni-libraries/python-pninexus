@@ -25,13 +25,13 @@
 #include <boost/python/slice.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
+
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
+
 #include "nxio_operations.hpp"
 #include "nxattribute_manager_wrapper.hpp"
-
 #include "utils.hpp"
-using namespace pni::io::nx;
 
 template<typename GTYPE> class nxgroup_wrapper;
 
@@ -46,9 +46,10 @@ template<typename FIELDT> class nxfield_wrapper
     public:
         typedef FIELDT field_type;
         
-        static const nximp_code imp_id = nximp_code_map<field_type>::icode;
+        static const pni::io::nx::nximp_code imp_id = 
+                     pni::io::nx::nximp_code_map<field_type>::icode;
         typedef nxfield_wrapper<field_type> wrapper_type;
-        typedef typename nxobject_trait<imp_id>::group_type group_type;
+        typedef typename pni::io::nx::nxobject_trait<imp_id>::group_type group_type;
         typedef nxgroup_wrapper<group_type> group_wrapper_type;
 
         typedef decltype(field_type::attributes) attribute_manager_type;
@@ -123,8 +124,8 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         tuple shape() const
         {
-            auto shape = _field.template shape<shape_t>();
-            return tuple(Container2List(shape));
+            auto shape = _field.template shape<pni::core::shape_t>();
+            return boost::python::tuple(Container2List(shape));
         }
 
         //---------------------------------------------------------------------
@@ -137,8 +138,10 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         //! \param o object from which to write data
         //!
-        void write(const object &o) const
+        void write(const boost::python::object &o) const
         {
+            using namespace pni::core;
+
             if(is_scalar(o))
             {
                 //write a scalar to the field
@@ -169,8 +172,10 @@ template<typename FIELDT> class nxfield_wrapper
         //! \throws type_error if return type determination fails
         //! \return Python object with the read data
         //!
-        object read() const
+        boost::python::object read() const
         {
+            using namespace pni::core;
+
             if(_field.size() == 1)
             {
                 //the field contains only a single value - can return a
@@ -202,7 +207,7 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         //! \param t tuple with 
         //!
-        object __getitem__tuple(const tuple &t)
+        boost::python::object __getitem__tuple(const boost::python::tuple &t)
         {
             typedef std::vector<pni::core::slice> selection_type;
 
@@ -236,8 +241,10 @@ template<typename FIELDT> class nxfield_wrapper
         //! \param o Python object describing the selection
         //! \return Python object with the data from the selection
         //!
-        object __getitem__(const object &o)
+        boost::python::object __getitem__(const boost::python::object &o)
         {
+            using namespace boost::python;
+
             //need to check here if o is already a tuple 
             if(PyTuple_Check(o.ptr()))
                 return __getitem__tuple(tuple(o));
@@ -257,8 +264,11 @@ template<typename FIELDT> class nxfield_wrapper
         //! \param o selection object
         //! \param d Python object holding the data
         //!
-        void __setitem__(const object &o,const object &d)
+        void __setitem__(const boost::python::object &o,
+                         const boost::python::object &d)
         {
+            using namespace boost::python;
+
             //need to check here if o is already a tuple 
             if(PyTuple_Check(o.ptr()))
                 __setitem__tuple(tuple(o),d);
@@ -274,8 +284,11 @@ template<typename FIELDT> class nxfield_wrapper
         //! \param t tuple with selection information
         //! \param o object with data to write.
         //!
-        void __setitem__tuple(const tuple &t,const object &o)
+        void __setitem__tuple(const boost::python::tuple &t, 
+                              const boost::python::object &o)
         {
+            using namespace pni::core;
+
             typedef std::vector<pni::core::slice> selection_type;
             selection_type selection = create_selection(t,_field);
 
@@ -316,10 +329,10 @@ template<typename FIELDT> class nxfield_wrapper
         void close() { _field.close(); }
 
         //--------------------------------------------------------------------
-        string filename() const { return _field.filename(); }
+        pni::core::string filename() const { return _field.filename(); }
 
         //--------------------------------------------------------------------
-        string name() const { return _field.name(); }
+        pni::core::string name() const { return _field.name(); }
 
         //--------------------------------------------------------------------
         group_wrapper_type parent() const

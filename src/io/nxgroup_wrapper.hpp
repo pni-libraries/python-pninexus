@@ -27,13 +27,13 @@
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
 #include <pni/io/nx/algorithms/create_field.hpp>
+#include <pni/io/nx/flat_group.hpp>
 
 #include <core/utils.hpp>
 #include "child_iterator.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 #include "utils.hpp"
-
-using namespace pni::io::nx;
+#include "rec_group_iterator.hpp"
 
 //! 
 //! \ingroup wrappers  
@@ -48,10 +48,11 @@ class nxgroup_wrapper
         typedef GTYPE group_type;
         typedef nxgroup_wrapper<group_type> wrapper_type;
 
-        static const nximp_code imp_id = nximp_code_map<group_type>::icode;
-        typedef typename nxobject_trait<imp_id>::field_type field_type;
-        typedef typename nxobject_trait<imp_id>::object_type object_type;
-        typedef typename nxobject_trait<imp_id>::deflate_type deflate_type;
+        static const pni::io::nx::nximp_code imp_id = 
+                     pni::io::nx::nximp_code_map<group_type>::icode;
+        typedef typename pni::io::nx::nxobject_trait<imp_id>::field_type field_type;
+        typedef typename pni::io::nx::nxobject_trait<imp_id>::object_type object_type;
+        typedef typename pni::io::nx::nxobject_trait<imp_id>::deflate_type deflate_type;
 
         typedef decltype(group_type::attributes) attribute_manager_type;
         typedef nxattribute_manager_wrapper<attribute_manager_type>
@@ -120,7 +121,8 @@ class nxgroup_wrapper
         //! \return new instance of NXGroupWrapper
         //!
         group_type
-        create_group(const string &n,const string &nxclass=string()) const
+        create_group(const pni::core::string &n,
+                     const pni::core::string &nxclass=pni::core::string()) const
         {
             return group_type(_group.create_group(n,nxclass));
         }
@@ -158,12 +160,14 @@ class nxgroup_wrapper
         //! \return instance of a field wrapper
         //!
         field_type
-        create_field(const string &name,
-                     const string &type_code,
-                     const object &shape=object(),
-                     const object &chunk=object(),
-                     const object &filter=object()) const
+        create_field(const pni::core::string &name,
+                     const pni::core::string &type_code,
+                     const boost::python::object &shape=object(),
+                     const boost::python::object &chunk=object(),
+                     const boost::python::object &filter=object()) const
         {
+            using namespace pni::core;
+            using namespace boost::python;
             using pni::io::nx::create_field;
             
             type_id_t type_id;
@@ -216,7 +220,7 @@ class nxgroup_wrapper
         //! \param n name of the object to open
         //! \return Python object for NXGroup or NXField.
         //!
-        object_type open_by_name(const string &n) const
+        object_type open_by_name(const pni::core::string &n) const
         {
             return _group.at(n);
         }
@@ -244,7 +248,10 @@ class nxgroup_wrapper
         //! Returns true if the object defined by path 'n'. 
         //! \return true if object exists, false otherwise
         //!
-        bool exists(const string &n) const { return _group.has_child(n); }
+        bool exists(const pni::core::string &n) const 
+        { 
+            return _group.has_child(n); 
+        }
 
         //--------------------------------------------------------------------------
         //!
@@ -262,10 +269,10 @@ class nxgroup_wrapper
         void close() { _group.close(); }
 
         //--------------------------------------------------------------------
-        string filename() const { return _group.filename(); }
+        pni::core::string filename() const { return _group.filename(); }
 
         //--------------------------------------------------------------------
-        string name() const { return _group.name(); }
+        pni::core::string name() const { return _group.name(); }
 
         //--------------------------------------------------------------------
         object_type parent() const
@@ -283,7 +290,7 @@ class nxgroup_wrapper
         //! Exposes only one of the three link creation methods from the 
         //! original NXGroup object.
         //!
-        void link(const string &p,const string &n) const
+        void link(const pni::core::string &p,const pni::core::string &n) const
         {
             pni::io::nx::link(p,_group,n);
         }
@@ -295,9 +302,9 @@ class nxgroup_wrapper
         }
 
         //----------------------------------------------------------------------
-        object __iter__() const
+        boost::python::object __iter__() const
         {
-            return object(this);
+            return boost::python::object(this);
         }
 
         //----------------------------------------------------------------------
@@ -313,6 +320,18 @@ class nxgroup_wrapper
             increment();
 
             return child;
+        }
+
+        //--------------------------------------------------------------------
+        rec_group_iterator<GTYPE> recursive() 
+        {
+            typedef rec_group_iterator<GTYPE> iterator_type; 
+            typedef typename iterator_type::group_type group_type;
+            typedef typename iterator_type::group_ptr ptr_type; 
+       
+            //can use here a shared pointer which we pass around
+            ptr_type ptr(new group_type(make_flat(_group)));
+            return rec_group_iterator<GTYPE>(ptr,0);
         }
 
 };
@@ -393,6 +412,12 @@ static const char __group_childs_docstr[] =
 template<typename GTYPE> void wrap_nxgroup()
 {
     typedef nxgroup_wrapper<GTYPE> wrapper_type;
+    typedef rec_group_iterator<GTYPE> rec_group_iterator_type;
+
+    class_<rec_group_iterator_type>("nxgroup_rec_iterator")
+        .def("increment",&rec_group_iterator_type::increment)
+        .def("__iter__",&rec_group_iterator_type::__iter__)
+        .def("next",&rec_group_iterator_type::next);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
@@ -419,13 +444,12 @@ template<typename GTYPE> void wrap_nxgroup()
 #else
         .def("next",&wrapper_type::next)
 #endif
-//        .add_property("nchildren",&wrapper_type::nchildren,__group_nchilds_docstr)   
-//#.add_property("children",&wrapper_type::get_child_iterator,__group_childs_docstr)
         .add_property("filename",&wrapper_type::filename)
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
         .add_property("size",&wrapper_type::__len__)
         .def_readonly("attributes",&wrapper_type::attributes)
+        .add_property("recursive",&wrapper_type::recursive)
         ;
 #pragma GCC diagnostic pop
 }

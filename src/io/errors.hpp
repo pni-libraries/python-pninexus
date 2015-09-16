@@ -65,6 +65,18 @@ class nxpath_iterator_stop:public std::exception
 //----------------------------------------------------------------------------
 //! 
 //! \ingroup errors  
+//! \brief exception to stop recursive group iteration
+//! 
+//! This C++ exception will be translated to the StopIteration Python 
+//! exception expected by the Python interpreter if an iterator reaches its 
+//! last position.
+//!
+class rec_group_iterator_stop:public std::exception
+{};
+
+//----------------------------------------------------------------------------
+//! 
+//! \ingroup errors  
 //! \brief register exception translators
 //! 
 //! This function is called by the module in order to register all exception
