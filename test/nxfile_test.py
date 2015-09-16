@@ -47,16 +47,19 @@ class nxfile_test(unittest.TestCase):
         f.close()
 
     def test_open(self):
+        f = create_file("test.nxs",overwrite=True)
+        f.close()
         #open the file in read only mode
-        f = open_file(self.filename)
+        f = open_file("test.nxs")
         self.assertTrue(f.is_valid)
         self.assertTrue(f.readonly)
         root = f.root()
         self.assertRaises(ObjectError,root.attributes.create,
                           "temperature","uint16")
+        root.close()
         f.close()
         #open the file in read/write mode
-        f = open_file(self.filename,readonly=False)
+        f = open_file("test.nxs",readonly=False)
         self.assertTrue(f.is_valid)
         self.assertFalse(f.readonly)
         f.close()
