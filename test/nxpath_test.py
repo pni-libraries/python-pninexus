@@ -10,6 +10,7 @@ from pni.io.nx import is_absolute
 from pni.io.nx import is_empty
 from pni.io.nx import has_name
 from pni.io.nx import has_class
+from pni.io.nx import match
 
 
 #implementing test fixture
@@ -184,6 +185,11 @@ class nxpath_test(unittest.TestCase):
         a += ":NXinstrument/data"
         self.assertEqual(a.__str__(),":NXentry/:NXinstrument/data")
 
+    def test_match(self):
+        self.assertTrue(match(make_path("/:NXentry/:NXinstrument/:NXdetector"),
+                              make_path("/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector")))
 
+        self.assertTrue(match("/:NXentry/:NXinstrument/:NXdetector",
+                              "/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector"))
         
         

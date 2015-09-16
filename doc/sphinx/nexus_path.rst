@@ -261,3 +261,16 @@ One can also join a path object with a string representing a path
     detector_path = base_path + ":NXdetector"
 
 
+To check if two paths are matching use the :py:func:`match` function
+
+.. code-block:: python
+
+    from __future__ import print_function
+    from pni.io.nx import make_path,match
+
+    det_path = make_path("/:NXentry/:NXinstrument/:NXdetector")
+    p = make_path("/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector")
+
+    print(match(det_path,p))
+    #output: True
+
