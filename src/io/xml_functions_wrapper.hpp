@@ -34,7 +34,7 @@ template<typename GTYPE> struct xml_functions_wrapper
                              const group_type &parent)
     {
         using namespace pni::io::nx;
-        xml::nexus_to_xml(xml::create_from_string(xml_data),parent);
+        xml::xml_to_nexus(xml::create_from_string(xml_data),parent);
     }
     
 };

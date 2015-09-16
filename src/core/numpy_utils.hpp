@@ -335,8 +335,6 @@ namespace numpy
     template<typename ATYPE>
     boost::python::object create_array_from_array(const ATYPE &array)
     {
-        typedef typename ATYPE::value_type value_type;
-
         auto shape = array.template shape<pni::core::shape_t>();
 
         return create_array(type_id(array),shape);
@@ -368,7 +366,6 @@ namespace numpy
     void copy_string_from_array(const boost::python::object &o,DTYPE &container)
     {
         typedef typename DTYPE::value_type value_type;
-        typedef pni2numpy_type<value_type> pni2numpy;
 
         PyArrayObject *array = (PyArrayObject *)(o.ptr());
         PyArray_Descr* dtype = PyArray_DESCR(array);
@@ -413,9 +410,6 @@ namespace numpy
     template<typename DTYPE>
     void copy_string_to_array(const DTYPE &source,boost::python::object &dest)
     {
-        typedef typename DTYPE::value_type value_type;
-        typedef pni2numpy_type<value_type> pni2numpy;
-
         PyArrayObject *array = (PyArrayObject *)(dest.ptr());
         PyArray_Descr* dtype = PyArray_DESCR(array);
         
