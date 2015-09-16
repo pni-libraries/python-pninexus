@@ -49,6 +49,7 @@ class nxfile_test(unittest.TestCase):
     def test_open(self):
         #open the file in read only mode
         f = open_file(self.filename)
+        self.assertTrue(f.is_valid)
         self.assertTrue(f.readonly)
         root = f.root()
         self.assertRaises(ObjectError,root.attributes.create,
@@ -57,6 +58,7 @@ class nxfile_test(unittest.TestCase):
         #open the file in read/write mode
         f = open_file(self.filename,readonly=False)
         self.assertTrue(f.is_valid)
+        self.assertFalse(f.readonly)
         f.close()
 
     def test_split_files(self):
