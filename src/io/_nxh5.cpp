@@ -44,7 +44,6 @@ using namespace pni::io::nx;
 
 #include "nxgroup_wrapper.hpp"
 #include "nxattribute_wrapper.hpp"
-#include "nxfile_wrapper.hpp"
 #include "nxfield_wrapper.hpp"
 #include "child_iterator.hpp"
 #include "nxobject_to_python_converter.hpp"
@@ -67,6 +66,7 @@ init_numpy()
 }
 
 extern void create_nxattribute_wrappers();
+extern void create_nxfile_wrappers();
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)
@@ -90,11 +90,11 @@ BOOST_PYTHON_MODULE(_nxh5)
     to_python_converter<h5::nxattribute,attribute_converter_type>();
 
     //wrap NX-attribute object
-    //wrap_nxattribute<h5::nxattribute>();
     create_nxattribute_wrappers();
     
     //wrap NX-file
-    wrap_nxfile<h5::nxfile>();
+    create_nxfile_wrappers();
+    //wrap_nxfile<h5::nxfile>();
     
     //wrap NX-field
     wrap_nxfield<h5::nxfield>();

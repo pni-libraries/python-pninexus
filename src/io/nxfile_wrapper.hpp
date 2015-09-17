@@ -19,10 +19,13 @@
 //
 // Created on: Feb 17, 2012
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
-///
+//
 
 #pragma once
 
+#include <boost/python.hpp>
+#include <pni/core/types.hpp>
+#include <pni/core/error.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
 
 //! 
@@ -98,6 +101,7 @@ template<typename FTYPE> class nxfile_wrapper
 template<typename FTYPE> 
 nxfile_wrapper<FTYPE> create_file(const pni::core::string &n,bool ov)
 {
+    using namespace pni::core;
     try
     {
         return nxfile_wrapper<FTYPE>(FTYPE::create_file(n,ov));
@@ -145,6 +149,8 @@ nxfile_wrapper<FTYPE> create_files(const pni::core::string &n,
                                    ssize_t split_size,
                                    bool ow)
 {
+    using namespace pni::core;
+
     try
     {
         return nxfile_wrapper<FTYPE>(FTYPE::create_files(n,split_size,ow));
@@ -166,6 +172,8 @@ nxfile_wrapper<FTYPE> create_files(const pni::core::string &n,
 //!
 template<typename FTYPE> void wrap_nxfile()
 {
+    using namespace boost::python; 
+
     typedef typename nxfile_wrapper<FTYPE>::wrapper_type wrapper_type;
 
     class_<wrapper_type>("nxfile")
