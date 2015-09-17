@@ -22,6 +22,7 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
 #include <core/utils.hpp>
@@ -45,7 +46,8 @@ class array_writer
         //! \param o object representing a numpy array
         //!
         template<typename WTYPE>
-        static void _write_numpy_array(const WTYPE &w,const object &o)
+        static void _write_numpy_array(const WTYPE &w,
+                                       const boost::python::object &o)
         {
             using namespace pni::core;
             type_id_t tid = numpy::type_id(o);
@@ -109,7 +111,8 @@ class array_writer
                  typename T,
                  typename WTYPE
                 > 
-        static void write(const WTYPE &w,const object &o)
+        static void write(const WTYPE &w,
+                          const boost::python::object &o)
         {
             using namespace pni::core;
 

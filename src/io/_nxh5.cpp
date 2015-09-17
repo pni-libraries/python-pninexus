@@ -53,6 +53,7 @@ using namespace pni::io::nx;
 #include "nxattribute_to_python_converter.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 #include "xml_functions_wrapper.hpp"
+//#include "algorithms_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -64,6 +65,8 @@ init_numpy()
 {
     import_array();
 }
+
+extern void create_nxattribute_wrappers();
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)
@@ -87,7 +90,8 @@ BOOST_PYTHON_MODULE(_nxh5)
     to_python_converter<h5::nxattribute,attribute_converter_type>();
 
     //wrap NX-attribute object
-    wrap_nxattribute<h5::nxattribute>();
+    //wrap_nxattribute<h5::nxattribute>();
+    create_nxattribute_wrappers();
     
     //wrap NX-file
     wrap_nxfile<h5::nxfile>();
@@ -103,6 +107,7 @@ BOOST_PYTHON_MODULE(_nxh5)
 
     //create the XML function wrappers
     create_xml_function_wrappers<h5::nxgroup>();
+    //create_algorithms_wrappers<h5::nxobject>();
 
     //create wrapper for NXDefalteFilter
     uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =

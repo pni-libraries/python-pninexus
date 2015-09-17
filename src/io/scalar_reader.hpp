@@ -22,6 +22,8 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
+
 //! 
 //! \ingroup ioclasses  
 //! \brief reads a single scalar
@@ -49,8 +51,10 @@ class scalar_reader
                  typename T,
                  typename OTYPE
                 > 
-        static object read(const OTYPE &readable)
+        static boost::python::object read(const OTYPE &readable)
         {
+            using namespace boost::python;
+
             T value; //create a new instance where to store the data
             readable.read(value); //read data
             object o(value); //create python object

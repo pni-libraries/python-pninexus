@@ -93,6 +93,11 @@ template<typename FIELDT> class nxfield_wrapper
             attributes(_field.attributes)
         {}
 
+        operator field_type() const
+        {
+            return _field;
+        }
+
         //---------------------------------------------------------------------
         attribute_manager_wrapper attributes;
 

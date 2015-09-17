@@ -22,15 +22,18 @@
 //
 #pragma once
 
-extern "C"{
-#include<numpy/arrayobject.h>
-}
-
+#include <pni/io/nx/nx.hpp>
+#include <boost/python.hpp>
+#include <pni/core/error.hpp>
 #include <pni/core/types.hpp>
-#include <pni/core/arrays.hpp>
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
+#include <pni/io/exceptions.hpp>
 
+#include "scalar_reader.hpp"
+#include "scalar_writer.hpp"
+#include "array_reader.hpp"
+#include "array_writer.hpp"
 #include "nxio_operations.hpp"
 #include "utils.hpp"
 
@@ -80,6 +83,11 @@ template<typename ATYPE> class nxattribute_wrapper
             _attribute(std::move(a))
         {}
 
+        operator attribute_type() const 
+        {
+            return _attribute;
+        }
+
         //==========================inquery methodes===========================
         //!
         //! \brief get attribute shape
@@ -111,7 +119,7 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         //! \return numpy typecode
         //!
-        string type_id() const
+        pni::core::string type_id() const
         {
             return numpy::type_str(_attribute.type_id()); 
         }
@@ -159,6 +167,8 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         boost::python::object read() const
         {
+            using namespace pni::core;
+
             //if(this->_attribute.template shape<shape_t>().size() == 0)
             if(_attribute.size() == 1)
                 return io_read<scalar_reader>(this->_attribute);
@@ -278,6 +288,8 @@ static const char __attribute_write_docstr[] =
 //!
 template<typename ATYPE> void wrap_nxattribute()
 {
+    using namespace boost::python;
+
     typedef nxattribute_wrapper<ATYPE> wrapper_type;
 
     class_<wrapper_type>("nxattribute")

@@ -22,6 +22,8 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
+#include <pni/core/types.hpp>
 #include <core/numpy_utils.hpp>
 
 //! 
@@ -48,8 +50,11 @@ class array_reader
                  typename T,
                  typename OTYPE
                 > 
-        static object read(const OTYPE &readable)
+        static boost::python::object read(const OTYPE &readable)
         {
+            using namespace boost::python;
+            using namespace pni::core;
+
             //create the numpy array which will store the data
             auto shape = readable.template shape<shape_t>();
             object narray = numpy::create_array(readable.type_id(),shape);

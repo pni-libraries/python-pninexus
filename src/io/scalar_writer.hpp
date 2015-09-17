@@ -22,6 +22,8 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
+
 //! 
 //! \ingroup ioclasses
 //! \brief write scalar data
@@ -35,8 +37,11 @@ class scalar_writer
                  typename T,
                  typename WTYPE
                 >
-        static void single_scalar(const WTYPE &writeable,const object &o)
+        static void single_scalar(const WTYPE &writeable,
+                                  const boost::python::object &o)
         {
+            using namespace boost::python;
+
             T value = extract<T>(o);
             writeable.write(value);
         }
@@ -46,8 +51,11 @@ class scalar_writer
                  typename T,
                  typename WTYPE
                 >
-        static void broadcast_scalar(const WTYPE &writeable,const object &o)
+        static void broadcast_scalar(const WTYPE &writeable,
+                                     const boost::python::object &o)
         {
+            using namespace boost::python;
+
             typedef pni::core::dynamic_array<T> array_type;
 
             auto shape = writeable.template shape<pni::core::shape_t>();
@@ -72,7 +80,8 @@ class scalar_writer
                  typename T,
                  typename WTYPE
                 > 
-        static void write(const WTYPE &writeable,const object &o)
+        static void write(const WTYPE &writeable, 
+                          const boost::python::object &o)
         {
             if(writeable.size()==1)
                 single_scalar<T>(writeable,o);

@@ -22,14 +22,10 @@
 //
 #pragma once
 
-extern "C" {
-#include <Python.h>
-}
-
-#include "array_writer.hpp"
-#include "array_reader.hpp"
-#include "scalar_reader.hpp"
-#include "scalar_writer.hpp"
+#include <pni/core/types.hpp>
+#include <pni/core/error.hpp>
+#include <pni/core/arrays.hpp>
+#include <boost/python.hpp>
 
 //! 
 //! \ingroup ioclasses  
@@ -49,8 +45,11 @@ template<
          typename IOOP,
          typename OType
         > 
-object io_read(const OType &readable)
+boost::python::object io_read(const OType &readable)
 {
+    using namespace pni::core;
+    using namespace boost::python;
+
     type_id_t tid = readable.type_id();
 
     if(tid == type_id_t::UINT8)  return IOOP::template read<uint8>(readable);
@@ -128,8 +127,11 @@ template<
          typename IOOP,
          typename OTYPE
         > 
-void io_write(const OTYPE &writeable,const object &obj)
+void io_write(const OTYPE &writeable,const boost::python::object &obj)
 {
+    using namespace pni::core;
+    using namespace boost::python;
+
     type_id_t tid = writeable.type_id();
 
     if(tid == type_id_t::UINT8) 

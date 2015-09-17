@@ -49,13 +49,14 @@ core_files = ["src/core/bool_converter.cpp",
               "src/core/_core.cpp"]+common_sources
 
 nxh5_files = ["src/io/_nxh5.cpp",
-              "src/io/utils.cpp",
+              "src/io/utils.cpp","src/io/nxattribute_wrapper.cpp"
              ]+common_sources
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
 nx_files = ["src/io/_nx.cpp","src/io/nxpath/element_dict_converter.cpp",
-            "src/io/nxpath/nxpath_wrapper.cpp"]
+            "src/io/nxpath/nxpath_wrapper.cpp",
+            ]
 
 core_lib_dir=os.path.join(get_build_dir(),"pni","core")
 
