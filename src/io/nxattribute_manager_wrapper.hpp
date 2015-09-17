@@ -23,11 +23,13 @@
 
 #pragma once
 
+#include <boost/python.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
-#include "errors.hpp"
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
 #include <core/utils.hpp>
+
+#include "errors.hpp"
 
 template<typename AMT>
 class nxattribute_manager_wrapper
@@ -73,11 +75,12 @@ class nxattribute_manager_wrapper
         //--------------------------------------------------------------------
         attribute_type create(const pni::core::string &name,
                               const pni::core::string &type,
-                              const object &shape,
+                              const boost::python::object &shape,
                               bool overwrite)
         {
             using namespace pni::core;
             using namespace pni::io::nx; 
+            using namespace boost::python;
 
             auto s = Tuple2Container<shape_t>(tuple(shape));
 
@@ -142,10 +145,10 @@ class nxattribute_manager_wrapper
             return _manager[i];
         }
         //--------------------------------------------------------------------
-        object __iter__()
+        boost::python::object __iter__()
         {
             //we return by value here and thus create a new object anyhow
-            return object(this);
+            return boost::python::object(this);
         }
 
         //--------------------------------------------------------------------
@@ -176,6 +179,8 @@ class nxattribute_manager_wrapper
 template<typename AMT> 
 void wrap_nxattribute_manager(const pni::core::string &name)
 {
+    using namespace boost::python;
+
     typedef nxattribute_manager_wrapper<AMT> wrapper_type;
 
 #pragma GCC diagnostic push

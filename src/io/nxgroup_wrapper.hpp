@@ -94,6 +94,11 @@ class nxgroup_wrapper
             attributes(_group.attributes)
         {}
 
+        operator group_type() const
+        {
+            return _group;
+        }
+
         //---------------------------------------------------------------------
         //! conversion move constructor
         explicit nxgroup_wrapper(group_type &&g):

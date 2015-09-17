@@ -24,19 +24,16 @@
 #pragma once
 
 #include <pni/core/utilities.hpp>
-#include <pni/io/nx/xml.hpp>
-#include "nxgroup_wrapper.hpp"
+#include <pni/io/nx/algorithms/get_size.hpp>
 
-template<typename GTYPE> struct xml_functions_wrapper
+template<typename OTYPE> struct algorithms_wrapper
 {
-    typedef GTYPE group_type; 
+    typedef OTYPE object_type; 
 
-    static void xml_to_nexus(const pni::core::string &xml_data,
-                             const nxgroup_wrapper<group_type> &parent)
+    static size_t get_size (const object &o)
     {
-        using namespace pni::io::nx;
-        group_type p = parent;
-        xml::xml_to_nexus(xml::create_from_string(xml_data),p);
+        object_type tmp(extract<object_type>(o));
+        return pni::io::nx::get_size(tmp);
     }
     
 };
@@ -49,11 +46,11 @@ template<typename GTYPE> struct xml_functions_wrapper
 //! Template function to create a new wrapper for an NXGroup type GType.
 //! \param class_name name for the Python class
 //!
-template<typename GTYPE> void create_xml_function_wrappers()
+template<typename GTYPE> void create_algorithms_wrappers()
 {
-    typedef xml_functions_wrapper<GTYPE> wrapper_type;
+    typedef algorithms_wrapper<GTYPE> wrapper_type;
 
-    def("xml_to_nexus",&wrapper_type::xml_to_nexus);
+    def("get_size",&wrapper_type::get_size);
 
 }
 

@@ -22,7 +22,9 @@
 //
 #pragma once
 
+#include <boost/python.hpp>
 #include <boost/python/slice.hpp>
+#include <pni/core/types.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
 
@@ -32,6 +34,10 @@
 #include "nxio_operations.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 #include "utils.hpp"
+#include "scalar_writer.hpp"
+#include "scalar_reader.hpp"
+#include "array_writer.hpp"
+#include "array_reader.hpp"
 
 template<typename GTYPE> class nxgroup_wrapper;
 
@@ -111,7 +117,7 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         //! \return numpy type string
         //!
-        string type_id() const 
+        pni::core::string type_id() const 
         { 
             return numpy::type_str(_field.type_id()); 
         }
@@ -127,7 +133,7 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         //! \return shape as tuple
         //!
-        tuple shape() const
+        boost::python::tuple shape() const
         {
             auto shape = _field.template shape<pni::core::shape_t>();
             return boost::python::tuple(Container2List(shape));
@@ -198,7 +204,7 @@ template<typename FIELDT> class nxfield_wrapper
             throw type_error(EXCEPTION_RECORD,"Cannot determine return type!");
 
             //this is only to avoid compiler warnings
-            return object();
+            return boost::python::object();
         }
        
         //---------------------------------------------------------------------
@@ -232,7 +238,7 @@ template<typename FIELDT> class nxfield_wrapper
             throw pni::io::object_error(EXCEPTION_RECORD,
                                              "cannot handle user request");
 
-            return object(); //make the compiler happy
+            return boost::python::object(); //make the compiler happy
         }
         //---------------------------------------------------------------------
         //!
@@ -375,6 +381,8 @@ static const char __field_size_docstr[] = "total number of elements in the field
 //!
 template<typename FIELDT> void wrap_nxfield()
 {
+    using namespace boost::python;
+
     typedef nxfield_wrapper<FIELDT> wrapper_type; 
 
     class_<wrapper_type >("nxfield")
