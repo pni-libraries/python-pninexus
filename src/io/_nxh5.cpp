@@ -42,12 +42,10 @@ using namespace pni::core;
 using namespace boost::python;
 using namespace pni::io::nx;
 
-#include "nxgroup_wrapper.hpp"
 #include "nxobject_to_python_converter.hpp"
 #include "nxgroup_to_python_converter.hpp"
 #include "nxfield_to_python_converter.hpp"
 #include "nxattribute_to_python_converter.hpp"
-#include "nxattribute_manager_wrapper.hpp"
 //#include "algorithms_wrapper.hpp"
 
 
@@ -65,6 +63,7 @@ extern void create_nxattribute_wrappers();
 extern void create_nxfile_wrappers();
 extern void create_nxfield_wrappers();
 extern void create_xml_wrappers();
+extern void create_nxgroup_wrappers();
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)
@@ -97,9 +96,7 @@ BOOST_PYTHON_MODULE(_nxh5)
     create_nxfield_wrappers();
     
     //wrap NX-group
-    wrap_nxgroup<h5::nxgroup>();
-    wrap_childiterator<nxgroup_wrapper<h5::nxgroup>>("NXGroupChildIterator");
-    wrap_nxattribute_manager<decltype(h5::nxgroup::attributes)>("nxgroup_attributes");
+    create_nxgroup_wrappers();
 
     //create the XML function wrappers
     create_xml_wrappers();
