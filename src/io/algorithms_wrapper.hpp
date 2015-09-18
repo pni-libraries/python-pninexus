@@ -39,12 +39,13 @@ struct algorithms_wrapper
     typedef GTYPE group_type;
     typedef FTYPE field_type;
     typedef ATYPE attribute_type;
+    typedef decltype(GTYPE::parent()) object_type;
 
     typedef nxfield_wrapper<FTYPE> field_wrapper_type;
     typedef nxgroup_wrapper<GTYPE> group_wrapper_type;
     typedef nxattribute_wrapper<ATYPE> attribute_wrapper_type;
 
-    static size_t get_size (const object &o)
+    static size_t get_size (const boost::python::object &o)
     {
         using namespace boost::python; 
 
@@ -64,6 +65,26 @@ struct algorithms_wrapper
         else
             throw type_error(EXCEPTION_RECORD,
                     "Algorithm accepts only fields and groups!");
+    }
+
+    static pni::core::string get_name(const boost::python::object &o)
+    {
+        using namespace boost::python;
+        
+        extract<field_wrapper_type>  field_extractor(o);
+        extract<group_wrapper_type>  group_extractor(o);
+        extract<attribute_wrapper_type> attribute_extractor(o);
+        object_type nxo;
+
+        if(field_extractor.check()) nxo = field_extractor();
+        else if(group_extractor.check()) nxo = group_extractor();
+        else if(attribute_extractor.check()) nxo = attribute_extractor();
+        else
+            throw type_error(EXCEPTION_RECORD,
+                    "Unkown NeXus object type!");
+
+        return get_name(nxo);
+            
     }
     
 };
@@ -86,6 +107,7 @@ void create_algorithms_wrappers()
     typedef algorithms_wrapper<GTYPE,FTYPE,ATYPE> wrapper_type;
 
     def("get_size",&wrapper_type::get_size);
+    def("get_name",&wrapper_type::get_name);
 
 }
 
