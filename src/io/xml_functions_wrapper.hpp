@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <boost/python.hpp>
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/xml.hpp>
 #include "nxgroup_wrapper.hpp"
@@ -51,6 +52,7 @@ template<typename GTYPE> struct xml_functions_wrapper
 //!
 template<typename GTYPE> void create_xml_function_wrappers()
 {
+    using namespace boost::python;
     typedef xml_functions_wrapper<GTYPE> wrapper_type;
 
     def("xml_to_nexus",&wrapper_type::xml_to_nexus);
