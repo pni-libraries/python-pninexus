@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <boost/python.hpp>
 #include <pni/io/nx/flat_group.hpp>
 
 template<typename GTYPE> 
@@ -49,21 +50,21 @@ class rec_group_iterator
             _index++;
         }
 
-        object __iter__() const
+        boost::python::object __iter__() const
         {
-            return object(iterator_type(_flat_group,_index));
+            return boost::python::object(iterator_type(_flat_group,_index));
         }
 
-        object next()
+        boost::python::object next()
         {
             if(_index == _flat_group->size())
             {
                 throw(rec_group_iterator_stop());
-                return object();
+                return boost::python::object();
             }
             auto o = (*_flat_group)[_index];
             increment();
-            return object(o);
+            return boost::python::object(o);
         }
 
 };

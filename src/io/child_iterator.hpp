@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <boost/python.hpp>
+#include <pni/core/types.hpp>
 #include "errors.hpp"
 
 //! 
@@ -86,8 +88,10 @@ template<typename CT> class child_iterator
         //! Return the current element the iterator points to.
         //! \return intance of ItemT
         //!
-        object next()
+        boost::python::object next()
         {
+            using namespace boost::python;
+
             //check if iteration is still possible
             if(_index >= _nlinks)
             {
@@ -104,9 +108,9 @@ template<typename CT> class child_iterator
 
         //----------------------------------------------------------------------
         //! \brief required by the python wrapper
-        object __iter__()
+        boost::python::object __iter__()
         {
-            return object(this);
+            return boost::python::object(this);
         }
 
 };
@@ -117,8 +121,10 @@ template<typename CT> class child_iterator
 //! Function creates a Python object for a ChildIterator. The type of the 
 //! container is determined by the Iterable template parameter.
 //!
-template<typename CT> void wrap_childiterator(const string &class_name)
+template<typename CT> void wrap_childiterator(const pni::core::string &class_name)
 {
+    using namespace boost::python;
+
     typedef child_iterator<CT> iterator_type;
 
     class_<iterator_type>(class_name.c_str())

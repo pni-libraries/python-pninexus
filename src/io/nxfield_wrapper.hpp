@@ -220,6 +220,8 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         boost::python::object __getitem__tuple(const boost::python::tuple &t)
         {
+            using namespace pni::core;
+
             typedef std::vector<pni::core::slice> selection_type;
 
             //first we need to create a selection

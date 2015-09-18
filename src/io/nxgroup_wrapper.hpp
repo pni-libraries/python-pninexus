@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <boost/python.hpp>
 #include <pni/io/nx/nx.hpp>
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
@@ -167,9 +168,9 @@ class nxgroup_wrapper
         field_type
         create_field(const pni::core::string &name,
                      const pni::core::string &type_code,
-                     const boost::python::object &shape=object(),
-                     const boost::python::object &chunk=object(),
-                     const boost::python::object &filter=object()) const
+                     const boost::python::object &shape=boost::python::object(),
+                     const boost::python::object &chunk=boost::python::object(),
+                     const boost::python::object &filter=boost::python::object()) const
         {
             using namespace pni::core;
             using namespace boost::python;
@@ -416,6 +417,9 @@ static const char __group_childs_docstr[] =
 //!
 template<typename GTYPE> void wrap_nxgroup()
 {
+    using namespace boost::python;
+    using namespace pni::core;
+
     typedef nxgroup_wrapper<GTYPE> wrapper_type;
     typedef rec_group_iterator<GTYPE> rec_group_iterator_type;
 
