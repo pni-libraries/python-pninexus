@@ -25,15 +25,45 @@
 
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/algorithms/get_size.hpp>
+#include "nxattribute_wrapper.hpp"
+#include "nxgroup_wrapper.hpp"
+#include "nxfield_wrapper.hpp"
 
-template<typename OTYPE> struct algorithms_wrapper
+template<
+         typename GTYPE,
+         typename FTYPE,
+         typename ATYPE
+        >
+struct algorithms_wrapper
 {
-    typedef OTYPE object_type; 
+    typedef GTYPE group_type;
+    typedef FTYPE field_type;
+    typedef ATYPE attribute_type;
+
+    typedef nxfield_wrapper<FTYPE> field_wrapper_type;
+    typedef nxgroup_wrapper<GTYPE> group_wrapper_type;
+    typedef nxattribute_wrapper<ATYPE> attribute_wrapper_type;
 
     static size_t get_size (const object &o)
     {
-        object_type tmp(extract<object_type>(o));
-        return pni::io::nx::get_size(tmp);
+        using namespace boost::python; 
+
+        extract<field_wrapper_type>     field_extractor(o);
+        extract<attribute_wrapper_type> attribute_extractor(o);
+
+        if(field_extractor.check()) 
+        {
+            field_type f = field_extractor();
+            return pni::io::nx::get_size(f);
+        }
+        else if(attribute_extractor.check())
+        {
+            attribute_type a = attribute_extractor();
+            return pni::io::nx::get_size(a);
+        }
+        else
+            throw type_error(EXCEPTION_RECORD,
+                    "Algorithm accepts only fields and groups!");
     }
     
 };
@@ -46,9 +76,14 @@ template<typename OTYPE> struct algorithms_wrapper
 //! Template function to create a new wrapper for an NXGroup type GType.
 //! \param class_name name for the Python class
 //!
-template<typename GTYPE> void create_algorithms_wrappers()
+template<
+         typename GTYPE,
+         typename FTYPE,
+         typename ATYPE
+        > 
+void create_algorithms_wrappers()
 {
-    typedef algorithms_wrapper<GTYPE> wrapper_type;
+    typedef algorithms_wrapper<GTYPE,FTYPE,ATYPE> wrapper_type;
 
     def("get_size",&wrapper_type::get_size);
 
