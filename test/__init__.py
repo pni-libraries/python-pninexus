@@ -1,4 +1,5 @@
 from .core import *
+from .algorithms import *
 
 from .nxfile_test import nxfile_test
 

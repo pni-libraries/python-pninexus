@@ -46,7 +46,7 @@ using namespace pni::io::nx;
 #include "nxgroup_to_python_converter.hpp"
 #include "nxfield_to_python_converter.hpp"
 #include "nxattribute_to_python_converter.hpp"
-//#include "algorithms_wrapper.hpp"
+#include "algorithms_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -100,7 +100,7 @@ BOOST_PYTHON_MODULE(_nxh5)
 
     //create the XML function wrappers
     create_xml_wrappers();
-    //create_algorithms_wrappers<h5::nxobject>();
+    create_algorithms_wrappers<h5::nxgroup,h5::nxfield,h5::nxattribute>();
 
     //create wrapper for NXDefalteFilter
     uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =
