@@ -8,11 +8,11 @@ from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import create_files
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import nxgroup
-from pni.io.nx.h5 import get_size
+from pni.io.nx.h5 import get_rank
 
 
 #implementing test fixture
-class get_size_test(unittest.TestCase):
+class get_rank_test(unittest.TestCase):
     filename = "get_size_test.nxs"
 
     def setUp(self):
@@ -28,26 +28,24 @@ class get_size_test(unittest.TestCase):
         root = self._file.root()
 
         a = root.attributes.create("test_scalar","float32")
-        self.assertEqual(get_size(a),1)
+        self.assertEqual(get_rank(a),1)
 
         a = root.attributes.create("test_multidim","ui64",shape=(3,4))
-        self.assertEqual(get_size(a),12)
+        self.assertEqual(get_rank(a),2)
 
     def test_with_field(self):
         root = self._file.root()
 
         f = root.create_field("test_scalar","float64")
-        self.assertEqual(get_size(f),1)
+        self.assertEqual(get_rank(f),1)
 
         f = root.create_field("test_multidim","int16",shape=(1024,2048))
-        self.assertEqual(get_size(f),1024*2048)
+        self.assertEqual(get_rank(f),2)
 
     def test_with_group(self):
         root = self._file.root()
-        root.create_group("entry_1","NXentry")
-        root.create_group("entry_2","NXentry")
-
-        self.assertEqual(get_size(root),2)
+    
+        self.assertRaises(TypeError,get_rank,root)
 
             
 

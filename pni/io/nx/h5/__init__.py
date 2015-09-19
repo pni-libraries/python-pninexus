@@ -34,6 +34,11 @@ from ._nxh5 import nxattribute
 from ._nxh5 import deflate_filter
 from ._nxh5 import xml_to_nexus
 from ._nxh5 import get_size
+from ._nxh5 import get_name
+from ._nxh5 import get_rank
+from ._nxh5 import get_unit
+from ._nxh5 import get_class
+from ._nxh5 import get_object
 
 
 #import helper methods

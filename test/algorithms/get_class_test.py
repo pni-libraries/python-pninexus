@@ -8,12 +8,12 @@ from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import create_files
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import nxgroup
-from pni.io.nx.h5 import get_size
+from pni.io.nx.h5 import get_class
 
 
 #implementing test fixture
-class get_size_test(unittest.TestCase):
-    filename = "get_size_test.nxs"
+class get_class_test(unittest.TestCase):
+    filename = "get_class_test.nxs"
 
     def setUp(self):
         self._file = create_file(self.filename,overwrite=True)
@@ -26,28 +26,20 @@ class get_size_test(unittest.TestCase):
     def test_with_attribute(self):
         #this should work as the file does not exist yet
         root = self._file.root()
-
         a = root.attributes.create("test_scalar","float32")
-        self.assertEqual(get_size(a),1)
-
-        a = root.attributes.create("test_multidim","ui64",shape=(3,4))
-        self.assertEqual(get_size(a),12)
+        self.assertRaises(TypeError,get_class,a)
 
     def test_with_field(self):
         root = self._file.root()
 
         f = root.create_field("test_scalar","float64")
-        self.assertEqual(get_size(f),1)
-
-        f = root.create_field("test_multidim","int16",shape=(1024,2048))
-        self.assertEqual(get_size(f),1024*2048)
+        self.assertRaises(TypeError,get_class,f)
 
     def test_with_group(self):
         root = self._file.root()
-        root.create_group("entry_1","NXentry")
-        root.create_group("entry_2","NXentry")
+        g = root.create_group("entry","NXentry")
 
-        self.assertEqual(get_size(root),2)
+        self.assertEqual(get_class(g),"NXentry")
 
             
 
