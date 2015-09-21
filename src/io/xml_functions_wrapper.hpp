@@ -26,18 +26,57 @@
 #include <boost/python.hpp>
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/xml.hpp>
+#include <pni/core/error.hpp>
 #include "nxgroup_wrapper.hpp"
+
+class predicate_wrapper
+{
+    private:
+        boost::python::object _callable; 
+    public:
+        predicate_wrapper(const boost::python::object &callable):
+            _callable(callable)
+        {}
+
+        template<typename OTYPE>
+        bool operator()(const OTYPE &o) const
+        {
+            using namespace boost::python; 
+            using namespace pni::core;
+
+            object result = _callable(object(o));
+            extract<bool> result_extractor(result);
+
+            if(!result_extractor.check())
+                throw type_error(EXCEPTION_RECORD,
+                        "Predicate functions must return a boolean value!");
+            
+            return result_extractor();
+        }
+};
 
 template<typename GTYPE> struct xml_functions_wrapper
 {
     typedef GTYPE group_type; 
 
-    static void xml_to_nexus(const pni::core::string &xml_data,
+    static void xml_to_nexus_no_pred(const pni::core::string &xml_data,
                              const nxgroup_wrapper<group_type> &parent)
     {
         using namespace pni::io::nx;
         group_type p = parent;
         xml::xml_to_nexus(xml::create_from_string(xml_data),p);
+    }
+
+    static void xml_to_nexus_with_pred(const pni::core::string &xml_data,
+                             const nxgroup_wrapper<group_type> &parent,
+                             const boost::python::object &pred)
+    {
+        using namespace pni::io::nx;
+
+        predicate_wrapper write_predicate(pred);
+        group_type p = parent;
+        xml::xml_to_nexus(xml::create_from_string(xml_data),p,write_predicate);
+
     }
     
 };
@@ -55,7 +94,8 @@ template<typename GTYPE> void create_xml_function_wrappers()
     using namespace boost::python;
     typedef xml_functions_wrapper<GTYPE> wrapper_type;
 
-    def("xml_to_nexus",&wrapper_type::xml_to_nexus);
+    def("xml_to_nexus",&wrapper_type::xml_to_nexus_no_pred);
+    def("xml_to_nexus",&wrapper_type::xml_to_nexus_with_pred);
 
 }
 
