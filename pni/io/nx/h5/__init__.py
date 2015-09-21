@@ -39,6 +39,9 @@ from ._nxh5 import get_rank
 from ._nxh5 import get_unit
 from ._nxh5 import get_class
 from ._nxh5 import get_object
+from ._nxh5 import set_class
+from ._nxh5 import set_unit
+from ._nxh5 import get_path
 
 
 #import helper methods

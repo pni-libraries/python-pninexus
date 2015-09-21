@@ -36,6 +36,9 @@
 #include <pni/io/nx/algorithms/as_field.hpp>
 #include <pni/io/nx/algorithms/as_group.hpp>
 #include <pni/io/nx/algorithms/as_attribute.hpp>
+#include <pni/io/nx/algorithms/set_unit.hpp>
+#include <pni/io/nx/algorithms/set_class.hpp>
+#include <pni/io/nx/algorithms/get_path.hpp>
 
 #include <pni/io/nx/nximp_code_map.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
@@ -126,6 +129,27 @@ struct algorithms_wrapper
     {
         return pni::io::nx::get_object(to_object(p),path);
     }
+
+    //------------------------------------------------------------------------
+    static void set_class(const boost::python::object &o,
+                          const pni::core::string &c)
+    {
+        pni::io::nx::set_class(to_object(o),c);
+    }
+
+    //------------------------------------------------------------------------
+    static void set_unit(const boost::python::object &o,
+                         const pni::core::string &u)
+    {
+        pni::io::nx::set_unit(to_object(o),u);
+    }
+
+    //------------------------------------------------------------------------
+    static pni::core::string get_path(const boost::python::object &o)
+    {
+        using namespace pni::io;
+        return nx::get_path(to_object(o));
+    }
     
 };
 
@@ -153,6 +177,9 @@ void create_algorithms_wrappers()
     def("get_object",&wrapper_type::get_object_string);
     def("get_unit",&wrapper_type::get_unit);
     def("get_class",&wrapper_type::get_class);
+    def("set_class",&wrapper_type::set_class);
+    def("set_unit",&wrapper_type::set_unit);
+    def("get_path",&wrapper_type::get_path);
 
 }
 
