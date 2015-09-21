@@ -28,6 +28,7 @@
 #include <pni/core/utilities.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
 #include <pni/io/nx/algorithms/create_field.hpp>
+#include <pni/io/nx/algorithms/get_path.hpp>
 #include <pni/io/nx/flat_group.hpp>
 
 #include <core/utils.hpp>
@@ -340,6 +341,12 @@ class nxgroup_wrapper
             return rec_group_iterator<GTYPE>(ptr,0);
         }
 
+        //--------------------------------------------------------------------
+        pni::core::string path() const
+        {
+            return pni::io::nx::get_path(_group);
+        }
+
 };
 
 static const char __group_open_docstr[] = 
@@ -459,6 +466,7 @@ template<typename GTYPE> void wrap_nxgroup()
         .add_property("size",&wrapper_type::__len__)
         .def_readonly("attributes",&wrapper_type::attributes)
         .add_property("recursive",&wrapper_type::recursive)
+        .add_property("path",&wrapper_type::path)
         ;
 #pragma GCC diagnostic pop
 }

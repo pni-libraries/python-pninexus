@@ -27,6 +27,7 @@
 #include <pni/core/types.hpp>
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
+#include <pni/io/nx/algorithms/get_path.hpp>
 
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
@@ -355,6 +356,12 @@ template<typename FIELDT> class nxfield_wrapper
 
         //--------------------------------------------------------------------
         size_t __len__() const { return _field.size(); }
+       
+        //--------------------------------------------------------------------
+        pni::core::string path() const 
+        { 
+            return pni::io::nx::get_path(_field); 
+        }
         
 };
 
@@ -396,6 +403,7 @@ template<typename FIELDT> void wrap_nxfield()
         .add_property("name",&wrapper_type::name)
         .add_property("parent",&wrapper_type::parent)
         .add_property("is_valid",&wrapper_type::is_valid)
+        .add_property("path",&wrapper_type::path)
         .def("write",&wrapper_type::write)
         .def("read",&wrapper_type::read)
         .def("__getitem__",&wrapper_type::__getitem__)

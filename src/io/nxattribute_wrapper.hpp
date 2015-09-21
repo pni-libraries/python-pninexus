@@ -29,6 +29,7 @@
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
 #include <pni/io/exceptions.hpp>
+#include <pni/io/nx/algorithms/get_path.hpp>
 
 #include "scalar_reader.hpp"
 #include "scalar_writer.hpp"
@@ -250,6 +251,17 @@ template<typename ATYPE> class nxattribute_wrapper
             
         }
 
+        //--------------------------------------------------------------------
+        pni::core::string path() const
+        {
+            return pni::io::nx::get_path(_attribute);
+        }
+        //---------------------------------------------------------------------
+        size_t size() const
+        {
+            return _attribute.size();
+        }
+
 };
 
 //=============================================================================
@@ -299,6 +311,8 @@ template<typename ATYPE> void wrap_nxattribute()
         .add_property("name",&wrapper_type::name,__attribute_name_docstr)
         .add_property("value",&wrapper_type::read,
                               &wrapper_type::write,__attribute_value_docstr)
+        .add_property("path",&wrapper_type::path)
+        .add_property("size",&wrapper_type::size)
         .def("close",&wrapper_type::close,__attribute_close_docstr)
         .def("write",&wrapper_type::write,__attribute_write_docstr)
         .def("__getitem__",&wrapper_type::__getitem__)

@@ -5,9 +5,38 @@ from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import nxgroup
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
+from pni.io.nx.h5 import xml_to_nexus
+from pni.io.nx.h5 import get_class
+from pni.io.nx.h5 import get_path
+from pni.io.nx.h5 import get_object
 from pni.core import ShapeMismatchError
 
 from .attributes_test import attributes_test
+
+file_struct = \
+"""
+<group name="entry" type="NXentry">
+    <group name="instrument" type="NXinstrument">
+        <group name="detector" type="NXdetector">
+            <field name="data" type="uint16" units="cps">
+                <dimension rank="3">
+                    <dim index="1" value="0"/>
+                    <dim index="2" value="1024"/>
+                    <dim index="3" value="2048"/>
+                </dimension>
+            </field>
+        </group>
+    </group>
+
+    <group name="sample" type="NXsample">
+        <field name="name" type="string">mysample</field>
+        <field name="material" type="string">Si</field>
+    </group>
+
+    <group name="data" type="NXdata">
+    </group>
+</group>
+"""
 
 def write_attribute(a,v):
     a.value = v
@@ -20,21 +49,27 @@ class nxgroup_test(unittest.TestCase):
     def setUp(self):
         self.gf = create_file("test/nxgroup_test.nxs",overwrite=True)
         self.root = self.gf.root()
+        xml_to_nexus(file_struct,self.root)
 
     def tearDown(self):
         self.root.close()
         self.gf.close()
 
-    def test_creation(self):
+    def test_group_creation(self):
         g = self.root.create_group("metadata")
         self.assertTrue(g.is_valid)
-        g = self.root.create_group("scan_1",nxclass="NXentry")
-        self.assertTrue(g.attributes["NX_class"].value == "NXentry")
+        self.assertEqual(get_class(g),"")
+        self.assertEqual(g.name,"metadata")
 
-        g = g.create_group("instrument","NXinstrument").\
-              create_group("detector","NXdetector")
+
+        g = self.root.create_group("scan_1",nxclass="NXentry")
+        self.assertEqual(get_class(g),"NXentry")
+        self.assertEqual(g.name,"scan_1")
+
+        g = self.root.create_group("scan_2","NXentry")
         self.assertTrue(g.is_valid)
-        self.assertTrue(g.name == "detector")
+        self.assertEqual(g.name,"scan_2")
+        self.assertEqual(get_class(g),"NXentry")
 
     def test_open(self):
         #try to open a group that does not exist
@@ -64,5 +99,35 @@ class nxgroup_test(unittest.TestCase):
         for m in g:
             self.assertTrue(m.name == "module_%i" %(i))
             i += 1
+
+    def test_recursive_iteration(self):
+
+        for g in self.root.recursive:
+            print g.path
+
+    def test_name_property(self):
+        g = get_object(self.root,"/:NXentry")
+        self.assertEqual(g.name,"entry")
+
+    def test_parent_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
+        self.assertEqual(g.parent.name,"instrument")
+        self.assertEqual(g.parent.parent.parent.name,"/")
+
+    def test_filename_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
+        self.assertEqual(g.filename,"test/nxgroup_test.nxs")
+
+    def test_size_property(self):
+        self.assertEqual(self.root.size,1)
+        self.assertEqual(get_object(self.root,"/:NXentry").size,3)
+        self.assertEqual(get_object(self.root,"/:NXentry/:NXdata").size,0)
+
+    def test_path_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
+        self.assertEqual(g.path,"/entry:NXentry/instrument:NXinstrument/detector:NXdetector")
+        
+
+
 
         

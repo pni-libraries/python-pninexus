@@ -98,3 +98,8 @@ a recursive iterator to the instance
 
     for child in group.recursive: print(child.path)
 
+Recursive iteration is a quite usefull feature along with list comprehension to
+generate lists of particular object types. 
+
+
+
