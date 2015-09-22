@@ -30,6 +30,7 @@ extern "C"{
 }
 
 #include <boost/python.hpp>
+#include <boost/python/docstring_options.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -79,6 +80,10 @@ BOOST_PYTHON_MODULE(_nxh5)
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     init_numpy();
+
+    docstring_options doc_opts; 
+    doc_opts.disable_signatures();
+    doc_opts.enable_user_defined();
 
     //register converter
     to_python_converter<h5::nxobject,object_converter_type>();

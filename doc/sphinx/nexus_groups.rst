@@ -66,40 +66,55 @@ Attribute name         Description
 :py:attr:`parent`      returns the groups parent group 
 :py:attr:`size`        the number of children a group has 
 :py:attr:`filename`    name of the file the group belongs to 
-:py:attr:`attributes`  property providing access to the groups attributes
+:py:attr:`attributes`  property providing access to the groups' attributes
 :py:attr:`path`        provides the path for the group
 =====================  ====================================================
 
 Iteration
 ---------
 
+As containers, instances of :py:class:`nxgroup` expose two different iterator
+interfaces
 
-As containers, instances of :py:class:`nxgroup` can be iterated. 
-Two iteration schemes are supported
+* a simple one directly provided by :py:class:`nxgroup` which iterates only 
+  over the direct children of a group
+* and a recursive iterator provided by the :py:attr:`nxgroup.recursive` of 
+  an instance of :py:class:`nxgroup`.
 
-* direct iteration
-* recursive iteration
-
-In the former case iteration is only done over the direct children of a
-group (those children for which the particular group is the parent). 
-The latter scheme provides access to all children stored below a group and its 
-subgroups.
-To iterate only over the direct children of a group the common Python 
-syntax can be used
+The latter one iterates over all children of a group and the children of its
+subgroups. Simple iteration can be done with
 
 .. code-block:: python
 
     for child in group: print(child.path)
 
-In order to iterate recursively use the :py:meth:`recursive` method to obtain 
-a recursive iterator to the instance
+while the recursive iterator can be accessed via the 
+:py:attr:`recursive` attribute of an instance of :py:class:`nxgroup`
 
 .. code-block:: python
 
     for child in group.recursive: print(child.path)
 
 Recursive iteration is a quite usefull feature along with list comprehension to
-generate lists of particular object types. 
+generate lists of particular object types.  
+A typical application for recursive iteration would be to find all the fields
+that have been involved in a measurement. We assume here that for all fields
+the first dimension indicates the number of scan points. We thus can simply use
+the following list comprehension 
 
+.. code-block:: python 
+
+    from __future__ import print_function
+    import pni.io.nx.h5 as nx 
+
+    f = nx.open_file("test.nxs")
+
+    def scanned_field(obj):
+        return is_instance(obj,nx.nxfield) and obj.shape[0]>1
+
+    scanned_fields = [ obj for obj in f.root().recursive if scanned_field(obj)]
+
+    for field in scanned_fields:
+        print field.path
 
 

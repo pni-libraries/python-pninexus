@@ -163,6 +163,27 @@ nxfile_wrapper<FTYPE> create_files(const pni::core::string &n,
     }
 }
 
+static const pni::core::string nxfile_flush_doc_string = 
+"Flush the content of the file. \n"
+"This method writes all the changes made to the file to disk."
+;
+
+static const pni::core::string nxfile_close_doc_string = 
+"Closes the file.\n"
+"\n"
+"Other objects belonging to this file residing within the same scope\n"
+"must be closed explicitely if the file should be reopened!\n"
+;
+
+static const pni::core::string nxfile_root_doc_string = 
+"Return the root group.\n"
+"\n"
+"Returns the root group of the file as an instance of nxgroup.\n"
+"\n"
+"Return:\n"
+"    root group as instance of nxgroup\n"
+;
+
 //------------------------------------------------------------------------------
 //! 
 //! \ingroup wrappers
@@ -180,9 +201,9 @@ template<typename FTYPE> void wrap_nxfile()
         .def(init<>())
         .add_property("readonly",&wrapper_type::is_readonly)
         .add_property("is_valid",&wrapper_type::is_valid)
-        .def("flush",&wrapper_type::flush)
-        .def("close",&wrapper_type::close)
-        .def("root",&wrapper_type::root)
+        .def("flush",&wrapper_type::flush,nxfile_flush_doc_string.c_str())
+        .def("close",&wrapper_type::close,nxfile_close_doc_string.c_str())
+        .def("root",&wrapper_type::root,nxfile_root_doc_string.c_str())
         ;
 
     //need some functions
