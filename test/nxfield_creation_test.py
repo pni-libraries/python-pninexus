@@ -60,6 +60,7 @@ class nxfield_creation_test_uint8(unittest.TestCase):
 
     def test_multidim_creation_without_chunk_and_filter(self):
         comp = deflate_filter()
+        comp.rate = 2
         f = self.root.create_field("multidim_withouth_chunk_with_filter",
                                    self._typecode,
                                    shape=(0,1024,1024),
@@ -72,6 +73,7 @@ class nxfield_creation_test_uint8(unittest.TestCase):
 
     def test_multdim_creation_with_chunk_and_filter(self):
         comp = deflate_filter()
+        comp.rate = 2
         f = self.root.create_field("multidim_with_chunk_with_filter",
                                    self._typecode,
                                    shape=(0,1024,1024),
