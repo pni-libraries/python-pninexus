@@ -65,9 +65,9 @@ some of the properties of a field
 ==============  =========================================================
 Attribute name  Description 
 ==============  =========================================================
-``name``        returns the name of the group 
-``path``        returns the full nexus path of the group
-``parent``      returns the groups parent group 
+``name``        returns the name of the field
+``path``        returns the full nexus path of the field
+``parent``      returns the groups parent field 
 ``size``        number of elements stored in the field 
 ``dtype``       data type of the elements 
 ``shape``       a tuple with the number of elements along each dimension 

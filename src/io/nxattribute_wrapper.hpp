@@ -220,12 +220,10 @@ template<typename ATYPE> class nxattribute_wrapper
         //---------------------------------------------------------------------
         boost::python::object __getitem__(const boost::python::object &args) const
         {
-            std::cout<<"read original data"<<std::endl;
             boost::python::object data = read(); //read all attribute data 
                                                  //- remember we cannot do 
                                                  //partial IO on attributes
 
-            std::cout<<"apply selection"<<std::endl;
             //call here the __getitem__ method of the return value and return 
             //its result
             if(numpy::is_array(data))

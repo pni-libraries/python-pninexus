@@ -1,23 +1,21 @@
 #!/usr/bin/env python
 #File: nxattr_ex2.py
-
+from __future__ import print_function
 import numpy
-import pni.io.nx.h5 as nx
+import pni.io.nx.h5 as nexus 
 
-nxfile = nx.create_file("nxgroup_ex3.h5",overwrite=True)
-g = nxfile.create_group("scan_1","NXentry")
-g.attr("description","string").value = "a first measurement"
-g.attr("temperature","float64").value = 123.3
-g.attr("velocity","float64",shape=(3,)).value = numpy.arange(0,3,dtype="float64")
+f = nexus.create_file("nxattr_ex2.nxs",overwrite=True)
+g = f.root().create_group("scan_1","NXentry")
 
-#iterate over all attributes of the file object
-print "\nFile attribute ......"
-for a in nxfile.attributes:
-    print a.name,": ",a.value
+g.attributes.create("description","string")[...] = "a first measurement"
+g.attributes.create("temperature","float64")[...] = 123.3
+g.attributes.create("velocity","float64",shape=(3,))[...] = numpy.arange(0,3,dtype="float64")
 
-print "\n\ngroup attribute ......"
+output = "{name} = {data}"
+#print the results
 for a in g.attributes:
-    print a.name,": ",a.value
+    print(output.format(name=a.name,data=a[...]))
+
 
 
 

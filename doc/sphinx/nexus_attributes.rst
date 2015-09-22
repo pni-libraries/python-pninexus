@@ -6,9 +6,8 @@ metadata. In fact Nexus makes heavy use of attributes to store additional
 information about a field or group. It is thus not recommended to use 
 attributes too excessively as one may runs into name conflicts with future Nexus
 development. 
-Attributes can be accessed for fields  and groups via the ``attributes``
-member of the field and group classes. Attributes behave basically like fields
-with some restrictions
+Attributes can be accessed from fields and groups via their :py:attr:`attributes`
+member. Attributes behave basically like fields with some restrictions
 
 * they cannot grow
 * one cannot apply compression to attributes.
@@ -61,4 +60,28 @@ property             description
 :py:attr:`name`      the name of the attribute (the key which can be used 
                      to retrieve the attribute from its parent) 
 :py:attr:`value`     provides access to the attributes data 
+:py:attr:`path`      returns the path of the attribute
 ===================  =====================================================
+
+Attribute retrieval
+-------------------
+
+Attribute iteration
+-------------------
+
+One :py:attr:`attributes` attribute of each :py:class:`nxgroup` or
+:py:class:`nxgroup` instance provides an iterator for the attributes attached
+to the particular object 
+
+.. code-block:: python
+    
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
+    
+    f = nexus.open_file(...)
+    
+    for a in f.root().attributes:
+        print(a.name)
+
+Reading and writing data from and to an attribute
+-------------------------------------------------
