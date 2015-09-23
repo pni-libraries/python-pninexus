@@ -66,6 +66,14 @@ property             description
 Attribute retrieval
 -------------------
 
+Attributes can be retrieved either by their name of by their index. For index
+retrieval the :py:attr:`attributes` attribute of :py:class:`nxgroup` and 
+:py:class:`nxfield` eposes a list interface 
+
+.. code-block:: python
+
+    
+
 Attribute iteration
 -------------------
 

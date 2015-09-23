@@ -12,6 +12,7 @@ Python wrapper for the *libpniio* and *libpnicore* C++ libraries.
 * numpy
 * c++ compiler
 * boost-python library
+* python sphinx to build the documentation
 
 
 ### Install from sources
@@ -19,8 +20,22 @@ Python wrapper for the *libpniio* and *libpnicore* C++ libraries.
 The code can be built with 
 
 ```
-    $ python setup.py install 
+$ python setup.py install 
 ```
 
 For those who are still running on the old interface it is maybe whise to
-install this package in a custom location.
+install this package in a custom location with something like this 
+
+```
+$ python setup.py install --prefix=<path to installation prefix>
+```
+
+To build the documentation use 
+
+```
+$ python setup.py build_sphinx
+```
+
+The resulting documentation can be found below `buil/sphinx/html` in the root
+directory of the source distribution.
+
