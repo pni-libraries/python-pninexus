@@ -1,1 +1,4 @@
 *.h5
+attributes_access.nxs
+attributes_properties.nxs
+attribute_io.nxs

@@ -63,33 +63,55 @@ property             description
 :py:attr:`path`      returns the path of the attribute
 ===================  =====================================================
 
-Attribute retrieval
--------------------
+The following code 
 
-Attributes can be retrieved either by their name of by their index. For index
-retrieval the :py:attr:`attributes` attribute of :py:class:`nxgroup` and 
-:py:class:`nxfield` eposes a list interface 
+.. literalinclude:: ../examples/attributes_properties.py
 
-.. code-block:: python
+will produce 
 
-    
+.. code-block:: bash 
 
-Attribute iteration
--------------------
+    HDF5_version         : /@HDF5_version       type=string     size=1                   
+    NX_class             : /@NX_class           type=string     size=1                   
+    NeXus_version        : /@NeXus_version      type=string     size=1                   
+    file_name            : /@file_name          type=string     size=1                   
+    file_time            : /@file_time          type=string     size=1                   
+    file_update_time     : /@file_update_time   type=string     size=1                   
 
-One :py:attr:`attributes` attribute of each :py:class:`nxgroup` or
-:py:class:`nxgroup` instance provides an iterator for the attributes attached
-to the particular object 
 
-.. code-block:: python
-    
-    from __future__ import print_function
-    import pni.io.nx.h5 as nexus
-    
-    f = nexus.open_file(...)
-    
-    for a in f.root().attributes:
-        print(a.name)
+
+Attribute retrieval and iteration
+---------------------------------
+
+There are basically three ways to to access the attributes attached to a group
+or a field
+
+* by name via :py:meth:`__getitem__` (using `[]`) 
+* by the attributes index 
+* by an iterator.
+
+The :py:attr:`attributes` attribute of groups and fields exposes an iterable
+interface. The following example shows all three ways how to access the 
+attributes of a files root group
+
+.. literalinclude:: ../examples/attribute_access.py
+
+The output is
+
 
 Reading and writing data from and to an attribute
 -------------------------------------------------
+
+Concerning IO operations attributes heave pretty much like fields as shown in
+the next example
+
+.. literalinclude:: ../examples/attribute_io.py
+
+.. code-block:: bash
+    
+    r= [-1.  0.  0.]
+    x= -1.0
+    y= 0.0
+    z= 0.0
+
+There is not too much more to day about that.
