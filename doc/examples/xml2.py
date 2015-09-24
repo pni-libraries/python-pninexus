@@ -13,6 +13,7 @@ file_struct =  \
     </group>
 </group>
 """
+
 detector_struct = \
 """
 <group name="mythen" type="NXdetector">

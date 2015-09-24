@@ -42,6 +42,7 @@ from ._nxh5 import get_object
 from ._nxh5 import set_class
 from ._nxh5 import set_unit
 from ._nxh5 import get_path
+from ._nxh5 import link
 
 
 #import helper methods

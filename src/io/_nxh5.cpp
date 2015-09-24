@@ -48,6 +48,7 @@ using namespace pni::io::nx;
 #include "nxfield_to_python_converter.hpp"
 #include "nxattribute_to_python_converter.hpp"
 #include "algorithms_wrapper.hpp"
+#include "nxlink_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -90,6 +91,7 @@ BOOST_PYTHON_MODULE(_nxh5)
     to_python_converter<h5::nxgroup,group_converter_type>();
     to_python_converter<h5::nxfield,field_converter_type>();
     to_python_converter<h5::nxattribute,attribute_converter_type>();
+    wrap_link<h5::nxgroup,h5::nxfield>();
 
     //wrap NX-attribute object
     create_nxattribute_wrappers();
