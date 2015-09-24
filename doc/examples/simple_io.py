@@ -1,48 +1,60 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import numpy
-import pni.io.nx.h5 as nx
+import pni.io.nx.h5 as nexus
 
-def write_data(fname,np,nxpt,nypt):
-    frame = numpy.zeros((nxpt,nypt),dtype="uint16")
+file_struct = \
+"""
+<group name="entry" type="NXentry">
+    <group name="instrument" type="NXinstrument">
+        <group name="detector" type="NXdetector">
+        </group>
+    </group>
+</group>
+"""
 
-    nxfile = nx.create_file(fname,overwrite=True)
+class detector_description(object):
+    def __init__(self,nx,ny,dtype):
+        self.shape = (nx,ny)
+        self.dtype = dtype
 
-    g = nxfile.create_group("/scan_1/instrument/detector","NXdetector");
-    data = g.create_field("data","uint16",[0,nxpt,nypt])
-    print data.shape
+def init_file(fname):
+    f = nexus.create_file(fname,overwrite=True)
+    r = f.root()
+    nexus.xml_to_nexus(file_struct,r)
 
+    return f
+
+def write_data(f,detector,np):
+
+    frame_buffer = numpy.zeros(detector.shape,dtype=detector.dtype)
+    r = f.root()
+    detector_group = nexus.get_object(r,"/:NXentry/:NXinstrument/:NXdetector")
+   
+    data = detector_group.create_field("data",detector.dtype,
+                                       shape=(0,detector.shape[0],detector.shape[1]))
+    print(data.shape)
     for i in range(np):
         data.grow(0)
-        frame[...] = i
-        data[i,...] = frame
+        frame_buffer[...] = i
+        data[-1,...] = frame_buffer
 
-    #close everything
-    g.close()
-    data.close()
-    nxfile.close()
 
-def read_data(fname):
-
-    nxfile = nx.open_file(fname,readonly=False);
-    field = nxfile["/scan_1/instrument/detector/data"];
-
-    data = numpy.zeros(field.shape[1:],dtype=field.dtype)
+def read_data(f):
+    
+    data = nexus.get_object(f.root(),"/:NXentry/:NXinstrument/:NXdetector/data")
    
-    for i in range(field.shape[0]):
-        data = field[i,...]
+    for i in range(data.shape[0]):
+        print(data[i,...])
 
 
-    #close everything
-    field.close()
-    nxfile.close()
+fname="simple_io.nxs"
+det  = detector_description(10,20,"uint16")
 
-fname="simple_io.h5"
-nxpt = 10
-nypt = 20
-np = 100
+nxfile = init_file(fname)
 
-print "writing data ..."
-write_data(fname,np,nxpt,nypt)
-print "reading data ..."
-read_data(fname)
-print "program finished ..."
+print("writing data ...")
+write_data(nxfile,det,100)
+print("reading data ...")
+read_data(nxfile)
+print("program finished ...")

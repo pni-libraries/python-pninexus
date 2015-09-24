@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #file: nxfile_ex1.py
 
-import pni.io.nx.h5 as nx
+import pni.io.nx.h5 as nexus
 
-nxfile = nx.create_file("nxfile_ex1.h5",overwrite=True)
+nxfile = nexus.create_file("nxfile_ex1.nxs",overwrite=True)
 nxfile.close()
 
