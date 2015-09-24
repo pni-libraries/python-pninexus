@@ -60,7 +60,8 @@ nexus.link("/entry/detector/transformations/tt",nxdata,"tt")
 
 #finalize the nxdata structure for easy plotting
 nxdata.attributes.create("signal","string")[...]="data"
-nxdata.attributes.create("axes","string",shape=(2,))[...] = ["om","tt"]
+nxdata.attributes.create("axes","string",shape=(2,))[...] = \
+numpy.array(["om","tt"])
 
 nxdata.attributes.create("tt_indices","uint32")[...] = 0
 nxdata.attributes.create("om_indices","uint32")[...] = 0

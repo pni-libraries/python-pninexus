@@ -84,23 +84,25 @@ boost::python::object io_read(const OType &readable)
         //for arrays we need to do some magic
         auto shape = readable.template shape<shape_t>();
         auto data = dynamic_array<string>::create(shape);
-
         readable.read(data);
-           
-        size_t itemsize = numpy::max_string_size(data);
-        
-        if(!itemsize) itemsize=1;
 
-#if PY_MAJOR_VERSION >= 3
-        //On Python 3 strings are UTF8 encoded, thus every character occupies
-        //at least 4 Byte of memory
-        object array = numpy::create_array(tid,shape,int(itemsize));
-#else 
-        //On Python 2 strings are just array so char 
-        object array = numpy::create_array(tid,shape,int(itemsize));
-#endif
-        numpy::copy_string_to_array(data,array);
-        return array;
+        list l;
+        for(auto s: data)
+            l.append(s);
+
+        std::vector<npy_intp> dims(shape.size());
+        std::copy(shape.begin(),shape.end(),dims.begin());
+    
+        PyArray_Dims d;
+        d.ptr = dims.data();
+        d.len = dims.size();
+        PyObject *orig_ptr = PyArray_ContiguousFromAny(l.ptr(),
+                                                  numpy::type_id2numpy_id.at(tid),
+                                                  1,2);
+        PyObject *ptr = PyArray_Newshape(reinterpret_cast<PyArrayObject*>(orig_ptr),&d,NPY_CORDER);
+        handle<> h(ptr);
+        Py_XDECREF(orig_ptr);
+        return object(h);
     }
     if(tid == type_id_t::BOOL)
         return IOOP::template read<bool_t>(readable);

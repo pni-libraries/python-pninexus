@@ -217,6 +217,7 @@ template<typename ATYPE> class nxattribute_wrapper
                         "Python scalar!");
         }
 
+        /*
         //---------------------------------------------------------------------
         boost::python::object __getitem__(const boost::python::object &args) const
         {
@@ -232,6 +233,7 @@ template<typename ATYPE> class nxattribute_wrapper
                 return data;
         }
 
+        :h
         //---------------------------------------------------------------------
         void __setitem__(const boost::python::object &index,
                          const boost::python::object &value)
@@ -247,6 +249,114 @@ template<typename ATYPE> class nxattribute_wrapper
             //finally we have to write the data back
             write(data);
             
+        }
+        */
+        //---------------------------------------------------------------------
+        //!
+        //! \brief the core __getitem__ implementation
+        //!
+        //! The most fundamental implementation of the __getitem__ method. 
+        //! The tuple passed to the method can contain indices, slices, and a 
+        //! single ellipsis. This method is doing the real work - all other 
+        //! __getitem__ implementations simply call this method.
+        //!
+        //! \param t tuple with 
+        //!
+        boost::python::object __getitem__tuple(const boost::python::tuple &t)
+        {
+            using namespace pni::core;
+
+            typedef std::vector<pni::core::slice> selection_type;
+
+            //first we need to create a selection
+            selection_type selection = create_selection(t,_attribute);
+
+            //once the selection is build we can start to create the 
+            //return value
+            if(_attribute(selection).size()==1)
+                //in this case we return a primitive python value
+                return io_read<scalar_reader>(_attribute(selection));
+            else
+                //a numpy array will be returned
+                return io_read<array_reader>(_attribute(selection));
+
+            //throw an exception if we cannot handle the user request
+            throw pni::io::object_error(EXCEPTION_RECORD,
+                                             "cannot handle user request");
+
+            return boost::python::object(); //make the compiler happy
+        }
+        //---------------------------------------------------------------------
+        //!
+        //! \brief __getitem__ entry method
+        //!
+        //! This method is called when a user invokes the __getitem__ method 
+        //! on a NXField object in python. The method converts the object 
+        //! that is passed as input argument to a tuple if necessary and 
+        //! than passes this to the __getitem__tuple method. 
+        //!
+        //! \param o Python object describing the selection
+        //! \return Python object with the data from the selection
+        //!
+        boost::python::object __getitem__(const boost::python::object &o)
+        {
+            using namespace boost::python;
+
+            //need to check here if o is already a tuple 
+            if(PyTuple_Check(o.ptr()))
+                return __getitem__tuple(tuple(o));
+            else
+                return __getitem__tuple(make_tuple<object>(o));
+        }
+
+        //---------------------------------------------------------------------
+        //!
+        //! \brief __setitem__ implementation
+        //!
+        //! As for __getitem__ this method is called if a user invokes the
+        //! __setitem__ method on an NXField object in Python. The method 
+        //! converts the object passed as input argument to a tuple if 
+        //! necessary and then moves on to __setitem__tuple.
+        //!
+        //! \param o selection object
+        //! \param d Python object holding the data
+        //!
+        void __setitem__(const boost::python::object &o,
+                         const boost::python::object &d)
+        {
+            using namespace boost::python;
+
+            //need to check here if o is already a tuple 
+            if(PyTuple_Check(o.ptr()))
+                __setitem__tuple(tuple(o),d);
+            else
+                __setitem__tuple(make_tuple<object>(o),d);
+        }
+        //---------------------------------------------------------------------
+        //!
+        //! \brief write data according to a selection
+        //!
+        //! Write data from a selection defined by tuple t. 
+        //!
+        //! \param t tuple with selection information
+        //! \param o object with data to write.
+        //!
+        void __setitem__tuple(const boost::python::tuple &t, 
+                              const boost::python::object &o)
+        {
+            using namespace pni::core;
+
+            typedef std::vector<pni::core::slice> selection_type;
+            selection_type selection = create_selection(t,_attribute);
+
+            if(is_scalar(o))
+                io_write<scalar_writer>(_attribute(selection),o);
+            else if(numpy::is_array(o))
+                io_write<array_writer>(_attribute(selection),o);
+            else
+                throw type_error(EXCEPTION_RECORD,
+                        "Object must be either a numpy arry or a "
+                        "python scalar!");
         }
 
         //--------------------------------------------------------------------

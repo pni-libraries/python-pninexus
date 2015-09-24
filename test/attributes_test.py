@@ -50,12 +50,18 @@ class attributes_test(object):
         #read data
         read = attr[...]
         for i in range(value.size):
-            ts.assertAlmostEqual(value.flat[i],read.flat[i])
+            if tc=="string":
+                ts.assertEqual(value.flat[i],read.flat[i])
+            else:
+                ts.assertAlmostEqual(value.flat[i],read.flat[i])
 
         #try with partial IO
         read = attr[:,0]
         for i in range(read.size):
-            ts.assertAlmostEqual(value[:,0].flat[i],read.flat[i])
+            if tc=="string":
+                ts.assertEqual(value[:,0].flat[i],read.flat[i])
+            else:
+                ts.assertAlmostEqual(value[:,0].flat[i],read.flat[i])
 
 
     def test_scalar_attribute(self,ts,parent):
@@ -125,6 +131,10 @@ class attributes_test(object):
 
         data = numpy.ones(shape,dtype="bool")
         self.array_attribute_test(ts,parent,"flag_attr","bool",shape,data)
+
+        shape = (2,3)
+        data = numpy.array([["hello","world","this"],["is","a","test"]])
+        self.array_attribute_test(ts,parent,"string_attr","string",shape,data)
         
 
 
