@@ -192,7 +192,7 @@ class nxfield_test_uint16(unittest.TestCase):
         f[0] = "yet another text"
 
         #try to write unicode
-        f.write(u"unicode text")
+        f.write("unicode text")
 
     def test_string_array(self):
         f = self.root.create_field("text","string",shape=(2,2))

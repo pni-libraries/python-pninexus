@@ -1,3 +1,4 @@
+from __future__ import print_function
 import unittest
 import numpy
 
@@ -103,7 +104,7 @@ class nxgroup_test(unittest.TestCase):
     def test_recursive_iteration(self):
 
         for g in self.root.recursive:
-            print g.path
+            print(g.path)
 
     def test_name_property(self):
         g = get_object(self.root,"/:NXentry")

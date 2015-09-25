@@ -37,9 +37,9 @@ def get_name_and_base_class_from_args(*args,**kwargs):
         if kwargs.has_key("name") and kwargs.has_key("base_class"):
             return (kwargs["name"],kwargs["base_class"])
         else:
-            raise KeyError,"Wrong keyword arguments: must be 'name' and 'base_class'!"
+            raise KeyError("Wrong keyword arguments: must be 'name' and 'base_class'!")
     else:
-        raise SyntaxError,"Wrong number of positional or keyword arguments!"
+        raise SyntaxError("Wrong number of positional or keyword arguments!")
 
 
 #=============================================================================
@@ -58,14 +58,14 @@ def _nxpath_push_front(self,*args,**kwargs):
 #=============================================================================
 def _nxpath_pop_front(self):
     if not len(self):
-        raise IndexError,"Object section of path is empty!"
+        raise IndexError("Object section of path is empty!")
 
     self._pop_front()
 
 #=============================================================================
 def _nxpath_pop_back(self):
     if not len(self): 
-        raise IndexError,"Object section of path is empty!"
+        raise IndexError("Object section of path is empty!")
 
     self._pop_back()
 
@@ -77,7 +77,7 @@ def _nxpath_add__(self,arg):
     elif isinstance(arg,str):
         return join(self,make_path(arg))
     else:
-        raise TypeError,"Argument must be a string or an nxpath!"
+        raise TypeError("Argument must be a string or an nxpath!")
 
 #=============================================================================
 def _nxpath_radd__(self,arg):
@@ -87,7 +87,7 @@ def _nxpath_radd__(self,arg):
     elif isinstance(arg,str):
         return join(make_path(arg),self)
     else:
-        raise TypeError,"Argument must be a string or an nxpath!"
+        raise TypeError("Argument must be a string or an nxpath!")
 
 nxpath.push_back = _nxpath_push_back
 nxpath.push_front = _nxpath_push_front
