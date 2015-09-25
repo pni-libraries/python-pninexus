@@ -37,15 +37,6 @@ struct link_wrapper
     typedef nxgroup_wrapper<GTYPE> group_wrapper_type;
     typedef nxfield_wrapper<FTYPE> field_wrapper_type;
 
-    static void link_path(const pni::core::string &path,
-                          const boost::python::object &g,
-                          const pni::core::string &name)
-    {
-        using namespace boost::python;
-        extract<group_wrapper_type> e(g);
-        GTYPE group = e();
-        pni::io::nx::link(path,group,name);
-    }
 
     static void link_object(const boost::python::object &obj,
                             const boost::python::object &g,
@@ -87,7 +78,6 @@ void wrap_link()
     using namespace boost::python;
     typedef link_wrapper<GTYPE,FTYPE> wrapper_type;
 
-    def("link",&wrapper_type::link_path);
     def("link",&wrapper_type::link_object);
 }
 
