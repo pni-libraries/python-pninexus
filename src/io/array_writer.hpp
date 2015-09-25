@@ -50,6 +50,7 @@ class array_writer
                                        const boost::python::object &o)
         {
             using namespace pni::core;
+            using namespace boost::python;
             type_id_t tid = numpy::type_id(o);
 
             //select the data type to use for writing the array data
@@ -87,7 +88,16 @@ class array_writer
             {
                 auto shape = numpy::get_shape<shape_t>(o);
                 auto data = dynamic_array<string>::create(shape);
-                numpy::copy_string_from_array(o,data);
+
+                PyArrayObject *array_ptr = reinterpret_cast<PyArrayObject*>(o.ptr());
+                PyObject *ptr = PyArray_Flatten(array_ptr,NPY_CORDER);
+                handle<> h(PyArray_ToList(reinterpret_cast<PyArrayObject*>(ptr)));
+                list l(h);
+                
+                size_t index=0;
+                for(auto &s: data) s = extract<string>(l[index++]);
+
+                //how to make copy more save 
                 w.write(data);
             }
             else
