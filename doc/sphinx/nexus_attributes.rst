@@ -114,4 +114,6 @@ the next example
     y= 0.0
     z= 0.0
 
-There is not too much more to day about that.
+There is not too much more to day about that. When reading and writing
+multidimensional data numpy arrays must be used in any case (also for strings).
+
