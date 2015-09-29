@@ -85,7 +85,11 @@ void wrap_nxpath()
     class_<nxpath_iterator>("nxpath_iterator")
         .def("increment",&nxpath_iterator::increment)
         .def("__iter__",&nxpath_iterator::__iter__)
+#if PY_MAJOR_VERSION >= 3
+        .def("__next__",&nxpath_iterator::next);
+#else
         .def("next",&nxpath_iterator::next);
+#endif
 
     //-------------------nxpath wrapper---------------------------------------
     void (nxpath::*set_filename)(const string &) = &nxpath::filename;

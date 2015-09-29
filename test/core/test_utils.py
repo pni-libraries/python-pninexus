@@ -6,10 +6,7 @@ import sys
 from . import config
 from . import utils_test
 
-if config.PY_MAJOR_VERSION >= 3:
-    from . import py3_test_data as test_data
-else:
-    from . import py2_test_data as test_data
+from . import test_data
 
 class test_utils(unittest.TestCase):
     def test_list_from_vector(self):

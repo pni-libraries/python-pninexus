@@ -5,11 +5,8 @@ from . import numpy_utils_test as nu_test
 import numpy
 
 from . import config
+from . import test_data
 
-if config.PY_MAJOR_VERSION >= 3:
-    from . import py3_test_data as test_data
-else:
-    from . import py2_test_data as test_data 
 
 class test_numpy_utils(unittest.TestCase):
     def test_is_array(self):

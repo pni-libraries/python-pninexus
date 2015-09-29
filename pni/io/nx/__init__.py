@@ -34,7 +34,7 @@ def get_name_and_base_class_from_args(*args,**kwargs):
     elif len(args) == 2 and not len(kwargs):
         return (args[0],args[1])
     elif not len(args) and len(kwargs) == 2:
-        if kwargs.has_key("name") and kwargs.has_key("base_class"):
+        if "name" in kwargs.keys() and "base_class" in kwargs.keys():
             return (kwargs["name"],kwargs["base_class"])
         else:
             raise KeyError("Wrong keyword arguments: must be 'name' and 'base_class'!")

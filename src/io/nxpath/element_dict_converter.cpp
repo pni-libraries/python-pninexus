@@ -88,49 +88,57 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
 
     return obj_ptr;
 }
+
+//----------------------------------------------------------------------------
+string get_string_from_pyobject(PyObject *ptr)
+{
+#if PY_MAJOR_VERSION >= 3
+    Py_ssize_t str_size = PyUnicode_GET_DATA_SIZE(ptr);
+    if(str_size)
+    {
+        PyObject *utf8_str = PyUnicode_AsUTF8String(ptr);
+        string result = PyBytes_AsString(utf8_str);
+        Py_XDECREF(utf8_str);
+        return result;
+    }
+#else
+    if(PyString_Size(ptr))
+        return string(PyString_AsString(ptr));
+#endif
+    else
+        return string();
+}
+
+//----------------------------------------------------------------------------
+PyObject *get_pyobject_from_string(const string &s)
+{
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_FromString(s.c_str());
+#else 
+    return PyString_FromString(s.c_str());
+#endif
+}
    
 //----------------------------------------------------------------------------
 void dict_to_nxpath_element_converter::construct(PyObject *obj_ptr,
                                                  rvalue_type *data)
 {
-    using namespace pni::core;
-
     //build the key objects 
-#if PY_MAJOR_VERSION >= 3
-    PyObject *name_key = PyUnicode_FromString("name");
-    PyObject *base_key = PyUnicode_FromString("base_class");
-#else
-    PyObject *name_key = PyString_FromString("name");
-    PyObject *base_key = PyString_FromString("base_class");
-#endif
+    PyObject *name_key = get_pyobject_from_string("name");
+    PyObject *base_key = get_pyobject_from_string("base_class");
 
     //retrieve the content of the dictionary 
     PyObject *name_item = PyDict_GetItem(obj_ptr,name_key);
     PyObject *base_item = PyDict_GetItem(obj_ptr,base_key);
 
-#if PY_MAJOR_VERSION >= 3
-    string name(PyUnicode_AS_DATA(name_item));
-    string base_class(PyUnicode_AS_DATA(base_item));
-#else
-    string name;
-    string base_class; 
-    
-    if(PyString_Size(name_item))
-        name = string(PyString_AsString(name_item));
-    else
-        name = string();
-
-    if(PyString_Size(base_item))
-        base_class = string(PyString_AsString(base_item));
-    else
-        base_class = string();
-#endif
+    string name = get_string_from_pyobject(name_item);
+    string base_class = get_string_from_pyobject(base_item); 
 
     void *storage = ((storage_type*)data)->storage.bytes;
     new (storage) element_type(name,base_class);
     data->convertible = storage;
 
     //remove all temporary python objects
-    Py_DECREF(name_key);
-    Py_DECREF(base_key);
+    Py_XDECREF(name_key);
+    Py_XDECREF(base_key);
 }

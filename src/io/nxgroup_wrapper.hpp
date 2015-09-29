@@ -433,7 +433,11 @@ template<typename GTYPE> void wrap_nxgroup()
     class_<rec_group_iterator_type>("nxgroup_rec_iterator")
         .def("increment",&rec_group_iterator_type::increment)
         .def("__iter__",&rec_group_iterator_type::__iter__)
+#if PY_MAJOR_VERSION >= 3
+        .def("__next__",&rec_group_iterator_type::next);
+#else
         .def("next",&rec_group_iterator_type::next);
+#endif
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
