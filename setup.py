@@ -1,4 +1,4 @@
-#setup script for python-pnicore
+#setup script for python-pni
 from __future__ import print_function
 import sys
 import os
@@ -15,7 +15,7 @@ def get_build_dir():
                                                  version = sys.version_info))
 
 #-----------------------------------------------------------------------------
-# load pnicore configuration with pkg-config
+# load pni configuration with pkg-config
 #-----------------------------------------------------------------------------
 pnicore  = package('pnicore')
 pniio    = package('pniio')
@@ -136,7 +136,7 @@ numpy_utils_test = Extension("test.core.numpy_utils_test",
 #
 # We thus call `install_headers` manually.
 #-----------------------------------------------------------------------------
-class pnicore_install(install):
+class pni_install(install):
     def run(self):
         install.run(self)
 
@@ -145,13 +145,12 @@ class pnicore_install(install):
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
 
-setup(name="pnicore",
+setup(name="pni",
       author="Eugen Wintersberger",
       author_email="eugen.wintersberger@desy.de",
-      description="Python wrapper for libpnicore",
-      long_description="This package provides some basic functionality "+
-                       "which will be used by all Python extensions of "+
-                       "PNI libraries",
+      description="Python wrapper for the PNI libraries",
+      long_description="This package provides wrappers for the PNI C++ "+
+                       "libraries libpnicore and libpniio.",
       maintainer = "Eugen Wintersberger",
       maintainer_email = "eugen.wintersberger@desy.de",
       license = "GPLv2",
@@ -163,6 +162,6 @@ setup(name="pnicore",
       url="https://github.com/pni-libraries/python-pni",
       test_suite="test",
       test_loader = "unittest:TestLoader",
-      cmdclass={"install":pnicore_install}
+      cmdclass={"install":pni_install}
     )
 
