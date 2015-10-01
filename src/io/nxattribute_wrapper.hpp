@@ -364,10 +364,23 @@ template<typename ATYPE> class nxattribute_wrapper
         {
             return pni::io::nx::get_path(_attribute);
         }
+
         //---------------------------------------------------------------------
         size_t size() const
         {
             return _attribute.size();
+        }
+        
+        //---------------------------------------------------------------------
+        pni::core::string filename() const
+        {
+            return _attribute.filename();
+        }
+
+        //---------------------------------------------------------------------'
+        auto parent() const -> decltype(_attribute.parent())
+        {
+            return _attribute.parent();
         }
 
 };
@@ -413,15 +426,16 @@ template<typename ATYPE> void wrap_nxattribute()
     typedef nxattribute_wrapper<ATYPE> wrapper_type;
 
     class_<wrapper_type>("nxattribute")
-        .add_property("shape",&wrapper_type::shape,__attribute_shape_docstr)
         .add_property("dtype",&wrapper_type::type_id,__attribute_dtype_docstr)
-        .add_property("valid",&wrapper_type::is_valid,__attribute_valid_docstr)
-        .add_property("name",&wrapper_type::name,__attribute_name_docstr)
-        .add_property("value",&wrapper_type::read,
-                              &wrapper_type::write,__attribute_value_docstr)
-        .add_property("path",&wrapper_type::path)
+        .add_property("shape",&wrapper_type::shape,__attribute_shape_docstr)
         .add_property("size",&wrapper_type::size)
+        .add_property("filename",&wrapper_type::filename)
+        .add_property("name",&wrapper_type::name,__attribute_name_docstr)
+        .add_property("parent",&wrapper_type::parent)
+        .add_property("is_valid",&wrapper_type::is_valid,__attribute_valid_docstr)
+        .add_property("path",&wrapper_type::path)
         .def("close",&wrapper_type::close,__attribute_close_docstr)
+        .def("read",&wrapper_type::read)
         .def("write",&wrapper_type::write,__attribute_write_docstr)
         .def("__getitem__",&wrapper_type::__getitem__)
         .def("__setitem__",&wrapper_type::__setitem__)

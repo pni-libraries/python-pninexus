@@ -20,12 +20,14 @@ class attributes_test(object):
 
         #test inquery properties
         ts.assertTrue(attr.dtype == tc)
-        ts.assertTrue(attr.valid)
+        ts.assertTrue(attr.is_valid)
         ts.assertTrue(attr.shape == (1,))
         ts.assertTrue(attr.name == name)
+        ts.assertTrue(attr.filename == parent.filename)
+        ts.assertTrue(attr.path == parent.path + "@" + attr.name)
             
         #test data io
-        attr.value = value
+        attr[...] = value
         read = attr[...]
         if tc=="string":
             ts.assertEqual(read,value)
@@ -39,13 +41,13 @@ class attributes_test(object):
         #test inquery properties
         print(tc,attr.dtype)
         ts.assertTrue(attr.dtype == tc)
-        ts.assertTrue(attr.valid)
+        ts.assertTrue(attr.is_valid)
         ts.assertEqual(attr.shape,shape)
         ts.assertTrue(attr.name == name)
             
         #----------------test data io ----------------------------------------
         #write data
-        attr.value = value
+        attr[...] = value
 
         #read data
         read = attr[...]
