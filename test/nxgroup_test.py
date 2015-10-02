@@ -85,6 +85,8 @@ class nxgroup_test(unittest.TestCase):
         g = self.root.create_group("dgroup")
         self.assertTrue(g.is_valid)
         self.attr_tester.test_array_attribute(self,g)
+        self.attr_tester.test_issue3_1_attributes(self,g)
+        self.attr_tester.test_issue3_2_attributes(self,g)
 
     def test_group_iteration(self):
         g = self.root.create_group("scan_1","NXentry").\

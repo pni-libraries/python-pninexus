@@ -4,6 +4,7 @@ import numpy.random as random
 import os
 
 import pni.io.nx.h5 as nx
+import pni.core
 from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import nxgroup
 from pni.io.nx.h5 import nxfield
@@ -200,4 +201,12 @@ class nxfield_test_uint16(unittest.TestCase):
         f.write(data)
 
         f.close()
+
+    def test_issue_3_regression(self):
+        data = numpy.ones((1,10),dtype="uint16")
+        f = self.root.create_field("issue_3_1","uint16",shape=(1,10))
+        f[...] = data
+
+        f = self.root.create_field("issue_3_2","uint16",shape=(10,1))
+        f[...] = data
 

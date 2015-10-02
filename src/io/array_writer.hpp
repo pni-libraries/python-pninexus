@@ -128,11 +128,15 @@ class array_writer
 
             if(!((w.size() == 1) && (numpy::get_size(o)==1)))
             {
-                auto w_shape = w.template shape<pni::core::shape_t>();
-                auto o_shape = numpy::get_shape<pni::core::shape_t>(o);
+                auto w_shape = w.template shape<shape_t>();
+                auto o_shape = numpy::get_shape<shape_t>(o);
+                shape_t o_shape_clean;
+                std::copy_if(o_shape.begin(),o_shape.end(),
+                             std::back_inserter(o_shape_clean),
+                             [](size_t i){ return i!=1;});
                 
-                if((w_shape.size()!=o_shape.size()) ||
-                   !std::equal(w_shape.begin(),w_shape.end(),o_shape.begin()))
+                if((w_shape.size()!=o_shape_clean.size()) ||
+                   !std::equal(w_shape.begin(),w_shape.end(),o_shape_clean.begin()))
                     throw shape_mismatch_error(EXCEPTION_RECORD,
                             "Shapes of field and numpy array do not match!");
             }

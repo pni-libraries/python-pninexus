@@ -39,7 +39,6 @@ class attributes_test(object):
         attr = parent.attributes.create(name,tc,shape)
 
         #test inquery properties
-        print(tc,attr.dtype)
         ts.assertTrue(attr.dtype == tc)
         ts.assertTrue(attr.is_valid)
         ts.assertEqual(attr.shape,shape)
@@ -59,11 +58,15 @@ class attributes_test(object):
 
         #try with partial IO
         read = attr[:,0]
-        for i in range(read.size):
-            if tc=="string":
-                ts.assertEqual(value[:,0].flat[i],read.flat[i])
-            else:
-                ts.assertAlmostEqual(value[:,0].flat[i],read.flat[i])
+        if isinstance(read,numpy.ndarray):
+            for i in range(read.size):
+                if tc=="string":
+                    ts.assertEqual(value[:,0].flat[i],read.flat[i])
+                else:
+                    ts.assertAlmostEqual(value[:,0].flat[i],read.flat[i])
+        else:
+            ts.assertAlmostEqual(read,value[:,].flat[0])
+
 
 
     def test_scalar_attribute(self,ts,parent):
@@ -137,6 +140,16 @@ class attributes_test(object):
         shape = (2,3)
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         self.array_attribute_test(ts,parent,"string_attr","string",shape,data)
+
+    def test_issue3_1_attributes(self,ts,parent):
+        shape = (1,20)
+        data = numpy.ones(shape,dtype="uint8")
+        self.array_attribute_test(ts,parent,"uint8_attr_issue3_1","uint8",shape,data)
+    
+    def test_issue3_2_attributes(self,ts,parent):
+        shape = (20,1)
+        data = numpy.ones(shape,dtype="uint8")
+        self.array_attribute_test(ts,parent,"uint8_attr_issue3_2","uint8",shape,data)
         
 
 
