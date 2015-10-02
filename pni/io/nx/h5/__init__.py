@@ -116,4 +116,10 @@ def open_file(fname,readonly=True):
     """
     return __open_file(fname,readonly)
 
+def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
+
+    return self.__create_field(name,type,shape,chunk,filter)
+
+nxgroup.create_field = nxgroup_create_field
+
 

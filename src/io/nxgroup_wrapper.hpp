@@ -448,7 +448,7 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("__getitem__",&wrapper_type::open_by_name)
         .def("create_group",&wrapper_type::create_group,
                 ("n",arg("nxclass")=string()),__group_create_group_docstr)
-        .def("create_field",&wrapper_type::create_field,
+        .def("__create_field",&wrapper_type::create_field,
                 ("name","type",arg("shape")=object(),arg("chunk")=object(),
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&wrapper_type::exists,__group_exists_docstr)
