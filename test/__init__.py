@@ -1,7 +1,6 @@
-from .core import *
-from .algorithms import *
-
-from .nxfile_test import nxfile_test
+from .core         import *
+from .algorithms   import *
+from .nxfile_tests import *
 
 from .issue_48_test import Issue_48_Test
 from .issue_53_test import Issue_53_Test
