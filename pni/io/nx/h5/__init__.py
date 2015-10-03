@@ -123,10 +123,24 @@ def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
 def nxgroup_create_group(self,*args,**kwargs):
     if len(args) == 2:
         return self._create_group(args[0],args[1])
-    else if len(args)==1:
-        (name,nxclass) = args[0].split(":")
+    elif len(args)==1:
 
-        return self._create_group(name,nxclass)
+        nxclass = None
+        name    = None
+
+        if "nxclass" in kwargs.keys():
+            nxclass = kwargs["nxclass"]
+
+        if ':' in args[0]:
+            (name,nxclass) = args[0].split(":")
+        else:
+            name = args[0]
+           
+        if nxclass:
+            return self._create_group(name,nxclass)
+        else:
+            return self._create_group(name)
+
     else:
         raise ValueError
 
