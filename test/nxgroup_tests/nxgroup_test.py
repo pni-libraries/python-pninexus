@@ -12,8 +12,6 @@ from pni.io.nx.h5 import get_path
 from pni.io.nx.h5 import get_object
 from pni.core import ShapeMismatchError
 
-from .attributes_test import attributes_test
-
 file_struct = \
 """
 <group name="entry" type="NXentry">
@@ -45,7 +43,6 @@ def write_attribute(a,v):
 
 #implementing test fixture
 class nxgroup_test(unittest.TestCase):
-    attr_tester = attributes_test()
 
     def setUp(self):
         self.gf = create_file("test/nxgroup_test.nxs",overwrite=True)
@@ -75,18 +72,6 @@ class nxgroup_test(unittest.TestCase):
     def test_open(self):
         #try to open a group that does not exist
         self.assertRaises(KeyError,self.root.__getitem__,"data")
-
-    def test_simple_attributes(self):
-        g = self.root.create_group("dgroup")
-        self.assertTrue(g.is_valid)
-        self.attr_tester.test_scalar_attribute(self,g)
-
-    def test_array_attributes(self):
-        g = self.root.create_group("dgroup")
-        self.assertTrue(g.is_valid)
-        self.attr_tester.test_array_attribute(self,g)
-        self.attr_tester.test_issue3_1_attributes(self,g)
-        self.attr_tester.test_issue3_2_attributes(self,g)
 
     def test_group_iteration(self):
         g = self.root.create_group("scan_1","NXentry").\

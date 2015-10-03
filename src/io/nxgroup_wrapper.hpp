@@ -446,7 +446,7 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("open",&wrapper_type::open_by_name,__group_open_docstr)
         .def("__getitem__",&wrapper_type::open_by_index)
         .def("__getitem__",&wrapper_type::open_by_name)
-        .def("create_group",&wrapper_type::create_group,
+        .def("_create_group",&wrapper_type::create_group,
                 ("n",arg("nxclass")=string()),__group_create_group_docstr)
         .def("__create_field",&wrapper_type::create_field,
                 ("name","type",arg("shape")=object(),arg("chunk")=object(),

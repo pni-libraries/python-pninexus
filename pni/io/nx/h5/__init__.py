@@ -120,6 +120,19 @@ def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
 
     return self.__create_field(name,type,shape,chunk,filter)
 
+def nxgroup_create_group(self,*args,**kwargs):
+    if len(args) == 2:
+        return self._create_group(args[0],args[1])
+    else if len(args)==1:
+        (name,nxclass) = args[0].split(":")
+
+        return self._create_group(name,nxclass)
+    else:
+        raise ValueError
+
+
+
 nxgroup.create_field = nxgroup_create_field
+nxgroup.create_group = nxgroup_create_group
 
 
