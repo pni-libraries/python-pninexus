@@ -73,6 +73,7 @@ more information about a particular instance
 =====================  ====================================================
 Attribute name         Description 
 =====================  ====================================================
+:py:attr:`is_valid`    :py:const:`True` if the group is a valid object
 :py:attr:`name`        returns the name of the group 
 :py:attr:`parent`      returns the groups parent group 
 :py:attr:`size`        the number of children a group has 

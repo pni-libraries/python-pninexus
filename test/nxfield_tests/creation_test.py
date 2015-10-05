@@ -3,28 +3,34 @@ import numpy
 import os
 
 import pni.io.nx.h5 as nx
-from pni.io.nx.h5 import nxfile
-from pni.io.nx.h5 import nxgroup
 from pni.io.nx.h5 import nxfield
 from pni.io.nx.h5 import deflate_filter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 
 #implementing test fixture
-class nxfield_creation_test_uint8(unittest.TestCase):
+class creation_test_uint8(unittest.TestCase):
+    """
+    This test creates a single file as the only artifact. The result for 
+    every individual test is written to the same file. This makes 
+    investigation in case of errors easier.
+    """
     _typecode="uint8"
+    file_path = os.path.split(__file__)[0]
+    file_name = "creation_test_{tc}.nxs".format(tc=_typecode)
+    full_path = os.path.join(file_path,file_name)
 
-    def __init__(self,*args,**kwargs):
-        unittest.TestCase.__init__(self,*args,**kwargs)
-
-        self.filename = "nxfield_creation_test_{tc}.nxs".format(tc=self._typecode)
-        self.filename = os.path.join("test",self.filename)
-        self.gf = create_file(self.filename,overwrite=True)
+    @classmethod
+    def setUpClass(self):
+        """
+        Setup the file where all the tests are performed. 
+        """
+        self.gf = create_file(self.full_path,overwrite=True)
         self.gf.close()
 
     
     def setUp(self):
-        self.gf = open_file(self.filename,readonly=False)
+        self.gf = open_file(self.full_path,readonly=False)
         self.root = self.gf.root()
 
     def tearDown(self):
@@ -104,47 +110,47 @@ class nxfield_creation_test_uint8(unittest.TestCase):
         self.assertTrue(f.shape == (7,10))
         self.assertTrue(f.size  == 70)
 
-class nxfield_creation_test_uint16(nxfield_creation_test_uint8):
+class creation_test_uint16(creation_test_uint8):
     _typecode = "uint16"
 
-class nxfield_creation_test_uint32(nxfield_creation_test_uint8):
+class creation_test_uint32(creation_test_uint8):
     _typecode = "uint32"
 
-class nxfield_creation_test_uint64(nxfield_creation_test_uint8):
+class creation_test_uint64(creation_test_uint8):
     _typecode = "uint64"
 
-class nxfield_creation_test_int8(nxfield_creation_test_uint8):
+class creation_test_int8(creation_test_uint8):
     _typecode = "int8"
 
-class nxfield_creation_test_int16(nxfield_creation_test_uint8):
+class creation_test_int16(creation_test_uint8):
     _typecode = "int16"
 
-class nxfield_creation_test_int32(nxfield_creation_test_uint8):
+class creation_test_int32(creation_test_uint8):
     _typecode = "int32"
 
-class nxfield_creation_test_int64(nxfield_creation_test_uint8):
+class creation_test_int64(creation_test_uint8):
     _typecode = "int64"
 
-class nxfield_creation_test_float32(nxfield_creation_test_uint8):
+class creation_test_float32(creation_test_uint8):
     _typecode = "float32"
 
-class nxfield_creation_test_float64(nxfield_creation_test_uint8):
+class creation_test_float64(creation_test_uint8):
     _typecode = "float64"
 
-class nxfield_creation_test_float128(nxfield_creation_test_uint8):
+class creation_test_float128(creation_test_uint8):
     _typecode = "float128"
 
-class nxfield_creation_test_complex32(nxfield_creation_test_uint8):
+class creation_test_complex32(creation_test_uint8):
     _typecode = "complex32"
 
-class nxfield_creation_test_complex64(nxfield_creation_test_uint8):
+class creation_test_complex64(creation_test_uint8):
     _typecode = "complex64"
 
-class nxfield_creation_test_complex128(nxfield_creation_test_uint8):
+class creation_test_complex128(creation_test_uint8):
     _typecode = "complex128"
 
-class nxfield_creation_test_bool(nxfield_creation_test_uint8):
+class creation_test_bool(creation_test_uint8):
     _typecode = "bool"
 
-class nxfield_creation_test_string(nxfield_creation_test_uint8):
+class creation_test_string(creation_test_uint8):
     _typecode = "string"
