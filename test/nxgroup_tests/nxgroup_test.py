@@ -77,27 +77,6 @@ class nxgroup_test(unittest.TestCase):
         for g in self.root.recursive:
             print(g.path)
 
-    def test_name_property(self):
-        g = get_object(self.root,"/:NXentry")
-        self.assertEqual(g.name,"entry")
-
-    def test_parent_property(self):
-        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
-        self.assertEqual(g.parent.name,"instrument")
-        self.assertEqual(g.parent.parent.parent.name,"/")
-
-    def test_filename_property(self):
-        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
-        self.assertEqual(g.filename,"test/nxgroup_test.nxs")
-
-    def test_size_property(self):
-        self.assertEqual(self.root.size,1)
-        self.assertEqual(get_object(self.root,"/:NXentry").size,3)
-        self.assertEqual(get_object(self.root,"/:NXentry/:NXdata").size,0)
-
-    def test_path_property(self):
-        g = get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector")
-        self.assertEqual(g.path,"/entry:NXentry/instrument:NXinstrument/detector:NXdetector")
         
 
 
