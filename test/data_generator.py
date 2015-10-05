@@ -32,7 +32,7 @@ for all data types supported by pniio.
 import numpy as np
 import numpy.random as random
 from functools import reduce
-from .core import config
+import sys
 
 
 
@@ -79,7 +79,7 @@ _type_desc = {"uint8":type_desc(np.dtype("uint8"),np.uint8),
               "bool":   type_desc(np.dtype("bool"),np.bool_)}
 
 
-if config.PY_MAJOR_VERSION>=3:
+if sys.version_info[0]>=3:
     _typecodes += "unicode"
     _type_desc["string"] = type_desc(np.dtype("unicode"),np.unicode_)
 else:
@@ -156,7 +156,9 @@ def int_generator_func(min_val=0,max_val=100):
     Return:
         int: random number 
     """
-    return random.randint(min_val,max_val)
+
+    while True:
+        yield random.randint(min_val,max_val)
 
 #-----------------------------------------------------------------------------
 def float_generator_func(min_val=0,max_val=100):
@@ -173,7 +175,9 @@ def float_generator_func(min_val=0,max_val=100):
 
     """
     delta = max_val-min_val
-    return min_val-delta*random.ranf()
+
+    while True:
+        yield min_val-delta*random.ranf()
 
 #-----------------------------------------------------------------------------
 def complex_generator_func(min_val=0,max_val=100):
@@ -189,8 +193,10 @@ def complex_generator_func(min_val=0,max_val=100):
     Return:
         complex: a complex random number
     """
-    return complex(float_generator_func(min_val,max_val),
-                   float_generator_func(min_val,max_val))
+
+    while True:
+        yield complex(float_generator_func(min_val,max_val),
+                      float_generator_func(min_val,max_val))
 
 
 #-----------------------------------------------------------------------------
@@ -203,7 +209,9 @@ def bool_generator_func():
     Return:
         bool: random value
     """
-    return int_generator_func(0,2)
+
+    while True:
+        yield int_generator_func(0,2)
 
 #-----------------------------------------------------------------------------
 def string_generator_func(min_val=0,max_val=100):
@@ -225,11 +233,12 @@ def string_generator_func(min_val=0,max_val=100):
     """
     #generate the random length of the string
     size = int_generator_func(min_val,max_val)
-    
-    return ''.join(map(chr,[ int_generator_func(33,126) for i in range(size)]))
+   
+    while True:
+        yield ''.join(map(chr,[ int_generator_func(33,126) for i in range(size)]))
 
 #-----------------------------------------------------------------------------
-def create(typecode,min_val=0,max_val=100):
+def random_generator_factory(typecode):
     """Create a data generator  
 
     This function returns a data generator function for the type determined by 
@@ -249,18 +258,16 @@ def create(typecode,min_val=0,max_val=100):
     tdesc = _type_desc[typecode]
 
     if tdesc.dtype.kind in ('i','u'):
-        g = generator(int_generator_func,min_val,max_val)
+        return int_generator_func
     elif tdesc.dtype.kind == 'f':
-        g = generator(float_generator_func,min_val,max_val)
+        return float_generator_func
     elif tdesc.dtype.kind == 'c':
-        g = generator(complex_generator_func,min_val,max_val)
+        return complex_generator_func
     elif tdesc.dtype.kind == 'b':
-        g = generator(bool_generator_func)
+        return bool_generator_func
     elif tdesc.dtype.kind == 'S' or tdesc.dtype.kind == 'U':
-        g = generator(string_generator_func,min_val,max_val)
+        return string_generator_func
     else:
         TypeError,'unsupported type code'
 
-    
-    return data_generator(tdesc,g)
 
