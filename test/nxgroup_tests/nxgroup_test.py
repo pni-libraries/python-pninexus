@@ -53,22 +53,6 @@ class nxgroup_test(unittest.TestCase):
         self.root.close()
         self.gf.close()
 
-    def test_group_creation(self):
-        g = self.root.create_group("metadata")
-        self.assertTrue(g.is_valid)
-        self.assertEqual(get_class(g),"")
-        self.assertEqual(g.name,"metadata")
-
-
-        g = self.root.create_group("scan_1",nxclass="NXentry")
-        self.assertEqual(get_class(g),"NXentry")
-        self.assertEqual(g.name,"scan_1")
-
-        g = self.root.create_group("scan_2","NXentry")
-        self.assertTrue(g.is_valid)
-        self.assertEqual(g.name,"scan_2")
-        self.assertEqual(get_class(g),"NXentry")
-
     def test_open(self):
         #try to open a group that does not exist
         self.assertRaises(KeyError,self.root.__getitem__,"data")

@@ -7,19 +7,30 @@ well as fields.
 Creation
 --------
 
+To create a new group use the :py:meht
 There are several ways how to create groups and fields. The most natural one is
 to use the :py:meth:`create_group` method of a group instance.  The former one is
 rather easy to use
 
 .. code-block:: python
+    
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
 
-    g = root_group.create_group("entry_1")
-    e = root_group.create_group("entry_2","NXentry")
+    f = nexus.create_file("groups_test.nxs",overwrite=True)
+    root_group = f.root()
+
+    e1 = root_group.create_group("entry_1")
+    e2 = root_group.create_group("entry_2","NXentry")
+    e3 = root_group.create_group("entry_3:NXentry")
+    e4 = root_group.create_group("entry_4",nxclass="NXentry")
 
 The first call creates a group of name ``entry_1`` while the second 
 one create a group of name ``entry_2`` of type ``NXentry``. 
 The type of a group is determined by an attribute name ``NX_class``
 attached to the group (we will learn more about attributes latter).
+The calls three and four are synonymous to the second call, just the group type
+is represented in a different way.
 
 The :py:meth:`create_group` method can only create groups which are direct
 children of the their parent group. So using 
@@ -29,18 +40,18 @@ children of the their parent group. So using
     g = root_group.create_group("entry/instrument/detector")
 
 will fail if `entry` and/or `instrument` do not exist. It may sounds strange
-that one cannot create intermediate groups automatically a feature the HDF5
+that one cannot create intermediate groups automatically, a feature the HDF5
 library and the :py:mod:`h5py` wrapper support. However, we cannot use this
-feature as it creates groups only by name and does not add type support which 
-we would have to use in case of
+feature as it creates groups only by name and does not add type information.
+However, if the intermediate groups exist the above call will succeed 
 
+.. code-block:: python
 
+    root_group.create_group("entry:NXentry").\
+               create_group("instrument:NXinstrument")
 
-where the first argument is the parent group, the second the group to create as
-a Nexus path. If the keyword argument ``intermediates`` is set to ``True`` all
-the intermediate groups will be created if they do not exist.  By default the
-``intermediates`` argument is set to ``False`` so that the ``create_group``
-function behaves like its class member counterpart.
+    root_group.create_group("detector","NXdetector")
+
 
 Inquery
 -------
@@ -69,6 +80,24 @@ Attribute name         Description
 :py:attr:`attributes`  property providing access to the groups' attributes
 :py:attr:`path`        provides the path for the group
 =====================  ====================================================
+
+Accessing a groups children
+---------------------------
+
+The direct children of a group can be accessed by its `[]` operator where 
+the key can be either the index of the child 
+
+.. code-block:: python
+
+    for index in range(len(root_group)):
+        print(root_group[index].name)
+
+or the name of the child
+
+.. code-block:: python
+
+    for name in root_group.names():
+        print(root_group[name].name)
 
 Iteration
 ---------

@@ -116,6 +116,7 @@ def open_file(fname,readonly=True):
     """
     return __open_file(fname,readonly)
 
+
 def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
 
     return self.__create_field(name,type,shape,chunk,filter)
@@ -144,9 +145,14 @@ def nxgroup_create_group(self,*args,**kwargs):
     else:
         raise ValueError
 
+def nxgroup_names(self):
+    
+    return [x.name for x in self]
+        
 
 
 nxgroup.create_field = nxgroup_create_field
 nxgroup.create_group = nxgroup_create_group
+nxgroup.names = nxgroup_names
 
 

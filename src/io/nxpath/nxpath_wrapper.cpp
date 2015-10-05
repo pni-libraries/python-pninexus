@@ -125,5 +125,8 @@ void wrap_nxpath()
     def("has_name",&has_name);
     def("has_class",&has_class);
 
+    nxpath (*nxpath_make_relative_str_str)(const string &,const string &) = 
+        &make_relative;
+    def("make_relative_",nxpath_make_relative_str_str);
 }
 

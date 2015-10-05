@@ -9,6 +9,7 @@ from ._nx import is_empty
 from ._nx import has_name
 from ._nx import has_class
 from ._nx import join
+from ._nx import make_relative_
 
 #=============================================================================
 def get_name_and_base_class(*args):
@@ -96,3 +97,7 @@ nxpath.pop_back  = _nxpath_pop_back
 nxpath.__add__ = _nxpath_add__
 nxpath.__iadd__ = _nxpath_add__
 nxpath.__radd__ = _nxpath_radd__
+
+def make_relative(parent,old):
+
+    return make_relative_(parent,old).__str__()

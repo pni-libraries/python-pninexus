@@ -12,6 +12,7 @@ from pni.io.nx.h5 import get_class
 from pni.io.nx.h5 import get_path
 from pni.io.nx.h5 import get_object
 from pni.core import ShapeMismatchError
+from pni.io import ObjectError
 
 class creation_test(unittest.TestCase):
     file_path = os.path.split(__file__)[0]
@@ -59,4 +60,16 @@ class creation_test(unittest.TestCase):
 
         self.assertEqual(g.attributes["NX_class"][...],"NXentry")
 
+    def test_fails_non_existing_intermediates(self):
+        self.assertRaises(ObjectError,
+                          self.root.create_group,"/entry/instrument/detector")
+
+    def test_success_with_existing_intermediates(self):
+        self.root.create_group("entry:NXentry").\
+                  create_group("instrument:NXinstrument")
+
+        d = self.root.create_group("/entry/instrument/detector","NXdetector")
+        self.assertTrue(d.is_valid)
+        p = "/entry:NXentry/instrument:NXinstrument/detector:NXdetector"
+        self.assertEqual(d.path,p)
 

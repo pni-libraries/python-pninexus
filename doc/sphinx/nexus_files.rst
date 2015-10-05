@@ -35,10 +35,27 @@ which by default opens an existing file in read-only mode. Use
 
     f = nexus.open_file("test.nxs",readonly=False)
 
-to open the file for reading and writing.  The file object returned by
-:py:func:`create_file` and :py:func:`open_file` provides only very limited
-functionality.  In order to do some useful work you have to obtain the root
-node of the Nexus tree (in HDF5 this is the root group of the file) with
+to open the file for reading and writing. In order to check the status of a
+file object one can query its :py:attr:`is_valid` property. If an instance of 
+:py:class:`nxfile` represents a valid file object the value of
+:py:attr:`is_valid` is :py:const:`True`. This should be the case in most 
+situations. A case where :py:attr:`is_valid` is not :py:const:`True` would be 
+a default constructed file object 
+
+.. code-block:: python 
+
+    f = nexus.nxfile()
+
+    print(f.is_valid)
+    #output: False 
+
+The mode a file is opened in (read-only or read-write) can be determined from 
+the :py:attr:`readonly` property. It is :py:const:`True` if the file is in 
+read-only mode and :py:const:`False` otherwise. 
+The file object returned by :py:func:`create_file` and :py:func:`open_file`
+provides only very limited functionality.  In order to do some useful work you
+have to obtain the root node of the Nexus tree (in HDF5 this is the root group
+of the file) with
 
 .. code-block:: python
 
@@ -90,3 +107,27 @@ string as a filename to the :py:func:`open_file` function
 
 No additional action has to be taken by the user. The splitted file behaves the
 same as the single flie created by :py:func:`create_file`.
+
+Finally, a file instance has an method :py:meth:`flush` which forces the
+underlying HDF5 library to write all data currently scheduled for writing. 
+This can be a first step towards save NeXus code avoiding corrupted files. 
+A typical design pattern showing the usage of :py:meth:`flush` would be 
+
+.. code-block:: python
+
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
+
+    f = nexus.create_file("data.nxs",overwrite=True)
+    r = f.root() 
+
+    while recording_data():
+        #
+        # gather data and write it to their target fields  
+        #
+
+        f.flush()  #ensure that after every cycle the data is writen to disk
+
+
+This approach does not make your program totaly robust against corrupted files, 
+however, it is a first measure in this direction.
