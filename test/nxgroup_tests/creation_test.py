@@ -27,6 +27,11 @@ class creation_test(unittest.TestCase):
         self.root.close()
         self.nexus_file.close()
 
+    def test_default_construction(self):
+        g = nxgroup()
+        self.assertTrue(isinstance(g,nxgroup))
+        self.assertFalse(g.is_valid)
+
     def test_only_group(self):
         g = self.root.create_group("simple")
         self.assertTrue(g.is_valid)

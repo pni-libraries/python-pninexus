@@ -453,7 +453,7 @@ template<typename GTYPE> void wrap_nxgroup()
                  arg("filter")=object()),__group_create_field_docstr)
         .def("exists",&wrapper_type::exists,__group_exists_docstr)
         .def("close",&wrapper_type::close)
-        .def("is_valid",&wrapper_type::is_valid)
+        .add_property("is_valid",&wrapper_type::is_valid)
         .def("__len__",&wrapper_type::__len__)
 
         .def("link",&wrapper_type::link,__group_link_docstr)
