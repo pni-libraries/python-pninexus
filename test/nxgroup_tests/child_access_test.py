@@ -54,6 +54,14 @@ class child_access_test(unittest.TestCase):
             child = e[name]
             self.assertEqual(make_relative(e.path,child.path),nref)
 
+    def test_index_error(self):
+        e = get_object(self.root,"/:NXentry")
+        self.assertRaises(IndexError,e.__getitem__,len(e)+1)
+
+    def test_key_error(self):
+        e = get_object(self.root,"/:NXentry")
+        self.assertRaises(KeyError,e.__getitem__,"bla")
+
 
 
 
