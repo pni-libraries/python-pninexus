@@ -9,7 +9,7 @@ from pni.io.nx import make_relative
 
 class recursive_iterator_test(unittest.TestCase):
     file_path = os.path.split(__file__)[0]
-    file_name = "simple_iterator_test.nxs"
+    file_name = "recursive_iterator_test.nxs"
     full_path = os.path.join(file_path,file_name)
 
     def setUp(self):
