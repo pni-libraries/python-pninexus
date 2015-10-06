@@ -144,8 +144,11 @@ def complex_generator_func(min_val=0,max_val=100,shape=None):
     """
 
     while True:
-        yield float_generator_func(min_val,max_val,shape).next()+\
-                1j*float_generator_func(min_val,max_val,shape).next()
+        result = []
+        for (i,value) in zip(range(2),float_generator_func(min_val,max_val,shape)):
+            result.append(value)
+
+        yield result[0]+1j*result[1]
 
 
 #-----------------------------------------------------------------------------
@@ -160,7 +163,10 @@ def bool_generator_func(min_val=0,max_val=100,shape=None):
     """
 
     while True:
-        d = int_generator_func(0,2,shape).next()
+        d = None
+        for (i,data) in zip(range(1),int_generator_func(0,2,shape)):
+            d = data
+
         if isinstance(d,np.ndarray):
             yield d.astype("bool")
         else:

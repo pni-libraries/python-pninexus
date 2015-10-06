@@ -9,6 +9,7 @@ from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 
 from .. data_generator import random_generator_factory
+from .. data_generator import _type_desc
 
 #implementing test fixture
 class grow_test_uint8(unittest.TestCase):
@@ -27,14 +28,18 @@ class grow_test_uint8(unittest.TestCase):
     file_name = "grow_test_{tc}.nxs".format(tc=_typecode)
     full_path = os.path.join(file_path,file_name)
     npts = 100
-    frame_shape_2d=(1024,)
-    frame_shape_3d=(1024,512)
+    nx = 10
+    ny = 20
+    frame_shape_2d=(nx,)
+    frame_shape_3d=(nx,ny)
 
     @classmethod
     def setUpClass(self):
         """
         Setup the file where all the tests are performed. 
         """
+        self.file_name = "grow_test_{tc}.nxs".format(tc=self._typecode)
+        self.full_path = os.path.join(self.file_path,self.file_name)
         self.gf = create_file(self.full_path,overwrite=True)
         self.gf.close()
 
@@ -42,7 +47,7 @@ class grow_test_uint8(unittest.TestCase):
     def setUp(self):
         self.gf = open_file(self.full_path,readonly=False)
         self.root = self.gf.root()
-        self.randgen = random_generator_factory(self._typecode)
+        self.generator = random_generator_factory(self._typecode)
 
     #-------------------------------------------------------------------------
     def tearDown(self):
@@ -52,34 +57,71 @@ class grow_test_uint8(unittest.TestCase):
     #-------------------------------------------------------------------------
     def test_grow_1D_field(self):
         f = self.root.create_field("data_1d",self._typecode,
-                              shape=(0,),chunk=(1024,))
+                              shape=(0,),chunk=(self.nx,))
         
-        ref = []
-        for (pts_index,data) in zip(range(self.npts),self.randgen(1,100)):
+        dlist = []
+        for (pts_index,data) in zip(range(self.npts),self.generator()):
             f.grow(0,1)
             f[-1] = data
-            ref.append(data)
+            dlist.append(data)
+            self.gf.flush()
 
-        #nee to add here a comparison
+        self.assertEqual(f.size,self.npts)
+        self.assertEqual(f.shape[0],self.npts)
+        
+        recorded = f.read()
+        dlist = numpy.array(dlist).astype(recorded.dtype)
+        for (rec,ref) in zip(recorded.flat,dlist.flat):
+            if _type_desc[f.dtype].dtype.kind in ('f','c'):
+                self.assertAlmostEqual(rec,ref)
+            else:
+                self.assertEqual(rec,ref)
 
     #-------------------------------------------------------------------------
     def test_grow_2D_field(self):
         f = self.root.create_field("data_2d",self._typecode,
-                              shape=(0,1024),chunk=(1,1024))
+                              shape=(0,self.nx),chunk=(1,self.nx))
 
-        for pts_index in range(self.npts):
-            pass
+        dlist = []
+        for (pts_index,data) in zip(range(self.npts),self.generator(shape=(self.nx,))):
+            f.grow(0,1)
+            f[-1,...] = data
+            dlist.append(data)
+            self.gf.flush()
+
+        self.assertEqual(self.npts*self.nx,f.size)
+        self.assertEqual(f.shape[0],self.npts)
+        self.assertEqual(f.shape[1],self.nx)
+
+        recorded = f.read()
+        dlist = numpy.array(dlist).astype(recorded.dtype)
+        for (rec,ref) in zip(recorded.flat,dlist.flat):
+            self.assertEqual(rec,ref)
 
     #-------------------------------------------------------------------------
     def test_grow_3D_field(self):
 
         f = self.root.create_field("data_3d",self._typecode,
-                                   shape=(0,1024,512),
-                                   chunk=(1,1024,512))
+                                   shape=(0,self.nx,self.ny),
+                                   chunk=(1,self.nx,self.ny))
 
-        for pts_index in range(self.npts):
-            pass
+        dlist = []
+        s = (self.nx,self.ny)
+        for (pts_index,data) in zip(range(self.npts),self.generator(shape=s)):
+            f.grow(0,1)
+            f[-1,...] = data
+            dlist.append(data)
+            self.gf.flush()
 
+        self.assertEqual(self.npts*self.nx*self.ny,f.size)
+        self.assertEqual(f.shape[0],self.npts)
+        self.assertEqual(f.shape[1],self.nx)
+        self.assertEqual(f.shape[2],self.ny)
+
+        recorded = f.read()
+        dlist = numpy.array(dlist).astype(recorded.dtype)
+        for (rec,ref) in zip(recorded.flat,dlist.flat):
+            self.assertEqual(rec,ref)
 
 
 #=============================================================================
