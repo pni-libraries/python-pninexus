@@ -168,7 +168,7 @@ def bool_generator_func(min_val=0,max_val=100,shape=None):
 
 #-----------------------------------------------------------------------------
 
-def string_generator_func(min_val=0,max_val=100,shape=None):
+def string_generator_func(min_val=0,max_val=10,shape=None):
     """Generate a random string
 
     Generate a random string. The meaning of the arguments min_val and 
@@ -188,11 +188,30 @@ def string_generator_func(min_val=0,max_val=100,shape=None):
     #generate the random length of the string
     length_generator = int_generator_func(min_val,max_val)
     char_index_generator = int_generator_func(0,len(_character_list))
+
+    if shape:
+        nstr = np.array(shape).prod()
+    else:
+        nstr = 1
    
     while True:
-        strlen = length_generator.next()
 
-        yield ''.join(map(chr,[ int_generator_func(33,126) for i in range(size)]))
+        str_list = []
+        #generate the initial list of strings requested by the user
+        for (str_index,strlen) in zip(range(nstr),length_generator):
+            
+            o = ''
+            for (char_index,char_key) in zip(range(strlen),char_index_generator):
+                o += _character_list[char_key]
+
+            str_list.append(o)
+   
+        #if the list has only one element we return this element otherwise 
+        #the list is converted to a numpy array of appropriate shape
+        if len(str_list) > 1:
+            yield np.array(str_list).reshape(shape)
+        else:
+            yield str_list[0]
 
 #-----------------------------------------------------------------------------
 def random_generator_factory(typecode):
