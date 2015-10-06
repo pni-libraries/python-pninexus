@@ -51,27 +51,31 @@ class grow_test_uint8(unittest.TestCase):
 
     #-------------------------------------------------------------------------
     def test_grow_1D_field(self):
-        f = self.create_field("data_1d",self._typecode,
+        f = self.root.create_field("data_1d",self._typecode,
                               shape=(0,),chunk=(1024,))
-
-        for (pts_index,data) in zip(range(self.ntps),self.randgen(1,100)):
-            print(pts_index,data)
         
+        ref = []
+        for (pts_index,data) in zip(range(self.npts),self.randgen(1,100)):
+            f.grow(0,1)
+            f[-1] = data
+            ref.append(data)
+
+        #nee to add here a comparison
 
     #-------------------------------------------------------------------------
     def test_grow_2D_field(self):
-        f = self.create_field("data_2d",self._typecode,
+        f = self.root.create_field("data_2d",self._typecode,
                               shape=(0,1024),chunk=(1,1024))
 
-        for pts_index in range(self.ntps):
+        for pts_index in range(self.npts):
             pass
 
     #-------------------------------------------------------------------------
     def test_grow_3D_field(self):
 
-        f = self.create_field("data_3d",self._typecode,
-                              shape=(0,1024,512),
-                              chunk=(1,1024,512))
+        f = self.root.create_field("data_3d",self._typecode,
+                                   shape=(0,1024,512),
+                                   chunk=(1,1024,512))
 
         for pts_index in range(self.npts):
             pass

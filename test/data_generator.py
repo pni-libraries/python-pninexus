@@ -41,6 +41,11 @@ _typecodes=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
             "float32","float64","float128","complex32","complex64","complex128",
             "bool"]
 
+_character_list = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n',
+                   'o','p','q','r','s','t','u','v','w','x','y','z',
+                   'A','B','C','D','E','F','G','H','I','J','K','L','M','N',
+                   'O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
 
 class type_desc(object):
     """Container for type information
@@ -87,64 +92,8 @@ else:
     _type_desc["string"] = type_desc(np.dtype("string"),np.str_)
 
 
-
-
 #-----------------------------------------------------------------------------
-class data_generator(object):
-    def __init__(self,tdesc,func):
-        self._desc = tdesc
-        self._func = func
-
-    def __call__(self,shape=()):
-
-        #just allocate the data array
-        if shape:
-            size = reduce(lambda x,y: x*y, shape)
-            l = [self._func() for i in range(size)]
-            data = np.array(l,dtype=self._desc.dtype).reshape(shape)
-
-        else: 
-            data = self._desc.scalar(self._func())
-        
-        return data
-
-
-#-----------------------------------------------------------------------------
-class generator(object):
-    """Generator function
-
-    This class acts as a generator function. Everytime an instance of 
-    this class is called a new random value will be generated. 
-    It wraps the functions below to a single interface. 
-
-    """
-    def __init__(self,f,*args,**kargs):
-        """Construct a generator function
-
-        The constructor takes the function object and all its positional 
-        and keyword arguments. 
-
-        Args:
-            f: the function to wrap
-            args: all positional arguments for this function
-            kargs: all keyword arguments for this function
-        """
-        self._func = f
-        self._args = args
-        self._kargs = kargs
-
-    def __call__(self):
-        """Execute the wrapped function
-    
-        Execute the wrapped function with all its arguments passed 
-        during construction of this instance.
-        """
-        return self._func(*self._args,**self._kargs)
-    
-
-
-#-----------------------------------------------------------------------------
-def int_generator_func(min_val=0,max_val=100):
+def int_generator_func(min_val=0,max_val=100,shape=None):
     """Generate random integer numbers
     
     Generate a random integer number in the range of min_val to max_val. 
@@ -158,10 +107,10 @@ def int_generator_func(min_val=0,max_val=100):
     """
 
     while True:
-        yield random.randint(min_val,max_val)
+        yield random.randint(min_val,max_val,shape)
 
 #-----------------------------------------------------------------------------
-def float_generator_func(min_val=0,max_val=100):
+def float_generator_func(min_val=0,max_val=100,shape=None):
     """Generate random float numbers
 
     Generate a random float number in the range of min_val and max_val.
@@ -177,10 +126,10 @@ def float_generator_func(min_val=0,max_val=100):
     delta = max_val-min_val
 
     while True:
-        yield min_val-delta*random.ranf()
+        yield min_val+delta*random.ranf(size=shape)
 
 #-----------------------------------------------------------------------------
-def complex_generator_func(min_val=0,max_val=100):
+def complex_generator_func(min_val=0,max_val=100,shape=None):
     """Generate random complex numbers
     
     Generate a random complex numbers whose real and imaginary part lie within 
@@ -195,12 +144,12 @@ def complex_generator_func(min_val=0,max_val=100):
     """
 
     while True:
-        yield complex(float_generator_func(min_val,max_val),
-                      float_generator_func(min_val,max_val))
+        yield float_generator_func(min_val,max_val,shape).next()+\
+                1j*float_generator_func(min_val,max_val,shape).next()
 
 
 #-----------------------------------------------------------------------------
-def bool_generator_func():
+def bool_generator_func(min_val=0,max_val=100,shape=None):
     """Generate boolean random numbers
 
     As boolean values can only take the values True and False no min_val 
@@ -211,10 +160,15 @@ def bool_generator_func():
     """
 
     while True:
-        yield int_generator_func(0,2)
+        d = int_generator_func(0,2,shape).next()
+        if isinstance(d,np.ndarray):
+            yield d.astype("bool")
+        else:
+            yield bool(d)
 
 #-----------------------------------------------------------------------------
-def string_generator_func(min_val=0,max_val=100):
+
+def string_generator_func(min_val=0,max_val=100,shape=None):
     """Generate a random string
 
     Generate a random string. The meaning of the arguments min_val and 
@@ -232,9 +186,12 @@ def string_generator_func(min_val=0,max_val=100):
         str: random string whose length is within min_val and max_val
     """
     #generate the random length of the string
-    size = int_generator_func(min_val,max_val)
+    length_generator = int_generator_func(min_val,max_val)
+    char_index_generator = int_generator_func(0,len(_character_list))
    
     while True:
+        strlen = length_generator.next()
+
         yield ''.join(map(chr,[ int_generator_func(33,126) for i in range(size)]))
 
 #-----------------------------------------------------------------------------
