@@ -117,6 +117,58 @@ elements by which we want to enlarge it.
 Reading and writing data
 ------------------------
 
+There are two ways of how to read and write data from and to an instance of 
+:py:class:`nxfield`
+
+* via its :py:meth:`read` and :py:meth:`write` methods
+* or via :py:meth:`__getitem__` and :py:meth:`__setitem__` by using the 
+  ``[]`` operator.
+
+In the former case the entire field will be read or written while the second
+approach also allows partial IO which is particularly useful for large fields 
+whose content would not fit into the main memory of the machine on which the
+code is running.
+
+Using :py:meth:`read` and :py:meth:`write`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Write all data in a single step like this 
+
+.. code-block:: python
+
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
+
+    f = nexus.open_file("run1.nxs",readonly=False)
+    root = f.root()
+
+    temperaturs = nexus.get_object(root,"/:NXentry/:NXsample/temperature")
+    
+    data = read_data(...)    #numpy array with temperature values 
+    temperatures.write(data) #write all the data in a single step
+
+If the field to which to write the data is a scalar field the data must be
+either a native Python object or a :py:mod:`numpy` array of matching shape. 
+
+Read all data in a single step 
+
+.. code-block:: python
+
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
+
+    f = nexus.open_file("run1.nxs",readonly=False)
+    root = f.root()
+
+    #get field with positions of motor 'tt' 
+    tt_field = nexus.get_object(root,"/:NXentry/:NXsample/:NXtransformations/tt")
+    # read all position values 
+    tt = tt_field.read()
+
+If the field is of size 1 (a scalar) a simple Python object is returned holding 
+the content of the field. In the case of a multidimensional field a
+:py:mod:`numpy` array of appropriate type is returned. 
+
 Fields behave a little like numpy arrays with the exception that the data is not
 in memory but stored on disk. Reading and writing data works like with h5py
 arrays. The best way to understand how this works is to have a look on a small

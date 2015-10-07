@@ -10,6 +10,7 @@ from pni.io.nx.h5 import nxfield
 from pni.io.nx.h5 import deflate_filter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
+from pni.core import ShapeMismatchError
 from .. data_generator import random_generator_factory
 
 types=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
@@ -52,6 +53,7 @@ class scalar_io_test_uint8(unittest.TestCase):
         self.root = self.gf.root()
         self.generator = random_generator_factory(self._typecode)
         self.input_data = next(self.generator())
+        self.input_array_data = numpy.array([next(self.generator())])
         self.scalar_type = scalars[self._typecode]
 
     #-------------------------------------------------------------------------
@@ -68,11 +70,30 @@ class scalar_io_test_uint8(unittest.TestCase):
 
         f = self.root.create_field("scalar_read_write",self._typecode)
 
+        #reading and writing data from a single native python object
         f.write(self.input_data)
         output_data = f.read()
 
         self.assertAlmostEqual(self.scalar_type(output_data),
                                self.scalar_type(self.input_data))
+
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_scalar_write_read_method(self):
+        """
+        Write a numpy array of size 1 to a scalar field using the write()
+        and read() methods.
+        """
+        
+        f = self.root.create_field("scalar_array_read_write",self._typecode)
+
+        #write data from a numpy array with a single element 
+        f.write(self.input_array_data)
+        output_data = f.read()
+        self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
+                               self.scalar_type(output_data))
+
+        self.assertRaises(ShapeMismatchError,f.write,
+                          numpy.ones((10)))
 
     
     #-------------------------------------------------------------------------
@@ -91,6 +112,21 @@ class scalar_io_test_uint8(unittest.TestCase):
                                self.scalar_type(self.input_data))
 
    
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_scalar_setitem_getitem(self):
+        """
+        Write a scalar array value to a scalar field using the __getitem__ 
+        and __setitem__ methods. 
+        """
+
+        f = self.root.create_field("scalar_array_setitem_getitem",self._typecode)
+
+        f[...] = self.input_array_data
+        output_data = f[...]
+
+        self.assertAlmostEqual(self.scalar_type(output_data),
+                               self.scalar_type(self.input_array_data[0]))
+        
 
     #-------------------------------------------------------------------------
     def test_scalar_to_1Dfield_partial_individual(self):
@@ -109,9 +145,25 @@ class scalar_io_test_uint8(unittest.TestCase):
             self.assertAlmostEqual(self.scalar_type(output_data),
                                    self.scalar_type(input_data))
 
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_1Dfield_partial_individual(self):
+        """
+        Write and read individual data to a 1D field using partial IO. 
+        """
+
+        f = self.root.create_field("scalar_array_to_1D_partial_individual",
+                                   self._typecode,
+                                   shape=(10,))
+
+        for (index,input_data) in zip(range(f.size),self.generator()):
+            f[index] = numpy.array([input_data])
+            output_data = f[index]
+
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(input_data))
 
     #-------------------------------------------------------------------------
-    def test_write_scalar_to_1Dfield_broadcast(self):
+    def test_scalar_to_1Dfield_broadcast(self):
         """
         Broadcast a single data value to a whoel field
         """
@@ -125,6 +177,20 @@ class scalar_io_test_uint8(unittest.TestCase):
             self.assertAlmostEqual(self.scalar_type(output_data),
                                    self.scalar_type(self.input_data))
 
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_1Dfield_broadcast(self):
+        """
+        Broadcast a single data value to a whoel field
+        """
+
+        f = self.root.create_field("scalar_array_to_1D_broadcast",
+                                   self._typecode,shape=(10,))
+
+        f[...] = self.input_array_data[...]
+
+        for output_data in f[...]:
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(self.input_array_data[0]))
 
     #-------------------------------------------------------------------------
     def test_scalar_to_2Dfield_partial_individual(self):
