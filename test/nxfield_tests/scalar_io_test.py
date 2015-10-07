@@ -41,7 +41,7 @@ class scalar_io_test_uint8(unittest.TestCase):
     #-------------------------------------------------------------------------
     @classmethod
     def setUpClass(self):
-        self.file_name = "grow_test_{tc}.nxs".format(tc=self._typecode)
+        self.file_name = "scalar_io_test_{tc}.nxs".format(tc=self._typecode)
         self.full_path = os.path.join(self.file_path,self.file_name)
         self.gf = create_file(self.full_path,overwrite=True)
         self.gf.close()
@@ -51,6 +51,8 @@ class scalar_io_test_uint8(unittest.TestCase):
         self.gf = open_file(self.full_path,readonly=False)
         self.root = self.gf.root()
         self.generator = random_generator_factory(self._typecode)
+        self.input_data = next(self.generator())
+        self.scalar_type = scalars[self._typecode]
 
     #-------------------------------------------------------------------------
     def tearDown(self):
@@ -58,28 +60,123 @@ class scalar_io_test_uint8(unittest.TestCase):
         self.gf.close()
     
     #-------------------------------------------------------------------------
-    def test_write_scalar_to_scalar(self):
-        pass
+    def test_scalar_to_scalar_write_read_method(self):
+        """
+        Write a scalar to a field and read it back using the write() and 
+        read() methods provided by the nxfield class
+        """
+
+        f = self.root.create_field("scalar_read_write",self._typecode)
+
+        f.write(self.input_data)
+        output_data = f.read()
+
+        self.assertAlmostEqual(self.scalar_type(output_data),
+                               self.scalar_type(self.input_data))
+
     
     #-------------------------------------------------------------------------
-    def test_read_scalar_from_scalar(self):
-        pass
+    def test_scalar_to_scalar_setitem_getitem(self):
+        """
+        Write a scalar value to a scalar field using the __getitem__ and 
+        __setitem__ methods. 
+        """
+
+        f = self.root.create_field("scalar_setitem_getitem",self._typecode)
+
+        f[...] = self.input_data
+        output_data = f[...]
+
+        self.assertAlmostEqual(self.scalar_type(output_data),
+                               self.scalar_type(self.input_data))
+
+   
 
     #-------------------------------------------------------------------------
-    def test_write_scalar_to_1Dfield(self):
-        pass
+    def test_scalar_to_1Dfield_partial_individual(self):
+        """
+        Write and read individual data to a 1D field using partial IO. 
+        """
+
+        f = self.root.create_field("scalar_to_1D_partial_individual",
+                                   self._typecode,
+                                   shape=(10,))
+
+        for (index,input_data) in zip(range(f.size),self.generator()):
+            f[index] = input_data
+            output_data = f[index]
+
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(input_data))
+
 
     #-------------------------------------------------------------------------
-    def test_read_scalar_from_1Dfield(self):
-        pass
+    def test_write_scalar_to_1Dfield_broadcast(self):
+        """
+        Broadcast a single data value to a whoel field
+        """
+
+        f = self.root.create_field("scalar_to_1D_broadcast",
+                                   self._typecode,shape=(10,))
+
+        f[...] = self.input_data
+
+        for output_data in f[...]:
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(self.input_data))
+
 
     #-------------------------------------------------------------------------
-    def test_write_scalar_to_2Dfield(self):
-        pass
+    def test_scalar_to_2Dfield_partial_individual(self):
+        """
+        Writing individual scalars using partial IO
+        """
+
+        f = self.root.create_field("scalar_to_2d_indivdual",
+                                   self._typecode,
+                                   shape=(3,4))
+
+        for i in range(3):
+            for j in range(4):
+                input_data = next(self.generator())
+                f[i,j] = input_data
+                output_data = f[i,j]
+                self.assertAlmostEqual(self.scalar_type(output_data),
+                                       self.scalar_type(input_data))
 
     #-------------------------------------------------------------------------
-    def test_read_scalar_from_2Dfield(self):
-        pass
+    def test_scalar_from_2Dfield_partial_strips(self):
+        """
+        Broadcast scalar data to strips and read them back
+        """
+        
+        f = self.root.create_field("scalar_to_2d_strips",
+                                   self._typecode,
+                                   shape=(3,4))
+
+        for index in range(f.shape[0]):
+            input_data = next(self.generator())
+            f[index,...] = input_data
+
+            for output_data in f[index,...].flat:
+                self.assertAlmostEqual(self.scalar_type(output_data),
+                                       self.scalar_type(input_data))
+
+
+    #-------------------------------------------------------------------------
+    def test_scalar_from_2Dfield_broadcast(self):
+        """
+        Broadcast an individual value to a 2D field
+        """
+        
+        f = self.root.create_field("scalar_to_2d_broadcast",
+                                   self._typecode,
+                                   shape=(3,4))
+        f[...] = self.input_data
+        
+        for output_data in f[...].flat:
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(self.input_data))
 
 
 
