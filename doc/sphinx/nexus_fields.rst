@@ -71,6 +71,8 @@ Attribute name  Description
 ``size``        number of elements stored in the field 
 ``dtype``       data type of the elements 
 ``shape``       a tuple with the number of elements along each dimension 
+``is_valid``    :py:const:`True` if the field referes to a valid object
+``filename``    returns the name of the file the field belongs to
 ==============  =========================================================
 
 Unlike numpy arrays, the shape of fields cannot be manipulated arbitrarily. 
