@@ -37,6 +37,7 @@
 #include "array_writer.hpp"
 #include "nxio_operations.hpp"
 #include "utils.hpp"
+#include "io_operations.hpp"
 
 //! 
 //! \ingroup wrappers  
@@ -169,19 +170,14 @@ template<typename ATYPE> class nxattribute_wrapper
         boost::python::object read() const
         {
             using namespace pni::core;
+            using namespace boost::python;
 
-            //if(this->_attribute.template shape<shape_t>().size() == 0)
-            if(_attribute.size() == 1)
-                return io_read<scalar_reader>(this->_attribute);
-            else
-                return io_read<array_reader>(this->_attribute);
+            object np_array = read_data(_attribute);
 
-            //should raise an exception here
-            throw pni::io::io_error(EXCEPTION_RECORD,
-            "Found no appropriate procedure to read this attribute!");
+            if(numpy::get_size(np_array)==1)
+                np_array = get_first_element(np_array);
 
-            //this is only to avoid compiler warnings
-            return boost::python::object();
+            return np_array;
         }
 
         //=====================write methods===================================
@@ -217,40 +213,6 @@ template<typename ATYPE> class nxattribute_wrapper
                         "Python scalar!");
         }
 
-        /*
-        //---------------------------------------------------------------------
-        boost::python::object __getitem__(const boost::python::object &args) const
-        {
-            boost::python::object data = read(); //read all attribute data 
-                                                 //- remember we cannot do 
-                                                 //partial IO on attributes
-
-            //call here the __getitem__ method of the return value and return 
-            //its result
-            if(numpy::is_array(data))
-                return data[args];
-            else
-                return data;
-        }
-
-        :h
-        //---------------------------------------------------------------------
-        void __setitem__(const boost::python::object &index,
-                         const boost::python::object &value)
-        {
-            boost::python::object data = read(); // first we read everything 
-                                                 // from the attribute
-
-            if(numpy::is_array(data))
-                data[index] = value;
-            else
-                data = value;
-
-            //finally we have to write the data back
-            write(data);
-            
-        }
-        */
         //---------------------------------------------------------------------
         //!
         //! \brief the core __getitem__ implementation
@@ -262,51 +224,28 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         //! \param t tuple with 
         //!
-        boost::python::object __getitem__tuple(const boost::python::tuple &t)
+        boost::python::object __getitem__(const boost::python::object &t)
         {
             using namespace pni::core;
+            using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;
 
+            tuple sel; 
+            if(PyTuple_Check(t.ptr()))
+                sel = tuple(t);
+            else
+                sel = make_tuple<object>(t);
+
             //first we need to create a selection
-            selection_type selection = create_selection(t,_attribute);
+            selection_type selection = create_selection(sel,_attribute);
+            
+            object np_array = read_data(_attribute(selection));
 
-            //once the selection is build we can start to create the 
-            //return value
-            if(_attribute(selection).size()==1)
-                //in this case we return a primitive python value
-                return io_read<scalar_reader>(_attribute(selection));
-            else
-                //a numpy array will be returned
-                return io_read<array_reader>(_attribute(selection));
+            if(numpy::get_size(np_array)==1) 
+                np_array = get_first_element(np_array);
 
-            //throw an exception if we cannot handle the user request
-            throw pni::io::object_error(EXCEPTION_RECORD,
-                                             "cannot handle user request");
-
-            return boost::python::object(); //make the compiler happy
-        }
-        //---------------------------------------------------------------------
-        //!
-        //! \brief __getitem__ entry method
-        //!
-        //! This method is called when a user invokes the __getitem__ method 
-        //! on a NXField object in python. The method converts the object 
-        //! that is passed as input argument to a tuple if necessary and 
-        //! than passes this to the __getitem__tuple method. 
-        //!
-        //! \param o Python object describing the selection
-        //! \return Python object with the data from the selection
-        //!
-        boost::python::object __getitem__(const boost::python::object &o)
-        {
-            using namespace boost::python;
-
-            //need to check here if o is already a tuple 
-            if(PyTuple_Check(o.ptr()))
-                return __getitem__tuple(tuple(o));
-            else
-                return __getitem__tuple(make_tuple<object>(o));
+            return np_array;
         }
 
         //---------------------------------------------------------------------

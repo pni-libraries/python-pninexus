@@ -8,3 +8,4 @@ shape = (1,10)
 a = r.attributes.create("test","uint16",shape=shape)
 d = numpy.ones(shape,dtype="uint16")
 a[...] = d
+print(a[...])
