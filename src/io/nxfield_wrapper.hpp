@@ -235,29 +235,6 @@ template<typename FIELDT> class nxfield_wrapper
 
         //---------------------------------------------------------------------
         //!
-        //! \brief __setitem__ implementation
-        //!
-        //! As for __getitem__ this method is called if a user invokes the
-        //! __setitem__ method on an NXField object in Python. The method 
-        //! converts the object passed as input argument to a tuple if 
-        //! necessary and then moves on to __setitem__tuple.
-        //!
-        //! \param o selection object
-        //! \param d Python object holding the data
-        //!
-        void __setitem__(const boost::python::object &o,
-                         const boost::python::object &d)
-        {
-            using namespace boost::python;
-
-            //need to check here if o is already a tuple 
-            if(PyTuple_Check(o.ptr()))
-                __setitem__tuple(tuple(o),d);
-            else
-                __setitem__tuple(make_tuple<object>(o),d);
-        }
-        //---------------------------------------------------------------------
-        //!
         //! \brief write data according to a selection
         //!
         //! Write data from a selection defined by tuple t. 
@@ -265,13 +242,21 @@ template<typename FIELDT> class nxfield_wrapper
         //! \param t tuple with selection information
         //! \param o object with data to write.
         //!
-        void __setitem__tuple(const boost::python::tuple &t, 
-                              const boost::python::object &o)
+        void __setitem__(const boost::python::object &t, 
+                         const boost::python::object &o)
         {
             using namespace pni::core;
+            using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;
-            selection_type selection = create_selection(t,_field);
+            tuple sel;
+
+            if(PyTuple_Check(t.ptr()))
+                sel = tuple(t);
+            else
+                sel = make_tuple<object>(t);
+
+            selection_type selection = create_selection(sel,_field);
 
             if(is_scalar(o))
                 io_write<scalar_writer>(_field(selection),o);
