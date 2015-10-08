@@ -44,6 +44,8 @@ boost::python::object read_string_data(const RTYPE &readable)
     // first read all data to a pni::core::mdarray array
     //
     auto shape = readable.template shape<shape_t>();
+    if(shape.empty() && readable.size()) shape=shape_t{1};
+
     auto data = dynamic_array<string>::create(shape);
     readable.read(data);
 

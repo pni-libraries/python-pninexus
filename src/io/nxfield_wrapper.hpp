@@ -209,51 +209,28 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         //! \param t tuple with 
         //!
-        boost::python::object __getitem__tuple(const boost::python::tuple &t)
+        boost::python::object __getitem__(const boost::python::object &t)
         {
             using namespace pni::core;
+            using namespace boost::python; 
 
             typedef std::vector<pni::core::slice> selection_type;
 
+            boost::python::tuple sel;
+            if(PyTuple_Check(t.ptr()))
+                sel = tuple(t);
+            else
+                sel = make_tuple<object>(t);
+
             //first we need to create a selection
-            selection_type selection = create_selection(t,_field);
+            selection_type selection = create_selection(sel,_field);
 
-            //once the selection is build we can start to create the 
-            //return value
-            if(_field(selection).size()==1)
-                //in this case we return a primitive python value
-                return io_read<scalar_reader>(_field(selection));
-            else
-                //a numpy array will be returned
-                return io_read<array_reader>(_field(selection));
+            object np_array = read_data(_field(selection));
 
-            //throw an exception if we cannot handle the user request
-            throw pni::io::object_error(EXCEPTION_RECORD,
-                                             "cannot handle user request");
+            if(numpy::get_size(np_array)==1) 
+                np_array = get_first_element(np_array);
 
-            return boost::python::object(); //make the compiler happy
-        }
-        //---------------------------------------------------------------------
-        //!
-        //! \brief __getitem__ entry method
-        //!
-        //! This method is called when a user invokes the __getitem__ method 
-        //! on a NXField object in python. The method converts the object 
-        //! that is passed as input argument to a tuple if necessary and 
-        //! than passes this to the __getitem__tuple method. 
-        //!
-        //! \param o Python object describing the selection
-        //! \return Python object with the data from the selection
-        //!
-        boost::python::object __getitem__(const boost::python::object &o)
-        {
-            using namespace boost::python;
-
-            //need to check here if o is already a tuple 
-            if(PyTuple_Check(o.ptr()))
-                return __getitem__tuple(tuple(o));
-            else
-                return __getitem__tuple(make_tuple<object>(o));
+            return np_array;
         }
 
         //---------------------------------------------------------------------
