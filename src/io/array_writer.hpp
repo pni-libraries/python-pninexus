@@ -126,6 +126,11 @@ class array_writer
         {
             using namespace pni::core;
 
+            if(w.size() != numpy::get_size(o))
+                throw size_mismatch_error(EXCEPTION_RECORD,
+                        "Size of fields and numpy array do not match!");
+
+            /*
             if(!((w.size() == 1) && (numpy::get_size(o)==1)))
             {
                 auto w_shape = w.template shape<shape_t>();
@@ -140,6 +145,7 @@ class array_writer
                     throw shape_mismatch_error(EXCEPTION_RECORD,
                             "Shapes of field and numpy array do not match!");
             }
+            */
 
             _write_numpy_array(w,o);
         }

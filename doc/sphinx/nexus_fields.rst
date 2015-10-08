@@ -121,8 +121,9 @@ There are two ways of how to read and write data from and to an instance of
 :py:class:`nxfield`
 
 * via its :py:meth:`read` and :py:meth:`write` methods
-* or via :py:meth:`__getitem__` and :py:meth:`__setitem__` by using the 
-  ``[]`` operator.
+* or by using the ``[]`` operator which effectively calls the
+  :py:meth:`__getitem__` and :py:meth:`__setitem__` methods of 
+  :py:class:`nxfield`.
 
 In the former case the entire field will be read or written while the second
 approach also allows partial IO which is particularly useful for large fields 
@@ -132,7 +133,8 @@ code is running.
 Using :py:meth:`read` and :py:meth:`write`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Write all data in a single step like this 
+:py:meth:`write` data writes the data to the entire field  like in the 
+following example
 
 .. code-block:: python
 
@@ -147,10 +149,13 @@ Write all data in a single step like this
     data = read_data(...)    #numpy array with temperature values 
     temperatures.write(data) #write all the data in a single step
 
-If the field to which to write the data is a scalar field the data must be
-either a native Python object or a :py:mod:`numpy` array of matching shape. 
+For a field of size 1 the argument of :py:meth:`write` must be a native python
+object or a :py:mod:`numpy` array of size 1. If the field is a multidimensional 
+field of different size the argument must be a :py:mod:`numpy` array of
+appropriate shape (and thus size).
 
-Read all data in a single step 
+The counterpart of :py:meth:`write` is :py:meth:`read` which retrieves all data
+stored in a field
 
 .. code-block:: python
 
@@ -167,7 +172,10 @@ Read all data in a single step
 
 If the field is of size 1 (a scalar) a simple Python object is returned holding 
 the content of the field. In the case of a multidimensional field a
-:py:mod:`numpy` array of appropriate type is returned. 
+:py:mod:`numpy` array of appropriate type and shape is returned. 
+
+Partial IO with the ``[]`` operator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Fields behave a little like numpy arrays with the exception that the data is not
 in memory but stored on disk. Reading and writing data works like with h5py

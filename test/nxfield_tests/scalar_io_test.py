@@ -10,6 +10,7 @@ from pni.io.nx.h5 import nxfield
 from pni.io.nx.h5 import deflate_filter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
+from pni.core import SizeMismatchError
 from pni.core import ShapeMismatchError
 from .. data_generator import random_generator_factory
 
@@ -92,7 +93,7 @@ class scalar_io_test_uint8(unittest.TestCase):
         self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
                                self.scalar_type(output_data))
 
-        self.assertRaises(ShapeMismatchError,f.write,
+        self.assertRaises(SizeMismatchError,f.write,
                           numpy.ones((10)))
 
     
