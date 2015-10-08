@@ -270,7 +270,7 @@ namespace numpy
 
         ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(s.size(),
                                           dims.data(),pni2numpy_type<T>::typenum));
-
+        
         boost::python::handle<> h(ptr);
 
         return boost::python::object(h);
@@ -300,7 +300,7 @@ namespace numpy
                              NPY_CORDER,
                              nullptr));
                              
-
+        
         boost::python::handle<> h(ptr);
 
         return boost::python::object(h);
@@ -350,6 +350,7 @@ namespace numpy
         return create_array(tid,shape);
 
     }
+
 
 //end of namespace
 }

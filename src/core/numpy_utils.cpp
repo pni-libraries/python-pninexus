@@ -47,6 +47,7 @@ namespace numpy
             return false;
     }
 
+
     //------------------------------------------------------------------------
     pni::core::type_id_t type_id(const object &o)
     {
