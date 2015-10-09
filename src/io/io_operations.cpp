@@ -36,8 +36,8 @@ boost::python::object get_first_element(const boost::python::object &o)
     std::fill(index.begin(),index.end(),0);
    
     PyArrayObject *arr_ptr = reinterpret_cast<PyArrayObject*>(o.ptr());
-    PyObject* ptr = PyArray_GETITEM(arr_ptr,
-                                    PyArray_GetPtr(arr_ptr,index.data()));
+    const char *data = reinterpret_cast<const char*>(PyArray_GetPtr(arr_ptr,index.data()));
+    PyObject* ptr = PyArray_GETITEM(arr_ptr,data);
     Py_INCREF(ptr);
     handle<> h(ptr);
     return object(h);
