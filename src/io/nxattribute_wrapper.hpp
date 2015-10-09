@@ -201,16 +201,10 @@ template<typename ATYPE> class nxattribute_wrapper
         {
             using namespace pni::core;
 
-            //before we can write an object we need to find out what 
-            //it really i
-            if(is_scalar(o))
-                io_write<scalar_writer>(this->_attribute,o);
-            else if(numpy::is_array(o))
-                io_write<array_writer>(this->_attribute,o);
+            if(numpy::is_array(o))
+                write_data(_attribute,o);
             else
-                throw type_error(EXCEPTION_RECORD,
-                        "Argument must be either a numpy array or a "
-                        "Python scalar!");
+                write_data(_attribute,numpy::to_numpy_array(o));
         }
 
         //---------------------------------------------------------------------
@@ -260,42 +254,27 @@ template<typename ATYPE> class nxattribute_wrapper
         //! \param o selection object
         //! \param d Python object holding the data
         //!
-        void __setitem__(const boost::python::object &o,
-                         const boost::python::object &d)
-        {
-            using namespace boost::python;
-
-            //need to check here if o is already a tuple 
-            if(PyTuple_Check(o.ptr()))
-                __setitem__tuple(tuple(o),d);
-            else
-                __setitem__tuple(make_tuple<object>(o),d);
-        }
-        //---------------------------------------------------------------------
-        //!
-        //! \brief write data according to a selection
-        //!
-        //! Write data from a selection defined by tuple t. 
-        //!
-        //! \param t tuple with selection information
-        //! \param o object with data to write.
-        //!
-        void __setitem__tuple(const boost::python::tuple &t, 
-                              const boost::python::object &o)
+        void __setitem__(const boost::python::object &t,
+                         const boost::python::object &o)
         {
             using namespace pni::core;
+            using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;
-            selection_type selection = create_selection(t,_attribute);
+            tuple sel;
 
-            if(is_scalar(o))
-                io_write<scalar_writer>(_attribute(selection),o);
-            else if(numpy::is_array(o))
-                io_write<array_writer>(_attribute(selection),o);
+            if(PyTuple_Check(t.ptr()))
+                sel = tuple(t);
             else
-                throw type_error(EXCEPTION_RECORD,
-                        "Object must be either a numpy arry or a "
-                        "python scalar!");
+                sel = make_tuple<object>(t);
+
+            selection_type selection = create_selection(sel,_attribute);
+
+            if(numpy::is_array(o))
+                write_data(_attribute(selection),o);
+            else
+                write_data(_attribute(selection),numpy::to_numpy_array(o));
+
         }
 
         //--------------------------------------------------------------------

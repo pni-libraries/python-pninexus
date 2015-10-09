@@ -29,6 +29,18 @@ namespace numpy
 {
 
     //------------------------------------------------------------------------
+    boost::python::object to_numpy_array(const boost::python::object &o)
+    {
+        using namespace boost::python;
+        using namespace pni::core;
+
+        PyObject *ptr = PyArray_FROM_OF(o.ptr(),NPY_ARRAY_C_CONTIGUOUS);
+        Py_INCREF(ptr);
+        handle<> h(ptr);
+        return object(h);
+    }
+
+    //------------------------------------------------------------------------
     bool is_array(const object &o)
     {
         //if the object is not allocated we assume that it is not an array

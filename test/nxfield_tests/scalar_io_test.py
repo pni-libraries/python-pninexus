@@ -187,11 +187,11 @@ class scalar_io_test_uint8(unittest.TestCase):
         f = self.root.create_field("scalar_array_to_1D_broadcast",
                                    self._typecode,shape=(10,))
 
-        #f[...] = self.input_array_data[...]
+        f[...] = self.input_array_data[...]
 
-        #for output_data in f[...]:
-        #    self.assertAlmostEqual(self.scalar_type(output_data),
-        #                           self.scalar_type(self.input_array_data[0]))
+        for output_data in f[...]:
+            self.assertAlmostEqual(self.scalar_type(output_data),
+                                   self.scalar_type(self.input_array_data[0]))
 
     #-------------------------------------------------------------------------
     def test_scalar_to_2Dfield_partial_individual(self):

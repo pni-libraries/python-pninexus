@@ -81,7 +81,10 @@ class mdim_io_test_uint8(unittest.TestCase):
             self.assertEqual(output_data.dtype,self.scalar_type)
 
         for (i,o) in zip(input_data.flat,output_data.flat):
-            self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
+            if self._typecode == "string":
+                self.assertEqual(self.scalar_type(o),self.scalar_type(i))
+            else:
+                self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
 
         self.assertRaises(SizeMismatchError,
                           f.write,numpy.ones((100,20),dtype=self.scalar_type))

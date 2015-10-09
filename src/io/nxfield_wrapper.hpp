@@ -155,23 +155,10 @@ template<typename FIELDT> class nxfield_wrapper
         {
             using namespace pni::core;
 
-            if(is_scalar(o))
-            {
-                //write a scalar to the field
-                //scalar field - here we can use any scalar type to write data
-                io_write<scalar_writer>(_field,o);
-            }
-            else if(numpy::is_array(o))
-            {
-                //write a numpy array to the field
-                //multidimensional field - the input must be a numpy array
-                //check if the passed object is a numpy array
-                io_write<array_writer>(_field,o);
-            }
+            if(numpy::is_array(o))
+                write_data(_field,o);
             else
-                throw type_error(EXCEPTION_RECORD,
-                        "Argument must be either a numpy array or a "
-                        "Python scalar!");
+                write_data(_field,numpy::to_numpy_array(o));
         }
 
         //---------------------------------------------------------------------
@@ -258,14 +245,11 @@ template<typename FIELDT> class nxfield_wrapper
 
             selection_type selection = create_selection(sel,_field);
 
-            if(is_scalar(o))
-                io_write<scalar_writer>(_field(selection),o);
-            else if(numpy::is_array(o))
-                io_write<array_writer>(_field(selection),o);
+            if(numpy::is_array(o))
+                write_data(_field(selection),o);
             else
-                throw type_error(EXCEPTION_RECORD,
-                        "Object must be either a numpy arry or a "
-                        "python scalar!");
+                write_data(_field(selection),numpy::to_numpy_array(o));
+
         }
 
         //----------------------------------------------------------------------

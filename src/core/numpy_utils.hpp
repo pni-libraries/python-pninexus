@@ -351,6 +351,19 @@ namespace numpy
 
     }
 
+    //------------------------------------------------------------------------
+    //!
+    //! \ingroup pub_api
+    //! \brief convert to numpy array
+    //!
+    //! Take an arbitrary Python object and convert it to a numpy array. 
+    //! If the object is already a numpy array we do nothing and just 
+    //! pass the object through. Otherwise the numpy C-API will try 
+    //! to convert the object to a numpy array. 
+    //!
+    //! 
+    boost::python::object to_numpy_array(const boost::python::object &o);
+
 
 //end of namespace
 }
