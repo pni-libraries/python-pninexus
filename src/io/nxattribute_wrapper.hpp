@@ -31,11 +31,6 @@
 #include <pni/io/exceptions.hpp>
 #include <pni/io/nx/algorithms/get_path.hpp>
 
-#include "scalar_reader.hpp"
-#include "scalar_writer.hpp"
-#include "array_reader.hpp"
-#include "array_writer.hpp"
-#include "nxio_operations.hpp"
 #include "utils.hpp"
 #include "io_operations.hpp"
 

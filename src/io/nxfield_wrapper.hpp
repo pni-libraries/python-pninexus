@@ -32,13 +32,8 @@
 #include <core/utils.hpp>
 #include <core/numpy_utils.hpp>
 
-#include "nxio_operations.hpp"
 #include "nxattribute_manager_wrapper.hpp"
 #include "utils.hpp"
-#include "scalar_writer.hpp"
-#include "scalar_reader.hpp"
-#include "array_writer.hpp"
-#include "array_reader.hpp"
 #include "io_operations.hpp"
 
 template<typename GTYPE> class nxgroup_wrapper;
