@@ -86,16 +86,13 @@ currently also the only one implemented) is to ``grow`` a field.
     field = detector.create_field("data",...)
 
     #main measurement loop
-    while True:
+    while measurement_running:
         #execute some code retrieving the data here
 
         field.grow(0,1)         #grow field along dimension 0 by 1 element
         
-        #execute code to store data
-       
-        #break the loop if the measurement is done
-        if not measurement_running: break
-
+        # execute code to store data
+        # will be shown latter in this manual
 
 The grow method of a field takes two positional arguments: the first is the 
 dimension along we want to grow the field and the second is the number of 
@@ -168,19 +165,36 @@ stored in a field
     #get field with positions of motor 'tt' 
     tt_field = nexus.get_object(root,"/:NXentry/:NXsample/:NXtransformations/tt")
     # read all position values 
-    tt = tt_field.read()
+    tt = tt_field.read() #returns a numpy array with the position data
 
 If the field is of size 1 (a scalar) a simple Python object is returned holding 
 the content of the field. In the case of a multidimensional field a
 :py:mod:`numpy` array of appropriate type and shape is returned. 
 
+As in the :py:mod:`h5py` data can also be written from lists and nested lists. 
+
+.. code-block:: python
+    
+    from __future__ import print_function
+    import pni.io.nx.h5 as nexus
+
+    f = nexus.create_file("run2.nxs",readonly=False)
+    root = f.root()
+    
+    # ........ some more code to create the file ..............
+
+    eps_tensor = nexus.get_object("/:NXentry/:NXsample/strain_tensor")
+    eps_tensor.write([1,2,3,4,])
+
+
 Partial IO with the ``[]`` operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fields behave a little like numpy arrays with the exception that the data is not
-in memory but stored on disk. Reading and writing data works like with h5py
-arrays. The best way to understand how this works is to have a look on a small
-example. 
+Fields follow the same indexing and broadcasting protocol as :py:mod:`numpy`
+arrays. The major difference is that the data is not stored in memory but on
+disk. For more details about the :py:mod:`numpy` indexing and broadcasting
+protocol see the numpy reference manual. 
+
 The next code snipped shows a typical use case where a bunch of image frames is
 retriefed from a field by iterating over each individual image.
 The code should be rather self explaining
@@ -216,12 +230,23 @@ the :py:meth:`grow` method
     field = detector.create_field("data",...)
 
     #main measurement loop
-    while True:
+    while measurement_running:
         data = get_data(...)    #retrieve data
 
         field.grow(0,1)         #grow field along dimension 0 by 1 element
        
         field[-1,...] = data    #save data in newly appended slot
+
+Data can be written not only from :py:mod:`numpy` arrays but also from nested
+lists as with :py:mod:`h5py`
+
+.. code-block:: python
+
+    field = nexus.get_object("/:NXentry/:NXinstrument/:NXdetector/data")
+
+    while measurement_running:
+        field.grow(0,1)
+        field[-1,...] = [1,2,3,4,5,6,7,8,] 
+
+
        
-        #break the loop if the measurement is done
-        if not measurement_running: break

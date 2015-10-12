@@ -290,18 +290,6 @@ class nxgroup_wrapper
         //--------------------------------------------------------------------
         size_t __len__() const { return _group.size(); }
 
-        //---------------------------------------------------------------------
-        //!
-        //! \brief create links
-        //!
-        //! Exposes only one of the three link creation methods from the 
-        //! original NXGroup object.
-        //!
-        void link(const pni::core::string &p,const pni::core::string &n) const
-        {
-            pni::io::nx::link(p,_group,n);
-        }
-        
         //----------------------------------------------------------------------
         void increment()
         {
@@ -455,8 +443,6 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("close",&wrapper_type::close)
         .add_property("is_valid",&wrapper_type::is_valid)
         .def("__len__",&wrapper_type::__len__)
-
-        .def("link",&wrapper_type::link,__group_link_docstr)
         .def("__iter__",&wrapper_type::__iter__,__group_childs_docstr)
         .def("increment",&wrapper_type::increment)
 #if PY_MAJOR_VERSION >= 3
