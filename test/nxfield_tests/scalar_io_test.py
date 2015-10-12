@@ -1,34 +1,12 @@
 import unittest
 import numpy
-import numpy.random as random
 import os
 
-import pni.io.nx.h5 as nx
-from pni.io.nx.h5 import nxfile
-from pni.io.nx.h5 import nxgroup
-from pni.io.nx.h5 import nxfield
-from pni.io.nx.h5 import deflate_filter
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.core import SizeMismatchError
-from pni.core import ShapeMismatchError
 from .. data_generator import random_generator_factory
-
-types=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
-       "float32","float64","float128","complex32","complex64","complex128",
-       "string","bool"]
-
-scalars={"uint8":numpy.uint8,"int8":numpy.int8,
-        "uint16":numpy.uint16,"int16":numpy.int16,
-        "uint32":numpy.uint32,"int32":numpy.int32,
-        "uint64":numpy.uint64,"int64":numpy.int64,
-        "float32":numpy.float32,"float64":numpy.float64,
-        "float128":numpy.float128,
-        "complex32":numpy.complex64,
-        "complex64":numpy.complex128,
-        "complex128":numpy.complex256,
-        "string":numpy.str_,"bool":numpy.bool_}
-         
+from .. import io_test_utils as iotu
 
 
 #implementing test fixture
@@ -55,7 +33,7 @@ class scalar_io_test_uint8(unittest.TestCase):
         self.generator = random_generator_factory(self._typecode)
         self.input_data = next(self.generator())
         self.input_array_data = numpy.array([next(self.generator())])
-        self.scalar_type = scalars[self._typecode]
+        self.scalar_type = iotu.scalars[self._typecode]
 
     #-------------------------------------------------------------------------
     def tearDown(self):
