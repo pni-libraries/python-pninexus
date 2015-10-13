@@ -1,41 +1,44 @@
 #!/usr/bin/env python
 
-import pni.nx.h5 as nx
+import pni.io.nx.h5 as nexus
 import os
 import sys
 
 pid = os.getpid()
 mfile = "/proc/%i/statm" %(pid)
-lfile = "mem_check_%i.log" %pid
-
-mlog = open(lfile,"w")
+lfile = "mem_check_{pid}.log".format(pid=pid)
+ofile = "mem_check_{pid}.nxs".format(pid=pid)
 
 def test_function(nxfile):
-    g = nxfile.create_group("detector")
-    f = nxfile.create_field("name","string")
-    attr = f.attr("temperature","float32")
-    attr.value = 1.23
-
+    r = nxfile.root()
+    g = r.create_group("detector")
+    f = r.create_field("name","string")
+    attr = f.attributes.create("temperature","float32")
+    attr.write(1.23)
     attr.close()
     g.close()
     f.close()
+    r.close()
 
 nruns = int(sys.argv[1])
 
-for i in range(nruns):
-    logline = "%i " %(i)
-    f = open(mfile)
-    logline += f.readline()
-    f.close()
-    mlog.write(logline)
-    #call the test function
-    nxfile = nx.create_file("test_mem.h5",True)
-    test_function(nxfile)
-    nxfile.close()
 
-mlog.close()
+with open(lfile,"w") as mlog:
 
-sys.stdout.write(lfile)
+    for i in range(nruns):
+        logline = "%i " %(i)
+
+        with open(mfile) as stat_file:
+            logline += stat_file.readline()
+
+        mlog.write(logline)
+        #call the test function
+        nxfile = nexus.create_file("test_mem.nxs",True)
+        test_function(nxfile)
+        nxfile.close()
+
+
+sys.stdout.write(lfile+"\n")
 
 
 

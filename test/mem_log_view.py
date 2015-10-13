@@ -21,6 +21,7 @@ rmem = data[:,2]
 
 print("start memory: ",rmem[20])
 print("stop  memory: ",rmem[-1])
+print("per run     : ",(rmem[-1]-rmem[20])/(data.shape[0]-20))
 
 plt.figure()
 plt.plot(run,rmem)
