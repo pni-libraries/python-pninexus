@@ -36,6 +36,10 @@ extern "C"{
 #include <pni/core/types.hpp>
 #include <pni/core/arrays.hpp>
 
+#ifndef NPY_ARRAY_C_CONTIGUOUS
+#define NPY_ARRAY_C_CONTIGUOUS NPY_C_CONTIGUOUS
+#endif
+
 
 //!
 //! \ingroup pub_api devel_doc
