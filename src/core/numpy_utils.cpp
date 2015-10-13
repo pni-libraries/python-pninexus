@@ -35,7 +35,6 @@ namespace numpy
         using namespace pni::core;
 
         PyObject *ptr = PyArray_FROM_OF(o.ptr(),NPY_ARRAY_C_CONTIGUOUS);
-        Py_INCREF(ptr);
         handle<> h(ptr);
         return object(h);
     }
