@@ -8,7 +8,7 @@ detector_file_struct=\
 """
 <group name="entry" type="NXentry">
     <group name="instrument" type="NXinstrument">
-        <group name="detector" type="NXdetector">
+        <group name="mca" type="NXdetector">
             <field name="data" type="uint16">
                 <dimensions rank="2">
                     <dim value="0" index="1"/>
@@ -22,14 +22,24 @@ detector_file_struct=\
 </group>
 """
 
-master_file_struct=\
+master_file_struct_1=\
+"""
+<group name="entry" type="NXentry">
+    <group name="instrument" type="NXinstrument"/>
+    <group name="data" type="NXdata">
+        <link name="plot_data" target="../instrument/detector/data"/>
+    </group>
+</group>
+"""
+
+master_file_struct_2=\
 """
 <group name="entry" type="NXentry">
     <group name="instrument" type="NXinstrument">
-        <group name="detector" type="NXdetector"/> 
+        <group name="detector" type="NXdetector"/>
     </group>
     <group name="data" type="NXdata">
-        <link name="plot_data" target="../instrument/detector/data"/>
+        <link name="plot_data" target="../instrument/detector/mca_data"/>
     </group>
 </group>
 """
@@ -38,45 +48,71 @@ class external_link_test(unittest.TestCase):
     
     test_dir = os.path.split(__file__)[0]
     det_file_name = "external_link_test_detector.nxs"
-    master_file_name = "external_link_test_master.nxs"
+    master1_file_name = "external_link_test_master1.nxs"
+    master2_file_name = "external_link_test_master2.nxs"
     det_full_path = os.path.join(test_dir,det_file_name)
-    master_full_path = os.path.join(test_dir,master_file_name)
+    master1_full_path = os.path.join(test_dir,master1_file_name)
+    master2_full_path = os.path.join(test_dir,master2_file_name)
     
     def setUp(self):
-        self.file = nexus.create_file(self.det_full_path,True)
-        self.root = self.file.root()
-        nexus.xml_to_nexus(detector_file_struct,self.root)
-        self.root.close()
-        self.file.close()
+        f = nexus.create_file(self.det_full_path,True)
+        r = f.root()
+        nexus.xml_to_nexus(detector_file_struct,r)
+        r.close()
+        f.close()
 
-        self.file = nexus.create_file(self.master_full_path,True)
-        self.root = self.file.root()
-        nexus.xml_to_nexus(master_file_struct,self.root)
+        f = nexus.create_file(self.master1_full_path,True)
+        r = f.root()
+        nexus.xml_to_nexus(master_file_struct_1,r)
+        r.close()
+        f.close()
+        
+        f = nexus.create_file(self.master2_full_path,True)
+        r = f.root()
+        nexus.xml_to_nexus(master_file_struct_2,r)
+        r.close()
+        f.close()
 
 
     def tearDown(self):
-        self.root.close()
-        self.file.close()
+        pass
 
 
-    def test_link_from_path(self):
+    def test_link_group_from_path(self):
         """
         Test link creation from a path. The target is only specified by its
         path. 
         """
-        detector_group = nexus.get_object(self.root,
-                          "/:NXentry/:NXinstrument/:NXdetector")
+        f = nexus.open_file(self.master1_full_path,readonly=False)
+        r = f.root()
+        instrument_group = nexus.get_object(r,"/:NXentry/:NXinstrument")
 
-        nexus.link("external_link_test_detector.nxs://entry/instrument/detector/data",
-                   detector_group,"data")
+        nexus.link("external_link_test_detector.nxs://entry/instrument/mca",
+                   instrument_group,"detector")
 
-        d = detector_group["data"]
-        self.assertEqual(d.name,"data")
-        self.assertEqual(d.dtype,"uint16")
-        self.assertEqual(d.path,"/entry:NXentry/instrument:NXinstrument/detector:NXdetector/data")
+        d = instrument_group["detector"]
+        self.assertEqual(d.name,"mca")
+        self.assertEqual(d.path,"/entry:NXentry/instrument:NXinstrument/mca:NXdetector")
 
-        data = nexus.get_object(self.root,"/:NXentry/:NXdata")
+        data = nexus.get_object(r,"/:NXentry/:NXdata")
         d = data["plot_data"]
+
+    def test_link_field_from_path(self):
+        
+        f = nexus.open_file(self.master2_full_path,readonly=False)
+        r = f.root()
+        detector_group = nexus.get_object(r,"/:NXentry/:NXinstrument/:NXdetector")
+
+        nexus.link("external_link_test_detector.nxs://entry/instrument/mca/data",
+                   detector_group,"mca_data")
+
+        d = detector_group["mca_data"]
+        self.assertEqual(d.name,"data")
+        self.assertEqual(d.path,"/entry:NXentry/instrument:NXinstrument/mca:NXdetector/data")
+
+        data = nexus.get_object(r,"/:NXentry/:NXdata")
+        d = data["plot_data"]
+
 
         
 
