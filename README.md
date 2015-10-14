@@ -1,9 +1,9 @@
 # Python PNI 
 
-Python wrapper for the *libpniio* and *libpnicore* C++ libraries. 
+Python wrapper for the *libpniio* and *libpnicore* C++ libraries. The wrapper
+supports Python 2.X and 3.X.
 
 ## Installation
-
 
 ### Required packages
 
@@ -38,4 +38,12 @@ $ python setup.py build_sphinx
 
 The resulting documentation can be found below `buil/sphinx/html` in the root
 directory of the source distribution.
+
+Finally, the package can be tested using 
+
+```
+$ python setup.py test 
+```
+
+For Python3 just replace python with python3 in the above instructions.
 
