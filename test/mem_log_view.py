@@ -5,20 +5,26 @@ from matplotlib import pyplot as plt
 import numpy
 import sys
 import argparse
+import pandas
+
 
 #-----------------------------------------------------------------------------
 # setting up and parse command line arguments
 #-----------------------------------------------------------------------------
 parser = argparse.ArgumentParser(description="Memory consumption analyzer")
-parser.add_argument("-i","--ignore",dest="ignore",
-                    default=0,
-                    type=int,
-                    action="store",
-                    help="number of data points to ignore (from the start)",
-                    metavar="NIGNORE")
 parser.add_argument("logfile",action="store",type=str,
                     help="Logfile to read",
                     metavar="LOGFILE")
+parser.add_argument("--start",dest="start_index",action="store",type=int,
+                    help="Start index for doing the analysis",
+                    default=0,
+                    metavar="STARTIDX",
+                    )
+parser.add_argument("--stop",dest="stop_index",action="store",type=int,
+                    help="Stop index for analysis",
+                    default=-1,
+                    metavar="STOPIDX"
+                    )
 
 args = parser.parse_args()
 
@@ -30,26 +36,15 @@ if not args.logfile:
 #-----------------------------------------------------------------------------
 # load data from the file
 #-----------------------------------------------------------------------------
-data = numpy.loadtxt(args.logfile)
-run  = data[args.ignore:-1,0]
-tmem = data[args.ignore:-1,1]
-rmem = data[args.ignore:-1,2]
-
-#-----------------------------------------------------------------------------
-# print some very basic statistics 
-#-----------------------------------------------------------------------------
-print("start memory : ",rmem[0])
-print("stop  memory : ",rmem[-1])
-print("bytes per run: ",(rmem[-1]-rmem[0])/rmem.size)
-
-#-----------------------------------------------------------------------------
-# plot the results
-#-----------------------------------------------------------------------------
-plt.figure()
-plt.plot(run,rmem)
-plt.title("{logfile}\n resident memory consumption".format(logfile=args.logfile))
-plt.xlabel("runs")
-plt.ylabel("memory (bytes)")
+col_names=["run","total size","resident","share","text","lib","data",
+           "dirty pages"]
+df = pandas.read_table(args.logfile,names=col_names,sep=" ",index_col="run")
+df = df[args.start_index:args.stop_index]
+print(df.describe())
+df.pop("text")
+df.pop("dirty pages")
+df.pop("lib")
+df.plot(subplots=True)
 plt.show()
 
 
