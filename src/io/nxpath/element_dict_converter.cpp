@@ -122,22 +122,13 @@ PyObject *get_pyobject_from_string(const string &s)
 void dict_to_nxpath_element_converter::construct(PyObject *obj_ptr,
                                                  rvalue_type *data)
 {
+    dict d(handle<>(borrowed(obj_ptr)));
     //build the key objects 
-    PyObject *name_key = get_pyobject_from_string("name");
-    PyObject *base_key = get_pyobject_from_string("base_class");
 
-    //retrieve the content of the dictionary 
-    PyObject *name_item = PyDict_GetItem(obj_ptr,name_key);
-    PyObject *base_item = PyDict_GetItem(obj_ptr,base_key);
-
-    string name = get_string_from_pyobject(name_item);
-    string base_class = get_string_from_pyobject(base_item); 
+    string name = extract<string>(d["name"]);
+    string base_class = extract<string>(d["base_class"]);
 
     void *storage = ((storage_type*)data)->storage.bytes;
     new (storage) element_type(name,base_class);
     data->convertible = storage;
-
-    //remove all temporary python objects
-    Py_XDECREF(name_key);
-    Py_XDECREF(base_key);
 }
