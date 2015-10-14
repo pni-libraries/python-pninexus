@@ -64,8 +64,7 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
     if(!PyDict_Check(obj_ptr)) return nullptr;
 
     //check the elements of the dictionary
-    Py_XINCREF(obj_ptr);
-    handle<> h(obj_ptr);
+    handle<> h(borrowed(obj_ptr));
     dict d(h);
     if((!d.has_key("name")) || (!d.has_key("base_class")))
         return nullptr;
