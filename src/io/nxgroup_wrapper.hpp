@@ -335,6 +335,11 @@ class nxgroup_wrapper
             return pni::io::nx::get_path(_group);
         }
 
+        void remove(const pni::core::string &name) const
+        {
+            _group.remove(name);
+        }
+
 };
 
 static const char __group_open_docstr[] = 
@@ -445,6 +450,7 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("__len__",&wrapper_type::__len__)
         .def("__iter__",&wrapper_type::__iter__,__group_childs_docstr)
         .def("increment",&wrapper_type::increment)
+        .def("remove",&wrapper_type::remove)
 #if PY_MAJOR_VERSION >= 3
         .def("__next__",&wrapper_type::next)
 #else
