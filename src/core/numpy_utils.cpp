@@ -68,8 +68,9 @@ namespace numpy
             throw type_error(EXCEPTION_RECORD,
                     "Python object must be a numpy array or scalar!");
 
+        int pytype = PyArray_TYPE((const PyArrayObject*)o.ptr());
         //select the data type to use for writing the array data
-        switch(PyArray_TYPE((const PyArrayObject*)o.ptr()))
+        switch(pytype)
         {
             case NPY_UINT8:      return type_id_t::UINT8;
             case NPY_INT8:       return type_id_t::INT8;
@@ -79,6 +80,8 @@ namespace numpy
             case NPY_INT32:      return type_id_t::INT32;
             case NPY_UINT64:     return type_id_t::UINT64;
             case NPY_INT64:      return type_id_t::INT64;
+            case NPY_LONGLONG:   return type_id_t::INT64;
+            case NPY_ULONGLONG:  return type_id_t::UINT64;
             case NPY_FLOAT32:    return type_id_t::FLOAT32;
             case NPY_FLOAT64:    return type_id_t::FLOAT64;
             case NPY_LONGDOUBLE: return type_id_t::FLOAT128;
