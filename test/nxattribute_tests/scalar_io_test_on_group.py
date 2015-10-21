@@ -287,3 +287,23 @@ class scalar_io_test_on_group_bool(scalar_io_test_on_group_uint8):
 #=============================================================================
 class scalar_io_test_on_group_string(scalar_io_test_on_group_uint8):
     _typecode = "string"
+    
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_scalar_write_read_method(self):
+        """
+        Write a numpy array of size 1 to a scalar attribute using the write()
+        and read() methods.
+        """
+        
+        a = self.root.attributes.create("scalar_array_read_write",
+                                         self._typecode)
+
+        #write data from a numpy array with a single element 
+        a.write(self.input_array_data)
+        output_data = a.read()
+        self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
+                               self.scalar_type(output_data))
+
+        self.assertRaises(SizeMismatchError,a.write,
+                          numpy.array(["hello","world"]))
+        self.assertRaises(TypeError,a.write,1)

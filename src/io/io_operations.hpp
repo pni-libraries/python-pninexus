@@ -348,6 +348,15 @@ void write_data(const WTYPE &writeable,const boost::python::object data)
 
     size_t size   = numpy::get_size(data);
 
+    if((writeable.type_id() == type_id_t::STRING)&&
+       (numpy::type_id(data) != type_id_t::STRING))
+    {
+        throw type_error(EXCEPTION_RECORD,
+                "Cannot write string data to a non-string field "
+                "or attribute!");
+    }
+    
+
     if(size == writeable.size())
         write_full_data(writeable,data);
     else if((size == 1) && (writeable.size()!=1))

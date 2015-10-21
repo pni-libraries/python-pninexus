@@ -284,3 +284,24 @@ class scalar_io_test_bool(scalar_io_test_uint8):
 #=============================================================================
 class scalar_io_test_string(scalar_io_test_uint8):
     _typecode = "string"
+   
+    #-------------------------------------------------------------------------
+    def test_scalar_array_to_scalar_write_read_method(self):
+        """
+        Write a numpy array of size 1 to a scalar field using the write()
+        and read() methods.
+        """
+        
+        f = self.root.create_field("scalar_array_read_write",self._typecode)
+
+        #write data from a numpy array with a single element 
+        f.write(self.input_array_data)
+        output_data = f.read()
+        self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
+                               self.scalar_type(output_data))
+
+        self.assertRaises(SizeMismatchError,f.write,
+                          numpy.array(["hello","world"]))
+
+        self.assertRaises(TypeError,f.write,1)
+
