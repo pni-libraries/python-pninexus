@@ -6,7 +6,7 @@ class issue_6_regression_test(unittest.TestCase):
     test_dir = os.path.split(__file__)[0]
     file_name = "issue_6_regression_test.nxs"
     full_path = os.path.join(test_dir,file_name)
-    data_value = 12235556L
+    data_value = 9223372036854775807
 
     def setUp(self):
         self.gf = nexus.create_file(self.full_path,True)
