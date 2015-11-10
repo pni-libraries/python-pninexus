@@ -191,7 +191,11 @@ void wrap_nxattribute_manager(const pni::core::string &name)
         .def("__getitem__",&wrapper_type::get_by_index)
         .def("__len__",&wrapper_type::size)
         .def("__iter__",&wrapper_type::__iter__)
+#if PY_MAJOR_VERSION >= 3
+        .def("__next__",&wrapper_type::next)
+#else
         .def("next",&wrapper_type::next)
+#endif
         .def("increment",&wrapper_type::increment)
         .def("create",&wrapper_type::create,("name","type",arg("shape")=list(),
                      arg("overwrite")=false))

@@ -6,3 +6,5 @@ from .mdim_io_test_on_group import *
 from .mdim_io_test_on_field import *
 from .mdim_io_test_non_array_on_group import *
 from .mdim_io_test_non_array_on_field import *
+from .iteration_test_on_field import *
+from .iteration_test_on_group import *
