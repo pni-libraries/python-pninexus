@@ -213,15 +213,28 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
     //rank of the field. This is due to the fact that the tuple can contain
     //one ellipsis which spans over several dimensions.
 
+    size_t field_rank = field.rank();
+    auto field_shape = field.template shape<shape_t>();
+
+    //solves problems when the underlying HDF5 dataset is using a scalar 
+    //dataspace.
+    //This was introduced for fixing issue 12 which showed up when reading 
+    //attributes from NeXus files created at SOLEIL.
+    if(!field_rank)
+    {
+        field_rank = 1;
+        field_shape = shape_t{1};
+    }
+
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
-    if(len(t) > boost::python::ssize_t(field.rank()))
+    if(len(t) > boost::python::ssize_t(field_rank))
         throw shape_mismatch_error(EXCEPTION_RECORD,
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");
     else
-        ellipsis_size = field.rank()-(len(t)-1);
+        ellipsis_size = field_rank-(len(t)-1);
 
     /*this loop has tow possibilities:
     -> there is no ellipse and the rank of the field is larger than the size of
@@ -231,14 +244,14 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
     i - runs over all dimensions of the input field. 
     j - runs over all values of the tuple
     */
-    for(size_t i=0,j=0;i<field.rank();i++,j++)
+    for(size_t i=0,j=0;i<field_rank;i++,j++)
     {
         //-------------------manage a single index-----------------------------
         extract<boost::python::ssize_t> index(t[j]);
         if(index.check())
         {
             if(index<0)
-                selection.push_back(pni::core::slice(field.template shape<shape_t>()[i]+index));
+                selection.push_back(pni::core::slice(field_shape[i]+index));
             else
                 selection.push_back(pni::core::slice(index));
 
@@ -256,7 +269,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
             if(__start.check())
             {
                 start = __start();
-                if(start < 0) start = field.template shape<shape_t>()[i]+start;
+                if(start < 0) start = field_shape[i]+start;
             }
             else
                 start = 0;
@@ -273,10 +286,10 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
             if(__stop.check())
             {
                 stop = __stop();
-                if(stop < 0) stop = field.template shape<shape_t>()[i]+stop;
+                if(stop < 0) stop = field_shape[i]+stop;
             }
             else
-                stop = field.template shape<shape_t>()[i];
+                stop = field_shape[i];
 
             selection.push_back(pni::core::slice(start,stop,step));
             continue;
@@ -297,7 +310,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
         {
             has_ellipsis = true;
             while(i<j+ellipsis_size)
-                selection.push_back(pni::core::slice(0,field.template shape<shape_t>()[i++]));
+                selection.push_back(pni::core::slice(0,field_shape[i++]));
 
             //here we have to do some magic: as the value of i is already
             //increased to the next position simply continueing the loop would
