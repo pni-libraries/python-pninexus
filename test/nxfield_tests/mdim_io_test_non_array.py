@@ -2,6 +2,7 @@ import unittest
 import numpy
 import numpy.random as random
 import os
+import sys
 
 import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import nxfile
@@ -13,23 +14,7 @@ from pni.io.nx.h5 import open_file
 from pni.core import ShapeMismatchError
 from pni.core import SizeMismatchError
 from .. data_generator import random_generator_factory
-
-types=["uint8","int8","uint16","int16","uint32","int32","uint64","int64",
-       "float32","float64","float128","complex32","complex64","complex128",
-       "string","bool"]
-
-scalars={"uint8":numpy.uint8,"int8":numpy.int8,
-        "uint16":numpy.uint16,"int16":numpy.int16,
-        "uint32":numpy.uint32,"int32":numpy.int32,
-        "uint64":numpy.uint64,"int64":numpy.int64,
-        "float32":numpy.float32,"float64":numpy.float64,
-        "float128":numpy.float128,
-        "complex32":numpy.complex64,
-        "complex64":numpy.complex128,
-        "complex128":numpy.complex256,
-        "string":numpy.str_,"bool":numpy.bool_}
-         
-
+from .. import io_test_utils as iotu
 
 #implementing test fixture
 class mdim_io_test_non_array_uint8(unittest.TestCase):
@@ -48,6 +33,11 @@ class mdim_io_test_non_array_uint8(unittest.TestCase):
         self.full_path = os.path.join(self.file_path,self.file_name)
         self.gf = create_file(self.full_path,overwrite=True)
         
+        if iotu.is_discrete_type(self._typecode):
+            self.check_equal = self.assertEqual
+        else:
+            self.check_equal = self.assertAlmostEqual
+
         self.gf.close()
     
     #-------------------------------------------------------------------------
@@ -55,7 +45,7 @@ class mdim_io_test_non_array_uint8(unittest.TestCase):
         self.gf = open_file(self.full_path,readonly=False)
         self.root = self.gf.root()
         self.generator = random_generator_factory(self._typecode)
-        self.scalar_type = scalars[self._typecode]
+        self.scalar_type = iotu.scalars[self._typecode]
 
     #-------------------------------------------------------------------------
     def tearDown(self):
@@ -81,15 +71,10 @@ class mdim_io_test_non_array_uint8(unittest.TestCase):
             self.assertEqual(output_data.dtype,self.scalar_type)
 
         for (i,o) in zip(input_data.flat,output_data.flat):
-            if self._typecode == "string":
-                self.assertEqual(self.scalar_type(o),self.scalar_type(i))
-            else:
-                self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
+            self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
         self.assertRaises(SizeMismatchError,
                           f.write,numpy.ones((100,20),dtype=self.scalar_type))
-        #self.assertRaises(SizeMismatchError,f.write,
-        #                  numpy.ones((11,20),dtype=self.scalar_type))
 
 
     #-------------------------------------------------------------------------
@@ -111,7 +96,7 @@ class mdim_io_test_non_array_uint8(unittest.TestCase):
             self.assertEqual(output_data.dtype,self.scalar_type)
 
         for (i,o) in zip(input_data.flat,output_data.flat):
-            self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
+            self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
     #-------------------------------------------------------------------------
     def test_mdim_to_mdim_strip(self):
@@ -129,13 +114,7 @@ class mdim_io_test_non_array_uint8(unittest.TestCase):
             self.assertEqual(output_data.shape,(f.shape[1],))
 
             for (o,i) in zip(output_data.flat,input_data.flat):
-                self.assertAlmostEqual(self.scalar_type(o),
-                                       self.scalar_type(i))
-
-    
-    
-
-
+                self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
 
 #=============================================================================
@@ -197,3 +176,14 @@ class mdim_io_test_non_array_bool(mdim_io_test_non_array_uint8):
 #=============================================================================
 class mdim_io_test_non_array_string(mdim_io_test_non_array_uint8):
     _typecode = "string"
+
+if sys.version_info[0]<=2:
+    class mdim_io_test_non_array_unicode(mdim_io_test_non_array_string):
+        _type_code="string"
+
+        #-------------------------------------------------------------------------
+        def setUp(self):
+            self.gf = open_file(self.full_path,readonly=False)
+            self.root = self.gf.root()
+            self.generator = random_generator_factory("unicode")
+            self.scalar_type = iotu.scalars[self._typecode]
