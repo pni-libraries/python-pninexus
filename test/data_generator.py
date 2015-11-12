@@ -90,6 +90,7 @@ if sys.version_info[0]>=3:
 else:
     _typecodes += "string"
     _type_desc["string"] = type_desc(np.dtype("string"),np.str_)
+    _type_desc["unicode"] = type_desc(np.dtype("unicode"),np.unicode_)
 
 
 #-----------------------------------------------------------------------------
@@ -174,6 +175,33 @@ def bool_generator_func(min_val=0,max_val=100,shape=None):
 
 #-----------------------------------------------------------------------------
 
+def rand_string_generator(min_val=0,max_val=10):
+    """return a random string 
+
+    Returns a random string of minimum length min_val and maximum length
+    max_val. 
+    The string will contain only printable characters from the ASCII range 
+    33 to 126.
+
+    Args:
+        min_val (int): minimum length of the random string
+        max_val (int): maximum length of the random string
+    """
+    
+    #generate the random length of the string
+    length_generator = int_generator_func(min_val,max_val)
+    char_index_generator = int_generator_func(0,len(_character_list))
+
+    for string_length in length_generator:
+        o = ''
+        for (char_index,char_key) in zip(range(string_length),char_index_generator):
+            o += _character_list[char_key]
+
+        yield o
+
+
+#-----------------------------------------------------------------------------
+
 def string_generator_func(min_val=0,max_val=10,shape=None):
     """Generate a random string
 
@@ -184,6 +212,9 @@ def string_generator_func(min_val=0,max_val=10,shape=None):
     The string will contain only printable characters from the ASCII range 
     33 to 126.
 
+    For Python 2.X this function will generate standard Python strings 
+    and for Python 3.X unicode strings will be gnerated.
+
     Args:
         min_val (int): minimum length of the random string
         max_val (int): maximum length of the random string
@@ -191,10 +222,6 @@ def string_generator_func(min_val=0,max_val=10,shape=None):
     Return:
         str: random string whose length is within min_val and max_val
     """
-    #generate the random length of the string
-    length_generator = int_generator_func(min_val,max_val)
-    char_index_generator = int_generator_func(0,len(_character_list))
-
     if shape:
         nstr = np.array(shape).prod()
     else:
@@ -204,13 +231,47 @@ def string_generator_func(min_val=0,max_val=10,shape=None):
 
         str_list = []
         #generate the initial list of strings requested by the user
-        for (str_index,strlen) in zip(range(nstr),length_generator):
-            
-            o = ''
-            for (char_index,char_key) in zip(range(strlen),char_index_generator):
-                o += _character_list[char_key]
+        for (str_index,string) in zip(range(nstr),rand_string_generator(min_val,max_val)):
+            str_list.append(string)
+   
+        #if the list has only one element we return this element otherwise 
+        #the list is converted to a numpy array of appropriate shape
+        if len(str_list) > 1:
+            yield np.array(str_list).reshape(shape)
+        else:
+            yield str_list[0]
 
-            str_list.append(o)
+def ustring_generator_func(min_val=0,max_val=10,shape=None):
+    """Generate a random string
+
+    Generate a random string. The meaning of the arguments min_val and 
+    max_val is slightly change for strings. As the length of the string is 
+    a random number too, min_val and max_val denote the minimum and 
+    maximum string length respectively. 
+    The string will contain only printable characters from the ASCII range 
+    33 to 126.
+
+    For Python 2.X this function will generate standard Python strings 
+    and for Python 3.X unicode strings will be gnerated.
+
+    Args:
+        min_val (int): minimum length of the random string
+        max_val (int): maximum length of the random string
+
+    Return:
+        str: random string whose length is within min_val and max_val
+    """
+    if shape:
+        nstr = np.array(shape).prod()
+    else:
+        nstr = 1
+   
+    while True:
+
+        str_list = []
+        #generate the initial list of strings requested by the user
+        for (str_index,string) in zip(range(nstr),rand_string_generator(min_val,max_val)):
+            str_list.append(unicode(string))
    
         #if the list has only one element we return this element otherwise 
         #the list is converted to a numpy array of appropriate shape
@@ -247,8 +308,13 @@ def random_generator_factory(typecode):
         return complex_generator_func
     elif tdesc.dtype.kind == 'b':
         return bool_generator_func
-    elif tdesc.dtype.kind == 'S' or tdesc.dtype.kind == 'U':
+    elif tdesc.dtype.kind == 'S':
         return string_generator_func
+    elif tdesc.dtype.kind == 'U':
+        if sys.version_info[0]<=2:
+            return ustring_generator_func
+        else:
+            return string_generator_func
     else:
         TypeError,'unsupported type code'
 

@@ -30,6 +30,7 @@ extern "C"{
 
 #include <boost/python.hpp>
 #include "bool_converter.hpp"
+#include "unicode_converter.hpp"
 #include "numpy_scalar_converter.hpp"
 
 extern void exception_registration();
@@ -57,6 +58,7 @@ BOOST_PYTHON_MODULE(_core)
     bool_t_to_python_converter();
     python_to_bool_t_converter();
     numpy_scalar_converter();
+    unicode_to_string_converter();
 
     //register exception translators
     exception_registration();

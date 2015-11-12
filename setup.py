@@ -45,6 +45,7 @@ common_sources = ["src/core/numpy_utils.cpp",
 
 core_files = ["src/core/bool_converter.cpp",
               "src/core/numpy_scalar_converter.cpp",
+              "src/core/unicode_converter.cpp",
               "src/core/errors.cpp",
               "src/core/_core.cpp"]+common_sources
 
