@@ -2,6 +2,7 @@ import unittest
 import numpy
 import numpy.random as random
 import os
+import sys
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
@@ -28,6 +29,12 @@ class mdim_io_test_non_array_on_group_uint8(unittest.TestCase):
         self.gf = create_file(self.full_path,overwrite=True)
         
         self.gf.close()
+        
+        if iotu.is_discrete_type(self._typecode):
+            self.check_equal = self.assertEqual
+        else:
+            self.check_equal = self.assertAlmostEqual
+    
     
     #-------------------------------------------------------------------------
     def setUp(self):
@@ -60,10 +67,7 @@ class mdim_io_test_non_array_on_group_uint8(unittest.TestCase):
             self.assertEqual(output_data.dtype,self.scalar_type)
 
         for (i,o) in zip(input_data.flat,output_data.flat):
-            if self._typecode == "string":
-                self.assertEqual(self.scalar_type(o),self.scalar_type(i))
-            else:
-                self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
+            self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
         self.assertRaises(SizeMismatchError,
                           a.write,numpy.ones((100,20),dtype=self.scalar_type))
@@ -88,7 +92,7 @@ class mdim_io_test_non_array_on_group_uint8(unittest.TestCase):
             self.assertEqual(output_data.dtype,self.scalar_type)
 
         for (i,o) in zip(input_data.flat,output_data.flat):
-            self.assertAlmostEqual(self.scalar_type(o),self.scalar_type(i))
+            self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
     #-------------------------------------------------------------------------
     def test_mdim_to_mdim_strip(self):
@@ -106,8 +110,7 @@ class mdim_io_test_non_array_on_group_uint8(unittest.TestCase):
             self.assertEqual(output_data.shape,(a.shape[1],))
 
             for (o,i) in zip(output_data.flat,input_data.flat):
-                self.assertAlmostEqual(self.scalar_type(o),
-                                       self.scalar_type(i))
+                self.check_equal(self.scalar_type(o),self.scalar_type(i))
 
     
 #=============================================================================
@@ -169,3 +172,15 @@ class mdim_io_test_non_array_on_group_bool(mdim_io_test_non_array_on_group_uint8
 #=============================================================================
 class mdim_io_test_non_array_on_group_string(mdim_io_test_non_array_on_group_uint8):
     _typecode = "string"
+
+#=============================================================================
+if sys.version_info[0]<=2:
+    class mdim_io_test_non_array_on_group_unicode(mdim_io_test_non_array_on_group_string):
+        _type_code="string"
+
+        #-------------------------------------------------------------------------
+        def setUp(self):
+            self.gf = open_file(self.full_path,readonly=False)
+            self.root = self.gf.root()
+            self.generator = random_generator_factory('unicode')
+            self.scalar_type = iotu.scalars[self._typecode]

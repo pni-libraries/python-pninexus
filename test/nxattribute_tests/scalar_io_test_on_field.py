@@ -2,6 +2,7 @@ import unittest
 import numpy
 import numpy.random as random
 import os
+import sys
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
@@ -26,6 +27,11 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         self.gf = create_file(self.full_path,overwrite=True)
         self.gf.root().create_field("data",self._typecode)
         self.gf.close()
+        
+        if iotu.is_discrete_type(self._typecode):
+            self.check_equal = self.assertEqual
+        else:
+            self.check_equal = self.assertAlmostEqual
     
     #-------------------------------------------------------------------------
     def setUp(self):
@@ -40,6 +46,7 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
     #-------------------------------------------------------------------------
     def tearDown(self):
         self.root.close()
+        self.field.close()
         self.gf.close()
     
     #-------------------------------------------------------------------------
@@ -55,8 +62,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a.write(self.input_data)
         output_data = a.read()
 
-        self.assertAlmostEqual(self.scalar_type(output_data),
-                               self.scalar_type(self.input_data))
+        self.check_equal(self.scalar_type(output_data),
+                         self.scalar_type(self.input_data))
 
     #-------------------------------------------------------------------------
     def test_scalar_array_to_scalar_write_read_method(self):
@@ -71,8 +78,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         #write data from a numpy array with a single element 
         a.write(self.input_array_data)
         output_data = a.read()
-        self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
-                               self.scalar_type(output_data))
+        self.check_equal(self.scalar_type(self.input_array_data[0]),
+                         self.scalar_type(output_data))
 
         self.assertRaises(SizeMismatchError,a.write,numpy.ones((10)))
 
@@ -90,8 +97,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a[...] = self.input_data
         output_data = a[...]
 
-        self.assertAlmostEqual(self.scalar_type(output_data),
-                               self.scalar_type(self.input_data))
+        self.check_equal(self.scalar_type(output_data),
+                         self.scalar_type(self.input_data))
 
    
     #-------------------------------------------------------------------------
@@ -107,8 +114,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a[...] = self.input_array_data
         output_data = a[...]
 
-        self.assertAlmostEqual(self.scalar_type(output_data),
-                               self.scalar_type(self.input_array_data[0]))
+        self.check_equal(self.scalar_type(output_data),
+                         self.scalar_type(self.input_array_data[0]))
         
 
     #-------------------------------------------------------------------------
@@ -125,8 +132,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
             a[index] = input_data
             output_data = a[index]
 
-            self.assertAlmostEqual(self.scalar_type(output_data),
-                                   self.scalar_type(input_data))
+            self.check_equal(self.scalar_type(output_data),
+                             self.scalar_type(input_data))
 
     #-------------------------------------------------------------------------
     def test_scalar_array_to_1Dfield_partial_individual(self):
@@ -142,8 +149,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
             a[index] = numpy.array([input_data])
             output_data = a[index]
 
-            self.assertAlmostEqual(self.scalar_type(output_data),
-                                   self.scalar_type(input_data))
+            self.check_equal(self.scalar_type(output_data),
+                             self.scalar_type(input_data))
 
     #-------------------------------------------------------------------------
     def test_scalar_to_1Dfield_broadcast(self):
@@ -157,8 +164,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a[...] = self.input_data
 
         for output_data in a[...]:
-            self.assertAlmostEqual(self.scalar_type(output_data),
-                                   self.scalar_type(self.input_data))
+            self.check_equal(self.scalar_type(output_data),
+                             self.scalar_type(self.input_data))
 
     #-------------------------------------------------------------------------
     def test_scalar_array_to_1Dfield_broadcast(self):
@@ -172,8 +179,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a[...] = self.input_array_data[...]
 
         for output_data in a[...]:
-            self.assertAlmostEqual(self.scalar_type(output_data),
-                                   self.scalar_type(self.input_array_data[0]))
+            self.check_equal(self.scalar_type(output_data),
+                             self.scalar_type(self.input_array_data[0]))
 
     #-------------------------------------------------------------------------
     def test_scalar_to_2Dfield_partial_individual(self):
@@ -190,8 +197,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
                 input_data = next(self.generator())
                 a[i,j] = input_data
                 output_data = a[i,j]
-                self.assertAlmostEqual(self.scalar_type(output_data),
-                                       self.scalar_type(input_data))
+                self.check_equal(self.scalar_type(output_data),
+                                 self.scalar_type(input_data))
 
     #-------------------------------------------------------------------------
     def test_scalar_from_2Dfield_partial_strips(self):
@@ -208,8 +215,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
             a[index,...] = input_data
 
             for output_data in a[index,...].flat:
-                self.assertAlmostEqual(self.scalar_type(output_data),
-                                       self.scalar_type(input_data))
+                self.check_equal(self.scalar_type(output_data),
+                                 self.scalar_type(input_data))
 
 
     #-------------------------------------------------------------------------
@@ -224,8 +231,8 @@ class scalar_io_test_on_field_uint8(unittest.TestCase):
         a[...] = self.input_data
         
         for output_data in a[...].flat:
-            self.assertAlmostEqual(self.scalar_type(output_data),
-                                   self.scalar_type(self.input_data))
+            self.check_equal(self.scalar_type(output_data),
+                             self.scalar_type(self.input_data))
 
 
 
@@ -302,9 +309,26 @@ class scalar_io_test_on_field_string(scalar_io_test_on_field_uint8):
         #write data from a numpy array with a single element 
         a.write(self.input_array_data)
         output_data = a.read()
-        self.assertAlmostEqual(self.scalar_type(self.input_array_data[0]),
+        self.check_equal(self.scalar_type(self.input_array_data[0]),
                                self.scalar_type(output_data))
 
         self.assertRaises(SizeMismatchError,a.write,
                           numpy.array(["hello","world"]))
         self.assertRaises(TypeError,a.write,1);
+
+#=============================================================================
+if sys.version_info[0]<=2:
+    class scalar_io_test_on_field_unicode(scalar_io_test_on_field_string):
+        _type_code="string"
+
+        #-------------------------------------------------------------------------
+        def setUp(self):
+            self.gf = open_file(self.full_path,readonly=False)
+            self.root = self.gf.root()
+            self.generator = random_generator_factory('unicode')
+            self.input_data = next(self.generator())
+            self.input_array_data = numpy.array([next(self.generator())])
+            self.scalar_type = iotu.scalars[self._typecode]
+            self.field = self.root["data"]
+
+
