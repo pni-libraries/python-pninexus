@@ -7,4 +7,5 @@ from .nxattribute_tests import *
 from .nxpath_tests import *
 from .link_tests import *
 from .regression_tests import *
+from .xml_to_nexus_tests import *
 
