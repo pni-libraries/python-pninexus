@@ -182,7 +182,42 @@ this limitation is not a serious problem.
 Creating links
 ~~~~~~~~~~~~~~
 
+Links can be created using the `link` tag. External as well as internal links
+are supported. An external link can be made like this 
 
+.. code-block:: xml
+
+    <group name="entry" type="NXentry">
+        <group name="instrument" type="NXinstrument">
+            <group name="detector" type="NXdetector">
+                <field name="data" type="uint32" units="cps">
+                    <dimensions rank="2">
+                        <dim index="1" value="0"/>
+                        <dim index="2" value="1024"/>
+                    </dimensions>
+                </field>
+            </group>
+        </group>
+
+        <group name="data" type="NXdata">
+            <link name="data" target="/entry/instrument/detector/data"/>
+        </group>
+    </group>
+
+The link below the `NXdata` group refers to the `data` field in the detector
+class. 
+
+The only thing we have to change for an external link is the target path. 
+We can modify the above example for the case where the detector data is stored
+in a different file like this 
+
+.. code-block:: xml
+
+    <group name="entry" type="NXentry">
+        <group name="data" type="NXdata">
+            <link name="data" target="detector_file.nxs://entry/instrument/detector/data"/>
+        </group>
+    </group>
 
 From XML to NeXus
 -----------------
@@ -234,9 +269,4 @@ If only fields of size one should be written we can use the following approach
 
     nexus.xml_to_nexus(xml_struct,r,write_pred)
 
-
-From NeXus to XML
------------------
-
-In some situations the structure of NeXus file has to be made aware 
 
