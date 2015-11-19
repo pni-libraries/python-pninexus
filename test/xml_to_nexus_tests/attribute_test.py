@@ -81,5 +81,5 @@ class attribute_test(unittest.TestCase):
     def test_mdim_attribute(self):
         xml_to_nexus(mdim_attribute,self.field)
         a = get_object(self.root,"/data@vector")
-        self.assertTrue(check_attribute(a,"vector","float64", (3,)))
+        self.assertTrue(check_attribute(a,"vector","float32", (3,)))
 

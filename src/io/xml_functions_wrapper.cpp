@@ -26,5 +26,5 @@
 
 void create_xml_wrappers()
 {
-    create_xml_function_wrappers<pni::io::nx::h5::nxgroup>();
+    create_xml_function_wrappers<pni::io::nx::h5::nxobject>();
 }
