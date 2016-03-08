@@ -106,7 +106,7 @@ template<nximp_code IMPID> void wrap_nxlink()
         .add_property("target_path",&nxlink_class::target_path)
         .add_property("status",&nxlink_class::status)
         .add_property("is_valid",&nxlink_class::is_valid)
-        .add_property("link_type",&nxlink_class::type)
+        .add_property("type",&nxlink_class::type)
         .def("resolve",&nxlink_class::resolve);
 
 

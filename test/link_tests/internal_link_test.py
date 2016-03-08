@@ -67,4 +67,10 @@ class internal_link_test(unittest.TestCase):
         self.assertEqual(d.dtype,"uint16")
         self.assertEqual(d.path,"/entry:NXentry/data:NXdata/plot_data")
 
-        
+    def test_unresolvable_link(self):
+        data = nexus.get_object(self.root,"/:NXentry/:NXdata")
+        nexus.link("/entry/instrument/monochromator/energy",data,"data")
+        l = nexus.get_object(self.root,"/:NXentry/:NXdata/data")
+        self.assertTrue(isinstance(l,nexus.nxlink))
+        self.assertEqual(l.status,nexus.nxlink_status.INVALID)
+        self.assertEqual(l.type,nexus.nxlink_type.SOFT)
