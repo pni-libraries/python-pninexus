@@ -73,7 +73,8 @@ BOOST_PYTHON_MODULE(_nxh5)
     typedef nxobject_to_python_converter<h5::nxobject,
                                          h5::nxgroup,
                                          h5::nxfield,
-                                         h5::nxattribute> object_converter_type;
+                                         h5::nxattribute,
+                                         h5::nxlink> object_converter_type;
     typedef nxgroup_to_python_converter<h5::nxgroup> group_converter_type;
     typedef nxfield_to_python_converter<h5::nxfield> field_converter_type;
     typedef nxattribute_to_python_converter<h5::nxattribute>
@@ -92,6 +93,7 @@ BOOST_PYTHON_MODULE(_nxh5)
     to_python_converter<h5::nxfield,field_converter_type>();
     to_python_converter<h5::nxattribute,attribute_converter_type>();
     wrap_link<h5::nxgroup,h5::nxfield>();
+    wrap_nxlink<nximp_code::HDF5>();
 
     //wrap NX-attribute object
     create_nxattribute_wrappers();

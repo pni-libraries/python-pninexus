@@ -9,6 +9,7 @@ from pni.io.nx.h5 import get_object
 from pni.io import ObjectError
 from pni.io.nx.h5 import xml_to_nexus
 from pni.io.nx.h5 import get_class
+from pni.io.nx.h5 import nxlink
 
 internal_link=\
 """
@@ -42,7 +43,8 @@ master_entry=\
 """
 <group name="entry_2" type="NXentry">
     <group name="data" type="NXdata">
-        <link name="data" target="detector.nxs://entry/instrument/detector/data"/>
+        <link name="data"
+        target="detector.nxs://entry/instrument/detector/data"/>
     </group>
 </group>
 """
@@ -103,6 +105,7 @@ class link_test(unittest.TestCase):
         self.assertTrue(check_field(f,"data","uint32",(1,)))
 
     def test_external_link(self):
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         xml_to_nexus(master_entry,self.root)
 
         f = get_object(self.root,"/entry_2/:NXdata/data")

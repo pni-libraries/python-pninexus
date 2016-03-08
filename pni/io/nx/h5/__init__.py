@@ -43,6 +43,9 @@ from ._nxh5 import set_class
 from ._nxh5 import set_unit
 from ._nxh5 import get_path
 from ._nxh5 import link
+from ._nxh5 import nxlink
+from ._nxh5 import nxlink_status
+from ._nxh5 import nxlink_type
 
 
 #import helper methods

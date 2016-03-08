@@ -31,6 +31,8 @@
 #include <pni/io/nx/algorithms/as_group.hpp>
 #include <pni/io/nx/algorithms/as_field.hpp>
 #include <pni/io/nx/algorithms/as_attribute.hpp>
+#include <pni/io/nx/algorithms/as_link.hpp>
+#include <pni/io/nx/algorithms/is_link.hpp>
 
 #include "nxfield_wrapper.hpp"
 #include "nxgroup_wrapper.hpp"
@@ -57,18 +59,21 @@ template<
          typename OTYPE,
          typename GTYPE,
          typename FTYPE,
-         typename ATYPE
+         typename ATYPE,
+         typename LTYPE
         > 
 struct nxobject_to_python_converter
 {
-    typedef OTYPE object_type;
-    typedef GTYPE group_type;
-    typedef FTYPE field_type;
-    typedef ATYPE attribute_type;
+    using object_type    = OTYPE;
+    using group_type     = GTYPE;
+    using field_type     = FTYPE;
+    using attribute_type = ATYPE;
+    using link_type      = LTYPE;
 
-    typedef nxfield_wrapper<field_type>         field_wrapper_type;
-    typedef nxgroup_wrapper<group_type>         group_wrapper_type;
-    typedef nxattribute_wrapper<attribute_type> attribute_wrapper_type;
+    using field_wrapper_type = nxfield_wrapper<field_type>;
+    using group_wrapper_type = nxgroup_wrapper<group_type>;
+    using attribute_wrapper_type = nxattribute_wrapper<attribute_type>;
+    using link_wrapper_type = class_<link_type>;
 
     //------------------------------------------------------------------------
     //!
@@ -88,6 +93,8 @@ struct nxobject_to_python_converter
             return incref(object(field_wrapper_type(as_field(v))).ptr());
         else if(is_attribute(v))
             return incref(object(attribute_wrapper_type(as_attribute(v))).ptr());
+        else if(is_link(v))
+            return incref(object(as_link(v)).ptr());
         else 
             throw type_error(EXCEPTION_RECORD,
                              "Conversion failed - unknown object type!");

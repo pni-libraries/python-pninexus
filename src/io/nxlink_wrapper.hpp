@@ -26,6 +26,7 @@
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
 #include <pni/io/nx/nxlink.hpp>
+#include <pni/io/nx/link.hpp>
 
 #include "nxgroup_wrapper.hpp"
 #include "nxfield_wrapper.hpp"
@@ -81,5 +82,34 @@ void wrap_link()
     def("link",&wrapper_type::link_object);
 }
 
+template<nximp_code IMPID> void wrap_nxlink()
+{
+    using namespace boost::python;
+    using nxlink_class = nxlink<IMPID>; 
+
+    using namespace pni::io::nx;
+    enum_<nxlink_status>("nxlink_status")
+        .value("VALID",nxlink_status::VALID)
+        .value("INVALID",nxlink_status::INVALID);
+
+    enum_<nxlink_type>("nxlink_type")
+        .value("HARD",nxlink_type::HARD)
+        .value("SOFT",nxlink_type::SOFT)
+        .value("EXTERNAL",nxlink_type::EXTERNAL)
+        .value("ATTRIBUTE",nxlink_type::ATTRIBUTE);
+    
+
+    class_<nxlink_class>("nxlink")
+        .def(init<const nxlink_class &>())
+        .add_property("filename",&nxlink_class::filename)
+        .add_property("name",&nxlink_class::name)
+        .add_property("target_path",&nxlink_class::target_path)
+        .add_property("status",&nxlink_class::status)
+        .add_property("is_valid",&nxlink_class::is_valid)
+        .add_property("link_type",&nxlink_class::type)
+        .def("resolve",&nxlink_class::resolve);
+
+
+}
 
 
