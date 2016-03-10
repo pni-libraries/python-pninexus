@@ -60,9 +60,22 @@ The ``pni.io`` package
 The ``pni.io.nx`` package
 =========================
 
-.. automodule:: pni.io.nx
-   :members: 
+.. py:module:: pni.io.nx
+
+.. autoclass:: pni.io.nx.nxpath
+   :members:
    :undoc-members:
+
+.. autofunction:: pni.io.nx.make_relative
+
+.. autofunction:: pni.io.nx.make_path
+
+.. autofunction:: pni.io.nx.match
+.. autofunction:: pni.io.nx.join
+.. autofunction:: pni.io.nx.is_root_element
+.. autofunction:: pni.io.nx.is_empty
+.. autofunction:: pni.io.nx.has_name
+.. autofunction:: pni.io.nx.has_class
 
 
 

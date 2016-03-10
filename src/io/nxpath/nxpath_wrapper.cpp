@@ -22,6 +22,7 @@
 //
 
 #include <boost/python.hpp>
+#include <boost/python/docstring_options.hpp>
 #include <pni/core/types.hpp>
 #include <pni/io/nx/nxpath.hpp>
 #include "../errors.hpp"
@@ -78,9 +79,74 @@ nxpath_iterator get_iterator(const nxpath &p)
     return nxpath_iterator(p.begin(),p.end());
 }
 
+static const char *nxpath_attribute_doc = 
+"Property setting and getting an attribute name\n"
+"\n"
+"This read/write property allows to set the attribute section of a NeXus"
+" path.\n"
+"\n"
+".. code-block:: python\n"
+"\n"
+"    path = make_path(\"/:NXentry/:NXinstrument/NXdetector/data\")\n"
+"    print(path)\n"
+"    #output /:NXentry/:NXinstrument/NXdetector/data\n"
+"    path.attribute = \"units\"\n"
+"    print(path)\n"
+"    #output /:NXentry/:NXinstrument/:NXdetector/data@units\n";
+
+static const char *nxpath_front_doc = 
+"Property returning the first element in the path\n"
+"\n"
+".. code-block:: python\n"
+"\n"
+"    p = make_path(\"/:NXentry/:NXinstrument/:NXdetector/data\")\n"
+"    print(p.front)\n"
+"    #output {'name':'/','base_class':'NXroot'}\n";
+
+static const char *nxpath_back_doc = 
+"Property returning the last element in the path\n"
+"\n"
+".. code-block:: python\n"
+"\n"
+"    p = make_path(\"/:NXentry/:NXinstrument/:NXdetector/data\")\n"
+"    print(p.back)\n"
+"    #output {'name':'data','base_class':''}\n";
+
+static const char *nxpath_size_doc = 
+"Property returning the size of the path\n"
+"\n"
+"The size of a path is the number of elements in the object section. "
+"In other words the number of elements without the optional filename "
+"and attribute.\n";
+
+
+static const char* make_path_doc = 
+"Create a path object from a string\n"
+"\n"
+"Create a new path object from its string representation.\n"
+"\n"
+":param str path_str: string representation of the path\n"
+":return: new path object\n"
+":rtype: instance of :py:class:`nxpath`\n";
+
+static const char *nxpath_filename_doc = 
+"Property to set and get the filename section of the path\n"
+"\n"
+"This read/write property can be used to set the filename section of a NeXus"
+" path.\n"
+"\n"
+".. code-block:: python\n"
+"\n"
+"    p =  make_path(\"/:NXentry/:NXinstrument/:NXdetector/data\")\n"
+"    print(p)\n"
+"    #output /:NXentry/:NXinstrument/:NXdetector/data\n"
+"    p.filename = \"test.nxs\"\n"
+"    print(p)\n"
+"    #output test.nxs://:NXentry/:NXinstrument/:NXdetector/data\n";
 
 void wrap_nxpath()
 {
+    docstring_options doc_options(true,true);
     //------------------iterator wrapper--------------------------------------
     class_<nxpath_iterator>("nxpath_iterator")
         .def("increment",&nxpath_iterator::increment)
@@ -97,11 +163,11 @@ void wrap_nxpath()
     void (nxpath::*set_attribute)(const string &) = &nxpath::attribute;
     string (nxpath::*get_attribute)() const = &nxpath::attribute;
     class_<nxpath>("nxpath")
-        .add_property("front",&nxpath::front)
-        .add_property("back",&nxpath::back)
-        .add_property("size",&nxpath::size)
-        .add_property("filename",get_filename,set_filename)
-        .add_property("attribute",get_attribute,set_attribute)
+        .add_property("front",&nxpath::front,nxpath_front_doc)
+        .add_property("back",&nxpath::back,nxpath_back_doc)
+        .add_property("size",&nxpath::size,nxpath_size_doc)
+        .add_property("filename",get_filename,set_filename,nxpath_filename_doc)
+        .add_property("attribute",get_attribute,set_attribute,nxpath_attribute_doc)
         .def("_push_back",&nxpath::push_back)
         .def("_push_front",&nxpath::push_front)
         .def("_pop_back",&nxpath::pop_back)
@@ -111,7 +177,7 @@ void wrap_nxpath()
         .def("__iter__",&get_iterator);
 
 
-    def("make_path",nxpath::from_string);
+    def("make_path",nxpath::from_string,make_path_doc,args("path_str"));
 
     bool (*nxpath_match_str_str)(const string &,const string &) = &match;
     bool (*nxpath_match_path_path)(const nxpath &,const nxpath &) = &match;

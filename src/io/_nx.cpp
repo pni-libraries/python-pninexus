@@ -26,6 +26,7 @@ extern "C"{
 }
 
 #include <boost/python.hpp>
+#include <boost/python/docstring_options.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -46,6 +47,7 @@ extern void wrap_nxpath();
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nx)
 {
+    //docstring_options doc_options(true,false);
     //register exception translators
     nxpath_element_to_dict_converter();
     dict_to_nxpath_element_converter();

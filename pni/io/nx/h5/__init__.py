@@ -55,6 +55,9 @@ from ._nxh5 import __create_file
 from ._nxh5 import __open_file
 from ._nxh5 import __create_files
 
+#add the path property to the nxlink class
+nxlink.path = property(lambda self: get_path(self.parent)+"/"+self.name)
+
 
 def create_file(fname,overwrite=False):
     """create a new NeXus file

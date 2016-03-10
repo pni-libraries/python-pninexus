@@ -9,7 +9,7 @@ Welcome to libpnicore Python bindings's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth:2 
 
    installation
    users_guide

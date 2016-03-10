@@ -41,42 +41,15 @@ functionality import the package with something like this
     
     import pni.io.nx.h5 as nexus
 
-Addressing objects in NeXus: the path
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. toctree::
-    :maxdepth: 1
-
+    :maxdepth: 2 
+   
     nexus_path
-
-
-The basic objects
-~~~~~~~~~~~~~~~~~
-
-These chapters describe the fundamental objects that mad up a NeXus 
-file. 
-
-.. toctree::
-    :maxdepth: 1
-    
     nexus_files
     nexus_groups
     nexus_fields
     nexus_attributes
-
-Linking objects
-~~~~~~~~~~~~~~~
-
-.. toctree::
-    :maxdepth: 1
-
     nexus_links
-
-Advanced NeXus
---------------
-
-.. toctree::
-    :maxdepth: 1
-
     nexus_xml
 

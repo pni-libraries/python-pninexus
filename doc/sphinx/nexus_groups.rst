@@ -1,3 +1,4 @@
+===================
 Working with groups
 ===================
 
@@ -5,7 +6,7 @@ Groups are the fundamental containers in Nexus. They can hold other groups as
 well as fields. 
 
 Creation
---------
+========
 
 To create a new group use the :py:meht
 There are several ways how to create groups and fields. The most natural one is
@@ -54,7 +55,7 @@ However, if the intermediate groups exist the above call will succeed
 
 
 Inquery
--------
+=======
 
 In order to determine the number of (direct) children of a group we can 
 either use the :py:attr:`size` attribute of an instance of 
@@ -83,7 +84,7 @@ Attribute name         Description
 =====================  ====================================================
 
 Accessing a groups children
----------------------------
+===========================
 
 The direct children of a group can be accessed by its `[]` operator where 
 the key can be either the index of the child 
@@ -99,6 +100,20 @@ or the name of the child
 
     for name in root_group.names():
         print(root_group[name].name)
+
+The return value of the `[]` operator is either an instance of 
+:py:class:`nxfield`, :py:class:`nxgroup`, or :py:class:`nxlink`. The latter is
+returned in situations where a child is a link which cannot be resolved. 
+Thus it is possible to investigate the target of the link and its current
+status. 
+
+.. code-block:: python
+
+    for name in root_group.names():
+        child = root_group[name]
+
+        if isinstance(child,nexus.nxlink):
+            print("link ",child.name," cannot be resolved")
 
 Iteration
 ---------

@@ -74,3 +74,4 @@ class internal_link_test(unittest.TestCase):
         self.assertTrue(isinstance(l,nexus.nxlink))
         self.assertEqual(l.status,nexus.nxlink_status.INVALID)
         self.assertEqual(l.type,nexus.nxlink_type.SOFT)
+        self.assertEqual(l.path,"/entry:NXentry/data:NXdata/data")

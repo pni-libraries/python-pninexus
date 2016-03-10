@@ -7,21 +7,37 @@ Nexus files support two kinds of links
 * *internal* links between objects within the same file
 * and *external* links between objects in different files
 
-Both types of links are supported via the :py:func:`link` function. Links are
-an appropriate tool to avoid data duplication. A typical application for links
-are the fields in the *NXdata* instance below *NXentry*. *NXdata* provides data
-recorded during a measurement intended for easy plotting. Virtually all data is
-stored already in other locations of the NeXus file. Without links we would
-have to copy this data to *NXdata* to make it available to a plotting
-procedure which would be an awefull waste of time and space in particular when
-the amount of data is getting large. 
+Links are an appropriate tool to avoid data duplication. A typical application
+for links are the fields in the *NXdata* instance below *NXentry*. *NXdata*
+provides data recorded during a measurement intended for easy plotting.  In
+virtually all cases the data which should go to *NXdata* is already stored in
+other places within the same NeXus file.  Without links we would have to copy
+this data to *NXdata* which would be an awefull waste of time and space in
+particular when the amount of data is getting large (think of a 3D image block
+recorded with a 2D detector). 
 
 With links we can simply provide references to the original data below
 *NXdata*. 
 
-.. figure:: link.svg
-    :align: center
-    :width: 30%
+.. only:: latex
+
+    .. figure:: link.pdf
+        :align: center
+        :width: 75%
+        
+        The internal links in *NXdata* point to already existing data in 
+        other locations within the same file. This avoids data duplication
+        within a single file.
+
+.. only:: html
+
+    .. figure:: link.svg
+        :align: center
+        :width: 100%
+        
+        The internal links in *NXdata* point to already existing data in 
+        other locations within the same file. This avoids data duplication
+        within a single file.
 
 In the above example the *data* and *position* field are members of the 
 *NXdetector* and *NXsample* group respectively. However, by means of links 
@@ -42,19 +58,39 @@ The drawbacks of the former solution are obvious: we would need to copy all the
 data to a different file. However, with *external*-links we can do something
 like this 
 
-.. figure:: external_link.svg
-    :align: center
-    :width: 50%
+.. only:: latex
+    
+    .. figure:: external_link.pdf
+        :align: center
+        :width: 100%
+
+        With an external link we can avoid copying data between two individual
+        NeXus files. The data in the detector file can be accessed easily from
+        within the master file.
+
+.. only:: html
+
+    .. figure:: external_link.svg
+        :align: center
+        :width: 100%
+        
+        With an external link we can avoid copying data between two individual
+        NeXus files. The data in the detector file can be accessed easily from
+        within the master file.
+
 
 Here the detector group can be accessed from the *master*-file as if it would
 be a part of it. The link is totally transparent to the user. 
 
+Creating links 
+==============
+
 Internal links
 --------------
-From the
-point of the library interface, internal and external links work exactly the
-same, just the path is
-different. 
+Links are created using the :py:func:`link` function.
+The signature of the function is the same for internal and external links. 
+Only the path to the link target differs.
+An internal links can be created linke this
 
 .. code-block:: python
     
@@ -70,11 +106,11 @@ different.
 The :py:func:`link` function creates now a link to the *data* field below
 *NXdata* with name *data*. The important thing to note here is that the path
 pointing to the link target must not contain elements that consist only of
-types. This due to the fact, that the linking feature is provided by the HDF5
-library which has no idea about NeXus semantics. 
-The object the HDF5 path referes to must not necessarily  exist at link time. 
-Alternatively, within a file we can do a link of an existing object. In this
-case the above example would look like this
+types (path elements like ``/:NXentry/`` for instance. This due to the fact,
+that the linking feature is provided by the HDF5 library which has no idea
+about NeXus semantics.  The object the HDF5 path referes to must not
+necessarily  exist at link time.  Alternatively, within a file we can do a link
+of an existing object. In this case the above example would look like this
 
 .. code-block:: python
     
@@ -94,8 +130,9 @@ the call to :py:func:`get_object` successful.
 External links
 --------------
 
-External links can be done like in the first example but with the filename
-section at the beginning of the path 
+Creating an external links is quite similar to the first example shown above 
+for internal links. The only difference is that the path to the link target
+starts with a filename
 
 .. code-block:: python
     
@@ -108,5 +145,37 @@ section at the beginning of the path
 
     nexus.link("detector.nxs://entry/instrument/detector/data",detector,"data")
 
-For external links relative paths to the file should be used. Otherwise movin
+For external links relative paths to the file should be used. Otherwise moving
 the files to a different file system can cause unresolvable links!
+
+
+Using links in existing files
+=============================
+
+Links can also be used to create more robust parsers for NeXus files. 
+In many cases files may contain unresolvable links (typically external ones). 
+As an alternative to iterating over a group one could use either 
+:py:func:`get_links` or :py:func:`get_links_recursive` in order to obtain 
+a list of links in the file and investigate their status before accessing the 
+objects the links refer to. 
+
+.. code-block:: python
+
+    import pni.io.nx.h5 as nexus
+
+    f = nexus.open_file("scan_000001.nxs")
+    entry = nexus.get_object(f.root(),"/:NXentry")
+    links = nexus.get_links_recursive(entry)
+
+    broken_links = [link for link in links if link.status == nexus.nxlink_status.INVALID]
+    objects = [link.resolve() for link in links if link.status == nexus.nxlink_status.VALID]
+
+:py:func:`get_links_recursive` returns a list of all links (instances of
+:py:class:`nxlink`) below :py:obj:`entry` and its subgroups. Since links do not
+access the objects they are refering to no exception will be thrown if one of
+the links cannot be resolved due to a missing target.  The list
+:py:obj:`borken_links` holds all links which are not resolveable in the file
+while :py:obj:`objects` the objects refered to by all valid links. 
+
+:py:func:`get_links` returns only a list of the direct children of a group. 
+

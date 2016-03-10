@@ -118,6 +118,9 @@ void wrap_link()
     def("link",&wrapper_type::link_object);
 }
 
+static const pni::core::string get_links_doc = 
+"Return a list of links to the direct members of parent";
+
 template<nximp_code IMPID> void wrap_nxlink()
 {
     using namespace boost::python;
@@ -136,7 +139,7 @@ template<nximp_code IMPID> void wrap_nxlink()
         .value("ATTRIBUTE",nxlink_type::ATTRIBUTE);
 
     
-    def("get_links",&get_link_wrapper_type::get_links);
+    def("get_links",&get_link_wrapper_type::get_links,get_links_doc.c_str());
     def("get_links_recursive",&get_link_wrapper_type::get_links_recursive);
     
 
@@ -148,6 +151,7 @@ template<nximp_code IMPID> void wrap_nxlink()
         .add_property("status",&nxlink_class::status)
         .add_property("is_valid",&nxlink_class::is_valid)
         .add_property("type",&nxlink_class::type)
+        .add_property("parent",&nxlink_class::parent)
         .def("resolve",&nxlink_class::resolve);
 
 
