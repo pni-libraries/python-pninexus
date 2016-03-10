@@ -73,6 +73,42 @@ struct link_wrapper
 
 };
 
+template<nximp_code IMPID>
+struct get_link_wrapper
+{
+    using link_type = typename nxobject_trait<IMPID>::link_type; 
+    using group_type = typename nxobject_trait<IMPID>::group_type;
+    using group_wrapper = nxgroup_wrapper<group_type>;
+    using link_vector = std::vector<link_type>;
+
+    static boost::python::list vector_to_list(const link_vector &v)
+    {
+        using namespace boost::python;
+        list l;
+
+        for(auto link: v) l.append(link);
+
+        return l;
+    }
+
+    static boost::python::list get_links(const group_wrapper &parent)
+    {
+        //group_wrapper p_wrapped = extract<group_wrapper>(parent);
+        auto links = pni::io::nx::get_links<link_vector>(static_cast<const
+                group_type&>(parent));
+        return vector_to_list(links);
+
+    }
+
+    static boost::python::list get_links_recursive(const group_wrapper &parent)
+    {
+        auto links =
+            pni::io::nx::get_links_recursive<link_vector>(static_cast<const group_type &>(parent));
+        return vector_to_list(links);
+    }
+
+};
+
 template<typename GTYPE,typename FTYPE>
 void wrap_link()
 {
@@ -86,6 +122,7 @@ template<nximp_code IMPID> void wrap_nxlink()
 {
     using namespace boost::python;
     using nxlink_class = nxlink<IMPID>; 
+    using get_link_wrapper_type = get_link_wrapper<IMPID>;
 
     using namespace pni::io::nx;
     enum_<nxlink_status>("nxlink_status")
@@ -97,6 +134,10 @@ template<nximp_code IMPID> void wrap_nxlink()
         .value("SOFT",nxlink_type::SOFT)
         .value("EXTERNAL",nxlink_type::EXTERNAL)
         .value("ATTRIBUTE",nxlink_type::ATTRIBUTE);
+
+    
+    def("get_links",&get_link_wrapper_type::get_links);
+    def("get_links_recursive",&get_link_wrapper_type::get_links_recursive);
     
 
     class_<nxlink_class>("nxlink")

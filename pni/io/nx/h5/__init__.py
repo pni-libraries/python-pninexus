@@ -46,6 +46,8 @@ from ._nxh5 import link
 from ._nxh5 import nxlink
 from ._nxh5 import nxlink_status
 from ._nxh5 import nxlink_type
+from ._nxh5 import get_links_recursive
+from ._nxh5 import get_links
 
 
 #import helper methods
