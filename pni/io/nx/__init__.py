@@ -45,12 +45,47 @@ def get_name_and_base_class_from_args(*args,**kwargs):
 
 #=============================================================================
 def _nxpath_push_back(self,*args,**kwargs):
+    """Append element to the end of the object section
+   
+    This method takes either two positional arguments
+
+    .. code-block:: python
+        
+        path.push_back("entry","NXentry")
+
+    Where the first one is the *name* and the optional second argument 
+    the *base class* of the path element. 
+
+    Alternatively there are two keyword arguments 
+
+    .. code-block:: python
+
+        path.push_back(name="entry",base_class="NXentry")
+
+    which would have the same effect. Finally one can also use a single string 
+    to describe a new element
+
+    .. code-block:: python
+
+        path.push_back("entry:NXentry")
+        path.push_back(":NXinstrument")
+
+    It must be noted that only a single element can be appended with 
+    :py:meth:`push_back`.
+    """
 
     (name,base_class) = get_name_and_base_class_from_args(*args,**kwargs)
     self._push_back({"name":name,"base_class":base_class})
 
 #=============================================================================
 def _nxpath_push_front(self,*args,**kwargs):
+    """Prepends an element to a path
+
+    This method works like :py:meth:`push_back` but prepends an element 
+    in front of the first one. The arguments work the same as for 
+    :py:meth:`push_back`.
+
+    """
 
     (name,base_class) = get_name_and_base_class_from_args(*args,**kwargs)
 
@@ -58,6 +93,9 @@ def _nxpath_push_front(self,*args,**kwargs):
 
 #=============================================================================
 def _nxpath_pop_front(self):
+    """Remove first element from the object section of the path
+    
+    """
     if not len(self):
         raise IndexError("Object section of path is empty!")
 
@@ -65,6 +103,9 @@ def _nxpath_pop_front(self):
 
 #=============================================================================
 def _nxpath_pop_back(self):
+    """Remove last element from the object section
+    
+    """
     if not len(self): 
         raise IndexError("Object section of path is empty!")
 

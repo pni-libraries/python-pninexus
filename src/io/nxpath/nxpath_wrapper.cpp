@@ -144,6 +144,62 @@ static const char *nxpath_filename_doc =
 "    print(p)\n"
 "    #output test.nxs://:NXentry/:NXinstrument/:NXdetector/data\n";
 
+
+static const char *is_root_element_doc = 
+"Checks if an element is the root element \n"
+"\n"
+"Returns true if the element passed as the argument is the root element of \n"
+"the NeXus tree. This is the case if the element dictionary has a key \n"
+"*name* of with value '/' and a key *base_class* with value 'NXroot'.\n"
+"\n"
+":param dict path_element: the element dictionary\n"
+":return: true if the element describes the root element\n"
+":rtype: bool\n";
+
+static const char *has_name_doc = 
+"True if the element has a name \n"
+"\n"
+"Returns true if the element dictionary passed has a non-empty *name* key.\n"
+"\n"
+":param dict path_element: the path element to check\n"
+":return: true if the *name* key has a non-empty string value\n"
+":rtype: bool\n";
+
+static const char *has_class_doc = 
+"True if the element has a non-empty class\n"
+"\n"
+"Returns true if the element dictionary passed has a non-emtpy *base_class*\n"
+" key.\n"
+"\n"
+":param dict path_element: the path element to check\n"
+":return: true if the *base_class* key has a non-empty string value\n"
+":rtype: bool\n";
+
+static const char *is_empty_doc = 
+"True if the path is empty\n"
+"\n"
+"An instance of :py:class:`nxpath` is considered empty if \n"
+"* it has no file-section\n"
+"* no attribute section\n"
+"* and no object section\n"
+"\n"
+"If all this conditions are holding this function will return true.\n"
+"\n"
+":param nxpath path: the path to check\n"
+":return: true if the path is empty, false otherwise\n"
+":rtype: bool\n";
+
+static const char *is_absolute_doc  = 
+"Returns true if the path is absolute\n"
+"\n"
+"If the first element in the object section is the root element the path is \n"
+"is considered to be absolute. \n"
+"\n"
+":param nxpath path: path to check for absolutness\n"
+":return: true if the path is absolut, false otherwise\n"
+":rtype: bool\n";
+
+
 void wrap_nxpath()
 {
     docstring_options doc_options(true,true);
@@ -185,11 +241,11 @@ void wrap_nxpath()
     def("match",nxpath_match_path_path);
     def("join",&join);
 
-    def("is_root_element",&is_root_element);
-    def("is_absolute",&is_absolute);
-    def("is_empty",&is_empty);
-    def("has_name",&has_name);
-    def("has_class",&has_class);
+    def("is_root_element",&is_root_element,is_root_element_doc,args("path_element"));
+    def("is_absolute",&is_absolute,is_absolute_doc,args("path"));
+    def("is_empty",&is_empty,is_empty_doc,args("path"));
+    def("has_name",&has_name,has_name_doc,args("path_element"));
+    def("has_class",&has_class,has_class_doc,args("path_element"));
 
     nxpath (*nxpath_make_relative_str_str)(const string &,const string &) = 
         &make_relative;
