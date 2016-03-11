@@ -121,6 +121,27 @@ void wrap_link()
 static const pni::core::string get_links_doc = 
 "Return a list of links to the direct members of parent";
 
+static const pni::core::string nxlink_filename_doc = 
+"read only property returning the name of the file the links belongs to";
+
+static const pni::core::string nxlink_name_doc = 
+"read only property returning the name of the link";
+
+static const pni::core::string nxlink_target_path_doc = 
+"read only property returning the path to the links target";
+
+static const pni::core::string nxlink_status_doc = 
+"read only property returning the status of the link";
+
+static const pni::core::string nxlink_is_valid_doc = 
+"read only property returning :py:const:`True` if the link is valid";
+
+static const pni::core::string nxlink_type_doc = 
+"read only property returning the type of the link";
+
+static const pni::core::string nxlink_parent_doc = 
+"read only property returning the parent object of the link";
+
 template<nximp_code IMPID> void wrap_nxlink()
 {
     using namespace boost::python;
@@ -145,13 +166,13 @@ template<nximp_code IMPID> void wrap_nxlink()
 
     class_<nxlink_class>("nxlink")
         .def(init<const nxlink_class &>())
-        .add_property("filename",&nxlink_class::filename)
-        .add_property("name",&nxlink_class::name)
-        .add_property("target_path",&nxlink_class::target_path)
-        .add_property("status",&nxlink_class::status)
-        .add_property("is_valid",&nxlink_class::is_valid)
-        .add_property("type",&nxlink_class::type)
-        .add_property("parent",&nxlink_class::parent)
+        .add_property("filename",&nxlink_class::filename,nxlink_filename_doc.c_str())
+        .add_property("name",&nxlink_class::name,nxlink_name_doc.c_str())
+        .add_property("target_path",&nxlink_class::target_path,nxlink_target_path_doc.c_str())
+        .add_property("status",&nxlink_class::status,nxlink_status_doc.c_str())
+        .add_property("is_valid",&nxlink_class::is_valid,nxlink_is_valid_doc.c_str())
+        .add_property("type",&nxlink_class::type,nxlink_type_doc.c_str())
+        .add_property("parent",&nxlink_class::parent,nxlink_parent_doc.c_str())
         .def("resolve",&nxlink_class::resolve);
 
 

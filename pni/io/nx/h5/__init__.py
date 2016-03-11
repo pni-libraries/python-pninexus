@@ -67,15 +67,11 @@ def create_file(fname,overwrite=False):
     In order to overwrite an existing file of equal name set the 
     overwrite flag to True.
 
-    Args:
-        fname (string):    the name of the file
-        overwrite (bool):  overwrite flag (default False)
-
-    Returns:
-        A new instance of nxfile.
-
-    Raises:
-        pni.core.FileError in case of problems
+    :param str fname:    the name of the file
+    :param bool overwrite:  overwrite flag (default False)
+    :return:  new file
+    :rtype: instance of :py:class:`nxfile`
+    :raises :py:exc:`pni.core.FileError`: in case of problems
     """
     return __create_file(fname,overwrite)
 
@@ -86,46 +82,54 @@ def create_files(fname,split_size,overwrite=False):
     for the create_file function the file name argument is a C-style 
     format string which includes a running index for the individual files. 
 
-    A valid filename could look like this 
-        data_file.%05i.nxs
+    A valid filename could look like this *data_file.%05i.nxs*
+    which would lead to a series of files named
 
-    which would lead to file names like 
+    .. code-block:: bash
+
         data_file.00001.nxs
         data_file.00002.nxs
         data_file.00003.nxs
 
 
-    Args: 
-        fname (string):    Format string encoding the name of the files
-        split_size (long): Size of the individual files
-        overwrite (bool):  overwrite flag (default False)
-
-    Returns: 
-        A new instance of nxfile
-
-    Raises:
-        pni.core.FileError in case of problems
-     
+    :param str fname:    Format string encoding the name of the files
+    :param long split_size: Size of the individual files
+    :param bool overwrite:  overwrite flag (default False)
+    :return: a new instance of nxfile
+    :rtype: instance of :py:class:`nxfile`
+    :raises :py:exc:`pni.core.FileError`: in case of problems
     """
 
     return __create_files(fname,split_size,overwrite)
 
 def open_file(fname,readonly=True):
-    """
-    open_file(fname,readonly=True):
-    Opens an existing Nexus file.
+    """ Opens an existing Nexus file.
 
-    arguments:
-    fname ........ name of the file to open
-    readonly ..... if True the file will be in read-only mode
+    *fname* can either be a simple path to a file or a C-style format string 
+    as described for py::func:`create_files`. In the later case a series of
+    NeXus files is opened.
 
-    return:
-    an instance of NXFile
+    :param str fname: name of the file to open
+    :param bool readonly: if True the file will be in read-only mode
+    :return: new file
+    :rtype: instance of :py:class:`nxfile`
     """
     return __open_file(fname,readonly)
 
 
 def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
+    """Create a new field
+    
+    Create a new field below this group. 
+
+    :param str name: the name of the new field
+    :param str type: a numpy type string determining the data type of the field
+    :param tuple shape: number of elements along each dimension
+    :param tuple chunk: the chunk shape of the field
+    :param filter: a filter object to compress the data
+    :return: instance of a new field
+    :rtype: instance of :py:class:`nxfield`
+    """
 
     return self.__create_field(name,type,shape,chunk,filter)
 

@@ -304,13 +304,61 @@ static const char __field_shape_docstr[] =
 "Read only property providing the shape of the field as tuple";
 
 static const char __field_grow_docstr[]=
-"Grow the field along dimension 'dim' by 'ext' elements.\n\n"
-"Required input arguments:\n"
-"\tdim .............. dimension along which to grow\n"
-"\text .............. number of elements by which to grow\n"
+"Grow the field \n"
+"\n"
+"Grow the field along dimension 'dim' by 'ext' elements.\n"
+"\n"
+":param long dim: dimension along which to grow\n"
+":param long ext: number of elements by which to grow\n"
 ;
 
-static const char __field_size_docstr[] = "total number of elements in the field\n";
+static const pni::core::string nxfield_filename_doc = 
+"Read only property returning the name of the file the field belongs to\n";
+
+static const pni::core::string nxfield_name_doc = 
+"Read only property returning the name of the field\n";
+
+static const pni::core::string nxfield_parent_doc = 
+"Read only property returning the parent group of this field\n";
+
+static const pni::core::string nxfield_size_doc = 
+"Read only property returing the number of elements this field holds\n";
+
+static const pni::core::string nxfield_attributes_doc = 
+"Read only property with the attribute manager for this field\n";
+
+static const pni::core::string nxfield_path_doc = 
+"Read only property returning the NeXus path for this field\n";
+
+static const pni::core::string nxfield_close_doc = 
+"Close this field";
+
+static const pni::core::string nxfield_is_valid_doc = 
+"Read only property returning :py:const:`True` if this instance is a valid"
+" NeXus object";
+
+static const pni::core::string nxfield_read_doc = 
+"Read data from field\n"
+"\n"
+"Read all data stored in a field and return it as a numpy array of appropriate"
+"type.\n"
+"\n"
+":return: data stored in the field\n"
+":rtype: numpy array\n"
+;
+
+static const pni::core::string nxfield_write_doc = 
+"Write data to field\n"
+"\n"
+"Write all data stored in the *data* argument to the field. *data* must "
+"be a numpy array of appropriate shape. The type of the the numpy array "
+"must be convertible to the type of the field. \n"
+"\n"
+":param numpy.ndarray data: the data which should be written to disk\n"
+":raises :py:exc:`ShapeMismatchError`: if the shape of the field does not match\n"
+":raises :py:exc:`SizeMismatchError`: if the size of field and *data* do not match\n"
+;
+
 
 //! 
 //! \ingroup wrappers
@@ -329,19 +377,19 @@ template<typename FIELDT> void wrap_nxfield()
         .def(init<>())
         .add_property("dtype",&wrapper_type::type_id,__field_dtype_docstr)
         .add_property("shape",&wrapper_type::shape,__field_shape_docstr)
-        .add_property("size",&wrapper_type::size,__field_size_docstr)
-        .add_property("filename",&wrapper_type::filename)
-        .add_property("name",&wrapper_type::name)
-        .add_property("parent",&wrapper_type::parent)
-        .add_property("is_valid",&wrapper_type::is_valid)
-        .add_property("path",&wrapper_type::path)
-        .def("write",&wrapper_type::write)
-        .def("read",&wrapper_type::read)
+        .add_property("size",&wrapper_type::size,nxfield_size_doc.c_str())
+        .add_property("filename",&wrapper_type::filename,nxfield_filename_doc.c_str())
+        .add_property("name",&wrapper_type::name,nxfield_name_doc.c_str())
+        .add_property("parent",&wrapper_type::parent,nxfield_parent_doc.c_str())
+        .add_property("is_valid",&wrapper_type::is_valid,nxfield_is_valid_doc.c_str())
+        .add_property("path",&wrapper_type::path,nxfield_path_doc.c_str())
+        .def("write",&wrapper_type::write,nxfield_write_doc.c_str())
+        .def("read",&wrapper_type::read,nxfield_read_doc.c_str())
         .def("__getitem__",&wrapper_type::__getitem__)
         .def("__setitem__",&wrapper_type::__setitem__)
         .def("grow",&wrapper_type::grow,(arg("dim")=0,arg("ext")=1),__field_grow_docstr)
-        .def("close",&wrapper_type::close)
-        .def_readonly("attributes",&wrapper_type::attributes)
+        .def("close",&wrapper_type::close,nxfield_close_doc.c_str())
+        .def_readonly("attributes",&wrapper_type::attributes,nxfield_attributes_doc.c_str())
         ;
 }
 

@@ -343,70 +343,67 @@ class nxgroup_wrapper
 };
 
 static const char __group_open_docstr[] = 
-"Opens an existing object. The object is identified by its name (path)."
-"The method tries to figure out which type of object to return by itself.\n\n"
-"Required arguments:\n"
-"\tn............name (path) to the object to open\t\t"
-"Return value:\n"
-"\tinstance of a new object.";
-
-static const char __group_create_group_docstr[] = 
-"Create a new group. The location where the group is created can either be\n"
-"relative to this group (if the name does not start with a /) or absolute\n"
-"(if the groups name starts with a /). In addition the optional keyword-\n"
-"argument 'nxclass' allows setting the NX_class attribute directly during\n"
-"group creation. If 'nxclass' is not set the attribute is not written.\n\n"
-"Required arguments:\n"
-"\tname ............. name (path) of the new group (relative or absolute)\n\n"
-"Optional keyword arguments:\n"
-"\tnxclass .......... sets the NX_class attribute of the group\n\n"
-"Return value:\n"
-"\tnew instance of a group object";
-
-static const char __group_create_field_docstr[] = 
-"Create a new field. The location of the new field can be relative to this\n"
-"group (if name does not start with /) or absolute (name must start with /).\n"
-"If only the two mandatory positional arguments are passed a simple scalar\n"
-"field will be created. To create a multidimensional field 'shape' muste be\n"
-"a sequence object defining the number of elements along each dimension.\n"
-"The 'chunk' argument takes a sequence object which  determines the shape \n"
-"of the data chunks being writen to disk. Finally, the 'filter' takes a \n"
-"filter object for the compression of data stored in the field.\n\n"
-"Required arguments:\n"
-"\tname .................. name (path) of the new field\n"
-"\ttype_code ............. numpy type code for the field\n\n"
-"Optional keyword arguments:\n"
-"\tshape ................. sequence object defining the shape of a multi-\n"
-"\t                        dimensional field\n"
-"\tchunk ................. sequence object defining the chunk shape\n"
-"\tfilter ................ filter object for data compression\n\n"
-"Return value:\n"
-"\tnew instance of a field object";
+"Opens an existing object \n"
+"\n"
+"The object is identified by its name (path).\n"
+"\n"
+":param str n: name (path) to the object to open\n"
+":return: the requested child object \n"
+":rtype: either an instance of :py:class:`nxfield`, :py:class:`nxgroup`, or "
+":py:class:`nxlink`\n"
+":raises KeyError: if the child could not be found\n"
+;
 
 static const char __group_exists_docstr[] = 
-"Checks if the object determined by 'name' exists. 'name' can be either\n"
-"an absolute or relative path. If the object identified by 'name' exists\n"
-"the method returns true, false otherwise.\n\n"
-"Required arguments:\n"
-"\tname .................. name (path) of the object to check\n\n"
-"Return value:\n"
-"\t true if object exists, false otherwise";
+"Checks if the object determined by 'name' exists\n"
+"\n"
+"'name' can be either an absolute or relative path. If the object "
+"identified by 'name' exists the method returns true, false otherwise.\n"
+"\n"
+":param str name: name of the object to check\n"
+":return: :py:const:`True` if the object exists, :py:const:`False` otherwise\n"
+":rtype: bool"
+;
 
-static const char __group_link_docstr[] = 
-"Create an internal or external link. The first argument is the path to the \n"
-"object to which a new link shall be created. The second argument is a path \n"
-"relative to this group or absolute describing the name of the new link. An \n"
-"external link can be created by prefixing 'p' with the name of the file \n"
-"where to find the object: filename:/path/to/object."
-"\n\n"
-"Required arguments:\n"
-"\tp .................... object to link to\n"
-"\tn .................... name of the new link\n" ;
 static const char __group_nchilds_docstr[] = 
 "Read only property providing the number of childs linked below this group.";
 static const char __group_childs_docstr[] = 
 "Read only property providing a sequence object which can be used to iterate\n"
 "over all childs linked below this group.";
+
+static const pni::core::string nxgroup_filename_doc = 
+"Read only property returning the name of the file the group belongs to\n";
+
+static const pni::core::string nxgroup_name_doc = 
+"Read only property returning the name of the group\n";
+
+static const pni::core::string nxgroup_parent_doc = 
+"Read only property returning the parent group of this group\n";
+
+static const pni::core::string nxgroup_size_doc = 
+"Read only property returing the number of links below this group\n";
+
+static const pni::core::string nxgroup_attributes_doc = 
+"Read only property with the attribute manager for this group\n";
+
+static const pni::core::string nxgroup_recursive_doc = 
+"Read only property returning a recursive iterator for this group\n";
+
+static const pni::core::string nxgroup_path_doc = 
+"Read only property returning the NeXus path for this group\n";
+
+static const pni::core::string nxgroup_close_doc = 
+"Close this group";
+
+static const pni::core::string nxgroup_is_valid_doc = 
+"Read only property returning :py:const:`True` if this instance is a valid"
+" NeXus object";
+
+static const pni::core::string nxgroup__get_item_by_index_doc = 
+"Get child by index";
+
+static const pni::core::string nxgroup__get_item_by_name_doc = 
+"Get child by name";
 
 //!
 //! \ingroup wrappers
@@ -437,16 +434,16 @@ template<typename GTYPE> void wrap_nxgroup()
     class_<wrapper_type>("nxgroup")
         .def(init<>())
         .def("open",&wrapper_type::open_by_name,__group_open_docstr)
-        .def("__getitem__",&wrapper_type::open_by_index)
+        .def("__getitem__",&wrapper_type::open_by_index,nxgroup__get_item_by_index_doc.c_str())
         .def("__getitem__",&wrapper_type::open_by_name)
         .def("_create_group",&wrapper_type::create_group,
-                ("n",arg("nxclass")=string()),__group_create_group_docstr)
+                ("n",arg("nxclass")=string()))
         .def("__create_field",&wrapper_type::create_field,
                 ("name","type",arg("shape")=object(),arg("chunk")=object(),
-                 arg("filter")=object()),__group_create_field_docstr)
+                 arg("filter")=object()))
         .def("exists",&wrapper_type::exists,__group_exists_docstr)
-        .def("close",&wrapper_type::close)
-        .add_property("is_valid",&wrapper_type::is_valid)
+        .def("close",&wrapper_type::close,nxgroup_close_doc.c_str())
+        .add_property("is_valid",&wrapper_type::is_valid,nxgroup_is_valid_doc.c_str())
         .def("__len__",&wrapper_type::__len__)
         .def("__iter__",&wrapper_type::__iter__,__group_childs_docstr)
         .def("increment",&wrapper_type::increment)
@@ -456,13 +453,13 @@ template<typename GTYPE> void wrap_nxgroup()
 #else
         .def("next",&wrapper_type::next)
 #endif
-        .add_property("filename",&wrapper_type::filename)
-        .add_property("name",&wrapper_type::name)
-        .add_property("parent",&wrapper_type::parent)
-        .add_property("size",&wrapper_type::__len__)
-        .def_readonly("attributes",&wrapper_type::attributes)
-        .add_property("recursive",&wrapper_type::recursive)
-        .add_property("path",&wrapper_type::path)
+        .add_property("filename",&wrapper_type::filename,nxgroup_filename_doc.c_str())
+        .add_property("name",&wrapper_type::name,nxgroup_name_doc.c_str())
+        .add_property("parent",&wrapper_type::parent,nxgroup_parent_doc.c_str())
+        .add_property("size",&wrapper_type::__len__,nxgroup_size_doc.c_str())
+        .def_readonly("attributes",&wrapper_type::attributes,nxgroup_attributes_doc.c_str())
+        .add_property("recursive",&wrapper_type::recursive,nxgroup_recursive_doc.c_str())
+        .add_property("path",&wrapper_type::path,nxgroup_path_doc.c_str())
         ;
 #pragma GCC diagnostic pop
 }

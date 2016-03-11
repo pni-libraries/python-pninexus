@@ -300,30 +300,53 @@ template<typename ATYPE> class nxattribute_wrapper
 
 //=============================================================================
 static const char __attribute_shape_docstr[] =
-"Read only property providing the shape of the attribute as tuple.\n"
-"The length of the tuple corresponds to the number of dimensions of the\n"
-"attribute and its elements denote the number of elements along each\n"
-"of these dimensions.";
+"Read only property providing the shape of the attribute as tuple.\n";
+
 static const char __attribute_dtype_docstr[] =
 "Read only property providing the data-type of the attribute as numpy\n"
 "type-code";
+
 static const char __attribute_valid_docstr[] =
-"Read only property with a boolean value. If true the attribute is\n"
-"valid. If false the object became invalid and no data can be\n"
-"read or writen from and to it.";
+"Read only property returning :py:const:`True` if the attribute is a "
+"valid NeXus object";
+
 static const char __attribute_name_docstr[] = 
 "A read only property providing the name of the attribute as a string.";
-static const char __attribute_value_docstr[] = 
-"Read/write property to read and write attribute data.";
+
 static const char __attribute_close_docstr[] = 
-"Class method to close an open attribute. Although, attributes are \n"
-"closed automatically when they are no longer referenced. This method\n"
-"can be used to force the closeing an attribute.";
+"Class method to close an open attribute.";
 
 static const char __attribute_write_docstr[] = 
-"Write all the data of an attribute at once. The argument passed to this\n"
-"function is either a single scalar object or an instance of a numpy\n"
-"array.";
+"Write attribute data \n"
+"\n"
+"Writes entire attribute data to disk. The argument passed to this "
+"method is either a single scalar object or an instance of a numpy "
+"array.\n"
+"\n"
+":param numpy.ndarray data: attribute data to write\n"
+;
+
+static const pni::core::string nxattribute_read_doc = 
+"Read entire attribute \n"
+"\n"
+"Reads all data from the attribute and returns it either as a single \n"
+"scalar value or as an instance of a numpy array.\n"
+"\n"
+":return: attribute data\n"
+":rtype: instance of numpy.ndarray or a scalar native Python type\n"
+;
+
+static const pni::core::string nxattribute_path_doc = 
+"Read only property returning the NeXus path for this attribute\n";
+
+static const pni::core::string nxattribute_parent_doc = 
+"Read only property returning the parent object of this attribute\n";
+
+static const pni::core::string nxattribute_size_doc = 
+"Read only property returing the number of elements this attribute holds\n";
+
+static const pni::core::string nxattribute_filename_doc = 
+"Read only property returning the name of the file the attribute belongs to\n";
 
 //! 
 //! \ingroup wrappers
@@ -341,14 +364,14 @@ template<typename ATYPE> void wrap_nxattribute()
     class_<wrapper_type>("nxattribute")
         .add_property("dtype",&wrapper_type::type_id,__attribute_dtype_docstr)
         .add_property("shape",&wrapper_type::shape,__attribute_shape_docstr)
-        .add_property("size",&wrapper_type::size)
-        .add_property("filename",&wrapper_type::filename)
+        .add_property("size",&wrapper_type::size,nxattribute_size_doc.c_str())
+        .add_property("filename",&wrapper_type::filename,nxattribute_filename_doc.c_str())
         .add_property("name",&wrapper_type::name,__attribute_name_docstr)
-        .add_property("parent",&wrapper_type::parent)
+        .add_property("parent",&wrapper_type::parent,nxattribute_parent_doc.c_str())
         .add_property("is_valid",&wrapper_type::is_valid,__attribute_valid_docstr)
-        .add_property("path",&wrapper_type::path)
+        .add_property("path",&wrapper_type::path,nxattribute_path_doc.c_str())
         .def("close",&wrapper_type::close,__attribute_close_docstr)
-        .def("read",&wrapper_type::read)
+        .def("read",&wrapper_type::read,nxattribute_read_doc.c_str())
         .def("write",&wrapper_type::write,__attribute_write_docstr)
         .def("__getitem__",&wrapper_type::__getitem__)
         .def("__setitem__",&wrapper_type::__setitem__)

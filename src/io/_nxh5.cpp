@@ -67,6 +67,14 @@ extern void create_nxfield_wrappers();
 extern void create_xml_wrappers();
 extern void create_nxgroup_wrappers();
 
+static const pni::core::string nxdeflate_rate_doc = 
+"read/write property to set and get the compression rate as an integer "
+"between 0 and 9\n";
+
+static const pni::core::string nxdeflate_shuffle_doc = 
+"read/write boolean property to switch shuffeling on and of "
+"(:py:const:`True` or :py:const:`False`)\n";
+
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)
 {
@@ -121,8 +129,8 @@ BOOST_PYTHON_MODULE(_nxh5)
     void (h5::nxdeflate_filter::*set_shuffle)(bool) =
         &h5::nxdeflate_filter::shuffle;
     class_<h5::nxdeflate_filter>("deflate_filter")
-        .add_property("rate",get_compression_rate,set_compression_rate)
-        .add_property("shuffle",get_shuffle,set_shuffle)
+        .add_property("rate",get_compression_rate,set_compression_rate,nxdeflate_rate_doc.c_str())
+        .add_property("shuffle",get_shuffle,set_shuffle,nxdeflate_shuffle_doc.c_str())
         ;
 
 }

@@ -176,13 +176,23 @@ static const pni::core::string nxfile_close_doc_string =
 ;
 
 static const pni::core::string nxfile_root_doc_string = 
-"Return the root group.\n"
+"Return the root group of the file.\n"
 "\n"
-"Returns the root group of the file as an instance of nxgroup.\n"
-"\n"
-"Return:\n"
-"    root group as instance of nxgroup\n"
+":return: the root group of the file\n"
+":rtype: instance of :py:class:`nxgroup`\n"
 ;
+
+static const pni::core::string nxfile_readonly_doc = 
+"Property for file status\n"
+"\n"
+"If :py:const:`True` the file is in read only mode. \n";
+
+static const pni::core::string nxfile_is_valid_doc = 
+"Property for object status\n"
+"\n"
+"If :py:const:`True` the object is a valid NeXus object, \n"
+":py:const:`False` otherwise.\n";
+
 
 //------------------------------------------------------------------------------
 //! 
@@ -199,8 +209,8 @@ template<typename FTYPE> void wrap_nxfile()
 
     class_<wrapper_type>("nxfile")
         .def(init<>())
-        .add_property("readonly",&wrapper_type::is_readonly)
-        .add_property("is_valid",&wrapper_type::is_valid)
+        .add_property("readonly",&wrapper_type::is_readonly,nxfile_readonly_doc.c_str())
+        .add_property("is_valid",&wrapper_type::is_valid,nxfile_is_valid_doc.c_str())
         .def("flush",&wrapper_type::flush,nxfile_flush_doc_string.c_str())
         .def("close",&wrapper_type::close,nxfile_close_doc_string.c_str())
         .def("root",&wrapper_type::root,nxfile_root_doc_string.c_str())

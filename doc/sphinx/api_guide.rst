@@ -67,29 +67,58 @@ The ``pni.io.nx`` package
    :undoc-members:
 
 .. autofunction:: pni.io.nx.make_relative
-
 .. autofunction:: pni.io.nx.make_path
-
 .. autofunction:: pni.io.nx.match
 .. autofunction:: pni.io.nx.join
 .. autofunction:: pni.io.nx.is_root_element
 .. autofunction:: pni.io.nx.is_empty
 .. autofunction:: pni.io.nx.has_name
 .. autofunction:: pni.io.nx.has_class
+.. autofunction:: pni.io.nx.is_absolute
 
 
 
 The ``pni.io.nx.h5`` package
 ============================
 
-.. automodule:: pni.io.nx.h5
-   :members: 
-   :undoc-members:
+.. py:module:: pni.io.nx.h5
 
 .. autoclass:: pni.io.nx.h5.nxfile
    :members:
    :undoc-members:
 
+.. autofunction:: pni.io.nx.h5.create_file
+.. autofunction:: pni.io.nx.h5.create_files
+.. autofunction:: pni.io.nx.h5.open_file
+
 .. autoclass:: pni.io.nx.h5.nxgroup
    :members:
+
+.. autoclass:: pni.io.nx.h5.nxfield
+   :members:
    :undoc-members:
+
+.. autoclass:: pni.io.nx.h5.nxattribute
+   :members:
+   :undoc-members:
+
+.. autoclass:: pni.io.nx.h5.deflate_filter
+   :members:
+   :undoc-members:
+
+.. autoclass:: pni.io.nx.h5.nxlink
+   :members:
+   :undoc-members:
+
+.. autofunction:: pni.io.nx.h5.xml_to_nexus
+.. autofunction:: pni.io.nx.h5.get_size
+.. autofunction:: pni.io.nx.h5.get_name
+.. autofunction:: pni.io.nx.h5.get_rank
+.. autofunction:: pni.io.nx.h5.get_unit
+.. autofunction:: pni.io.nx.h5.get_class
+.. autofunction:: pni.io.nx.h5.get_object
+.. autofunction:: pni.io.nx.h5.get_path
+.. autofunction:: pni.io.nx.h5.link
+.. autofunction:: pni.io.nx.h5.get_links
+.. autofunction:: pni.io.nx.h5.get_links_recursive
+
