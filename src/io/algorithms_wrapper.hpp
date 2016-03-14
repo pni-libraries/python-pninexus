@@ -153,6 +153,97 @@ struct algorithms_wrapper
     
 };
 
+static const pni::core::string get_size_doc = 
+"Returns the size of an object\n"
+"\n"
+"The semantics of size depends on the object. In the case of a group "
+"the number of children is returned. For attributes and fields the "
+"number of elements."
+"\n"
+":param object object: instance of :py:class:`nxattribute`, :py:class:`nxfield`, or :py:class:`nxgroup`\n"
+":return: number of elements or children\n"
+":rtype: long\n"
+;
+
+static const pni::core::string get_name_doc = 
+"Returns the name of an object\n"
+"\n"
+":param object object: instance of :py:class:`nxattribute`, :py:class:`nxlink`, :py:class:`nxfield`, or :py:class:`nxgroup`\n"
+":return: the objects name\n"
+":rtype: str\n"
+;
+
+static const pni::core::string get_rank_doc = 
+"Returns the rank of a field or attribute\n"
+"\n"
+"Returns the number of dimensions a field or attribute has.\n"
+"\n"
+":param object object: instance of :py:class:`nxattribute` or :py:class:`nxfield`\n"
+":return: the rank of the object\n"
+":rtype: long\n"
+;
+
+static const pni::core::string get_unit_doc = 
+"Return the unit of a field\n"
+"\n"
+"Convenience function reading the `units` attribute of a field and returns "
+"its value.\n"
+"\n"
+":param nxfield field: the field from which to read the unit\n"
+":return: value of the units attribute\n"
+":rtype: str\n"
+;
+
+static const pni::core::string set_unit_doc = 
+"Set the unit of a field\n"
+"\n"
+"Convenience function setting the units attribute of a field.\n"
+"\n"
+":param nxfield field: the field for which to set the unit\n"
+":param unit str: the unit for the field\n"
+;
+
+static const pni::core::string get_path_doc = 
+"Return the NeXus path of an object\n"
+"\n"
+"Return the full NeXus path of an object.\n"
+"\n"
+":param object object: instance of :py:class:`nxfield`, :py:class:`nxattribute`, :py:class:`nxgroup`, or :py:class:`nxlink`\n"
+":return: full NeXus path\n"
+":rtype: str\n";
+
+static const pni::core::string get_class_doc = 
+"Read NXclass attribute from group\n"
+"\n"
+"Convenience function reading the NX_class attribute of a group and returns "
+"and returns its value.\n"
+"\n"
+":param object group: group from which to read NX_class\n"
+":return: value of NX_class\n"
+":rtype: str\n";
+
+static const pni::core::string set_class_doc = 
+"Set the NX_class attribute of a group\n"
+"\n"
+"Convenience function to set the base class of a group by writing "
+"the NX_class attribute of a group. \n"
+"\n"
+":param nxgroup group: the group for which to set the class\n"
+":param str class: the base class \n";
+
+static  const pni::core::string get_object_doc = 
+"Get object by path\n"
+"\n"
+"Return an object determined by its path from a parent. The path can either "
+"be relative to the parent or absolute. In the latter case the parent "
+"will only be used to obtain the root group.\n"
+"\n"
+":param nxgroup parent: parent object \n"
+":param str path: relative or absolute path to the object\n"
+":return: the requested object\n"
+":rtype: an attribute, field, group, or link instance\n"
+;
+
 
 //!
 //! \ingroup wrappers
@@ -170,16 +261,16 @@ void create_algorithms_wrappers()
 {
     typedef algorithms_wrapper<GTYPE,FTYPE,ATYPE> wrapper_type;
 
-    def("get_size",&wrapper_type::get_size);
-    def("get_name",&wrapper_type::get_name);
-    def("get_rank",&wrapper_type::get_rank);
-    def("get_object",&wrapper_type::get_object_nxpath);
+    def("get_size",&wrapper_type::get_size,get_size_doc.c_str());
+    def("get_name",&wrapper_type::get_name,get_name_doc.c_str());
+    def("get_rank",&wrapper_type::get_rank,get_rank_doc.c_str());
+    def("get_object",&wrapper_type::get_object_nxpath,get_object_doc.c_str());
     def("get_object",&wrapper_type::get_object_string);
-    def("get_unit",&wrapper_type::get_unit);
-    def("get_class",&wrapper_type::get_class);
-    def("set_class",&wrapper_type::set_class);
-    def("set_unit",&wrapper_type::set_unit);
-    def("get_path",&wrapper_type::get_path);
+    def("get_unit",&wrapper_type::get_unit,get_unit_doc.c_str());
+    def("get_class",&wrapper_type::get_class,get_class_doc.c_str());
+    def("set_class",&wrapper_type::set_class,set_class_doc.c_str());
+    def("set_unit",&wrapper_type::set_unit,set_unit_doc.c_str());
+    def("get_path",&wrapper_type::get_path,get_path_doc.c_str());
 
 }
 
