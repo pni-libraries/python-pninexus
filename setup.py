@@ -101,8 +101,8 @@ nx_ext = Extension("pni.io.nx._nx",nx_files,
 # setup for core test extensions
 #------------------------------------------------------------------------------
 #need to build some extra test modules
-ex_trans_test = Extension("test.core.ex_trans_test",
-                          ["test/core/ex_trans_test.cpp"],
+ex_trans_test = Extension("pni.test.core.ex_trans_test",
+                          ["pni/test/core/ex_trans_test.cpp"],
                           language="c++",
                           include_dirs = include_dirs,
                           library_dirs = library_dirs,
@@ -110,18 +110,18 @@ ex_trans_test = Extension("test.core.ex_trans_test",
                           extra_compile_args = extra_compile_args)
 
 
-utils_test = Extension("test.core.utils_test",
-                      ["test/core/utils_test.cpp"]+common_sources,
+utils_test = Extension("pni.test.core.utils_test",
+                      ["pni/test/core/utils_test.cpp"]+common_sources,
                        language="c++",
                        include_dirs = include_dirs+["src/"],
                        library_dirs = library_dirs,
                        libraries = libraries,
                        extra_compile_args = extra_compile_args)
 
-numpy_utils_test = Extension("test.core.numpy_utils_test",
-                             ["test/core/numpy_utils_test.cpp",
-                              "test/core/check_type_id_from_object.cpp",
-                              "test/core/check_type_str_from_object.cpp"
+numpy_utils_test = Extension("pni.test.core.numpy_utils_test",
+                             ["pni/test/core/numpy_utils_test.cpp",
+                              "pni/test/core/check_type_id_from_object.cpp",
+                              "pni/test/core/check_type_str_from_object.cpp"
                              ]+common_sources,
                              language="c++",
                              include_dirs = include_dirs+["src/"],
@@ -161,7 +161,7 @@ setup(name="pni",
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pni",
-      test_suite="test",
+      test_suite="pni.test",
       test_loader = "unittest:TestLoader",
       cmdclass={"install":pni_install}
     )
