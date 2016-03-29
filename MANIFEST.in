@@ -1,4 +1,7 @@
 recursive-include src *.hpp *.cpp
+recursive-include test *.hpp *.cpp
 include doc/examples/*.py
+include doc/sphinx/*
+include pkgconfig.py
 graft build/sphinx/html 
 recursive-include doc/c++api/c++api *
