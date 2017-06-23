@@ -2,6 +2,8 @@
 from __future__ import print_function
 import sys
 import os
+import os.path
+from ConanConfig import ConanConfig
 from numpy.distutils.misc_util import get_numpy_include_dirs
 from pkgconfig import package
 from setuptools import setup, find_packages, Extension
@@ -15,25 +17,52 @@ def get_build_dir():
                                                  version = sys.version_info))
 
 #-----------------------------------------------------------------------------
-# load pni configuration with pkg-config
-#-----------------------------------------------------------------------------
-pnicore  = package('pnicore')
-pniio    = package('pniio')
-
-#add the configuration to libraries, include directories and library 
-#directories
-include_dirs = pnicore.include_dirs + pniio.include_dirs
-library_dirs = pnicore.library_dirs + pniio.library_dirs
-libraries    = pnicore.libraries + pniio.libraries
-libraries.append('boost_python-py{version[0]}{version[1]}'.format(version=sys.version_info))
-
-#-----------------------------------------------------------------------------
 # set compiler options
 #-----------------------------------------------------------------------------
 extra_compile_args = ['-std=c++11','-Wall','-Wextra',
                       '-fdiagnostics-show-option',
                       '-Wno-strict-prototypes']
-extra_compile_args.extend(pnicore.compiler_flags)
+
+#------------------------------------------------------------------------------
+# set include directories, linker path and libraries
+# we have two possibilities to configure the build: 
+# -> via pkg-config using locally installed libraries
+# -> via Conan 
+# if a conanbuildinfo.txt file exists in the root directory of the package the
+# conan variant will be used automatically.
+#------------------------------------------------------------------------------
+core_extra_link_args = []
+nxh5_extra_link_args = []
+io_extra_link_args = []
+nx_extra_link_args = []
+
+if os.path.exists("conanbuildinfo.txt"):
+    c = ConanConfig("conanbuildinfo.txt")
+    include_dirs = c.includedirs
+    library_dirs = c.libdirs
+    libraries = c.libs
+    extra_link_args = []
+    for libdir in c.libdirs:
+        extra_link_args.append('-Wl,-rpath,'+libdir)
+    core_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
+    nxh5_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../../libs")
+    io_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
+    nx_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
+else:
+    #--------------------------------------------------------------------------
+    # load pni configuration with pkg-config
+    #--------------------------------------------------------------------------
+    pnicore  = package('pnicore')
+    pniio    = package('pniio')
+
+    #add the configuration to libraries, include directories and library 
+    #directories
+    include_dirs = pnicore.include_dirs + pniio.include_dirs
+    library_dirs = pnicore.library_dirs + pniio.library_dirs
+    libraries    = pnicore.libraries + pniio.libraries
+    libraries.append('boost_python-py{version[0]}{version[1]}'.format(version=sys.version_info))
+    extra_compile_args.extend(pnicore.compiler_flags)
+    extra_link_args = []
 
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
@@ -73,6 +102,7 @@ core_ext = Extension("pni.core._core",
                      include_dirs = include_dirs,
                      library_dirs = library_dirs,
                      libraries = libraries,
+                     extra_link_args = core_extra_link_args,
                      language="c++",
                      extra_compile_args = extra_compile_args)
 
@@ -80,6 +110,7 @@ nxh5_ext = Extension("pni.io.nx.h5._nxh5",nxh5_files,
                      include_dirs = include_dirs+["src/"],
                      library_dirs = library_dirs,
                      libraries = libraries,
+                     extra_link_args = nxh5_extra_link_args,
                      language="c++",
                      extra_compile_args = extra_compile_args)
 
@@ -87,12 +118,14 @@ io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
                    libraries = libraries,
+                   extra_link_args = io_extra_link_args,
                    language="c++",
                    extra_compile_args = extra_compile_args)
 
 nx_ext = Extension("pni.io.nx._nx",nx_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
+                   extra_link_args = nx_extra_link_args,
                    libraries = libraries,
                    language="c++",
                    extra_compile_args = extra_compile_args)
@@ -106,6 +139,7 @@ ex_trans_test = Extension("pni.test.core.ex_trans_test",
                           language="c++",
                           include_dirs = include_dirs,
                           library_dirs = library_dirs,
+                          extra_link_args = extra_link_args,
                           libraries = libraries,
                           extra_compile_args = extra_compile_args)
 
@@ -115,6 +149,7 @@ utils_test = Extension("pni.test.core.utils_test",
                        language="c++",
                        include_dirs = include_dirs+["src/"],
                        library_dirs = library_dirs,
+                       extra_link_args = extra_link_args,
                        libraries = libraries,
                        extra_compile_args = extra_compile_args)
 
@@ -124,8 +159,9 @@ numpy_utils_test = Extension("pni.test.core.numpy_utils_test",
                               "pni/test/core/check_type_str_from_object.cpp"
                              ]+common_sources,
                              language="c++",
-                             include_dirs = include_dirs+["src/"],
+                             include_dirs = include_dirs+["src/"], 
                              library_dirs = library_dirs,
+                             extra_link_args = extra_link_args,
                              libraries = libraries,
                              extra_compile_args = extra_compile_args)
 
