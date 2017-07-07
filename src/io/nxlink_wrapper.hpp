@@ -44,9 +44,8 @@ struct link_wrapper
                             const pni::core::string &name)
     {
         using namespace boost::python;
-        using namespace pni::core;
 
-        extract<string> string_ex(obj);
+        extract<pni::core::string>  string_ex(obj);
         extract<group_wrapper_type> parent_ex(g),group_ex(obj);
         extract<field_wrapper_type> field_ex(obj);
 
@@ -66,7 +65,7 @@ struct link_wrapper
             pni::io::nx::link(string_ex(),parent,name);
         }
         else
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                     "Target must be a field or a group!");
             
     }

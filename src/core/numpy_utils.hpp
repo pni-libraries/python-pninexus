@@ -195,11 +195,10 @@ namespace numpy
     template<typename CTYPE> 
     CTYPE get_shape(const boost::python::object &o)
     {
-        using namespace pni::core;
         typedef typename CTYPE::value_type value_type;
 
         if(!is_array(o))
-            throw type_error(EXCEPTION_RECORD,"Object must be a numpy array!");
+            throw pni::core::type_error(EXCEPTION_RECORD,"Object must be a numpy array!");
 
         const PyArrayObject *py_array = (const PyArrayObject *)o.ptr();
 
@@ -238,10 +237,8 @@ namespace numpy
     template<typename T> 
     T *get_data(const boost::python::object &o)
     {
-        using namespace pni::core;
-
         if(!is_array(o))
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                     "Argument must be a numpy array!");
 
         return (T*)PyArray_DATA((PyArrayObject*)o.ptr());

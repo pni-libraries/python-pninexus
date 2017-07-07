@@ -39,7 +39,6 @@ extern "C"{
 
 
 //import here the namespace for the nxh5 module
-using namespace pni::core;
 using namespace boost::python;
 using namespace pni::io::nx;
 

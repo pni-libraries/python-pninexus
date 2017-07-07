@@ -83,13 +83,12 @@ template<
 size_t get_ellipsis_size(const LISTT &index,const ATYPE &mda)
 {
     using namespace boost::python;
-    using namespace pni::core;
 
     //sanity check - if the total number of elements in the index sequence
     //exceeds the rank of the array type something is wrong and an exception 
     //is thrown.
     if(len(index) > mda.rank())
-        throw shape_mismatch_error(EXCEPTION_RECORD,
+        throw pni::core::shape_mismatch_error(EXCEPTION_RECORD,
                 "Index size exceeds rank of C++ array type!");
 
     //generate iterator for the index sequence
@@ -128,7 +127,8 @@ bool is_slice(const boost::python::object &o);
 //! \param n_elements the number of elements in this particular dimension
 //! \return positive index value
 //! 
-ssize_t get_positive_index(ssize_t python_index,ssize_t n_elements);
+boost::python::ssize_t get_positive_index(boost::python::ssize_t
+        python_index,boost::python::ssize_t n_elements);
 
 //----------------------------------------------------------------------------
 
@@ -137,7 +137,6 @@ std::vector<pni::core::slice>
 get_slices(const boost::python::tuple& index,const ATYPE &array)
 {
     using namespace boost::python;
-    using namespace pni::core;
 
     std::vector<pni::core::slice> slices;
     //determine the size of a possible ellipsis
@@ -171,7 +170,7 @@ get_slices(const boost::python::tuple& index,const ATYPE &array)
             extract<boost::python::slice> slice(*index_iter);
         }
         else
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                     "Unkonwn index type!");
 
     }
@@ -204,7 +203,6 @@ std::vector<pni::core::slice>
 create_selection(const boost::python::tuple &t,const FTYPE &field)
 {
     using namespace boost::python;
-    using namespace pni::core;
 
     //obtain a selection object
     std::vector<pni::core::slice> selection;
@@ -229,7 +227,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
     bool has_ellipsis = false;
     size_t ellipsis_size = 0;
     if(len(t) > boost::python::ssize_t(field_rank))
-        throw shape_mismatch_error(EXCEPTION_RECORD,
+        throw pni::core::shape_mismatch_error(EXCEPTION_RECORD,
                 "Tuple with indices, slices, and ellipsis is "
                 "longer than the rank of the field - something went wrong"
                 "here");
@@ -301,7 +299,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
         const object &o = t[j];
         //throw an exception if the object is not an ellipsis
         if(Py_Ellipsis != o.ptr())
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                             "Object must be either an index, a slice,"
                             " or an ellipsis!");
         //assume here that the object is an ellipsis - this is a bit difficult
@@ -319,7 +317,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
             i--;
         }
         else
-            throw index_error(EXCEPTION_RECORD,"Only one ellipsis is allowed!");
+            throw pni::core::index_error(EXCEPTION_RECORD,"Only one ellipsis is allowed!");
     }
 
     return selection;

@@ -164,7 +164,6 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         boost::python::object read() const
         {
-            using namespace pni::core;
             using namespace boost::python;
 
             object np_array = read_data(_attribute);
@@ -194,8 +193,6 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         void write(boost::python::object o) const
         {
-            using namespace pni::core;
-
             if(numpy::is_array(o))
                 write_data(_attribute,o);
             else
@@ -215,7 +212,6 @@ template<typename ATYPE> class nxattribute_wrapper
         //!
         boost::python::object __getitem__(const boost::python::object &t)
         {
-            using namespace pni::core;
             using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;
@@ -252,7 +248,6 @@ template<typename ATYPE> class nxattribute_wrapper
         void __setitem__(const boost::python::object &t,
                          const boost::python::object &o)
         {
-            using namespace pni::core;
             using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;

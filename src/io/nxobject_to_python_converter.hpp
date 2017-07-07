@@ -85,7 +85,6 @@ struct nxobject_to_python_converter
     static PyObject *convert(const OTYPE &v)
     {
         using namespace pni::io::nx;
-        using namespace pni::core;
 
         if(is_group(v))
             return incref(object(group_wrapper_type(as_group(v))).ptr());
@@ -96,7 +95,7 @@ struct nxobject_to_python_converter
         else if(is_link(v))
             return incref(object(as_link(v)).ptr());
         else 
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                              "Conversion failed - unknown object type!");
     }
 

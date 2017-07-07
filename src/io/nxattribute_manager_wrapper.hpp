@@ -182,9 +182,11 @@ void wrap_nxattribute_manager(const pni::core::string &name)
     using namespace boost::python;
 
     typedef nxattribute_manager_wrapper<AMT> wrapper_type;
-
+    
+#ifdef __GNUG__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
+#endif
     class_<wrapper_type>(name.c_str(),init<const AMT&>())
         .add_property("size",&wrapper_type::size)   
         .def("__getitem__",&wrapper_type::get_by_name)
@@ -202,6 +204,8 @@ void wrap_nxattribute_manager(const pni::core::string &name)
         .def("remove",&wrapper_type::remove)
         .def("exists",&wrapper_type::exists)
         ;
+#ifdef __GNUG__
 #pragma GCC diagnostic pop
+#endif
 }
 
