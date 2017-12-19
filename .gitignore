@@ -8,3 +8,7 @@ dist
 MANIFEST
 /.project
 /.pydevproject
+/pni.egg-info/
+/conan_imports_manifest.txt
+/conanbuildinfo.txt
+/conaninfo.txt
