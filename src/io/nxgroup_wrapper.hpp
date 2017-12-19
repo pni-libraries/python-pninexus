@@ -173,19 +173,19 @@ class nxgroup_wrapper
                      const boost::python::object &chunk=boost::python::object(),
                      const boost::python::object &filter=boost::python::object()) const
         {
-            using namespace pni::core;
             using namespace boost::python;
             using pni::io::nx::create_field;
             
-            type_id_t type_id;
+            pni::core::type_id_t type_id;
             try
             {
                 type_id = type_id_from_str(type_code);
             }
-            catch(key_error &error)
+            catch(pni::core::key_error &error)
             {
                 //forward exception
-                error.append(EXCEPTION_RECORD); throw error;
+                error.append(EXCEPTION_RECORD); 
+                throw error;
             }
 
             field_type field;
@@ -202,7 +202,7 @@ class nxgroup_wrapper
                 extract<deflate_type> deflate_object(filter);
 
                 if(!deflate_object.check())
-                    throw type_error(EXCEPTION_RECORD,
+                    throw pni::core::type_error(EXCEPTION_RECORD,
                                      "Filter is not an instance of filter class!");
             
                 field = create_field(parent,type_id,name,shapes.first,
@@ -415,7 +415,6 @@ static const pni::core::string nxgroup__get_item_by_name_doc =
 template<typename GTYPE> void wrap_nxgroup()
 {
     using namespace boost::python;
-    using namespace pni::core;
 
     typedef nxgroup_wrapper<GTYPE> wrapper_type;
     typedef rec_group_iterator<GTYPE> rec_group_iterator_type;
@@ -429,15 +428,17 @@ template<typename GTYPE> void wrap_nxgroup()
         .def("next",&rec_group_iterator_type::next);
 #endif
 
+#ifdef __GNUG__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-value"
+#endif
     class_<wrapper_type>("nxgroup")
         .def(init<>())
         .def("open",&wrapper_type::open_by_name,__group_open_docstr)
         .def("__getitem__",&wrapper_type::open_by_index,nxgroup__get_item_by_index_doc.c_str())
         .def("__getitem__",&wrapper_type::open_by_name)
         .def("_create_group",&wrapper_type::create_group,
-                ("n",arg("nxclass")=string()))
+                ("n",arg("nxclass")=pni::core::string()))
         .def("__create_field",&wrapper_type::create_field,
                 ("name","type",arg("shape")=object(),arg("chunk")=object(),
                  arg("filter")=object()))
@@ -461,6 +462,8 @@ template<typename GTYPE> void wrap_nxgroup()
         .add_property("recursive",&wrapper_type::recursive,nxgroup_recursive_doc.c_str())
         .add_property("path",&wrapper_type::path,nxgroup_path_doc.c_str())
         ;
+#ifdef __GNUG__
 #pragma GCC diagnostic pop
+#endif
 }
 

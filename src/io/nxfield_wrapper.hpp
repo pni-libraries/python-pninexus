@@ -148,7 +148,6 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         void write(const boost::python::object &o) const
         {
-            using namespace pni::core;
 
             if(numpy::is_array(o))
                 write_data(_field,o);
@@ -169,7 +168,6 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         boost::python::object read() const
         {
-            using namespace pni::core;
             using namespace boost::python;
 
             object np_array = read_data(_field);
@@ -193,7 +191,6 @@ template<typename FIELDT> class nxfield_wrapper
         //!
         boost::python::object __getitem__(const boost::python::object &t)
         {
-            using namespace pni::core;
             using namespace boost::python; 
 
             typedef std::vector<pni::core::slice> selection_type;
@@ -227,7 +224,6 @@ template<typename FIELDT> class nxfield_wrapper
         void __setitem__(const boost::python::object &t, 
                          const boost::python::object &o)
         {
-            using namespace pni::core;
             using namespace boost::python;
 
             typedef std::vector<pni::core::slice> selection_type;

@@ -42,7 +42,6 @@
 
 #include <pni/io/nx/nximp_code_map.hpp>
 #include <pni/io/nx/nxobject_traits.hpp>
-#include <pni/io/nx/nxpath/nxpath.hpp>
 #include "nxattribute_wrapper.hpp"
 #include "nxgroup_wrapper.hpp"
 #include "nxfield_wrapper.hpp"
@@ -79,7 +78,7 @@ struct algorithms_wrapper
         else if(group_extractor.check()) nxo = group_extractor();
         else if(attribute_extractor.check()) nxo = attribute_extractor();
         else
-            throw type_error(EXCEPTION_RECORD,
+            throw pni::core::type_error(EXCEPTION_RECORD,
                     "Unkown NeXus object type!");
 
         return nxo;
@@ -147,8 +146,7 @@ struct algorithms_wrapper
     //------------------------------------------------------------------------
     static pni::core::string get_path(const boost::python::object &o)
     {
-        using namespace pni::io;
-        return nx::get_path(to_object(o));
+        return pni::io::nx::get_path(to_object(o));
     }
     
 };
@@ -259,6 +257,7 @@ template<
         > 
 void create_algorithms_wrappers()
 {
+    using namespace boost::python;
     typedef algorithms_wrapper<GTYPE,FTYPE,ATYPE> wrapper_type;
 
     def("get_size",&wrapper_type::get_size,get_size_doc.c_str());

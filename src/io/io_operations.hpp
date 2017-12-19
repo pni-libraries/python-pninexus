@@ -68,7 +68,6 @@ struct reader
     static boost::python::object read(const RTYPE &readable)
     {
         using namespace boost::python;
-        using namespace pni::core;
 
         object o = numpy::create_array_from_field(readable);
         readable.read(readable.size(),numpy::get_data<T>(o));
@@ -82,25 +81,23 @@ struct reader<RTYPE,pni::core::string>
 {
     static pni::core::shape_t get_shape(const RTYPE &readable)
     {
-        using namespace pni::core;
         using namespace boost::python;
 
-        auto shape = readable.template shape<shape_t>();
-        if(shape.empty() && readable.size()) shape=shape_t{1};
+        auto shape = readable.template shape<pni::core::shape_t>();
+        if(shape.empty() && readable.size()) shape=pni::core::shape_t{1};
 
         return shape;
     }
 
     static boost::python::object read(const RTYPE &readable)
     {
-        using namespace pni::core;
         using namespace boost::python;
 
         //
         // first read all data to a pni::core::mdarray array
         //
         auto shape = get_shape(readable);
-        auto data = dynamic_array<string>::create(shape);
+        auto data = dynamic_array<pni::core::string>::create(shape);
         readable.read(data);
 
         //
@@ -119,7 +116,7 @@ struct reader<RTYPE,pni::core::string>
         d.ptr = dims.data();
         d.len = dims.size();
         PyObject *orig_ptr = PyArray_ContiguousFromAny(l.ptr(),
-                                                  numpy::type_id2numpy_id.at(type_id_t::STRING),
+                                                  numpy::type_id2numpy_id.at(pni::core::type_id_t::STRING),
                                                   1,2);
 
         //

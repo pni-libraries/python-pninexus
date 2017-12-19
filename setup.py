@@ -19,9 +19,12 @@ def get_build_dir():
 #-----------------------------------------------------------------------------
 # set compiler options
 #-----------------------------------------------------------------------------
-extra_compile_args = ['-std=c++11','-Wall','-Wextra',
-                      '-fdiagnostics-show-option',
-                      '-Wno-strict-prototypes']
+if sys.platform == "win32":
+    extra_compile_args = []
+else:
+    extra_compile_args = ['-std=c++11','-Wall','-Wextra',
+                          '-fdiagnostics-show-option',
+                          '-Wno-strict-prototypes']
 
 #------------------------------------------------------------------------------
 # set include directories, linker path and libraries
@@ -64,6 +67,7 @@ else:
     extra_compile_args.extend(pnicore.compiler_flags)
     extra_link_args = []
 
+include_dirs += get_numpy_include_dirs()
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
 #-----------------------------------------------------------------------------
