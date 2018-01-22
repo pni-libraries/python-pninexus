@@ -88,7 +88,7 @@ core_files = ["src/core/bool_converter.cpp",
 nxh5_files = [
              # "src/io/_nxh5.cpp",
              # "src/io/utils.cpp","src/io/nxattribute_wrapper.cpp",
-             # "src/io/nxfile_wrapper.cpp",
+             "src/io/nxfile_wrapper.cpp",
              # "src/io/nxfield_wrapper.cpp",
              # "src/io/nxgroup_wrapper.cpp",
              # "src/io/xml_functions_wrapper.cpp",
