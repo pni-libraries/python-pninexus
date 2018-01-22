@@ -12,3 +12,6 @@ MANIFEST
 /conan_imports_manifest.txt
 /conaninfo.txt
 /conanbuildinfo.txt
+/.cproject
+/Issue_53_Test.nx
+/issue_48_test.nx

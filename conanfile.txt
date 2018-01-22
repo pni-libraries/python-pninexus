@@ -1,8 +1,10 @@
 [requires]
 Boost/1.62.0@lasote/stable
-hdf5/1.10.1@wintersb/stable
-pnicore/1.1.0@wintersb/devel
-pniio/1.X.X@wintersb/devel
+hdf5/1.10.1@eugenwintersberger/testing
+pnicore/master@eugenwintersberger/devel
+pniio/master@eugenwintersberger/devel
+zlib/1.2.8@conan/stable
+bzip2/1.0.6@conan/stable
 
 [generators]
 txt
@@ -10,10 +12,8 @@ txt
 [options]
 Boost:shared=True
 Boost:python=True
-pnicore:with_system_boost=False
-pniio:with_system_pnicore=False
-pniio:with_system_boost=False
-pniio:with_system_hdf5=False
+zlib:shared=True
+hdf5:shared=True
 
 [imports]
 lib, *.so -> ./pni/libs

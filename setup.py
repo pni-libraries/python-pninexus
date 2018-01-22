@@ -51,6 +51,10 @@ if os.path.exists("conanbuildinfo.txt"):
     nxh5_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../../libs")
     io_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nx_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
+    
+    print("linking with libraries:")
+    for lib in libraries:
+        print(lib)
 else:
     #--------------------------------------------------------------------------
     # load pni configuration with pkg-config
