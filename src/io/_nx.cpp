@@ -30,16 +30,7 @@ extern "C"{
 #include <iostream>
 #include <sstream>
 
-#include <pni/io/nx/nx.hpp>
-#include <pni/io/nx/nxpath.hpp>
-
 #include "nxpath/element_dict_converter.hpp"
-
-
-//import here the namespace for the nxh5 module
-using namespace pni::core;
-using namespace boost::python;
-using namespace pni::io::nx;
 
 extern void wrap_nxpath();
 

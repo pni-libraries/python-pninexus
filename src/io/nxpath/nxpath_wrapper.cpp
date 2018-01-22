@@ -24,60 +24,64 @@
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
 #include <pni/core/types.hpp>
-#include <pni/io/nx/nxpath.hpp>
+#include <pni/io/nexus.hpp>
 #include "../errors.hpp"
 
-using namespace pni::core;
-using namespace pni::io::nx;
-using namespace boost::python;
+namespace nexus {
 
-class nxpath_iterator
+class PathIteratorWrapper
 {
-    public:
-        typedef nxpath::const_iterator iterator_type;
-    private:
-        iterator_type _begin;
-        iterator_type _end;
-    public:
-        nxpath_iterator():
-            _begin(),
-            _end()
-        {}
+  public:
+    using IteratorType = pni::io::nexus::Path::ElementIterator;
+    using ConstIteratorType = pni::io::nexus::Path::ConstElementIterator;
 
-        nxpath_iterator(const iterator_type &b,
-                        const iterator_type &e):
-            _begin(b),
-            _end(e)
-        {}
+  private:
+    ConstIteratorType _begin;
+    ConstIteratorType _end;
+  public:
+    PathIteratorWrapper():
+      _begin(),
+      _end()
+    {}
 
-        void increment()
-        {
-            _begin++;
-        }
+    PathIteratorWrapper(const ConstIteratorType &b,
+                        const ConstIteratorType &e):
+                      _begin(b),
+                      _end(e)
+    {}
 
-        object __iter__() const
-        {
-            return object(nxpath_iterator(_begin,_end));
-        }
+    void increment()
+    {
+      _begin++;
+    }
 
-        object next() 
-        {
-            if(_begin==_end)
-            {
-                throw(nxpath_iterator_stop());
-                return object();
-            }
-            
-            auto o = *_begin;
-            increment();
-            return object(o);
-        }
+    boost::python::object __iter__() const
+    {
+      return boost::python::object(PathIteratorWrapper(_begin,_end));
+    }
+
+    boost::python::object next()
+    {
+      if(_begin==_end)
+      {
+        throw(nxpath_iterator_stop());
+        return boost::python::object();
+      }
+
+      auto o = *_begin;
+      increment();
+      return boost::python::object(o);
+    }
 };
 
-nxpath_iterator get_iterator(const nxpath &p)
+PathIteratorWrapper get_iterator(const pni::io::nexus::Path &p)
 {
-    return nxpath_iterator(p.begin(),p.end());
+    return PathIteratorWrapper(p.begin(),p.end());
 }
+
+} // namespace nexus
+
+
 
 static const char *nxpath_attribute_doc = 
 "Property setting and getting an attribute name\n"
@@ -202,53 +206,54 @@ static const char *is_absolute_doc  =
 
 void wrap_nxpath()
 {
-    docstring_options doc_options(true,true);
-    //------------------iterator wrapper--------------------------------------
-    class_<nxpath_iterator>("nxpath_iterator")
-        .def("increment",&nxpath_iterator::increment)
-        .def("__iter__",&nxpath_iterator::__iter__)
+  using namespace boost::python;
+
+  docstring_options doc_options(true,true);
+  //------------------iterator wrapper--------------------------------------
+  class_<nexus::PathIteratorWrapper>("nxpath_iterator")
+            .def("increment",&nexus::PathIteratorWrapper::increment)
+            .def("__iter__",&nexus::PathIteratorWrapper::__iter__)
 #if PY_MAJOR_VERSION >= 3
-        .def("__next__",&nxpath_iterator::next);
+            .def("__next__",&nexus::PathIteratorWrapper::next);
 #else
-        .def("next",&nxpath_iterator::next);
+            .def("next",&nexus::PathIteratorWrapper::next);
 #endif
 
-    //-------------------nxpath wrapper---------------------------------------
-    void (nxpath::*set_filename)(const string &) = &nxpath::filename;
-    string (nxpath::*get_filename)()const = &nxpath::filename;
-    void (nxpath::*set_attribute)(const string &) = &nxpath::attribute;
-    string (nxpath::*get_attribute)() const = &nxpath::attribute;
-    class_<nxpath>("nxpath")
-        .add_property("front",&nxpath::front,nxpath_front_doc)
-        .add_property("back",&nxpath::back,nxpath_back_doc)
-        .add_property("size",&nxpath::size,nxpath_size_doc)
-        .add_property("filename",get_filename,set_filename,nxpath_filename_doc)
-        .add_property("attribute",get_attribute,set_attribute,nxpath_attribute_doc)
-        .def("_push_back",&nxpath::push_back)
-        .def("_push_front",&nxpath::push_front)
-        .def("_pop_back",&nxpath::pop_back)
-        .def("_pop_front",&nxpath::pop_front)
-        .def("__str__",&nxpath::to_string)
-        .def("__len__",&nxpath::size)
-        .def("__iter__",&get_iterator);
+  //-------------------nxpath wrapper---------------------------------------
+  void (pni::io::nexus::Path::*set_filename)(const boost::filesystem::path &) = &pni::io::nexus::Path::filename;
+  boost::filesystem::path (pni::io::nexus::Path::*get_filename)() const noexcept = &pni::io::nexus::Path::filename;
+  void (pni::io::nexus::Path::*set_attribute)(const std::string &) = &pni::io::nexus::Path::attribute;
+  std::string (pni::io::nexus::Path::*get_attribute)() const = &pni::io::nexus::Path::attribute;
+  class_<pni::io::nexus::Path>("nxpath")
+      .add_property("front",&pni::io::nexus::Path::front,nxpath_front_doc)
+      .add_property("back",&pni::io::nexus::Path::back,nxpath_back_doc)
+      .add_property("size",&pni::io::nexus::Path::size,nxpath_size_doc)
+      .add_property("filename",get_filename,set_filename,nxpath_filename_doc)
+      .add_property("attribute",get_attribute,set_attribute,nxpath_attribute_doc)
+      .def("_push_back",&pni::io::nexus::Path::push_back)
+      .def("_push_front",&pni::io::nexus::Path::push_front)
+      .def("_pop_back",&pni::io::nexus::Path::pop_back)
+      .def("_pop_front",&pni::io::nexus::Path::pop_front)
+      .def("__str__",&pni::io::nexus::Path::to_string)
+      .def("__len__",&pni::io::nexus::Path::size)
+      .def("__iter__",&nexus::get_iterator);
 
 
-    def("make_path",nxpath::from_string,make_path_doc,args("path_str"));
+    def("make_path",pni::io::nexus::Path::from_string,make_path_doc,args("path_str"));
 
-    bool (*nxpath_match_str_str)(const string &,const string &) = &match;
-    bool (*nxpath_match_path_path)(const nxpath &,const nxpath &) = &match;
-    def("match",nxpath_match_str_str);
+    bool (*nxpath_match_path_path)(const pni::io::nexus::Path &,
+                                   const pni::io::nexus::Path &) = &pni::io::nexus::match;
     def("match",nxpath_match_path_path);
-    def("join",&join);
+    def("join",&pni::io::nexus::join);
 
-    def("is_root_element",&is_root_element,is_root_element_doc,args("path_element"));
-    def("is_absolute",&is_absolute,is_absolute_doc,args("path"));
-    def("is_empty",&is_empty,is_empty_doc,args("path"));
-    def("has_name",&has_name,has_name_doc,args("path_element"));
-    def("has_class",&has_class,has_class_doc,args("path_element"));
+    def("is_root_element",&pni::io::nexus::is_root_element,is_root_element_doc,args("path_element"));
+    def("is_absolute",&pni::io::nexus::is_absolute,is_absolute_doc,args("path"));
+    def("is_empty",&pni::io::nexus::is_empty,is_empty_doc,args("path"));
+    def("has_name",&pni::io::nexus::has_name,has_name_doc,args("path_element"));
+    def("has_class",&pni::io::nexus::has_class,has_class_doc,args("path_element"));
 
-    nxpath (*nxpath_make_relative_str_str)(const string &,const string &) = 
-        &make_relative;
+    pni::io::nexus::Path (*nxpath_make_relative_str_str)
+    (const pni::io::nexus::Path &,const pni::io::nexus::Path &) = &pni::io::nexus::make_relative;
     def("make_relative_",nxpath_make_relative_str_str);
 }
 

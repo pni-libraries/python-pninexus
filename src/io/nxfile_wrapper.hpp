@@ -26,7 +26,9 @@
 #include <boost/python.hpp>
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
-#include <pni/io/nx/nxobject_traits.hpp>
+#include <h5cpp/hdf5.hpp>
+
+namespace nexus {
 
 //! 
 //! \ingroup wrappers
@@ -34,56 +36,49 @@
 //! 
 //! This template can be used to create NXFile wrappers.
 //!
-template<typename FTYPE> class nxfile_wrapper
+class FileWrapper
 {
-    public:
-        typedef FTYPE file_type;
-        static const pni::io::nx::nximp_code imp_id = 
-                     pni::io::nx::nximp_code_map<FTYPE>::icode;
-        typedef typename pni::io::nx::nxobject_trait<imp_id>::object_type 
-                         object_type;
-        typedef nxfile_wrapper<file_type> wrapper_type;
     private:
-        file_type _file;
+        hdf5::file::File _file;
     public:
         //==================constructor and destructor=========================
         //! default constructor
-        nxfile_wrapper(){}
+        NexusFileWrapper();
 
         //----------------------------------------------------------------------
         //! copy constructor
-        nxfile_wrapper(const wrapper_type &o):_file(o._file){}
+        NexusFileWrapper(const wrapper_type &o) = default;
 
         //----------------------------------------------------------------------
         //! move constructor
-        nxfile_wrapper(wrapper_type &&o):_file(std::move(o._file)){}
+        NexusFileWrapper(wrapper_type &&o) = default;
 
         //----------------------------------------------------------------------
         //! move conversion constructor from wrapped object
-        explicit nxfile_wrapper(file_type &&file):_file(std::move(file)){}
+        explicit nxfile_wrapper(hdf5::file::File &&file);
 
         //----------------------------------------------------------------------
         //! copy conversion constructor from wrapped object
-        explicit nxfile_wrapper(const file_type &file):_file(file){}
+        explicit nxfile_wrapper(const hdf5::file::File &file);
 
         //---------------------------------------------------------------------
         //! check read only status
-        bool is_readonly() const { return _file.is_readonly(); }
+        bool is_readonly() const;
 
         //---------------------------------------------------------------------
         //! flush data to disk
-        void flush() const  { _file.flush(); }
+        void flush() const;
 
         //---------------------------------------------------------------------
         //! check if file is valid
-        bool is_valid() const { return _file.is_valid(); }
+        bool is_valid() const;
 
         //---------------------------------------------------------------------
         //! close the file
-        void close() { _file.close(); }
+        void close();
 
         //---------------------------------------------------------------------
-        object_type root() const { return _file.root(); }
+        hdf5::node::Group root() const;
 
 };
 
@@ -98,8 +93,8 @@ template<typename FTYPE> class nxfile_wrapper
 //! \param s split size (feature not implemented yet)
 //! \return new instance of NXFileWrapper
 //!
-template<typename FTYPE> 
-nxfile_wrapper<FTYPE> create_file(const pni::core::string &n,bool ov)
+
+FileWrapper create_file(const pni::core::string &n,bool ov);
 {
     using namespace pni::core;
     try
@@ -124,70 +119,42 @@ nxfile_wrapper<FTYPE> create_file(const pni::core::string &n,bool ov)
 //! \param ro if true open the file read only
 //! \return new instance of NXFileWrapper
 //!
-template<typename FTYPE> 
-nxfile_wrapper<FTYPE> open_file(const pni::core::string &n, bool ro)
+FileWrapper open_file(const pni::core::string &n, bool ro)
 {
     return nxfile_wrapper<FTYPE>(FTYPE::open_file(n,ro)); 
 }
 
-//------------------------------------------------------------------------------
-//!
-//! \ingroup wrappers
-//! \brief create split files
-//!
-//! Create a new file in split mode. 
-//! 
-//! \throws file_error in case of errors
-//! 
-//! \param n name of the file
-//! \param split_size the size at which to split files in MB
-//! \param ow overwrite flag
-//! \return new instance of nxfile
-//!
-template<typename FTYPE>
-nxfile_wrapper<FTYPE> create_files(const pni::core::string &n,
-                                   ssize_t split_size,
-                                   bool ow)
-{
-    using namespace pni::core;
+} // namspace nexus
 
-    try
-    {
-        return nxfile_wrapper<FTYPE>(FTYPE::create_files(n,split_size,ow));
-    }
-    catch(pni::core::file_error &error)
-    {
-        std::cerr<<error<<std::endl;
-        error.append(EXCEPTION_RECORD);
-        throw error;
-    }
-}
 
-static const pni::core::string nxfile_flush_doc_string = 
+
+
+
+static const std::string nxfile_flush_doc_string = 
 "Flush the content of the file. \n"
 "This method writes all the changes made to the file to disk."
 ;
 
-static const pni::core::string nxfile_close_doc_string = 
+static const std::string nxfile_close_doc_string = 
 "Closes the file.\n"
 "\n"
 "Other objects belonging to this file residing within the same scope\n"
 "must be closed explicitely if the file should be reopened!\n"
 ;
 
-static const pni::core::string nxfile_root_doc_string = 
+static const std::string nxfile_root_doc_string = 
 "Return the root group of the file.\n"
 "\n"
 ":return: the root group of the file\n"
 ":rtype: instance of :py:class:`nxgroup`\n"
 ;
 
-static const pni::core::string nxfile_readonly_doc = 
+static const std::string nxfile_readonly_doc = 
 "Property for file status\n"
 "\n"
 "If :py:const:`True` the file is in read only mode. \n";
 
-static const pni::core::string nxfile_is_valid_doc = 
+static const std::string nxfile_is_valid_doc = 
 "Property for object status\n"
 "\n"
 "If :py:const:`True` the object is a valid NeXus object, \n"
@@ -201,24 +168,21 @@ static const pni::core::string nxfile_is_valid_doc =
 //! 
 //! Tempalte function creates a wrappers for the NXFile type FType. 
 //!
-template<typename FTYPE> void wrap_nxfile()
+void create_nexus_file_wrapper();
 {
     using namespace boost::python; 
 
-    typedef typename nxfile_wrapper<FTYPE>::wrapper_type wrapper_type;
-
-    class_<wrapper_type>("nxfile")
+    class_<nexus::NexusFileWrapper>("nxfile")
         .def(init<>())
-        .add_property("readonly",&wrapper_type::is_readonly,nxfile_readonly_doc.c_str())
-        .add_property("is_valid",&wrapper_type::is_valid,nxfile_is_valid_doc.c_str())
-        .def("flush",&wrapper_type::flush,nxfile_flush_doc_string.c_str())
-        .def("close",&wrapper_type::close,nxfile_close_doc_string.c_str())
-        .def("root",&wrapper_type::root,nxfile_root_doc_string.c_str())
+        .add_property("readonly",&nexus::FileWrapper::is_readonly,nxfile_readonly_doc.c_str())
+        .add_property("is_valid",&nexus::FileWrapper::is_valid,nxfile_is_valid_doc.c_str())
+        .def("flush",&nexus::FileWrapper::flush,nxfile_flush_doc_string.c_str())
+        .def("close",&nexus::FileWrapper::close,nxfile_close_doc_string.c_str())
+        .def("root",&nexus::FileWrapper::root,nxfile_root_doc_string.c_str())
         ;
 
     //need some functions
-    def("__create_file",&create_file<FTYPE>);
-    def("__open_file",&open_file<FTYPE>);
-    def("__create_files",&create_files<FTYPE>);
+    def("__create_file",&nexus::create_file);
+    def("__open_file",&nexus::open_file);
 }
 

@@ -85,18 +85,21 @@ core_files = ["src/core/bool_converter.cpp",
               "src/core/errors.cpp",
               "src/core/_core.cpp"]+common_sources
 
-nxh5_files = ["src/io/_nxh5.cpp",
-              "src/io/utils.cpp","src/io/nxattribute_wrapper.cpp",
-              "src/io/nxfile_wrapper.cpp",
-              "src/io/nxfield_wrapper.cpp",
-              "src/io/nxgroup_wrapper.cpp",
-              "src/io/xml_functions_wrapper.cpp",
-              "src/io/io_operations.cpp"
+nxh5_files = [
+             # "src/io/_nxh5.cpp",
+             # "src/io/utils.cpp","src/io/nxattribute_wrapper.cpp",
+             # "src/io/nxfile_wrapper.cpp",
+             # "src/io/nxfield_wrapper.cpp",
+             # "src/io/nxgroup_wrapper.cpp",
+             # "src/io/xml_functions_wrapper.cpp",
+             # "src/io/io_operations.cpp"
              ]+common_sources
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
-nx_files = ["src/io/_nx.cpp","src/io/nxpath/element_dict_converter.cpp",
+nx_files = [
+            "src/io/_nx.cpp",
+            "src/io/nxpath/element_dict_converter.cpp",
             "src/io/nxpath/nxpath_wrapper.cpp",
             ]
 

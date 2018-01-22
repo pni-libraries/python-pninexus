@@ -29,7 +29,7 @@ extern "C"{
 
 using namespace pni::core;
 using namespace boost::python;
-using namespace pni::io::nx;
+using namespace pni::io;
 
 //converter namespace
 namespace convns = boost::python::converter; 
@@ -37,11 +37,11 @@ namespace convns = boost::python::converter;
 //----------------------------------------------------------------------------
 nxpath_element_to_dict_converter::nxpath_element_to_dict_converter()
 {
-    to_python_converter<nxpath::element_type,nxpath_element_to_dict_converter>();
+    to_python_converter<nexus::Path::Element,nxpath_element_to_dict_converter>();
 }
 
 //----------------------------------------------------------------------------
-PyObject *nxpath_element_to_dict_converter::convert(const nxpath::element_type &e)
+PyObject *nxpath_element_to_dict_converter::convert(const nexus::Path::Element &e)
 {
     dict d;
     d["name"] = e.first;
