@@ -63,6 +63,16 @@ class nxpath_iterator_stop:public std::exception
 {};
 
 //----------------------------------------------------------------------------
+//!
+//! \brief exception to stop iteration
+//! 
+//! This C++ exception will be translated to StopIteration in Python and 
+//! is used by all iterator types. 
+//! 
+class StopIteration : public std::exception
+{};
+
+//----------------------------------------------------------------------------
 //! 
 //! \ingroup errors  
 //! \brief exception to stop recursive group iteration

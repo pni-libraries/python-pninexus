@@ -102,6 +102,13 @@ BOOST_PYTHON_MODULE(_nxh5)
     wrap_link<h5::nxgroup,h5::nxfield>();
     wrap_nxlink<nximp_code::HDF5>();
 
+
+    nexus::register_iterator_wrapper<nexus::NodeIteratorWrapper>("node_iterator");
+    nexus::register_iterator_wrapper<nexus::RecursiveNodeIteratorWrapper>("rec_node_iterator");
+    nexus::register_iterator_wrapper<nexus::LinkIteratorWrapper>("link_iterator");
+    nexus::register_iterator_wrapper<nexus::RecursiveLinkIteratorWrapper>("rec_link_iterator");
+    nexus::register_iterator_wrapper<nexus::AttributeIteratorWrapper>("attribute_iterator");
+
     //wrap NX-attribute object
     create_nxattribute_wrappers();
     

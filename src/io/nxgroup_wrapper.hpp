@@ -37,13 +37,13 @@
 #include "utils.hpp"
 #include "rec_group_iterator.hpp"
 
+namespace nexus {
 //! 
 //! \ingroup wrappers  
 //! \brief class tempalte for NXGroup wrapper
 //! 
 //! Class template to create wrappers for NXGroup types.
 //!
-template<typename GTYPE> 
 class nxgroup_wrapper
 {
     public:
@@ -341,6 +341,8 @@ class nxgroup_wrapper
         }
 
 };
+
+} // namespace nexus
 
 static const char __group_open_docstr[] = 
 "Opens an existing object \n"

@@ -121,6 +121,11 @@ void rec_group_iterator_stop_translator(rec_group_iterator_stop const &)
     PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
 
+void stop_iteration_translator(StopIteration const &)
+{
+  PyErr_SetString(PyExc_StopIteration,"iteration stop");
+}
+
 //!
 //! \ingroup error_management
 //! \brief exception creation utility function
@@ -174,5 +179,7 @@ void exception_registration()
     register_exception_translator<AttributeIteratorStop>(AttributeIteratorStop_translator);
     register_exception_translator<nxpath_iterator_stop>(nxpath_iterator_stop_translator);
     register_exception_translator<rec_group_iterator_stop>(rec_group_iterator_stop_translator);
+
+    register_exception_translator<StopIteration>(stop_iteration_translator);
 
 }

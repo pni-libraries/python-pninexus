@@ -26,53 +26,56 @@
 #include <pni/core/types.hpp>
 #include <pni/io/nexus.hpp>
 #include "../errors.hpp"
+#include "../iterator_wrapper.hpp"
 
 namespace nexus {
 
-class PathIteratorWrapper
-{
-  public:
-    using IteratorType = pni::io::nexus::Path::ElementIterator;
-    using ConstIteratorType = pni::io::nexus::Path::ConstElementIterator;
+using PathIteratorWrapper = IteratorWrapper<pni::io::nexus::Path::ConstElementIterator>;
 
-  private:
-    ConstIteratorType _begin;
-    ConstIteratorType _end;
-  public:
-    PathIteratorWrapper():
-      _begin(),
-      _end()
-    {}
-
-    PathIteratorWrapper(const ConstIteratorType &b,
-                        const ConstIteratorType &e):
-                      _begin(b),
-                      _end(e)
-    {}
-
-    void increment()
-    {
-      _begin++;
-    }
-
-    boost::python::object __iter__() const
-    {
-      return boost::python::object(PathIteratorWrapper(_begin,_end));
-    }
-
-    boost::python::object next()
-    {
-      if(_begin==_end)
-      {
-        throw(nxpath_iterator_stop());
-        return boost::python::object();
-      }
-
-      auto o = *_begin;
-      increment();
-      return boost::python::object(o);
-    }
-};
+//class PathIteratorWrapper
+//{
+//  public:
+//    using IteratorType = pni::io::nexus::Path::ElementIterator;
+//    using ConstIteratorType = pni::io::nexus::Path::ConstElementIterator;
+//
+//  private:
+//    ConstIteratorType _begin;
+//    ConstIteratorType _end;
+//  public:
+//    PathIteratorWrapper():
+//      _begin(),
+//      _end()
+//    {}
+//
+//    PathIteratorWrapper(const ConstIteratorType &b,
+//                        const ConstIteratorType &e):
+//                      _begin(b),
+//                      _end(e)
+//    {}
+//
+//    void increment()
+//    {
+//      _begin++;
+//    }
+//
+//    boost::python::object __iter__() const
+//    {
+//      return boost::python::object(PathIteratorWrapper(_begin,_end));
+//    }
+//
+//    boost::python::object next()
+//    {
+//      if(_begin==_end)
+//      {
+//        throw(nxpath_iterator_stop());
+//        return boost::python::object();
+//      }
+//
+//      auto o = *_begin;
+//      increment();
+//      return boost::python::object(o);
+//    }
+//};
 
 PathIteratorWrapper get_iterator(const pni::io::nexus::Path &p)
 {
@@ -207,17 +210,10 @@ static const char *is_absolute_doc  =
 void wrap_nxpath()
 {
   using namespace boost::python;
-
   docstring_options doc_options(true,true);
-  //------------------iterator wrapper--------------------------------------
-  class_<nexus::PathIteratorWrapper>("nxpath_iterator")
-            .def("increment",&nexus::PathIteratorWrapper::increment)
-            .def("__iter__",&nexus::PathIteratorWrapper::__iter__)
-#if PY_MAJOR_VERSION >= 3
-            .def("__next__",&nexus::PathIteratorWrapper::next);
-#else
-            .def("next",&nexus::PathIteratorWrapper::next);
-#endif
+
+  nexus::register_iterator_wrapper<nexus::PathIteratorWrapper>("nxpath_iterator");
+
 
   //-------------------nxpath wrapper---------------------------------------
   void (pni::io::nexus::Path::*set_filename)(const boost::filesystem::path &) = &pni::io::nexus::Path::filename;
