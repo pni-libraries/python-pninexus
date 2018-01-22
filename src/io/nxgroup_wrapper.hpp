@@ -179,7 +179,7 @@ class nxgroup_wrapper
             pni::core::type_id_t type_id;
             try
             {
-                type_id = type_id_from_str(type_code);
+                type_id = pni::core::type_id_from_str(type_code);
             }
             catch(pni::core::key_error &error)
             {

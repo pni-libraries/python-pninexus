@@ -143,7 +143,7 @@ get_slices(const boost::python::tuple& index,const ATYPE &array)
     size_t ellipsis_size = get_ellipsis_size(index,array);
 
     //get the shape of the input array
-    auto shape = array.template shape<shape_t>();
+    auto shape = array.template shape<pni::core::shape_t>();
    
     //get iterators for the index tuple
     stl_input_iterator<object> begin(index),end;
@@ -212,7 +212,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
     //one ellipsis which spans over several dimensions.
 
     size_t field_rank = field.rank();
-    auto field_shape = field.template shape<shape_t>();
+    auto field_shape = field.template shape<pni::core::shape_t>();
 
     //solves problems when the underlying HDF5 dataset is using a scalar 
     //dataspace.
@@ -221,7 +221,7 @@ create_selection(const boost::python::tuple &t,const FTYPE &field)
     if(!field_rank)
     {
         field_rank = 1;
-        field_shape = shape_t{1};
+        field_shape = pni::core::shape_t{1};
     }
 
     bool has_ellipsis = false;

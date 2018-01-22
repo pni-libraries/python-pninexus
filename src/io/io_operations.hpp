@@ -97,7 +97,7 @@ struct reader<RTYPE,pni::core::string>
         // first read all data to a pni::core::mdarray array
         //
         auto shape = get_shape(readable);
-        auto data = dynamic_array<pni::core::string>::create(shape);
+        auto data = pni::core::dynamic_array<std::string>::create(shape);
         readable.read(data);
 
         //
