@@ -31,6 +31,7 @@ extern "C"{
 #include <sstream>
 
 #include "nxpath/element_dict_converter.hpp"
+#include "nxpath/boost_path_to_object.hpp"
 
 extern void wrap_nxpath();
 
@@ -42,6 +43,9 @@ BOOST_PYTHON_MODULE(_nx)
     //register exception translators
     nxpath_element_to_dict_converter();
     dict_to_nxpath_element_converter();
+    BoostPathToObject();
+    ObjectToBoostPath();
+
 
     wrap_nxpath();
    

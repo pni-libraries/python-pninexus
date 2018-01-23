@@ -101,6 +101,7 @@ io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
 nx_files = [
             "src/io/_nx.cpp",
+            "src/io/nxpath/boost_path_to_object.cpp",
             "src/io/nxpath/element_dict_converter.cpp",
             "src/io/nxpath/nxpath_wrapper.cpp",
             ]

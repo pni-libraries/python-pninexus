@@ -2,7 +2,7 @@
 
 from ._nx import nxpath
 from ._nx import make_path
-from ._nx import match
+from ._nx import match as _match
 from ._nx import is_root_element
 from ._nx import is_absolute
 from ._nx import is_empty
@@ -168,3 +168,16 @@ def make_relative(parent,old):
     """
 
     return make_relative_(parent,old).__str__()
+
+def match(a,b):
+    """
+    compute a path match
+    """
+    
+    if(isinstance(a,str)):
+        a = make_path(a)
+        
+    if(isinstance(b,str)):
+        b = make_path(b)
+        
+    return _match(a,b)
