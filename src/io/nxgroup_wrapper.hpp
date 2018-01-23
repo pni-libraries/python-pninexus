@@ -62,7 +62,6 @@ class GroupWrapper
 
     private:
         group_type _group;
-        size_t _index;
     public:
         //================constructors and destructor==========================
         //! default constructor

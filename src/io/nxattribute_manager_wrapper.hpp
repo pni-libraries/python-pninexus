@@ -24,188 +24,51 @@
 #pragma once
 
 #include <boost/python.hpp>
-#include <pni/io/nx/nxobject_traits.hpp>
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
 #include <core/utils.hpp>
+#include <pni/io/nexus.hpp>
+#include "iterator_wrapper.hpp"
 
 #include "errors.hpp"
 
-template<typename AMT>
-class nxattribute_manager_wrapper
+class AttributeManagerWrapper
 {
-    public:
-        typedef AMT manager_type;
-        typedef typename manager_type::attribute_type attribute_type;
+  private:
+    hdf5::attribute::AttributeManager manager_;
+  public:
 
-        typedef typename manager_type::iterator iterator;
+    //--------------------------------------------------------------------
+    AttributeManagerWrapper(const hdf5::attribute::AttributeManager &manager);
 
-        typedef nxattribute_manager_wrapper<manager_type> wrapper_type;
+    //--------------------------------------------------------------------
+    AttributeManagerWrapper(const AttributeManagerWrapper &w) = default;
 
-    private:
-        manager_type _manager;
-        
-        size_t _index;
-    public:
-       
-        //--------------------------------------------------------------------
-        explicit nxattribute_manager_wrapper(const manager_type &m):
-            _manager(m),
-            _index(0)
-        { }
+    //--------------------------------------------------------------------
+    bool exists(const pni::core::string &name) const;
 
-        //--------------------------------------------------------------------
-        explicit nxattribute_manager_wrapper(const wrapper_type &w):
-            _manager(w._manager),
-            _index(w._index)
-        { }
+    //--------------------------------------------------------------------
+    void remove(const pni::core::string &name) const;
 
-        //--------------------------------------------------------------------
-        bool exists(const pni::core::string &name) const
-        {
-            return _manager.exists(name);
-        }
+    //--------------------------------------------------------------------
+    hdf5::attribute::Attribute create(const pni::core::string &name,
+                                      const pni::core::string &type,
+                                      const boost::python::object &shape,
+                                      bool overwrite);
 
-        //--------------------------------------------------------------------
-        void remove(const pni::core::string &name) const
-        {
-            _manager.remove(name);
-        }
+    //--------------------------------------------------------------------
+    size_t size() const;
 
-        //--------------------------------------------------------------------
-        attribute_type create(const pni::core::string &name,
-                              const pni::core::string &type,
-                              const boost::python::object &shape,
-                              bool overwrite)
-        {
-            using namespace pni::core;
-            using namespace pni::io::nx; 
-            using namespace boost::python;
+    //--------------------------------------------------------------------
+    hdf5::attribute::Attribute get_by_name(const pni::core::string &name);
 
-            auto s = Tuple2Container<shape_t>(tuple(shape));
+    //--------------------------------------------------------------------
+    hdf5::attribute::Attribute get_by_index(size_t i);
+    //--------------------------------------------------------------------
 
-            if(s.empty())
-                s = shape_t{1};
-            
-            type_id_t tid = type_id_from_str(type);
-
-            if(tid == type_id_t::UINT8)
-                return _manager.template create<uint8>(name,s,overwrite);
-            else if(tid == type_id_t::INT8)
-                return _manager.template create<int8>(name,s,overwrite);
-            else if(tid == type_id_t::UINT16)
-                return _manager.template create<uint16>(name,s,overwrite);
-            else if(tid == type_id_t::INT16)
-                return _manager.template create<int16>(name,s,overwrite);
-            else if(tid == type_id_t::UINT32)
-                return _manager.template create<uint32>(name,s,overwrite);
-            else if(tid == type_id_t::INT32)
-                return _manager.template create<int32>(name,s,overwrite);
-            else if(tid == type_id_t::UINT64)
-                return _manager.template create<uint64>(name,s,overwrite);
-            else if(tid == type_id_t::INT64)
-                return _manager.template create<int64>(name,s,overwrite);
-            else if(tid == type_id_t::FLOAT32)
-                return _manager.template create<float32>(name,s,overwrite);
-            else if(tid == type_id_t::FLOAT64)
-                return _manager.template create<float64>(name,s,overwrite);
-            else if(tid == type_id_t::FLOAT128)
-                return _manager.template create<float128>(name,s,overwrite);
-            else if(tid == type_id_t::COMPLEX32)
-                return _manager.template create<complex32>(name,s,overwrite);
-            else if(tid == type_id_t::COMPLEX64)
-                return _manager.template create<complex64>(name,s,overwrite);
-            else if(tid == type_id_t::COMPLEX128)
-                return _manager.template create<complex128>(name,s,overwrite);
-            else if(tid == type_id_t::BOOL)
-                return _manager.template create<bool_t>(name,s,overwrite);
-            else if(tid == type_id_t::STRING)
-                return _manager.template create<string>(name,s,overwrite);
-            else 
-                type_error(EXCEPTION_RECORD,"Unkonwn type string!");
-
-            return attribute_type(); //just to make the compiler happy
-        }
-
-        //--------------------------------------------------------------------
-        size_t size() const 
-        {
-            return _manager.size();
-        }
-
-        //--------------------------------------------------------------------
-        attribute_type get_by_name(const pni::core::string &name)
-        {
-            return _manager[name];
-        }
-
-        //--------------------------------------------------------------------
-        attribute_type get_by_index(size_t i)
-        {
-            return _manager[i];
-        }
-        //--------------------------------------------------------------------
-        boost::python::object __iter__()
-        {
-            //we return by value here and thus create a new object anyhow
-            return boost::python::object(this);
-        }
-
-        //--------------------------------------------------------------------
-        void increment()
-        {
-            _index++;
-        }
-
-        //--------------------------------------------------------------------
-        attribute_type next()
-        {
-            //check if iteration is still possible
-            if(_index >= _manager.size())
-            {
-                //raise exception here
-                throw(AttributeIteratorStop());
-                return(attribute_type());
-            }
-
-            attribute_type attr(_manager[_index]);
-            this->increment();
-
-            return attr;
-        }
+    boost::python::object __iter__();
 
 };
 
-template<typename AMT> 
-void wrap_nxattribute_manager(const pni::core::string &name)
-{
-    using namespace boost::python;
-
-    typedef nxattribute_manager_wrapper<AMT> wrapper_type;
-    
-#ifdef __GNUG__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-value"
-#endif
-    class_<wrapper_type>(name.c_str(),init<const AMT&>())
-        .add_property("size",&wrapper_type::size)   
-        .def("__getitem__",&wrapper_type::get_by_name)
-        .def("__getitem__",&wrapper_type::get_by_index)
-        .def("__len__",&wrapper_type::size)
-        .def("__iter__",&wrapper_type::__iter__)
-#if PY_MAJOR_VERSION >= 3
-        .def("__next__",&wrapper_type::next)
-#else
-        .def("next",&wrapper_type::next)
-#endif
-        .def("increment",&wrapper_type::increment)
-        .def("create",&wrapper_type::create,("name","type",arg("shape")=list(),
-                     arg("overwrite")=false))
-        .def("remove",&wrapper_type::remove)
-        .def("exists",&wrapper_type::exists)
-        ;
-#ifdef __GNUG__
-#pragma GCC diagnostic pop
-#endif
-}
+void wrap_nxattribute_manager(const char *class_name);
 

@@ -28,23 +28,23 @@
 
 namespace nexus {
     
-    template<typename IterT>
-    class IteratorWrapper
-    {
-    public:
+template<typename IterT>
+class IteratorWrapper
+{
+  public:
     using IteratorType = IterT;
-        private:
-        
-        IteratorType begin_;
-        IteratorType end_;
-        
-        public:
+  private:
+
+    IteratorType begin_;
+    IteratorType end_;
+
+  public:
 
     IteratorWrapper(const IteratorType &b,
-                        const IteratorType &e):
-                    begin_(b),
-                    end_(e)
-    {}
+                    const IteratorType &e):
+                      begin_(b),
+                      end_(e)
+  {}
 
     void increment()
     {
@@ -68,7 +68,7 @@ namespace nexus {
       increment();
       return boost::python::object(o);
     }
-    };
+};
     
 
 using NodeIteratorWrapper = IteratorWrapper<hdf5::node::NodeIterator>;
