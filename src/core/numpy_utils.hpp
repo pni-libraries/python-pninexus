@@ -23,6 +23,7 @@
 #pragma once
 
 #include <boost/python/extract.hpp>
+#include <h5cpp/hdf5.hpp>
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
@@ -178,6 +179,9 @@ namespace numpy
     //! Return the string representation 
     //!
     pni::core::string type_str(const boost::python::object &o);
+    
+    boost::python::object create_array(pni::core::type_id_t tid,
+                                       const hdf5::Dimensions &dimensions);
 
     //-------------------------------------------------------------------------
     //!

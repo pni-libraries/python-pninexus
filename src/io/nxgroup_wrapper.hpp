@@ -44,7 +44,7 @@ namespace nexus {
 //! 
 //! Class template to create wrappers for NXGroup types.
 //!
-class nxgroup_wrapper
+class GroupWrapper
 {
     public:
         typedef GTYPE group_type;

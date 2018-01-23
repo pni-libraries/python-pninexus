@@ -60,7 +60,6 @@ init_numpy()
     import_array();
 }
 
-extern void create_nxattribute_wrappers();
 extern void create_nxfile_wrappers();
 extern void create_nxfield_wrappers();
 extern void create_xml_wrappers();
@@ -98,10 +97,11 @@ BOOST_PYTHON_MODULE(_nxh5)
     to_python_converter<h5::nxobject,object_converter_type>();
     to_python_converter<h5::nxgroup,group_converter_type>();
     to_python_converter<h5::nxfield,field_converter_type>();
-    to_python_converter<h5::nxattribute,attribute_converter_type>();
+    to_python_converter<hdf5::attribute::Attribute,AttributeToPythonObject>();
     wrap_link<h5::nxgroup,h5::nxfield>();
     wrap_nxlink<nximp_code::HDF5>();
 
+    wrap_nxattribute("nxattribute");
 
     nexus::register_iterator_wrapper<nexus::NodeIteratorWrapper>("node_iterator");
     nexus::register_iterator_wrapper<nexus::RecursiveNodeIteratorWrapper>("rec_node_iterator");
