@@ -38,6 +38,7 @@ core_extra_link_args = []
 nxh5_extra_link_args = []
 io_extra_link_args = []
 nx_extra_link_args = []
+nexus_extra_link_args =[]
 
 if os.path.exists("conanbuildinfo.txt"):
     c = ConanConfig("conanbuildinfo.txt")
@@ -49,6 +50,7 @@ if os.path.exists("conanbuildinfo.txt"):
         extra_link_args.append('-Wl,-rpath,'+libdir)
     core_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nxh5_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../../libs")
+    nexus_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     io_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nx_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     
@@ -97,6 +99,12 @@ nxh5_files = [
              # "src/io/xml_functions_wrapper.cpp",
              "src/io/io_operations.cpp"
              ]+common_sources
+             
+nexus_files = [
+            "src/io/_nexus.cpp",
+            "src/io/nexus/boost_filesystem_path_conversion.cpp",
+            "src/io/nexus/file_wrapper.cpp"
+            ]
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
 
@@ -126,6 +134,14 @@ nxh5_ext = Extension("pni.io.nx.h5._nxh5",nxh5_files,
                      library_dirs = library_dirs,
                      libraries = libraries,
                      extra_link_args = nxh5_extra_link_args,
+                     language="c++",
+                     extra_compile_args = extra_compile_args)
+
+nexus_ext = Extension("pni.io.nexus._nexus",nexus_files,
+                     include_dirs = include_dirs+["src/"],
+                     library_dirs = library_dirs,
+                     libraries = libraries,
+                     extra_link_args = nexus_extra_link_args,
                      language="c++",
                      extra_compile_args = extra_compile_args)
 
@@ -208,7 +224,7 @@ setup(name="pni",
       license = "GPLv2",
       version = "1.1.0",
       requires = ["numpy"],
-      ext_modules=[core_ext,nxh5_ext,io_ext,nx_ext,
+      ext_modules=[core_ext,nxh5_ext,nexus_ext,io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pni",
