@@ -201,14 +201,6 @@ static const pni::core::string set_unit_doc =
 ":param unit str: the unit for the field\n"
 ;
 
-static const pni::core::string get_path_doc = 
-"Return the NeXus path of an object\n"
-"\n"
-"Return the full NeXus path of an object.\n"
-"\n"
-":param object object: instance of :py:class:`nxfield`, :py:class:`nxattribute`, :py:class:`nxgroup`, or :py:class:`nxlink`\n"
-":return: full NeXus path\n"
-":rtype: str\n";
 
 static const pni::core::string get_class_doc = 
 "Read NXclass attribute from group\n"
@@ -250,26 +242,5 @@ static  const pni::core::string get_object_doc =
 //! Template function to create a new wrapper for an NXGroup type GType.
 //! \param class_name name for the Python class
 //!
-template<
-         typename GTYPE,
-         typename FTYPE,
-         typename ATYPE
-        > 
-void create_algorithms_wrappers()
-{
-    using namespace boost::python;
-    typedef algorithms_wrapper<GTYPE,FTYPE,ATYPE> wrapper_type;
-
-    def("get_size",&wrapper_type::get_size,get_size_doc.c_str());
-    def("get_name",&wrapper_type::get_name,get_name_doc.c_str());
-    def("get_rank",&wrapper_type::get_rank,get_rank_doc.c_str());
-    def("get_object",&wrapper_type::get_object_nxpath,get_object_doc.c_str());
-    def("get_object",&wrapper_type::get_object_string);
-    def("get_unit",&wrapper_type::get_unit,get_unit_doc.c_str());
-    def("get_class",&wrapper_type::get_class,get_class_doc.c_str());
-    def("set_class",&wrapper_type::set_class,set_class_doc.c_str());
-    def("set_unit",&wrapper_type::set_unit,set_unit_doc.c_str());
-    def("get_path",&wrapper_type::get_path,get_path_doc.c_str());
-
-}
+void wrap_algorithms();
 

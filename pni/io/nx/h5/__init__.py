@@ -32,8 +32,7 @@ from ._nxh5 import nxfile
 #from ._nxh5 import nxfield
 from ._nxh5 import nxattribute
 #from ._nxh5 import deflate_filter
-#from ._nxh5 import xml_to_nexus
-#from ._nxh5 import get_size
+from ._nxh5 import _create_from_xml_string
 #from ._nxh5 import get_name
 #from ._nxh5 import get_rank
 #from ._nxh5 import get_unit
@@ -41,7 +40,10 @@ from ._nxh5 import nxattribute
 #from ._nxh5 import get_object
 #from ._nxh5 import set_class
 #from ._nxh5 import set_unit
-# from ._nxh5 import get_path
+from ._nxh5 import _get_path_from_attribute
+from ._nxh5 import _get_path_from_dataset
+from ._nxh5 import _get_path_from_group
+from ._nxh5 import _get_path_from_link
 #from ._nxh5 import link
 #from ._nxh5 import nxlink
 #from ._nxh5 import nxlink_status
@@ -57,6 +59,55 @@ from ._nxh5 import __open_file
 
 #add the path property to the nxlink class
 #nxlink.path = property(lambda self: get_path(self.parent)+"/"+self.name)
+
+def get_path(object):
+    """ Return the NeXus path of an object
+    
+    Return the full NeXus path of an object. The object must be either an 
+    instance of :py:class:`nxfield`, :py:class:`nxgroup`, :py:class:`nxattribute`
+    or :py:class:`nxlink`.
+    
+    :param object object: instance for which to determine the path
+    :return: full NeXus path
+    :rtype: str
+    """
+    if isinstance(nexus_object,nxattribute):
+        return _get_path_from_attribute(nexus_object);
+    elif isinstance(nexus_object,nxgroup):
+        return _get_path_from_group(nexus_object);
+    elif isinstance(nexus_object,nxfield):
+        return _get_path_from_dataset(nexus_object);
+    else:
+        raise TypeError("unknown NeXus object type")
+
+def get_size(object):
+    """Returns the size of an object
+    
+    The semantics of size depends on the object. In the case of a group 
+    the number of children is returned. For attributes and fields the 
+    number of elements. The object must be either an instance of 
+    :py:class:`nxfield`, :py:class:`nxattribute` or :py:class:`nxgroup`.
+
+    :param object object: object for which to determine the size
+    :return: number of elements or children
+    :rtype: long
+    """
+    
+    if isinstance(object,(nxattribute,nxfield,nxgroup)):
+        return object.size()
+    else:
+        raise TypeError("Object must be an instance of attribute, field, or group!")
+
+def xml_to_nexus(xml_data,parent):
+    """ Create node tree from XML data
+    
+    :param str xml_data: a string with XML data
+    :param object parent: the parent object (a group)
+    :return: none
+    :rtype: None 
+    """
+    
+    return _create_from_xml_string(parent,xml_data)
 
 
 def create_file(fname,overwrite=False):

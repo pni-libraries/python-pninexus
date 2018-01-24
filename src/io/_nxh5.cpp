@@ -126,6 +126,9 @@ BOOST_PYTHON_MODULE(_nxh5)
     //wrap_nxfield("nxfield");
     
 
+    def("_create_from_xml_string",&pni::io::nexus::xml::create_from_string);
+
+
     //create the XML function wrappers
     //create_xml_wrappers();
     //create_algorithms_wrappers<h5::nxgroup,h5::nxfield,h5::nxattribute>();
