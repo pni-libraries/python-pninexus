@@ -1,6 +1,6 @@
 from .core         import *
 #from .algorithms   import *
-#from .nxfile_tests import *
+from .nxfile_tests import *
 #from .nxgroup_tests import *
 #from .nxfield_tests import *
 #from .nxattribute_tests import *

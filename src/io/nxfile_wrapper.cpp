@@ -24,96 +24,52 @@
 #include <boost/python.hpp>
 #include <pni/core/types.hpp>
 #include <pni/core/error.hpp>
-#include <h5cpp/hdf5.hpp>
 
-namespace nexus {
+#include "nxfile_wrapper.hpp"
 
-//! 
-//! \ingroup wrappers
-//! \brief NXFile wrapper template
-//! 
-//! This template can be used to create NXFile wrappers.
-//!
-class FileWrapper
+
+FileWrapper::FileWrapper(hdf5::file::File &&file):
+             _file(std::move(file))
+{}
+
+FileWrapper::FileWrapper(const hdf5::file::File &file):
+            _file(file)
+{}
+
+
+bool FileWrapper::is_readonly() const
 {
-  private:
-    hdf5::file::File _file;
-  public:
-    //==================constructor and destructor=========================
-    //! default constructor
-    FileWrapper();
+  hdf5::file::AccessFlags flags = _file.intent();
+  if(flags == hdf5::file::AccessFlags::READONLY)
+    return true;
+  else
+    return false;
+}
 
-    //----------------------------------------------------------------------
-    //! copy constructor
-    FileWrapper(const FileWrapper &o) = default;
+void FileWrapper::flush() const
+{
+  _file.flush(hdf5::file::Scope::GLOBAL);
+}
 
-    //----------------------------------------------------------------------
-    //! move constructor
-    FileWrapper(FileWrapper &&o) = default;
+//---------------------------------------------------------------------
+//! check if file is valid
+bool FileWrapper::is_valid() const
+{
+  return _file.is_valid();
+}
 
-    //----------------------------------------------------------------------
-    //! move conversion constructor from wrapped object
-    explicit FileWrapper(hdf5::file::File &&file):
-            _file(std::move(file))
-    {}
+//---------------------------------------------------------------------
+//! close the file
+void FileWrapper::close()
+{
+  _file.close();
+}
 
-    //----------------------------------------------------------------------
-    //! copy conversion constructor from wrapped object
-    explicit FileWrapper(const hdf5::file::File &file):
-        _file(file)
-    {}
-
-    //---------------------------------------------------------------------
-    //! check read only status
-    bool is_readonly() const
-    {
-      hdf5::file::AccessFlags flags = _file.intent();
-      if(flags == hdf5::file::AccessFlags::READONLY)
-        return true;
-      else
-        return false;
-    }
-
-    //---------------------------------------------------------------------
-    //! flush data to disk
-    void flush() const
-    {
-      _file.flush(hdf5::file::Scope::GLOBAL);
-    }
-
-    //---------------------------------------------------------------------
-    //! check if file is valid
-    bool is_valid() const
-    {
-      return _file.is_valid();
-    }
-
-    //---------------------------------------------------------------------
-    //! close the file
-    void close()
-    {
-      _file.close();
-    }
-
-    //---------------------------------------------------------------------
-    hdf5::node::Group root() const
-    {
-      return _file.root();
-    }
-
-};
-
-//-----------------------------------------------------------------------------
-//! 
-//! \ingroup wrappers  
-//! \brief create a file
-//! 
-//! This template wraps the static create_file method of FType. 
-//! \param n name of the new file
-//! \param ov if true overwrite existing file
-//! \param s split size (feature not implemented yet)
-//! \return new instance of NXFileWrapper
-//!
+//---------------------------------------------------------------------
+hdf5::node::Group FileWrapper::root() const
+{
+  return _file.root();
+}
 
 FileWrapper create_file(const pni::core::string &n,bool ov)
 {
@@ -133,16 +89,6 @@ FileWrapper create_file(const pni::core::string &n,bool ov)
   }
 }
 
-//------------------------------------------------------------------------------
-//! 
-//! \ingroup wrappers  
-//! \brief open a file
-//! 
-//! Template wraps the static open_file method of NXFile. 
-//! \param n name of the file
-//! \param ro if true open the file read only
-//! \return new instance of NXFileWrapper
-//!
 FileWrapper open_file(const pni::core::string &n, bool ro)
 {
   hdf5::file::AccessFlags flags = hdf5::file::AccessFlags::READONLY;
@@ -152,11 +98,6 @@ FileWrapper open_file(const pni::core::string &n, bool ro)
 
   return FileWrapper(hdf5::file::open(n,flags));
 }
-
-} // namspace nexus
-
-
-
 
 
 static const std::string nxfile_flush_doc_string = 
@@ -190,28 +131,21 @@ static const std::string nxfile_is_valid_doc =
 ":py:const:`False` otherwise.\n";
 
 
-//------------------------------------------------------------------------------
-//! 
-//! \ingroup wrappers
-//! \brief create NXFile wrapper 
-//! 
-//! Tempalte function creates a wrappers for the NXFile type FType. 
-//!
-void create_nexus_file_wrapper()
+void wrap_nxfile(const char *class_name)
 {
     using namespace boost::python; 
 
-    class_<nexus::FileWrapper>("nxfile")
+    class_<FileWrapper>(class_name)
         .def(init<>())
-        .add_property("readonly",&nexus::FileWrapper::is_readonly,nxfile_readonly_doc.c_str())
-        .add_property("is_valid",&nexus::FileWrapper::is_valid,nxfile_is_valid_doc.c_str())
-        .def("flush",&nexus::FileWrapper::flush,nxfile_flush_doc_string.c_str())
-        .def("close",&nexus::FileWrapper::close,nxfile_close_doc_string.c_str())
-        .def("root",&nexus::FileWrapper::root,nxfile_root_doc_string.c_str())
+        .add_property("readonly",&FileWrapper::is_readonly,nxfile_readonly_doc.c_str())
+        .add_property("is_valid",&FileWrapper::is_valid,nxfile_is_valid_doc.c_str())
+        .def("flush",&FileWrapper::flush,nxfile_flush_doc_string.c_str())
+        .def("close",&FileWrapper::close,nxfile_close_doc_string.c_str())
+        .def("root",&FileWrapper::root,nxfile_root_doc_string.c_str())
         ;
 
     //need some functions
-    def("__create_file",&nexus::create_file);
-    def("__open_file",&nexus::open_file);
+    def("__create_file",&create_file);
+    def("__open_file",&open_file);
 }
 

@@ -22,9 +22,27 @@
 //
 
 #include "utils.hpp"
+#include <pni/io/nexus.hpp>
 
 using namespace boost::python;
 using namespace pni::core;
+
+
+hdf5::datatype::Datatype create_datatype(const std::string &type_code)
+{
+  pni::core::type_id_t type_id;
+  try
+  {
+    type_id = pni::core::type_id_from_str(type_code);
+  }
+  catch(pni::core::key_error &error)
+  {
+    //forward exception
+    error.append(EXCEPTION_RECORD);
+    throw error;
+  }
+  return pni::io::nexus::DatatypeFactory::create(type_id);
+}
 
 tuple get_tuple_from_args(const object &args)
 {

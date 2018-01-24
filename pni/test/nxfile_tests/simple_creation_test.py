@@ -27,6 +27,7 @@ import os
 import numpy
 
 from pni.io       import ObjectError
+from pni.core import FileError
 from pni.io       import InvalidObjectError
 from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import create_file
@@ -54,13 +55,8 @@ class simple_creation_test(unittest.TestCase):
 
         f = nxfile()
         self.assertFalse(f.is_valid)
-        self.assertRaises(InvalidObjectError,f.root)
-
-        try:
-            f.readonly
-            self.assertTrue(False,"Access to the files readonly property did not throw!")
-        except InvalidObjectError:
-            self.assertTrue(True)
+        self.assertRaises(RuntimeError,f.root)
+        self.assertRaises(RuntimeError,lambda : f.readonly)
 
     
     #-------------------------------------------------------------------------
@@ -82,7 +78,7 @@ class simple_creation_test(unittest.TestCase):
         self.assertFalse(f.is_valid)
 
         #cannot create the file because it already exists
-        self.assertRaises(ObjectError,create_file,self.filename)
+        self.assertRaises(FileError,create_file,self.filename)
 
     #-------------------------------------------------------------------------
     def test_truncating(self):

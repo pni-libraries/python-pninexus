@@ -23,6 +23,7 @@
 
 #include "nxattribute_wrapper.hpp"
 #include "h5_numpy_support.hpp"
+#include "io_operations.hpp"
 
 AttributeWrapper::AttributeWrapper(const hdf5::attribute::Attribute &a):
   attribute_(a)

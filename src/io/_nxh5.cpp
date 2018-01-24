@@ -34,20 +34,27 @@ extern "C"{
 #include <iostream>
 #include <sstream>
 
-#include <pni/io/nx/nx.hpp>
+#include <pni/io/nexus.hpp>
 #include <pni/io/exceptions.hpp>
 
 
 //import here the namespace for the nxh5 module
 using namespace boost::python;
-using namespace pni::io::nx;
 
-#include "nxobject_to_python_converter.hpp"
-#include "nxgroup_to_python_converter.hpp"
-#include "nxfield_to_python_converter.hpp"
-#include "nxattribute_to_python_converter.hpp"
-#include "algorithms_wrapper.hpp"
-#include "nxlink_wrapper.hpp"
+//#include "nxobject_to_python_converter.hpp"
+//#include "nxgroup_to_python_converter.hpp"
+
+#include "iterator_wrapper.hpp"
+#include "nxattribute_wrapper.hpp"
+#include "nxgroup_wrapper.hpp"
+#include "nxattribute_manager_wrapper.hpp"
+#include "nxfile_wrapper.hpp"
+#include "node_to_python.hpp"
+
+//#include "nxfield_to_python_converter.hpp"
+
+//#include "algorithms_wrapper.hpp"
+//#include "nxlink_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -60,11 +67,6 @@ init_numpy()
     import_array();
 }
 
-extern void create_nxfile_wrappers();
-extern void create_nxfield_wrappers();
-extern void create_xml_wrappers();
-extern void create_nxgroup_wrappers();
-
 static const pni::core::string nxdeflate_rate_doc = 
 "read/write property to set and get the compression rate as an integer "
 "between 0 and 9\n";
@@ -76,15 +78,15 @@ static const pni::core::string nxdeflate_shuffle_doc =
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_nxh5)
 {
-    typedef nxobject_to_python_converter<h5::nxobject,
-                                         h5::nxgroup,
-                                         h5::nxfield,
-                                         h5::nxattribute,
-                                         h5::nxlink> object_converter_type;
-    typedef nxgroup_to_python_converter<h5::nxgroup> group_converter_type;
-    typedef nxfield_to_python_converter<h5::nxfield> field_converter_type;
-    typedef nxattribute_to_python_converter<h5::nxattribute>
-        attribute_converter_type;
+//    typedef nxobject_to_python_converter<h5::nxobject,
+//                                         h5::nxgroup,
+//                                         h5::nxfield,
+//                                         h5::nxattribute,
+//                                         h5::nxlink> object_converter_type;
+//    typedef nxgroup_to_python_converter<h5::nxgroup> group_converter_type;
+//    typedef nxfield_to_python_converter<h5::nxfield> field_converter_type;
+//    typedef nxattribute_to_python_converter<h5::nxattribute>
+//        attribute_converter_type;
     //this is absolutely necessary - otherwise the nympy API functions do not
     //work.
     init_numpy();
@@ -93,50 +95,53 @@ BOOST_PYTHON_MODULE(_nxh5)
     doc_opts.disable_signatures();
     doc_opts.enable_user_defined();
 
-    //register converter
-    to_python_converter<h5::nxobject,object_converter_type>();
-    to_python_converter<h5::nxgroup,group_converter_type>();
-    to_python_converter<h5::nxfield,field_converter_type>();
+    // ======================================================================
+    // Register object converters
+    // ======================================================================
+    to_python_converter<hdf5::node::Node,NodeToPython>();
+    to_python_converter<hdf5::node::Group,GroupToPythonObject>();
+    //to_python_converter<hdf5::node::Dataset,DatasetToPythonObject>();
     to_python_converter<hdf5::attribute::Attribute,AttributeToPythonObject>();
-    wrap_link<h5::nxgroup,h5::nxfield>();
-    wrap_nxlink<nximp_code::HDF5>();
 
-    wrap_nxattribute("nxattribute");
+    //wrap_link<h5::nxgroup,h5::nxfield>();
+    //wrap_nxlink<nximp_code::HDF5>();
 
+
+    // ======================================================================
+    // Register iterator wrappers
+    // ======================================================================
     nexus::register_iterator_wrapper<nexus::NodeIteratorWrapper>("node_iterator");
     nexus::register_iterator_wrapper<nexus::RecursiveNodeIteratorWrapper>("rec_node_iterator");
     nexus::register_iterator_wrapper<nexus::LinkIteratorWrapper>("link_iterator");
     nexus::register_iterator_wrapper<nexus::RecursiveLinkIteratorWrapper>("rec_link_iterator");
     nexus::register_iterator_wrapper<nexus::AttributeIteratorWrapper>("attribute_iterator");
 
-    //wrap NX-attribute object
-    create_nxattribute_wrappers();
+    // =======================================================================
+    // Register object wrappers
+    // =======================================================================
+    wrap_nxattribute_manager("nxattribute_manager");
+    wrap_nxattribute("nxattribute");
+    wrap_nxgroup("nxgroup");
+    wrap_nxfile("nxfile");
+    //wrap_nxfield("nxfield");
     
-    //wrap NX-file
-    create_nxfile_wrappers();
-    
-    //wrap NX-field
-    create_nxfield_wrappers();
-    
-    //wrap NX-group
-    create_nxgroup_wrappers();
 
     //create the XML function wrappers
-    create_xml_wrappers();
-    create_algorithms_wrappers<h5::nxgroup,h5::nxfield,h5::nxattribute>();
+    //create_xml_wrappers();
+    //create_algorithms_wrappers<h5::nxgroup,h5::nxfield,h5::nxattribute>();
 
     //create wrapper for NXDefalteFilter
-    uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =
-           &h5::nxdeflate_filter::compression_rate;
-    void (h5::nxdeflate_filter::*set_compression_rate)(uint32) =
-          &h5::nxdeflate_filter::compression_rate;
-    bool (h5::nxdeflate_filter::*get_shuffle)() const =
-        &h5::nxdeflate_filter::shuffle;
-    void (h5::nxdeflate_filter::*set_shuffle)(bool) =
-        &h5::nxdeflate_filter::shuffle;
-    class_<h5::nxdeflate_filter>("deflate_filter")
-        .add_property("rate",get_compression_rate,set_compression_rate,nxdeflate_rate_doc.c_str())
-        .add_property("shuffle",get_shuffle,set_shuffle,nxdeflate_shuffle_doc.c_str())
-        ;
+//    uint32 (h5::nxdeflate_filter::*get_compression_rate)() const =
+//           &h5::nxdeflate_filter::compression_rate;
+//    void (h5::nxdeflate_filter::*set_compression_rate)(uint32) =
+//          &h5::nxdeflate_filter::compression_rate;
+//    bool (h5::nxdeflate_filter::*get_shuffle)() const =
+//        &h5::nxdeflate_filter::shuffle;
+//    void (h5::nxdeflate_filter::*set_shuffle)(bool) =
+//        &h5::nxdeflate_filter::shuffle;
+//    class_<h5::nxdeflate_filter>("deflate_filter")
+//        .add_property("rate",get_compression_rate,set_compression_rate,nxdeflate_rate_doc.c_str())
+//        .add_property("shuffle",get_shuffle,set_shuffle,nxdeflate_shuffle_doc.c_str())
+//        ;
 
 }

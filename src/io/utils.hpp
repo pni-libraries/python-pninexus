@@ -30,6 +30,7 @@ extern "C"{
 #include <pni/core/types.hpp>
 #include <pni/core/arrays/slice.hpp>
 #include <core/utils.hpp>
+#include <h5cpp/hdf5.hpp>
 
 #include <boost/python/extract.hpp>
 #include <boost/python/slice.hpp>
@@ -43,6 +44,18 @@ typedef std::pair<pni::core::shape_t,pni::core::shape_t> shapes_type;
 
 shapes_type get_shapes(const boost::python::object &s,
                        const boost::python::object &c);
+
+
+//!
+//! @brief create a datatype from a string type code
+//!
+//! Creates an instance of Datatype from a string representation of a type
+//! code.
+//!
+//! @throws key_error if the type code is invalid
+//! @param type_code
+//! @return instance of Datatype
+hdf5::datatype::Datatype create_datatype(const std::string &type_code);
 
 //!
 //! \ingroup utils

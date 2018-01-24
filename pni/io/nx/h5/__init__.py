@@ -29,34 +29,34 @@ Module implementing the HDF5 backend
 #from nxh5 import NXObject_NXObject as NXObject
 from ._nxh5 import nxgroup
 from ._nxh5 import nxfile
-from ._nxh5 import nxfield
+#from ._nxh5 import nxfield
 from ._nxh5 import nxattribute
-from ._nxh5 import deflate_filter
-from ._nxh5 import xml_to_nexus
-from ._nxh5 import get_size
-from ._nxh5 import get_name
-from ._nxh5 import get_rank
-from ._nxh5 import get_unit
-from ._nxh5 import get_class
-from ._nxh5 import get_object
-from ._nxh5 import set_class
-from ._nxh5 import set_unit
-from ._nxh5 import get_path
-from ._nxh5 import link
-from ._nxh5 import nxlink
-from ._nxh5 import nxlink_status
-from ._nxh5 import nxlink_type
-from ._nxh5 import get_links_recursive
-from ._nxh5 import get_links
+#from ._nxh5 import deflate_filter
+#from ._nxh5 import xml_to_nexus
+#from ._nxh5 import get_size
+#from ._nxh5 import get_name
+#from ._nxh5 import get_rank
+#from ._nxh5 import get_unit
+#from ._nxh5 import get_class
+#from ._nxh5 import get_object
+#from ._nxh5 import set_class
+#from ._nxh5 import set_unit
+# from ._nxh5 import get_path
+#from ._nxh5 import link
+#from ._nxh5 import nxlink
+#from ._nxh5 import nxlink_status
+#from ._nxh5 import nxlink_type
+#from ._nxh5 import get_links_recursive
+#from ._nxh5 import get_links
 
 
 #import helper methods
 from ._nxh5 import __create_file
 from ._nxh5 import __open_file
-from ._nxh5 import __create_files
+#from ._nxh5 import __create_files
 
 #add the path property to the nxlink class
-nxlink.path = property(lambda self: get_path(self.parent)+"/"+self.name)
+#nxlink.path = property(lambda self: get_path(self.parent)+"/"+self.name)
 
 
 def create_file(fname,overwrite=False):

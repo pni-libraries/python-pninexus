@@ -32,51 +32,6 @@ namespace nexus {
 
 using PathIteratorWrapper = IteratorWrapper<pni::io::nexus::Path::ConstElementIterator>;
 
-//class PathIteratorWrapper
-//{
-//  public:
-//    using IteratorType = pni::io::nexus::Path::ElementIterator;
-//    using ConstIteratorType = pni::io::nexus::Path::ConstElementIterator;
-//
-//  private:
-//    ConstIteratorType _begin;
-//    ConstIteratorType _end;
-//  public:
-//    PathIteratorWrapper():
-//      _begin(),
-//      _end()
-//    {}
-//
-//    PathIteratorWrapper(const ConstIteratorType &b,
-//                        const ConstIteratorType &e):
-//                      _begin(b),
-//                      _end(e)
-//    {}
-//
-//    void increment()
-//    {
-//      _begin++;
-//    }
-//
-//    boost::python::object __iter__() const
-//    {
-//      return boost::python::object(PathIteratorWrapper(_begin,_end));
-//    }
-//
-//    boost::python::object next()
-//    {
-//      if(_begin==_end)
-//      {
-//        throw(nxpath_iterator_stop());
-//        return boost::python::object();
-//      }
-//
-//      auto o = *_begin;
-//      increment();
-//      return boost::python::object(o);
-//    }
-//};
-
 PathIteratorWrapper get_iterator(const pni::io::nexus::Path &p)
 {
     return PathIteratorWrapper(p.begin(),p.end());

@@ -28,6 +28,22 @@ using namespace boost::python;
 namespace numpy
 {
 
+boost::python::object create_array(pni::core::type_id_t tid,
+                                   const hdf5::Dimensions &dimensions)
+{
+  PyObject *ptr = nullptr;
+  //create the buffer for with the shape information
+  std::vector<npy_intp> dims(dimensions.size());
+  std::copy(dimensions.begin(),dimensions.end(),dims.begin());
+
+  ptr = reinterpret_cast<PyObject*>(PyArray_SimpleNew(dimensions.size(),
+                                    dims.data(),type_id2numpy_id.at(tid)));
+
+  boost::python::handle<> h(ptr);
+
+  return boost::python::object(h);
+}
+
     //------------------------------------------------------------------------
     boost::python::object to_numpy_array(const boost::python::object &o)
     {

@@ -51,7 +51,7 @@ class open_single_test(unittest.TestCase):
         self.assertTrue(f.readonly)
         r = f.root()
 
-        self.assertRaises(ObjectError,r.create_group,"entry","NXentry")
+        self.assertRaises(RuntimeError,r.create_group,"entry","NXentry")
 
     #-------------------------------------------------------------------------
     def test_read_write(self):
