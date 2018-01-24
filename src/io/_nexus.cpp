@@ -43,6 +43,7 @@ using namespace boost::python;
 
 #include "nexus/boost_filesystem_path_conversion.hpp"
 #include "nexus/file_wrapper.hpp"
+#include "nexus/iterator_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -75,6 +76,13 @@ BOOST_PYTHON_MODULE(_nexus)
   PythonObjectToBoostFilesystemPath();
 
   wrap_file("File");
+  wrap_iterator<NodeIteratorWrapper>("NodeIterator");
+  wrap_iterator<RecursiveNodeIteratorWrapper>("RecursiveNodeIterator");
+  wrap_iterator<LinkIteratorWrapper>("LinkIterator");
+  wrap_iterator<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator");
+  wrap_iterator<AttributeIteratorWrapper>("AttributeIterator");
+
+  exception_registration();
 
 
 }
