@@ -104,7 +104,8 @@ nexus_files = [
             "src/io/_nexus.cpp",
             "src/io/nexus/boost_filesystem_path_conversion.cpp",
             "src/io/nexus/file_wrapper.cpp",
-            "src/io/nexus/errors.cpp"
+            "src/io/nexus/errors.cpp",
+            "src/io/nexus/attribute_manager_wrapper.cpp"
             ]
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]

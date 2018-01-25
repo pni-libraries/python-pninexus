@@ -44,6 +44,7 @@ using namespace boost::python;
 #include "nexus/boost_filesystem_path_conversion.hpp"
 #include "nexus/file_wrapper.hpp"
 #include "nexus/iterator_wrapper.hpp"
+#include "nexus/attribute_manager_wrapper.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -81,6 +82,8 @@ BOOST_PYTHON_MODULE(_nexus)
   wrap_iterator<LinkIteratorWrapper>("LinkIterator");
   wrap_iterator<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator");
   wrap_iterator<AttributeIteratorWrapper>("AttributeIterator");
+
+  wrap_attribute_manager("AttributeManager");
 
   exception_registration();
 
