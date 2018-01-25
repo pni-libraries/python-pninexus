@@ -45,6 +45,8 @@ using namespace boost::python;
 #include "nexus/file_wrapper.hpp"
 #include "nexus/iterator_wrapper.hpp"
 #include "nexus/attribute_manager_wrapper.hpp"
+#include "nexus/dataspace.hpp"
+#include "nexus/dimensions_conversion.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -75,6 +77,8 @@ BOOST_PYTHON_MODULE(_nexus)
   // ======================================================================
   BoostFilesystemPathToPythonObject();
   PythonObjectToBoostFilesystemPath();
+  DimensionsToTuple();
+  PythonToDimensions();
 
   wrap_file("File");
   wrap_iterator<NodeIteratorWrapper>("NodeIterator");
@@ -84,6 +88,7 @@ BOOST_PYTHON_MODULE(_nexus)
   wrap_iterator<AttributeIteratorWrapper>("AttributeIterator");
 
   wrap_attribute_manager("AttributeManager");
+  wrap_dataspace();
 
   exception_registration();
 

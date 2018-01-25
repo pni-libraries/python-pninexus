@@ -48,6 +48,8 @@ void *PythonObjectToBoostFilesystemPath::convertible(PyObject *ptr)
 #else
   if(!PyString_Check(ptr)) return nullptr;
 #endif
+
+  return ptr;
 }
 
 void PythonObjectToBoostFilesystemPath::construct(PyObject *ptr,rvalue_type *data)
