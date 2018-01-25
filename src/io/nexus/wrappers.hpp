@@ -22,5 +22,8 @@
 //
 #pragma once
 
-
+void wrap_attribute();
+void wrap_nodes();
 void wrap_dataspace();
+void wrap_file();
+void wrap_link();

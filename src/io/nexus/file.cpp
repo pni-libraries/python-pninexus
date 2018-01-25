@@ -26,10 +26,6 @@
 #include <pni/core/error.hpp>
 #include <pni/io/nexus.hpp>
 
-#include "file_wrapper.hpp"
-
-
-
 static const std::string nxfile_flush_doc_string = 
 "Flush the content of the file. \n"
 "This method writes all the changes made to the file to disk."
@@ -74,7 +70,7 @@ hdf5::file::File open_file(const boost::filesystem::path &file_path,
   return pni::io::nexus::open_file(file_path,flags);
 }
 
-void wrap_file(const char *class_name)
+void wrap_file()
 {
     using namespace boost::python; 
 
@@ -90,7 +86,7 @@ void wrap_file(const char *class_name)
 
 
     //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
-    class_<hdf5::file::File>(class_name)
+    class_<hdf5::file::File>("File")
         .def(init<>())
         .add_property("intent",&hdf5::file::File::intent,nxfile_readonly_doc.c_str())
         .add_property("is_valid",&hdf5::file::File::is_valid,nxfile_is_valid_doc.c_str())

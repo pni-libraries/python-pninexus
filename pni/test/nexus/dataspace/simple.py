@@ -38,6 +38,8 @@ class TestSimple(unittest.TestCase):
         self.assertEqual(space.size,0)
         self.assertEqual(space.current_dimensions,())
         self.assertEqual(space.maximum_dimensions,())
+        self.assertTrue(isinstance(space,Simple))
+        self.assertTrue(isinstance(space,Dataspace))
         
     def test_current_dimensions_construction(self):
         

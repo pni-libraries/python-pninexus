@@ -14,14 +14,40 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with python-pni.  If not, see <http://www.gnu.org/licenses/>.
+// along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-// Created on: Jan 23, 2018
+// Created on: Jan 25, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-#pragma once
 
+#include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 
-void wrap_file(const char *class_name);
+void wrap_nodes()
+{
+  using namespace boost::python;
+  using namespace hdf5::node;
+
+  enum_<Type>("NodeType")
+      .value("UNKOWN",Type::UNKNOWN)
+      .value("GROUP",Type::GROUP)
+      .value("DATASET",Type::DATASET)
+      .value("DATATYPE",Type::DATATYPE)
+      ;
+
+  class_<Node>("Node")
+      .add_property("type",&Node::type)
+      .add_property("is_valid",&Node::is_valid)
+      .add_property("link",make_function(&Node::link,return_internal_reference<>()))
+      .def_readonly("attributes",&Node::attributes)
+      ;
+
+  class_<Group,bases<Node>>("Group")
+      ;
+
+  class_<Dataset,bases<Node>>("Dataset")
+      ;
+
+
+}

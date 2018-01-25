@@ -42,11 +42,9 @@ extern "C"{
 using namespace boost::python;
 
 #include "nexus/boost_filesystem_path_conversion.hpp"
-#include "nexus/file_wrapper.hpp"
 #include "nexus/iterator_wrapper.hpp"
-#include "nexus/attribute_manager_wrapper.hpp"
-#include "nexus/dataspace.hpp"
 #include "nexus/dimensions_conversion.hpp"
+#include "nexus/wrappers.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -80,15 +78,17 @@ BOOST_PYTHON_MODULE(_nexus)
   DimensionsToTuple();
   PythonToDimensions();
 
-  wrap_file("File");
   wrap_iterator<NodeIteratorWrapper>("NodeIterator");
   wrap_iterator<RecursiveNodeIteratorWrapper>("RecursiveNodeIterator");
   wrap_iterator<LinkIteratorWrapper>("LinkIterator");
   wrap_iterator<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator");
   wrap_iterator<AttributeIteratorWrapper>("AttributeIterator");
 
-  wrap_attribute_manager("AttributeManager");
+  wrap_attribute();
+  wrap_nodes();
   wrap_dataspace();
+  wrap_file();
+  wrap_link();
 
   exception_registration();
 
