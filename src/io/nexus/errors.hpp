@@ -36,6 +36,9 @@
 class StopIteration : public std::exception
 {};
 
+class IndexError : public std::exception
+{};
+
 //----------------------------------------------------------------------------
 //! 
 //! \ingroup errors  

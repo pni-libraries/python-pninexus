@@ -24,6 +24,7 @@
 //#include "hdf5_numpy.hpp"
 #include <h5cpp/hdf5.hpp>
 #include <boost/python.hpp>
+#include "errors.hpp"
 
 
 //
@@ -38,6 +39,17 @@
 //{
 //
 //}
+
+hdf5::attribute::Attribute
+get_attribute_by_index(const hdf5::attribute::AttributeManager &self,
+                        size_t index)
+{
+  if(index>=self.size())
+    throw IndexError();
+
+  return self[index];
+}
+
 
 void wrap_attribute()
 {
@@ -56,7 +68,7 @@ void wrap_attribute()
     class_<AttributeManager>("AttributeManager",init<const AttributeManager&>())
         .add_property("size",&AttributeManager::size)
         .def("__getitem__",get_by_name)
-        .def("__getitem__",get_by_index)
+        .def("__getitem__",get_attribute_by_index)
         .def("__len__",&AttributeManager::size)
 //         .def("create",&AttributeManagerWrapper::create,("name","type",arg("shape")=list(),
 //             arg("overwrite")=false))

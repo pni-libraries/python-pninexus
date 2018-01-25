@@ -102,6 +102,11 @@ void stop_iteration_translator(StopIteration const &)
   PyErr_SetString(PyExc_StopIteration,"iteration stop");
 }
 
+void index_error_translator(IndexError const &)
+{
+  PyErr_SetString(PyExc_IndexError,"invalid index");
+}
+
 //!
 //! \ingroup error_management
 //! \brief exception creation utility function
@@ -151,5 +156,6 @@ void exception_registration()
     register_exception_translator<object_error>(object_error_translator);
 
     register_exception_translator<StopIteration>(stop_iteration_translator);
+    register_exception_translator<IndexError>(index_error_translator);
 
 }

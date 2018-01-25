@@ -1,4 +1,4 @@
-from .core         import *
+#from .core         import *
 from .nexus import *
 #from .algorithms   import *
 #from .nxfile_tests import *
