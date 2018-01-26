@@ -20,10 +20,46 @@
 // Created on: Jan 26, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-#pragma once
+#include <boost/python.hpp>
+#include <h5cpp/hdf5.hpp>
 
-void create_enumeration_wrappers();
-void create_class_wrappers();
-void create_copyflag_wrapper();
-void create_chunk_cache_parameters_wrapper();
-void create_creation_order_wrapper();
+namespace {
+
+void set_tracked(hdf5::property::CreationOrder &order,bool value)
+{
+  if(value)
+    order.enable_tracked();
+  else
+    order.disable_tracked();
+}
+
+bool get_tracked(const hdf5::property::CreationOrder &order)
+{
+  return order.tracked();
+}
+
+void set_indexed(hdf5::property::CreationOrder &order,bool value)
+{
+  if(value)
+    order.enable_indexed();
+  else
+    order.disable_indexed();
+}
+
+bool get_indexed(const hdf5::property::CreationOrder &order)
+{
+  return order.indexed();
+}
+
+}
+
+void create_creation_order_wrapper()
+{
+  using namespace boost::python;
+  using namespace hdf5::property;
+
+  class_<CreationOrder>("CreationOrder")
+      .add_property("tracked",&get_tracked,&set_tracked)
+      .add_property("indexed",&get_indexed,&set_indexed)
+      ;
+}

@@ -202,7 +202,9 @@ h5cpp_property_ext = Extension('pni.io.h5cpp._property',
                                 ['src/io/h5cpp/property/property.cpp',
                                  'src/io/h5cpp/property/enumeration_wrappers.cpp',
                                  'src/io/h5cpp/property/class_wrappers.cpp',
-                                 'src/io/h5cpp/property/copy_flag_wrapper.cpp'
+                                 'src/io/h5cpp/property/copy_flag_wrapper.cpp',
+                                 'src/io/h5cpp/property/chunk_cache_parameters.cpp',
+                                 'src/io/h5cpp/property/creation_order.cpp'
                                  ],
                            include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,

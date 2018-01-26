@@ -21,6 +21,8 @@ CopyFlag.__or__ = CopyFlag_or
 # import utility classes
 #
 from .._property import CopyFlags
+from .._property import ChunkCacheParameters
+from .._property import CreationOrder
 
 #
 # import propety list classes

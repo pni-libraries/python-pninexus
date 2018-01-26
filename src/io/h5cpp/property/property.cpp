@@ -33,5 +33,7 @@ BOOST_PYTHON_MODULE(_property)
   create_enumeration_wrappers();
   create_class_wrappers();
   create_copyflag_wrapper();
+  create_chunk_cache_parameters_wrapper();
+  create_creation_order_wrapper();
 
 }
