@@ -198,6 +198,20 @@ h5cpp_datatype_ext = Extension('pni.io.h5cpp._datatype',
                            extra_compile_args = extra_compile_args
                                 )
 
+h5cpp_property_ext = Extension('pni.io.h5cpp._property',
+                                ['src/io/h5cpp/property/property.cpp',
+                                 'src/io/h5cpp/property/enumeration_wrappers.cpp',
+                                 'src/io/h5cpp/property/class_wrappers.cpp',
+                                 'src/io/h5cpp/property/copy_flag_wrapper.cpp'
+                                 ],
+                           include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
+
 io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
@@ -283,6 +297,7 @@ setup(name="pni",
                    h5cpp_file_ext,
                    h5cpp_dataspace_ext,
                    h5cpp_datatype_ext,
+                   h5cpp_property_ext,
                    io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
