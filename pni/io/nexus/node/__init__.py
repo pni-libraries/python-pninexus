@@ -1,1 +1,3 @@
-from .._nexus import NodeType as Type
+from .._nexus import NodeType 
+from .._nexus import LinkType
+

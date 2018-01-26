@@ -25,6 +25,17 @@
 #include <h5cpp/hdf5.hpp>
 
 
+hdf5::node::LinkTarget get_link_target(const hdf5::node::Link &link)
+{
+  return link.target();
+}
+
+hdf5::node::LinkType get_link_type(const hdf5::node::Link &link)
+{
+  return link.type();
+}
+
+
 void wrap_link()
 {
   using namespace boost::python;
@@ -44,8 +55,8 @@ void wrap_link()
 
   class_<Link>("Link")
       .add_property("path",&Link::path)
-      .add_property("target",&Link::target)
-      .add_property("type",&Link::type)
+      .add_property("target",get_link_target)
+      .add_property("type",get_link_type)
       .add_property("parent",&Link::parent)
       .add_property("file",make_function(&Link::file,return_internal_reference<>()))
       .add_property("exists",&Link::exists)

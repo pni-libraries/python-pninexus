@@ -47,3 +47,12 @@ class GroupConstructionTest(unittest.TestCase):
         
         root = self.file.root()
         self.assertEqual(root.attributes.size,6)
+        
+    def testConstructor(self):
+        
+        root = self.file.root()
+        entry = nexus.Group(root,"entry")
+        self.assertTrue(entry.is_valid)
+        self.assertEqual(entry.type,nexus.NodeType.GROUP)
+        self.assertEqual(entry.link.type,nexus.LinkType.HARD)
+        self.assertEqual(entry.link.path,"/entry")

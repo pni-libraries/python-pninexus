@@ -8,5 +8,7 @@ from ._nexus import Node
 from ._nexus import Dataset
 from ._nexus import Attribute
 from ._nexus import Group
+from ._nexus import LinkType
+from ._nexus import NodeType
 import dataspace
 import node

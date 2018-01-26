@@ -20,36 +20,30 @@
 // Created on: Jan 25, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-
+#pragma once
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 
-
-void wrap_nodes()
+//!
+//! @brief convert an hdf5::Path to a Python string
+//!
+struct Hdf5PathToPythonString
 {
-  using namespace boost::python;
-  using namespace hdf5::node;
+    DimensionsToTuple();
+    static PyObject *convert(const hdf5::Dimensions &dimensions);
+};
 
-  enum_<Type>("NodeType")
-      .value("UNKOWN",Type::UNKNOWN)
-      .value("GROUP",Type::GROUP)
-      .value("DATASET",Type::DATASET)
-      .value("DATATYPE",Type::DATATYPE)
-      ;
+//!
+//! @brief convert a Python string to an hdf5::Path instance
+//!
+struct PythonStringToHdf5Path
+{
+    using rvalue_type = boost::python::converter::rvalue_from_python_stage1_data;
+    using storage_type = boost::python::converter::rvalue_from_python_storage<hdf5::Path>;
 
-  class_<Node>("Node")
-      .add_property("type",&Node::type)
-      .add_property("is_valid",&Node::is_valid)
-      .add_property("link",make_function(&Node::link,return_internal_reference<>()))
-      .def_readonly("attributes",&Node::attributes)
-      ;
+    PythonToDimensions();
 
-  class_<Group,bases<Node>>("Group")
-      .def(init<Group,std::string>())
-      ;
+    static void *convertible(PyObject *ptr);
 
-  class_<Dataset,bases<Node>>("Dataset")
-      ;
-
-
-}
+    static void construct(PyObject *ptr,rvalue_type *data);
+};
