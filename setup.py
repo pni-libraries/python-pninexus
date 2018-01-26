@@ -38,7 +38,7 @@ core_extra_link_args = []
 nxh5_extra_link_args = []
 io_extra_link_args = []
 nx_extra_link_args = []
-nexus_extra_link_args =[]
+h5cpp_extra_link_args =[]
 
 if os.path.exists("conanbuildinfo.txt"):
     c = ConanConfig("conanbuildinfo.txt")
@@ -50,7 +50,7 @@ if os.path.exists("conanbuildinfo.txt"):
         extra_link_args.append('-Wl,-rpath,'+libdir)
     core_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nxh5_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../../libs")
-    nexus_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
+    h5cpp_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     io_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nx_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     
@@ -100,17 +100,17 @@ nxh5_files = [
              "src/io/io_operations.cpp"
              ]+common_sources
              
-nexus_files = [
-            "src/io/_nexus.cpp",
-            "src/io/nexus/boost_filesystem_path_conversion.cpp",
-            "src/io/nexus/file.cpp",
-            "src/io/nexus/errors.cpp",
-            "src/io/nexus/numpy.cpp",
-            "src/io/nexus/dataspace.cpp",
-            "src/io/nexus/dimensions_conversion.cpp",
-            "src/io/nexus/link.cpp",
-            "src/io/nexus/attribute.cpp",
-            "src/io/nexus/nodes.cpp",
+h5cpp_files = [
+            "src/io/h5cpp/_h5cpp.cpp",
+            "src/io/h5cpp/boost_filesystem_path_conversion.cpp",
+            "src/io/h5cpp/file.cpp",
+            "src/io/h5cpp/errors.cpp",
+            "src/io/h5cpp/numpy.cpp",
+            "src/io/h5cpp/dataspace.cpp",
+            "src/io/h5cpp/dimensions_conversion.cpp",
+            "src/io/h5cpp/link.cpp",
+            "src/io/h5cpp/attribute.cpp",
+            "src/io/h5cpp/nodes.cpp",
             ]
 
 io_files = ["src/io/_io.cpp","src/io/errors.cpp"]
@@ -144,13 +144,49 @@ nxh5_ext = Extension("pni.io.nx.h5._nxh5",nxh5_files,
                      language="c++",
                      extra_compile_args = extra_compile_args)
 
-nexus_ext = Extension("pni.io.nexus._nexus",nexus_files,
-                     include_dirs = include_dirs+["src/"],
-                     library_dirs = library_dirs,
-                     libraries = libraries,
-                     extra_link_args = nexus_extra_link_args,
-                     language="c++",
-                     extra_compile_args = extra_compile_args)
+h5cpp_core_ext = Extension("pni.io.h5cpp._h5cpp",
+                           ['src/io/h5cpp/_h5cpp.cpp',
+                            'src/io/h5cpp/boost_filesystem_path_conversion.cpp',
+                            'src/io/h5cpp/dimensions_conversion.cpp',
+                            'src/io/h5cpp/errors.cpp'
+                               ]
+                           ,
+                           include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args)
+
+h5cpp_attribute_ext = Extension('pni.io.h5cpp._attribute',
+                                ['src/io/h5cpp/attribute/attribute.cpp'],
+                                      include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
+
+h5cpp_file_ext = Extension('pni.io.h5cpp._file',
+                                ['src/io/h5cpp/file/file.cpp'],
+                                      include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
+
+h5cpp_dataspace_ext = Extension('pni.io.h5cpp._dataspace',
+                                ['src/io/h5cpp/dataspace/dataspace.cpp'],
+                                      include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
 
 io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
@@ -231,7 +267,12 @@ setup(name="pni",
       license = "GPLv2",
       version = "1.1.0",
       requires = ["numpy"],
-      ext_modules=[core_ext,nxh5_ext,nexus_ext,io_ext,nx_ext,
+      ext_modules=[core_ext,nxh5_ext,
+                   h5cpp_core_ext,
+                   h5cpp_attribute_ext,
+                   h5cpp_file_ext,
+                   h5cpp_dataspace_ext,
+                   io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
       url="https://github.com/pni-libraries/python-pni",

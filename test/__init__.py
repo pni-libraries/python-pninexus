@@ -1,5 +1,5 @@
 #from .core         import *
-from .nexus import *
+from .h5cpp import *
 #from .algorithms   import *
 #from .nxfile_tests import *
 #from .nxgroup_tests import *

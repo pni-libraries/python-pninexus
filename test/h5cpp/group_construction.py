@@ -25,14 +25,14 @@ import unittest
 import os
 import numpy
 
-from pni.io import nexus
+from pni.io import h5cpp
 
 class GroupConstructionTest(unittest.TestCase):
     
     def setUp(self):
         unittest.TestCase.setUp(self)
         
-        self.file=nexus.create_file("GroupTest.nxs",nexus.AccessFlags.TRUNCATE)
+        self.file=h5cpp.file.create("GroupTest.h5",h5cpp.AccessFlags.TRUNCATE)
         
     def tearDown(self):
         
@@ -40,7 +40,7 @@ class GroupConstructionTest(unittest.TestCase):
         
     def testDefaultConstruction(self):
         
-        g = nexus.Group()
+        g = h5cpp.node.Group()
         self.assertFalse(g.is_valid)
         
     def testRootGroupFromFile(self):
@@ -51,7 +51,7 @@ class GroupConstructionTest(unittest.TestCase):
     def testConstructor(self):
         
         root = self.file.root()
-        entry = nexus.Group(root,"entry")
+        entry = h5cpp.node.Group(root,"entry")
         self.assertTrue(entry.is_valid)
         self.assertEqual(entry.type,nexus.NodeType.GROUP)
         self.assertEqual(entry.link.type,nexus.LinkType.HARD)

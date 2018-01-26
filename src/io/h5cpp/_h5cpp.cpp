@@ -31,20 +31,14 @@ extern "C"{
 
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
-#include <iostream>
-#include <sstream>
-
-#include <pni/io/nexus.hpp>
-#include <pni/io/exceptions.hpp>
 
 
 //import here the namespace for the nxh5 module
 using namespace boost::python;
 
-#include "nexus/boost_filesystem_path_conversion.hpp"
-#include "nexus/iterator_wrapper.hpp"
-#include "nexus/dimensions_conversion.hpp"
-#include "nexus/wrappers.hpp"
+#include "boost_filesystem_path_conversion.hpp"
+#include "dimensions_conversion.hpp"
+#include "errors.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -59,7 +53,7 @@ init_numpy()
 
 
 //=================implementation of the python extension======================
-BOOST_PYTHON_MODULE(_nexus)
+BOOST_PYTHON_MODULE(_h5cpp)
 {
   init_numpy();
 
@@ -78,19 +72,6 @@ BOOST_PYTHON_MODULE(_nexus)
   DimensionsToTuple();
   PythonToDimensions();
 
-  wrap_iterator<NodeIteratorWrapper>("NodeIterator");
-  wrap_iterator<RecursiveNodeIteratorWrapper>("RecursiveNodeIterator");
-  wrap_iterator<LinkIteratorWrapper>("LinkIterator");
-  wrap_iterator<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator");
-  wrap_iterator<AttributeIteratorWrapper>("AttributeIterator");
-
-  wrap_attribute();
-  wrap_nodes();
-  wrap_dataspace();
-  wrap_file();
-  wrap_link();
 
   exception_registration();
-
-
 }

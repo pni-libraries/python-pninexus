@@ -21,10 +21,27 @@
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
 //#include "hdf5_numpy.hpp"
 #include <h5cpp/hdf5.hpp>
 #include <boost/python.hpp>
-#include "errors.hpp"
+#include "../errors.hpp"
+
+#if PY_MAJOR_VERSION >= 3
+int
+#else
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
 
 
 //
@@ -50,11 +67,22 @@ get_attribute_by_index(const hdf5::attribute::AttributeManager &self,
   return self[index];
 }
 
+using namespace boost::python;
 
-void wrap_attribute()
+
+BOOST_PYTHON_MODULE(_attribute)
 {
-    using namespace boost::python;
+
     using namespace hdf5::attribute;
+
+    init_numpy();
+
+    //
+    // setting up the documentation options
+    //
+    docstring_options doc_opts;
+    doc_opts.disable_signatures();
+    doc_opts.enable_user_defined();
 
     Attribute (AttributeManager::*get_by_name)(const std::string &) const = &AttributeManager::operator[];
     Attribute (AttributeManager::*get_by_index)(size_t) const = &AttributeManager::operator[];

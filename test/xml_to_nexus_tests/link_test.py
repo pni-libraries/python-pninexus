@@ -54,7 +54,7 @@ def check_field(f,n,t,s):
     """check name, data type, and shape of a field
 
     Arg:
-        f (nxfield) ..... nexus field
+        f (nxfield) ..... h5cpp field
         n (string) ...... expected name of the field
         t (string) ...... expected type
         s (list) ........ expected shape of the field

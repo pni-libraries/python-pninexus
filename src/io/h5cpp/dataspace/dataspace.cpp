@@ -21,16 +21,15 @@
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 #include <boost/python.hpp>
-#include <pni/core/types.hpp>
 #include <h5cpp/hdf5.hpp>
 
 
-void wrap_dataspace()
+BOOST_PYTHON_MODULE(_dataspace)
 {
   using namespace boost::python;
   using namespace hdf5::dataspace;
 
-  enum_<hdf5::dataspace::Type>("DataspaceType")
+  enum_<Type>("Type")
       .value("SCALAR",hdf5::dataspace::Type::SCALAR)
       .value("SIMPLE",hdf5::dataspace::Type::SIMPLE)
       ;

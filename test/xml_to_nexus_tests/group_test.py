@@ -51,7 +51,7 @@ class group_test(unittest.TestCase):
         satisfies the user provided values.
 
         Arg:
-            g (nxgroup) ..... nexus group
+            g (nxgroup) ..... h5cpp group
             n (string) ...... expected name of the group
             t (string) ...... expected class of the group
 

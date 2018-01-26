@@ -25,20 +25,20 @@ from __future__ import print_function
 import unittest
 import os
 
-from pni.io.nexus import File
-from pni.io.nexus import create_file
-from pni.io.nexus import open_file
-from pni.io.nexus import AccessFlags
+from pni.io.h5cpp.file import File
+from pni.io.h5cpp.file import create
+from pni.io.h5cpp.file import open
+from pni.io.h5cpp.file import AccessFlags
 import time
 import re
 
 class OpenTest(unittest.TestCase):
     file_path = os.path.split(__file__)[0]
-    file_name = "OpenTest.nxs"
+    file_name = "OpenTest.h5"
     full_path = os.path.join(file_path,file_name)
 
     def setUp(self):
-        f = create_file(self.full_path,AccessFlags.TRUNCATE)
+        f = create(self.full_path,AccessFlags.TRUNCATE)
         f.close()
 
 
@@ -47,7 +47,7 @@ class OpenTest(unittest.TestCase):
         """
         Open a single file in read only mode.
         """
-        f = open_file(self.full_path) 
+        f = open(self.full_path) 
         self.assertEqual(f.intent,AccessFlags.READONLY)
 
     #-------------------------------------------------------------------------
@@ -56,5 +56,5 @@ class OpenTest(unittest.TestCase):
         Open a single file in read-write mode.
         """
 
-        f = open_file(self.full_path,AccessFlags.READWRITE)
+        f = open(self.full_path,AccessFlags.READWRITE)
         self.assertEqual(f.intent,AccessFlags.READWRITE)
