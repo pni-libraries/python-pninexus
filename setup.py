@@ -188,6 +188,16 @@ h5cpp_dataspace_ext = Extension('pni.io.h5cpp._dataspace',
                            extra_compile_args = extra_compile_args
                                 )
 
+h5cpp_datatype_ext = Extension('pni.io.h5cpp._datatype',
+                                ['src/io/h5cpp/datatype/datatype.cpp'],
+                                      include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
+
 io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
@@ -272,6 +282,7 @@ setup(name="pni",
                    h5cpp_attribute_ext,
                    h5cpp_file_ext,
                    h5cpp_dataspace_ext,
+                   h5cpp_datatype_ext,
                    io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),
