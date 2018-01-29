@@ -214,6 +214,17 @@ h5cpp_property_ext = Extension('pni.io.h5cpp._property',
                            extra_compile_args = extra_compile_args
                                 )
 
+h5cpp_property_ext = Extension('pni.io.h5cpp._node',
+                                ['src/io/h5cpp/node/nodes.cpp'
+                                 ],
+                           include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
+
 io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,

@@ -31,6 +31,7 @@ extern "C"{
 
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
+#include <h5cpp/hdf5.hpp>
 
 
 //import here the namespace for the nxh5 module
@@ -49,6 +50,11 @@ void
 init_numpy()
 {
     import_array();
+}
+
+std::string path_to_string(const hdf5::Path &self)
+{
+  return std::string(self);
 }
 
 
@@ -71,6 +77,43 @@ BOOST_PYTHON_MODULE(_h5cpp)
   PythonObjectToBoostFilesystemPath();
   DimensionsToTuple();
   PythonToDimensions();
+
+  enum_<hdf5::IterationOrder>("IterationOrder")
+      .value("INCREASING",hdf5::IterationOrder::INCREASING)
+      .value("DECREASING",hdf5::IterationOrder::DECREASING)
+      .value("NATIVE",hdf5::IterationOrder::NATIVE);
+
+  enum_<hdf5::IterationIndex>("IterationIndex")
+      .value("NAME",hdf5::IterationIndex::NAME)
+      .value("CREATION_ORDER",hdf5::IterationIndex::CREATION_ORDER);
+
+
+  hdf5::IterationOrder (hdf5::IteratorConfig::*get_iteration_order)() const =  &hdf5::IteratorConfig::order;
+  void (hdf5::IteratorConfig::*set_iteration_order)(hdf5::IterationOrder) = &hdf5::IteratorConfig::order;
+  hdf5::IterationIndex (hdf5::IteratorConfig::*get_iteration_index)() const = &hdf5::IteratorConfig::index;
+  void (hdf5::IteratorConfig::*set_iteration_index)(hdf5::IterationIndex) = &hdf5::IteratorConfig::index;
+  const hdf5::property::LinkAccessList &(hdf5::IteratorConfig::*get_link_access_list)() const =
+      &hdf5::IteratorConfig::link_access_list;
+  void (hdf5::IteratorConfig::*set_link_access_list)(const hdf5::property::LinkAccessList &) =
+      &hdf5::IteratorConfig::link_access_list;
+  class_<hdf5::IteratorConfig>("IteratorConfig")
+      .add_property("order",get_iteration_order,set_iteration_order)
+      .add_property("index",get_iteration_index,set_iteration_index)
+      .add_property("link_access_list",make_function(get_link_access_list,return_internal_reference<>()),set_link_access_list)
+      ;
+
+  bool (hdf5::Path::*get_absolute)() const = &hdf5::Path::absolute;
+  void (hdf5::Path::*set_absolute)(bool) = &hdf5::Path::absolute;
+  class_<hdf5::Path>("Path")
+      .def(init<std::string>())
+      .add_property("name",&hdf5::Path::name)
+      .add_property("size",&hdf5::Path::size)
+      .add_property("parent",&hdf5::Path::parent)
+      .add_property("absolute",set_absolute,get_absolute)
+      .def("__str__",path_to_string)
+      .def("__repr__",path_to_string)
+      ;
+
 
 
   exception_registration();

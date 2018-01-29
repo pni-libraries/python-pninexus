@@ -1,0 +1,211 @@
+//
+// (c) Copyright 2018 DESY
+//
+// This file is part of python-pni.
+//
+// python-pni is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// python-pni is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
+// ===========================================================================
+//
+// Created on: Jan 25, 2018
+//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//
+
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
+
+#include <boost/python.hpp>
+#include <h5cpp/hdf5.hpp>
+#include "../errors.hpp"
+
+
+#if PY_MAJOR_VERSION >= 3
+int
+#else
+void
+#endif
+init_numpy()
+{
+    import_array();
+}
+
+hdf5::node::Link get_link_by_index(const hdf5::node::LinkView &self,size_t index)
+{
+  if(index>=self.size())
+    throw IndexError();
+
+  return self[index];
+}
+
+hdf5::node::Link get_link_by_name(const hdf5::node::LinkView &self,const std::string &name)
+{
+  return self[name];
+}
+
+boost::python::object object_from_node(const hdf5::node::Node &node)
+{
+  if(node.type()==hdf5::node::Type::DATASET)
+    return boost::python::object(hdf5::node::Dataset(node));
+  else if(node.type()==hdf5::node::Type::GROUP)
+    return boost::python::object(hdf5::node::Group(node));
+  else
+    return boost::python::object(node);
+}
+
+boost::python::object get_node_by_index(const hdf5::node::NodeView &self,size_t index)
+{
+  if(index>=self.size())
+    throw IndexError();
+
+  return object_from_node(self[index]);
+}
+
+boost::python::object get_node_by_name(const hdf5::node::NodeView &self,const std::string &name)
+{
+  return object_from_node(self[name]);
+}
+
+void write_all(const hdf5::node::Dataset &self,const boost::python::object &data)
+{
+
+}
+
+void write_with_selection(const hdf5::node::Dataset &self,
+                          const boost::python::object &data,
+                          const hdf5::dataspace::Selection &selection)
+{
+
+}
+
+void read_all(const hdf5::node::Dataset &self,boost::python::object &data)
+{
+
+}
+
+void read_with_selection(const hdf5::node::Dataset &self,
+                         boost::python::object &data,
+                         const hdf5::dataspace::Selection &selection)
+{
+
+}
+
+
+BOOST_PYTHON_MODULE(_node)
+{
+  using namespace boost::python;
+  using namespace hdf5::node;
+
+  init_numpy();
+
+  //
+  // setting up the documentation options
+  //
+  docstring_options doc_opts;
+  doc_opts.disable_signatures();
+  doc_opts.enable_user_defined();
+
+  // ========================================================================
+  // Wrapping enumerations
+  // ========================================================================
+
+  enum_<Type>("Type")
+      .value("UNKOWN",Type::UNKNOWN)
+      .value("GROUP",Type::GROUP)
+      .value("DATASET",Type::DATASET)
+      .value("DATATYPE",Type::DATATYPE)
+      ;
+
+  enum_<LinkType>("LinkType")
+      .value("HARD",LinkType::HARD)
+      .value("SOFT",LinkType::SOFT)
+      .value("EXTERNAL",LinkType::EXTERNAL)
+      .value("ERROR",LinkType::ERROR)
+      ;
+
+  // ========================================================================
+  // wrapping classes
+  // ========================================================================
+
+  class_<Node>("Node")
+      .add_property("type",&Node::type)
+      .add_property("is_valid",&Node::is_valid)
+      .add_property("link",make_function(&Node::link,return_internal_reference<>()))
+      .def_readonly("attributes",&Node::attributes)
+      ;
+
+  class_<GroupView>("GroupView",init<Group&>())
+      .add_property("size",&GroupView::size)
+          ;
+
+  class_<NodeView,bases<GroupView>>("NodeView",init<Group &>())
+      .def("exists",&NodeView::exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("__getitem__",get_node_by_index)
+      .def("__getitem__",get_node_by_name)
+      ;
+
+  class_<LinkView,bases<GroupView>>("LinkView",init<Group &>())
+      .def("exists",&LinkView::exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("__getitem__",get_link_by_index)
+      .def("__getitem__",get_link_by_name)
+          ;
+
+  class_<Group,bases<Node>>("Group")
+      .def(init<Group,
+                std::string,
+                hdf5::property::LinkCreationList,
+                hdf5::property::GroupCreationList,
+                hdf5::property::GroupAccessList>(
+                (arg("parent"),arg("name"),
+                arg("lcpl")=hdf5::property::LinkCreationList(),
+                arg("gcpl")=hdf5::property::GroupCreationList(),
+                arg("gapl")=hdf5::property::GroupAccessList())
+                ))
+      .def_readonly("links",&Group::links)
+      .def_readonly("nodes",&Group::nodes)
+      .def("close",&Group::close)
+      ;
+
+  class_<Dataset,bases<Node>>("Dataset")
+      .def("close",&Dataset::close)
+      .def("write",write_all)
+      .def("write",write_with_selection)
+      .def("read",read_all)
+      .def("read",read_with_selection)
+      ;
+
+
+  class_<LinkTarget>("LinkTarget")
+      .add_property("file_path",&LinkTarget::file_path)
+      .add_property("object_path",&LinkTarget::object_path)
+      ;
+
+  class_<Link>("Link")
+      .add_property("path",&Link::path)
+      .def("target",&Link::target,(args("lapl")=hdf5::property::LinkAccessList()))
+      .def("type",&Link::type,(args("lapl")=hdf5::property::LinkAccessList()))
+      .add_property("parent",&Link::parent)
+      .add_property("file",make_function(&Link::file,return_internal_reference<>()))
+      .add_property("exists",&Link::exists)
+      .add_property("is_resolvable",&Link::is_resolvable)
+      .add_property("node",&Link::operator*)
+      ;
+
+
+
+
+
+}
