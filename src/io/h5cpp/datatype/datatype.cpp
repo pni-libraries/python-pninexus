@@ -22,6 +22,7 @@
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <cstdint>
 
 
 BOOST_PYTHON_MODULE(_datatype)
@@ -100,4 +101,19 @@ BOOST_PYTHON_MODULE(_datatype)
       .staticmethod("variable")
       .def("fixed",&String::fixed)
       .staticmethod("fixed");
+
+  scope current;
+
+  current.attr("kUInt8") = hdf5::datatype::create<uint8_t>();
+  current.attr("kInt8") = hdf5::datatype::create<int8_t>();
+  current.attr("kUInt16") = hdf5::datatype::create<uint16_t>();
+  current.attr("kInt16")  = hdf5::datatype::create<int16_t>();
+  current.attr("kUInt32") = hdf5::datatype::create<uint32_t>();
+  current.attr("kInt32")  = hdf5::datatype::create<int32_t>();
+  current.attr("kUInt64") = hdf5::datatype::create<uint64_t>();
+  current.attr("kInt64")  = hdf5::datatype::create<int64_t>();
+  current.attr("kFloat64") = hdf5::datatype::create<double>();
+  current.attr("kFloat32") = hdf5::datatype::create<float>();
+  current.attr("kFloat128") = hdf5::datatype::create<long double>();
+  current.attr("kVariableString") = hdf5::datatype::create<std::string>();
 }
