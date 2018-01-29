@@ -189,7 +189,9 @@ h5cpp_dataspace_ext = Extension('pni.io.h5cpp._dataspace',
                                 )
 
 h5cpp_datatype_ext = Extension('pni.io.h5cpp._datatype',
-                                ['src/io/h5cpp/datatype/datatype.cpp'],
+                                ['src/io/h5cpp/datatype/datatype.cpp'
+                                 
+                                 ],
                                       include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,
                            libraries = libraries,

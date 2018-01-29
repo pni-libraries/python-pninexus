@@ -77,6 +77,48 @@ create_attribute(const hdf5::attribute::AttributeManager &self,
   return self.create(name,type,*space,acpl);
 }
 
+boost::python::object convert_datatype(const hdf5::datatype::Datatype &datatype)
+{
+  using namespace hdf5::datatype;
+
+  switch(datatype.get_class())
+  {
+    case Class::INTEGER:
+      return boost::python::object(Integer(datatype));
+    case Class::FLOAT:
+      return boost::python::object(Float(datatype));
+    case Class::STRING:
+      return boost::python::object(String(datatype));
+    default:
+      return boost::python::object(datatype);
+  }
+}
+
+boost::python::object convert_dataspace(const hdf5::dataspace::Dataspace &dataspace)
+{
+  using namespace hdf5::dataspace;
+
+  switch(dataspace.type())
+  {
+    case Type::SCALAR:
+      return boost::python::object(Scalar(dataspace));
+    case Type::SIMPLE:
+      return boost::python::object(Simple(dataspace));
+    default:
+      return boost::python::object(dataspace);
+  }
+}
+
+boost::python::object get_datatype(const hdf5::attribute::Attribute &self)
+{
+  return convert_datatype(self.datatype());
+}
+
+boost::python::object get_dataspace(const hdf5::attribute::Attribute &self)
+{
+  return convert_dataspace(self.dataspace());
+}
+
 hdf5::attribute::Attribute
 get_attribute_by_index(const hdf5::attribute::AttributeManager &self,
                         size_t index)
@@ -133,8 +175,8 @@ BOOST_PYTHON_MODULE(_attribute)
 #endif
 
     class_<Attribute>("Attribute")
-        .add_property("datatype",&Attribute::datatype)
-        .add_property("dataspace",&Attribute::dataspace)
+        .add_property("datatype",get_datatype)
+        .add_property("dataspace",get_dataspace)
         .add_property("name",&Attribute::name)
         .add_property("is_valid",&Attribute::is_valid)
         .add_property("parent_link",make_function(&Attribute::parent_link,return_internal_reference<>()))

@@ -24,11 +24,14 @@
 #include <h5cpp/hdf5.hpp>
 #include <cstdint>
 
+#include "datatype_autocasting.hpp"
+
 
 BOOST_PYTHON_MODULE(_datatype)
 {
   using namespace boost::python;
   using namespace hdf5::datatype;
+
 
   enum_<Class>("Class")
       .value("NONE",Class::NONE)
@@ -75,8 +78,6 @@ BOOST_PYTHON_MODULE(_datatype)
       .value("ASCII",CharacterEncoding::ASCII)
       .value("UTF8",CharacterEncoding::UTF8);
 
-
-
   class_<Datatype>("Datatype")
       .add_property("type",&Datatype::get_class)
       .add_property("super",&Datatype::super)
@@ -85,6 +86,7 @@ BOOST_PYTHON_MODULE(_datatype)
       .add_property("size",&Datatype::size,&Datatype::set_size)
       .add_property("is_valid",&Datatype::is_valid)
       ;
+
 
   class_<Integer,bases<Datatype>>("Integer")
       .def(init<const Datatype&>())

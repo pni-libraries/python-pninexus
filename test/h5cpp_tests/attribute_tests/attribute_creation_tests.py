@@ -49,7 +49,7 @@ class AttributeCreationTest(unittest.TestCase):
         a = self.root.attributes.create("test",h5cpp.datatype.kVariableString)
         self.assertEqual(a.dataspace.type,h5cpp.dataspace.Type.SCALAR)
         self.assertEqual(a.datatype.type,h5cpp.datatype.Class.STRING)
-        self.assertTrue(h5cpp.datatype.String(a.datatype).is_variable_length)
+        self.assertTrue(a.datatype.is_variable_length)
         
         
 
