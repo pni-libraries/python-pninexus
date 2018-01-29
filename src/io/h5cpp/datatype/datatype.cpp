@@ -78,7 +78,7 @@ BOOST_PYTHON_MODULE(_datatype)
 
 
   class_<Datatype>("Datatype")
-      .add_property("class",&Datatype::get_class)
+      .add_property("type",&Datatype::get_class)
       .add_property("super",&Datatype::super)
       .def("native_type",&Datatype::native_type,(arg("dir")=Direction::ASCEND))
       .def("has_class",&Datatype::has_class)
@@ -87,12 +87,15 @@ BOOST_PYTHON_MODULE(_datatype)
       ;
 
   class_<Integer,bases<Datatype>>("Integer")
+      .def(init<const Datatype&>())
       ;
 
   class_<Float,bases<Datatype>>("Float")
+      .def(init<const Datatype&>())
       ;
 
   class_<String,bases<Datatype>>("String")
+      .def(init<const Datatype&>())
       .add_property("is_variable_length",&String::is_variable_length)
       .add_property("encoding",&String::encoding,&String::set_encoding)
       .add_property("padding",&String::padding,&String::set_padding)

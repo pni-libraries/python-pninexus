@@ -43,19 +43,39 @@ init_numpy()
     import_array();
 }
 
+namespace {
 
-//
-//static void read(const hdf5::attribute::Attribute &self,
-//                 boost::python::object &numpy_array)
-//{
-//
-//}
-//
-//static void write(const hdf5::attribute::Attribute &self,
-//                  const boost::python::object &numy_array)
-//{
-//
-//}
+boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
+{
+
+}
+
+void attribute_write(const hdf5::attribute::Attribute &self,
+                     const boost::python::object &data)
+{
+
+}
+
+hdf5::attribute::Attribute
+create_attribute(const hdf5::attribute::AttributeManager &self,
+                 const std::string &name,
+                 const hdf5::datatype::Datatype &type,
+                 const hdf5::Dimensions &dimensions,
+                 const hdf5::property::AttributeCreationList &acpl)
+{
+  using DataspacePtr = std::unique_ptr<hdf5::dataspace::Dataspace>;
+  DataspacePtr space;
+  if(!dimensions.empty())
+  {
+    space = DataspacePtr(new hdf5::dataspace::Simple(dimensions,dimensions));
+  }
+  else
+  {
+    space = DataspacePtr(new hdf5::dataspace::Scalar());
+  }
+
+  return self.create(name,type,*space,acpl);
+}
 
 hdf5::attribute::Attribute
 get_attribute_by_index(const hdf5::attribute::AttributeManager &self,
@@ -66,6 +86,8 @@ get_attribute_by_index(const hdf5::attribute::AttributeManager &self,
 
   return self[index];
 }
+
+} // anonymous namespace
 
 using namespace boost::python;
 
@@ -98,8 +120,10 @@ BOOST_PYTHON_MODULE(_attribute)
         .def("__getitem__",get_by_name)
         .def("__getitem__",get_attribute_by_index)
         .def("__len__",&AttributeManager::size)
-//         .def("create",&AttributeManagerWrapper::create,("name","type",arg("shape")=list(),
-//             arg("overwrite")=false))
+        .def("create",create_attribute,(arg("name"),
+                                        arg("type"),
+                                        arg("shape")=hdf5::Dimensions(),
+                                        arg("acpl")=hdf5::property::AttributeCreationList()))
         .def("remove",remove_by_name)
         .def("remove",remove_by_index)
         .def("exists",&AttributeManager::exists)
@@ -115,8 +139,8 @@ BOOST_PYTHON_MODULE(_attribute)
         .add_property("is_valid",&Attribute::is_valid)
         .add_property("parent_link",make_function(&Attribute::parent_link,return_internal_reference<>()))
         .def("close",&Attribute::close)
-//        .def("read",read)
-//        .def("write",write)
+        .def("read",attribute_read)
+        .def("write",attribute_write)
         ;
 
 }

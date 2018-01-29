@@ -42,6 +42,7 @@ BOOST_PYTHON_MODULE(_dataspace)
       ;
 
   class_<Simple,bases<Dataspace>>("Simple")
+      .def(init<const Dataspace&>())
       .def(init<hdf5::Dimensions>())
       .def(init<hdf5::Dimensions,hdf5::Dimensions>())
       .add_property("rank",&Simple::rank)
@@ -51,5 +52,6 @@ BOOST_PYTHON_MODULE(_dataspace)
       ;
 
   class_<Scalar,bases<Dataspace>>("Scalar")
+      .def(init<Dataspace>())
       ;
 }
