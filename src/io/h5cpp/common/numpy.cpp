@@ -118,6 +118,23 @@ size_t ArrayAdapter::size() const
 }
 
 
+std::vector<std::string> to_string_vector(const ArrayAdapter &array)
+{
+  using namespace boost::python;
+  std::vector<std::string> data(array.size());
+
+  //auto *array_ptr = static_cast<PyArrayObject*>(array);
+  PyObject *ptr = PyArray_Flatten(array,NPY_CORDER);
+  handle<> h(PyArray_ToList(reinterpret_cast<PyArrayObject*>(ptr)));
+  list l(h);
+
+  size_t index=0;
+  for(auto &s: data) s = extract<std::string>(l[index++]);
+
+  return data;
+}
+
+
 boost::python::object ArrayFactory::create(pni::core::type_id_t tid,
                                            const hdf5::Dimensions &dimensions,
                                            int itemsize)

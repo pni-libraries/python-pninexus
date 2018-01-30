@@ -49,8 +49,9 @@ class ArrayAdapter
   public:
    ArrayAdapter();
    ArrayAdapter(const boost::python::object &object);
+   ArrayAdapter(const ArrayAdapter &) = default;
 
-   operator PyArrayObject* ()
+   operator PyArrayObject* () const
    {
      return pointer_;
    }
@@ -77,6 +78,8 @@ class ArrayFactory
 int to_numpy_type_id(pni::core::type_id_t tid);
 
 pni::core::type_id_t to_pnicore_type_id(int numpy_id);
+
+std::vector<std::string> to_string_vector(const ArrayAdapter &array);
 
 //!
 //! \brief convert an arbitrary python object to a numpy array

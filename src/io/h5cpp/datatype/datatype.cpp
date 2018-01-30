@@ -24,8 +24,6 @@
 #include <h5cpp/hdf5.hpp>
 #include <cstdint>
 
-#include "datatype_autocasting.hpp"
-
 
 BOOST_PYTHON_MODULE(_datatype)
 {

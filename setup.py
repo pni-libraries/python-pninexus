@@ -158,8 +158,11 @@ h5cpp_core_ext = Extension("pni.io.h5cpp._h5cpp",
                            language="c++",
                            extra_compile_args = extra_compile_args)
 
+h5cpp_common_sources = ['src/io/h5cpp/common/numpy.cpp']
+
 h5cpp_attribute_ext = Extension('pni.io.h5cpp._attribute',
-                                ['src/io/h5cpp/attribute/attribute.cpp'],
+                                ['src/io/h5cpp/attribute/attribute.cpp']+
+                                h5cpp_common_sources,
                                       include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,
                            libraries = libraries,

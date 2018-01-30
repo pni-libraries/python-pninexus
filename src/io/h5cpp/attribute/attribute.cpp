@@ -32,6 +32,8 @@ extern "C"{
 #include <h5cpp/hdf5.hpp>
 #include <boost/python.hpp>
 #include "../errors.hpp"
+#include "../common/numpy.hpp"
+#include "../common/hdf5_numpy.hpp"
 
 #if PY_MAJOR_VERSION >= 3
 int
@@ -50,10 +52,29 @@ boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
 
 }
 
+template<typename IoType> void write_data(const IoType &instance,
+                                          const numpy::ArrayAdapter &array)
+{
+  if(array.type_id() == pni::core::type_id_t::STRING)
+    instance.write(numpy::to_string_vector(array));
+  else
+    instance.write(array);
+}
+
 void attribute_write(const hdf5::attribute::Attribute &self,
                      const boost::python::object &data)
 {
+  using namespace boost::python;
 
+  if(numpy::is_array(data))
+  {
+    write_data(self,numpy::ArrayAdapter(data));
+  }
+  else
+  {
+    boost::python::object temp_array = numpy::to_numpy_array(data);
+    write_data(self,numpy::ArrayAdapter(temp_array));
+  }
 }
 
 hdf5::attribute::Attribute
