@@ -73,6 +73,9 @@ class ArrayFactory
     static boost::python::object create(pni::core::type_id_t tid,
                                         const hdf5::Dimensions &dimensions,
                                         int itemsize=0);
+    static boost::python::object create(const boost::python::list &list,
+                                        pni::core::type_id_t tid,
+                                        const hdf5::Dimensions &dimensions);
 };
 
 int to_numpy_type_id(pni::core::type_id_t tid);

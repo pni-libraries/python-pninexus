@@ -23,6 +23,7 @@
 from __future__ import print_function
 import unittest
 import numpy
+import numpy.testing as npt
 from pni.io import h5cpp
 
 
@@ -48,32 +49,44 @@ class AttributeIOTests(unittest.TestCase):
         
         a = self.root.attributes.create("IntegerScalar",h5cpp.datatype.kInt32)
         a.write(42)
+        r = a.read()
+        self.assertEqual(r,42)
         
     def testFloatScalar(self):
         
         a = self.root.attributes.create("FloatScalar",h5cpp.datatype.kFloat32)
         a.write(42.345)
+        r = a.read()
+        self.assertEqual(r,42.345)
         
     def testFloatNumpyScalar(self):
         
         a = self.root.attributes.create("FloatNumpyScalar",h5cpp.datatype.kFloat32)
         a.write(numpy.float32(34.5323))
+        r = a.read()
+        self.assertEqual(r,34.5323)
         
     def testStringScalar(self):
         
         a = self.root.attributes.create("StringScalar",h5cpp.datatype.kVariableString)
         a.write("hello world")
+        r = a.read()
+        self.assertEqual(r,"hello world")
         
     def testStringArray(self):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         a = self.root.attributes.create("StringArray",h5cpp.datatype.kVariableString,(2,3))
         a.write(data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
     def testIntArray(self):
         
         data = numpy.array([1,2,3])
         a = self.root.attributes.create("IntArray",h5cpp.datatype.kInt32,(3,))
         a.write(data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
         

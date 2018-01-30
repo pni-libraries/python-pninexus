@@ -31,9 +31,11 @@ extern "C"{
 //#include "hdf5_numpy.hpp"
 #include <h5cpp/hdf5.hpp>
 #include <boost/python.hpp>
+#include <pni/io/nexus.hpp>
 #include "../errors.hpp"
 #include "../common/numpy.hpp"
 #include "../common/hdf5_numpy.hpp"
+#include <algorithm>
 
 #if PY_MAJOR_VERSION >= 3
 int
@@ -49,7 +51,30 @@ namespace {
 
 boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
 {
+  using namespace boost::python;
+  using namespace pni::io;
 
+  if(nexus::get_type_id(self) == pni::core::type_id_t::STRING)
+  {
+    std::vector<std::string> buffer(self.dataspace().size());
+    self.read(buffer);
+
+    //copy the content to a list
+    list l;
+    std::for_each(buffer.begin(),buffer.end(),
+                  [&l](const std::string &s) { l.append(s);});
+
+    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,
+                                       nexus::get_dimensions(self));
+  }
+  else
+  {
+    object array = numpy::ArrayFactory::create(nexus::get_type_id(self),
+                                       nexus::get_dimensions(self));
+    numpy::ArrayAdapter adapter(array);
+    self.read(adapter);
+    return array;
+  }
 }
 
 template<typename IoType> void write_data(const IoType &instance,

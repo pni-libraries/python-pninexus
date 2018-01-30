@@ -161,6 +161,30 @@ boost::python::object ArrayFactory::create(pni::core::type_id_t tid,
   return boost::python::object(h);
 }
 
+boost::python::object ArrayFactory::create(const boost::python::list &list,
+                                           pni::core::type_id_t tid,
+                                           const hdf5::Dimensions &dimensions)
+{
+  //
+  // create a numpy array from the list of strings
+  //
+  std::vector<npy_intp> dims(dimensions.size());
+  std::copy(dimensions.begin(),dimensions.end(),dims.begin());
+
+  PyArray_Dims d;
+  d.ptr = dims.data();
+  d.len = dims.size();
+  PyObject *orig_ptr = PyArray_ContiguousFromAny(list.ptr(),to_numpy_type_id(tid),1,2);
+
+  //
+  // The resulting numpy array has the wrong shape - we fix this here
+  //
+  PyObject *ptr = PyArray_Newshape(reinterpret_cast<PyArrayObject*>(orig_ptr),&d,NPY_CORDER);
+  boost::python::handle<> h(ptr);
+  Py_XDECREF(orig_ptr);
+  return boost::python::object(h);
+}
+
 int to_numpy_type_id(pni::core::type_id_t tid)
 {
   return type_id2numpy_id.at(tid);
