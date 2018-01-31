@@ -23,6 +23,8 @@
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 
+static const hsize_t UNLIMITED = H5S_UNLIMITED;
+
 
 BOOST_PYTHON_MODULE(_dataspace)
 {
@@ -54,4 +56,7 @@ BOOST_PYTHON_MODULE(_dataspace)
   class_<Scalar,bases<Dataspace>>("Scalar")
       .def(init<Dataspace>())
       ;
+
+  scope current;
+  current.attr("UNLIMITED") = UNLIMITED;
 }

@@ -24,6 +24,7 @@
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 #include "../common/io.hpp"
+#include "../common/converters.hpp"
 
 namespace {
 
@@ -51,24 +52,36 @@ void read_with_selection(const hdf5::node::Dataset &self,
 
 }
 
+boost::python::object get_datatype(const hdf5::node::Dataset &self)
+{
+  return convert_datatype(self.datatype());
+}
+
+boost::python::object get_dataspace(const hdf5::node::Dataset &self)
+{
+  return convert_dataspace(self.dataspace());
+}
+
 } //anonymous namespace
 
 void create_dataset_wrapper()
 {
   using namespace boost::python;
   using namespace hdf5::node;
+  using hdf5::datatype::Datatype;
+  using hdf5::dataspace::Dataspace;
+  using hdf5::property::LinkCreationList;
+  using hdf5::property::DatasetCreationList;
+  using hdf5::property::DatasetAccessList;
 
+  void (Dataset::*set_full_extent)(const hdf5::Dimensions &) const = &Dataset::extent;
+  void (Dataset::*grow_dimension)(size_t,ssize_t) const = &Dataset::extent;
   class_<Dataset,bases<Node>>("Dataset")
-      .def(init<const Group&,const hdf5::Path &,
-                const hdf5::datatype::Datatype &,
-                const hdf5::dataspace::Dataspace &,
-                const hdf5::property::LinkCreationList &,
-                const hdf5::property::DatasetCreationList &,
-                const hdf5::property::DatasetAccessList&>(
+      .def(init<Group,hdf5::Path,Datatype,Dataspace,LinkCreationList,DatasetCreationList,DatasetAccessList>(
                 (arg("parent"),arg("path"),arg("type"),arg("space"),
-                    arg("lcpl")=hdf5::property::LinkCreationList(),
-                    arg("dcpl")=hdf5::property::DatasetCreationList(),
-                    arg("dapl")=hdf5::property::DatasetAccessList()
+                    arg("lcpl")=LinkCreationList(),
+                    arg("dcpl")=DatasetCreationList(),
+                    arg("dapl")=DatasetAccessList()
                     )
                 ))
       .def("close",&Dataset::close)
@@ -76,5 +89,11 @@ void create_dataset_wrapper()
       .def("write",write_with_selection)
       .def("read",read_all)
       .def("read",read_with_selection)
+      .add_property("creation_list",&Dataset::creation_list)
+      .add_property("access_list",&Dataset::access_list)
+      .add_property("dataspace",get_dataspace)
+      .add_property("datatype",get_datatype)
+      .def("extent",set_full_extent)
+      .def("extent",grow_dimension)
       ;
 }

@@ -18,3 +18,4 @@ MANIFEST
 /GroupCreationTests.h5
 /AttributeIOTests.h5
 /DatasetAllIOTests.h5
+/DatasetExtentTest.h5
