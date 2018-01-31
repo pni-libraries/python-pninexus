@@ -19,3 +19,4 @@ MANIFEST
 /AttributeIOTests.h5
 /DatasetAllIOTests.h5
 /DatasetExtentTest.h5
+/DatasetPartialIOTests.h5

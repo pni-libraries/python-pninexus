@@ -22,6 +22,8 @@
 //
 
 #include "numpy.hpp"
+#include <numeric>
+#include <algorithm>
 
 
 namespace {
@@ -223,6 +225,44 @@ bool is_scalar(const boost::python::object &o)
         return PyArray_CheckScalar(o.ptr());
     else
         return false;
+}
+
+hdf5::Dimensions::value_type get_size(const hdf5::Dimensions &dimensions)
+{
+  using value_type = hdf5::Dimensions::value_type;
+  return std::accumulate(dimensions.begin(),dimensions.end(),value_type(1),
+                         std::multiplies<value_type>());
+}
+
+hdf5::Dimensions get_dimensions(const hdf5::dataspace::Selection &selection)
+{
+  using hdf5::dataspace::Hyperslab;
+  using value_type = hdf5::Dimensions::value_type;
+
+  const Hyperslab* slab = dynamic_cast<const Hyperslab*>(&selection);
+
+  hdf5::Dimensions dims;
+  auto block_iter = slab->block().begin();
+  auto count_iter = slab->count().begin();
+  for(size_t index=0;index<slab->rank();++index)
+  {
+    hdf5::Dimensions::value_type dim = *block_iter++ * (*count_iter++);
+    dims.push_back(dim);
+  }
+
+  if(get_size(dims)==1)
+  {
+    dims = hdf5::Dimensions{1};
+  }
+  else
+  {
+    //remove all 1 in the dimesions, they are not needed
+    dims.erase(std::remove_if(dims.begin(),dims.end(),[](value_type v)
+                              { return v==1; }));
+
+  }
+
+  return dims;
 }
 
 

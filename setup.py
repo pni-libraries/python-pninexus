@@ -183,7 +183,8 @@ h5cpp_file_ext = Extension('pni.io.h5cpp._file',
                                 )
 
 h5cpp_dataspace_ext = Extension('pni.io.h5cpp._dataspace',
-                                ['src/io/h5cpp/dataspace/dataspace.cpp'],
+                                ['src/io/h5cpp/dataspace/dataspace.cpp',
+                                 'src/io/h5cpp/dataspace/selections.cpp'],
                                       include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,
                            libraries = libraries,

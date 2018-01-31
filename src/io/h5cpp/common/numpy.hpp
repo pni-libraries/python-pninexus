@@ -95,6 +95,9 @@ std::vector<std::string> to_string_vector(const ArrayAdapter &array);
 //!
 boost::python::object to_numpy_array(const boost::python::object &o);
 
+hdf5::Dimensions get_dimensions(const hdf5::dataspace::Selection &selection);
+hdf5::Dimensions::value_type get_size(const hdf5::Dimensions &dimensions);
+
 //!
 //! @brief check if object is numpy array
 //!

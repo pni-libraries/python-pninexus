@@ -57,6 +57,36 @@ void write(const IoType &instance,const boost::python::object &object)
 }
 
 template<typename IoType>
+void write(const IoType &instance,const numpy::ArrayAdapter &array,
+           const hdf5::dataspace::Selection &selection)
+{
+  if(array.type_id() == pni::core::type_id_t::STRING)
+    instance.write(numpy::to_string_vector(array),selection);
+  else
+    instance.write(array,selection);
+
+}
+
+template<typename IoType>
+void write(const IoType &instance,const boost::python::object &object,
+           const hdf5::dataspace::Selection &selection)
+{
+  using namespace boost::python;
+
+  if(numpy::is_array(object))
+  {
+    write(instance,numpy::ArrayAdapter(object),selection);
+  }
+  else
+  {
+    boost::python::object temp_array = numpy::to_numpy_array(object);
+    write(instance,numpy::ArrayAdapter(temp_array),selection);
+  }
+}
+
+
+
+template<typename IoType>
 boost::python::object read(const IoType &instance)
 {
   using namespace boost::python;
@@ -86,11 +116,35 @@ boost::python::object read(const IoType &instance)
 }
 
 template<typename IoType>
-void write(const IoType &instance,const numpy::ArrayAdapter &array,
-           const hdf5::dataspace::Selection &selection)
+boost::python::object read(const IoType &instance,const hdf5::dataspace::Selection &selection)
 {
+  using namespace boost::python;
+  using namespace pni::io;
 
+  hdf5::Dimensions output_dims = numpy::get_dimensions(selection);
+
+  if(nexus::get_type_id(instance) == pni::core::type_id_t::STRING)
+  {
+    std::vector<std::string> buffer(instance.dataspace().size());
+    instance.read(buffer,selection);
+
+    //copy the content to a list
+    list l;
+    std::for_each(buffer.begin(),buffer.end(),
+                  [&l](const std::string &s) { l.append(s);});
+
+    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,output_dims);
+  }
+  else
+  {
+    object array = numpy::ArrayFactory::create(nexus::get_type_id(instance),output_dims);
+    numpy::ArrayAdapter adapter(array);
+    instance.read(adapter,selection);
+    return array;
+  }
 }
+
+
 
 
 

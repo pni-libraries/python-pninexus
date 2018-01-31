@@ -37,7 +37,7 @@ void write_with_selection(const hdf5::node::Dataset &self,
                           const boost::python::object &data,
                           const hdf5::dataspace::Selection &selection)
 {
-
+  io::write(self,data,selection);
 }
 
 boost::python::object read_all(const hdf5::node::Dataset &self)
@@ -45,11 +45,10 @@ boost::python::object read_all(const hdf5::node::Dataset &self)
   return io::read(self);
 }
 
-void read_with_selection(const hdf5::node::Dataset &self,
-                         boost::python::object &data,
+boost::python::object read_with_selection(const hdf5::node::Dataset &self,
                          const hdf5::dataspace::Selection &selection)
 {
-
+  return io::read(self,selection);
 }
 
 boost::python::object get_datatype(const hdf5::node::Dataset &self)
@@ -73,6 +72,7 @@ void create_dataset_wrapper()
   using hdf5::property::LinkCreationList;
   using hdf5::property::DatasetCreationList;
   using hdf5::property::DatasetAccessList;
+
 
   void (Dataset::*set_full_extent)(const hdf5::Dimensions &) const = &Dataset::extent;
   void (Dataset::*grow_dimension)(size_t,ssize_t) const = &Dataset::extent;
