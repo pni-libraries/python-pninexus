@@ -17,3 +17,4 @@ MANIFEST
 /issue_48_test.nx
 /GroupCreationTests.h5
 /AttributeIOTests.h5
+/DatasetAllIOTests.h5

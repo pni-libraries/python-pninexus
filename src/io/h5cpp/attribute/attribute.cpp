@@ -33,8 +33,8 @@ extern "C"{
 #include <boost/python.hpp>
 #include <pni/io/nexus.hpp>
 #include "../errors.hpp"
-#include "../common/numpy.hpp"
-#include "../common/hdf5_numpy.hpp"
+#include "../common/converters.hpp"
+#include "../common/io.hpp"
 #include <algorithm>
 
 #if PY_MAJOR_VERSION >= 3
@@ -51,55 +51,13 @@ namespace {
 
 boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
 {
-  using namespace boost::python;
-  using namespace pni::io;
-
-  if(nexus::get_type_id(self) == pni::core::type_id_t::STRING)
-  {
-    std::vector<std::string> buffer(self.dataspace().size());
-    self.read(buffer);
-
-    //copy the content to a list
-    list l;
-    std::for_each(buffer.begin(),buffer.end(),
-                  [&l](const std::string &s) { l.append(s);});
-
-    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,
-                                       nexus::get_dimensions(self));
-  }
-  else
-  {
-    object array = numpy::ArrayFactory::create(nexus::get_type_id(self),
-                                       nexus::get_dimensions(self));
-    numpy::ArrayAdapter adapter(array);
-    self.read(adapter);
-    return array;
-  }
-}
-
-template<typename IoType> void write_data(const IoType &instance,
-                                          const numpy::ArrayAdapter &array)
-{
-  if(array.type_id() == pni::core::type_id_t::STRING)
-    instance.write(numpy::to_string_vector(array));
-  else
-    instance.write(array);
+  return io::read(self);
 }
 
 void attribute_write(const hdf5::attribute::Attribute &self,
                      const boost::python::object &data)
 {
-  using namespace boost::python;
-
-  if(numpy::is_array(data))
-  {
-    write_data(self,numpy::ArrayAdapter(data));
-  }
-  else
-  {
-    boost::python::object temp_array = numpy::to_numpy_array(data);
-    write_data(self,numpy::ArrayAdapter(temp_array));
-  }
+  io::write(self,data);
 }
 
 hdf5::attribute::Attribute
@@ -123,37 +81,7 @@ create_attribute(const hdf5::attribute::AttributeManager &self,
   return self.create(name,type,*space,acpl);
 }
 
-boost::python::object convert_datatype(const hdf5::datatype::Datatype &datatype)
-{
-  using namespace hdf5::datatype;
 
-  switch(datatype.get_class())
-  {
-    case Class::INTEGER:
-      return boost::python::object(Integer(datatype));
-    case Class::FLOAT:
-      return boost::python::object(Float(datatype));
-    case Class::STRING:
-      return boost::python::object(String(datatype));
-    default:
-      return boost::python::object(datatype);
-  }
-}
-
-boost::python::object convert_dataspace(const hdf5::dataspace::Dataspace &dataspace)
-{
-  using namespace hdf5::dataspace;
-
-  switch(dataspace.type())
-  {
-    case Type::SCALAR:
-      return boost::python::object(Scalar(dataspace));
-    case Type::SIMPLE:
-      return boost::python::object(Simple(dataspace));
-    default:
-      return boost::python::object(dataspace);
-  }
-}
 
 boost::python::object get_datatype(const hdf5::attribute::Attribute &self)
 {

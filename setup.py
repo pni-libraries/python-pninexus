@@ -158,7 +158,8 @@ h5cpp_core_ext = Extension("pni.io.h5cpp._h5cpp",
                            language="c++",
                            extra_compile_args = extra_compile_args)
 
-h5cpp_common_sources = ['src/io/h5cpp/common/numpy.cpp']
+h5cpp_common_sources = ['src/io/h5cpp/common/numpy.cpp',
+                        'src/io/h5cpp/common/converters.cpp']
 
 h5cpp_attribute_ext = Extension('pni.io.h5cpp._attribute',
                                 ['src/io/h5cpp/attribute/attribute.cpp']+
@@ -172,7 +173,7 @@ h5cpp_attribute_ext = Extension('pni.io.h5cpp._attribute',
                                 )
 
 h5cpp_file_ext = Extension('pni.io.h5cpp._file',
-                                ['src/io/h5cpp/file/file.cpp'],
+                           ['src/io/h5cpp/file/file.cpp'],
                                       include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,
                            libraries = libraries,
@@ -219,9 +220,10 @@ h5cpp_property_ext = Extension('pni.io.h5cpp._property',
                            extra_compile_args = extra_compile_args
                                 )
 
-h5cpp_property_ext = Extension('pni.io.h5cpp._node',
-                                ['src/io/h5cpp/node/nodes.cpp'
-                                 ],
+h5cpp_node_ext = Extension('pni.io.h5cpp._node',
+                          ['src/io/h5cpp/node/nodes.cpp',
+                           'src/io/h5cpp/node/dataset.cpp'
+                           ]+h5cpp_common_sources,
                            include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,
                            libraries = libraries,
@@ -316,6 +318,7 @@ setup(name="pni",
                    h5cpp_dataspace_ext,
                    h5cpp_datatype_ext,
                    h5cpp_property_ext,
+                   h5cpp_node_ext,
                    io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),

@@ -31,6 +31,7 @@ extern "C"{
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 #include "../errors.hpp"
+#include "wrappers.hpp"
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -79,29 +80,7 @@ boost::python::object get_node_by_name(const hdf5::node::NodeView &self,const st
   return object_from_node(self[name]);
 }
 
-void write_all(const hdf5::node::Dataset &self,const boost::python::object &data)
-{
 
-}
-
-void write_with_selection(const hdf5::node::Dataset &self,
-                          const boost::python::object &data,
-                          const hdf5::dataspace::Selection &selection)
-{
-
-}
-
-void read_all(const hdf5::node::Dataset &self,boost::python::object &data)
-{
-
-}
-
-void read_with_selection(const hdf5::node::Dataset &self,
-                         boost::python::object &data,
-                         const hdf5::dataspace::Selection &selection)
-{
-
-}
 
 
 BOOST_PYTHON_MODULE(_node)
@@ -179,14 +158,6 @@ BOOST_PYTHON_MODULE(_node)
       .def("close",&Group::close)
       ;
 
-  class_<Dataset,bases<Node>>("Dataset")
-      .def("close",&Dataset::close)
-      .def("write",write_all)
-      .def("write",write_with_selection)
-      .def("read",read_all)
-      .def("read",read_with_selection)
-      ;
-
 
   class_<LinkTarget>("LinkTarget")
       .add_property("file_path",&LinkTarget::file_path)
@@ -205,7 +176,7 @@ BOOST_PYTHON_MODULE(_node)
       ;
 
 
-
+  create_dataset_wrapper();
 
 
 }
