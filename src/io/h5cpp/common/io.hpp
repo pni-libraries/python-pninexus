@@ -26,6 +26,7 @@
 #include <h5cpp/hdf5.hpp>
 #include "numpy.hpp"
 #include "hdf5_numpy.hpp"
+#include "hdf5_numpy_variable_strings.hpp"
 
 
 
@@ -34,9 +35,9 @@ namespace io {
 template<typename IoType>
 void write(const IoType &instance,const numpy::ArrayAdapter &array)
 {
-  if(array.type_id() == pni::core::type_id_t::STRING)
-    instance.write(numpy::to_string_vector(array));
-  else
+//  if(array.type_id() == pni::core::type_id_t::STRING)
+//    instance.write(numpy::to_string_vector(array));
+//  else
     instance.write(array);
 }
 
@@ -92,7 +93,7 @@ boost::python::object read(const IoType &instance)
   using namespace boost::python;
   using namespace pni::io;
 
-  if(nexus::get_type_id(instance) == pni::core::type_id_t::STRING)
+  if(instance.datatype().get_class() == hdf5::datatype::Class::STRING)
   {
     std::vector<std::string> buffer(instance.dataspace().size());
     instance.read(buffer);
