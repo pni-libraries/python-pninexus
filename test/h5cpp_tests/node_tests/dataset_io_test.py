@@ -86,6 +86,17 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         npt.assert_array_equal(read,data)
         
+        #
+        # test inplace reading
+        #
+        read = numpy.zeros(dataset.dataspace.current_dimensions,dtype="int64")
+        dataset.read(read)
+        npt.assert_array_equal(read,data)
+        
+        read = numpy.zeros((2,2),dtype="float32")
+        self.assertRaises(RuntimeError,dataset.read,read)
+        
+        
     def testWriteFloatArray(self):
         
         data = numpy.array([[1,2,3,4],[5,6,7,8]],dtype="float64")

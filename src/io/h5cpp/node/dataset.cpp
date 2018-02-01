@@ -45,6 +45,11 @@ boost::python::object read_all(const hdf5::node::Dataset &self)
   return io::read(self);
 }
 
+void read_all_inplace(const hdf5::node::Dataset &self,boost::python::object &object)
+{
+  io::read(self,object);
+}
+
 boost::python::object read_with_selection(const hdf5::node::Dataset &self,
                          const hdf5::dataspace::Selection &selection)
 {
@@ -88,6 +93,7 @@ void create_dataset_wrapper()
       .def("write",write_all)
       .def("write",write_with_selection)
       .def("read",read_all)
+      .def("read",read_all_inplace)
       .def("read",read_with_selection)
       .add_property("creation_list",&Dataset::creation_list)
       .add_property("access_list",&Dataset::access_list)
