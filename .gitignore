@@ -20,3 +20,4 @@ MANIFEST
 /DatasetAllIOTests.h5
 /DatasetExtentTest.h5
 /DatasetPartialIOTests.h5
+/FilterCreationTest.h5

@@ -7,4 +7,5 @@ from .group_tests import *
 from .datatype_tests import *
 from .attribute_tests import *
 from .node_tests import *
+from .filter_tests import *
 #from .group_construction import *
