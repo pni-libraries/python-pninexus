@@ -70,7 +70,7 @@ class AttributeIOTests(unittest.TestCase):
         
         data = "hello world"
         dtype = h5cpp.datatype.String.fixed(len(data))
-        dtype.padding=h5cpp.datatype.StringPad.NULLTERM
+        dtype.padding=h5cpp.datatype.StringPad.NULLPAD
         a = self.root.attributes.create("StringScalar",dtype)
         a.write("hello world")
         r = a.read()
@@ -80,7 +80,7 @@ class AttributeIOTests(unittest.TestCase):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         dtype = h5cpp.datatype.String.fixed(5)
-        dtype.padding = h5cpp.datatype.StringPad.NULLTERM
+        dtype.padding = h5cpp.datatype.StringPad.NULLPAD
         a = self.root.attributes.create("StringArray",dtype,(2,3))
         a.write(data)
         r = a.read()
