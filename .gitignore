@@ -21,3 +21,4 @@ MANIFEST
 /DatasetExtentTest.h5
 /DatasetPartialIOTests.h5
 /FilterCreationTest.h5
+/H5pyCompatibilityReading.h5

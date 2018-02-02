@@ -68,7 +68,10 @@ class AttributeIOTests(unittest.TestCase):
         
     def testStringScalar(self):
         
-        a = self.root.attributes.create("StringScalar",h5cpp.datatype.kVariableString)
+        data = "hello world"
+        dtype = h5cpp.datatype.String.fixed(len(data))
+        dtype.padding=h5cpp.datatype.StringPad.NULLTERM
+        a = self.root.attributes.create("StringScalar",dtype)
         a.write("hello world")
         r = a.read()
         self.assertEqual(r,"hello world")
@@ -76,7 +79,9 @@ class AttributeIOTests(unittest.TestCase):
     def testStringArray(self):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
-        a = self.root.attributes.create("StringArray",h5cpp.datatype.kVariableString,(2,3))
+        dtype = h5cpp.datatype.String.fixed(5)
+        dtype.padding = h5cpp.datatype.StringPad.NULLTERM
+        a = self.root.attributes.create("StringArray",dtype,(2,3))
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r,data)

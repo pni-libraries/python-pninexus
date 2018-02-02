@@ -23,7 +23,7 @@
 #pragma once
 
 #include <boost/python.hpp>
-#include "hdf5_numpy.hpp"
+#include "array_adapter.hpp"
 
 namespace numpy {
 
@@ -39,6 +39,16 @@ class VarLengthStringBuffer : public hdf5::VarLengthStringBuffer<char>
     {
       cache_.push_back(data);
       Base::push_back(const_cast<char*>(cache_.back().c_str()));
+    }
+
+    const Cache &cache() const
+    {
+      return cache_;
+    }
+
+    void commit_to_data_to_cache()
+    {
+
     }
 
   private:
@@ -65,7 +75,6 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     char **dataptr = NpyIter_GetDataPtrArray(iter);
     do
     {
-      std::cout<<*dataptr<<"\t"<<*strideptr<<"\t"<<*innersizeptr<<std::endl;
       buffer.push_back(std::string(*dataptr,itemsize));
     }while(iternext(iter));
     NpyIter_Deallocate(iter);

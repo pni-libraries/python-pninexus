@@ -23,19 +23,8 @@
 #pragma once
 
 #include <h5cpp/hdf5.hpp>
-#include <pni/io/nexus.hpp>
-#include <pni/core/error.hpp>
-#include <boost/python/extract.hpp>
-
-#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
-#define NO_IMPORT_ARRAY
-extern "C"{
-#include<Python.h>
-#include<numpy/arrayobject.h>
-}
-
-#include "numpy.hpp"
+#include <cstdint>
+#include "array_adapter.hpp"
 
 namespace hdf5  {
 namespace dataspace {
@@ -73,9 +62,30 @@ template<> class TypeTrait<numpy::ArrayAdapter>
 
     static TypeClass create(const numpy::ArrayAdapter &array)
     {
-      using pni::io::nexus::DatatypeFactory;
-
-      return DatatypeFactory::create(array.type_id());
+      switch(array.type_number())
+      {
+        case NPY_INT8: return hdf5::datatype::create<std::int8_t>();
+        case NPY_UINT8: return hdf5::datatype::create<std::uint8_t>();
+        case NPY_INT16: return hdf5::datatype::create<std::int16_t>();
+        case NPY_UINT16: return hdf5::datatype::create<std::uint16_t>();
+        case NPY_INT32: return hdf5::datatype::create<std::int32_t>();
+        case NPY_UINT32: return hdf5::datatype::create<std::uint32_t>();
+        case NPY_INT64: return hdf5::datatype::create<std::int64_t>();
+        case NPY_UINT64: return hdf5::datatype::create<std::uint64_t>();
+        case NPY_FLOAT: return hdf5::datatype::create<float>();
+        case NPY_DOUBLE: return hdf5::datatype::create<double>();
+        case NPY_LONGDOUBLE: return hdf5::datatype::create<long double>();
+#if PY_MAJOR_VERSION >= 3
+        case NPY_UNICODE:
+          return hdf5::datatype::String::fixed(array.itemsize());
+#else
+        case NPY_STRING:
+          std::cout<<array.itemsize()<<std::endl;
+          return hdf5::datatype::String::fixed(array.itemsize()-1);
+#endif
+        default:
+          throw std::runtime_error("Datatype not supported by HDF5!");
+      }
     }
 };
 

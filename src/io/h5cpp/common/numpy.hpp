@@ -35,34 +35,9 @@ extern "C"{
 
 namespace numpy {
 
-//!
-//! @brief numpy array adapter
-//!
-//! This stores a reference to a numpy array. It does not take ownership and
-//! is considered an Adapter to an existing numpy array. The ownership management
-//! is entirely on the original boost::python::object instance.
-//!
-class ArrayAdapter
-{
-  private:
-   PyArrayObject *pointer_;
-  public:
-   ArrayAdapter();
-   ArrayAdapter(const boost::python::object &object);
-   ArrayAdapter(const ArrayAdapter &) = default;
 
-   operator PyArrayObject* () const
-   {
-     return pointer_;
-   }
 
-   pni::core::type_id_t type_id() const;
-   hdf5::Dimensions dimensions() const;
-   size_t size() const;
 
-   void *data();
-   const void *data() const;
-};
 
 //!
 //! @brief factory class for arrays

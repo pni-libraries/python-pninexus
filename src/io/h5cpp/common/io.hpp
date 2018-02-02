@@ -24,22 +24,11 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
-#include "numpy.hpp"
-#include "hdf5_numpy.hpp"
-#include "hdf5_numpy_variable_strings.hpp"
+#include "../numpy/numpy.hpp"
 
 
 
 namespace io {
-
-template<typename IoType>
-void write(const IoType &instance,const numpy::ArrayAdapter &array)
-{
-//  if(array.type_id() == pni::core::type_id_t::STRING)
-//    instance.write(numpy::to_string_vector(array));
-//  else
-    instance.write(array);
-}
 
 template<typename IoType>
 void write(const IoType &instance,const boost::python::object &object)
@@ -48,24 +37,13 @@ void write(const IoType &instance,const boost::python::object &object)
 
   if(numpy::is_array(object))
   {
-    write(instance,numpy::ArrayAdapter(object));
+    instance.write(numpy::ArrayAdapter(object));
   }
   else
   {
-    boost::python::object temp_array = numpy::to_numpy_array(object);
-    write(instance,numpy::ArrayAdapter(temp_array));
+    boost::python::object temp_array = numpy::ArrayFactory::create(object);
+    instance.write(numpy::ArrayAdapter(temp_array));
   }
-}
-
-template<typename IoType>
-void write(const IoType &instance,const numpy::ArrayAdapter &array,
-           const hdf5::dataspace::Selection &selection)
-{
-  if(array.type_id() == pni::core::type_id_t::STRING)
-    instance.write(numpy::to_string_vector(array),selection);
-  else
-    instance.write(array,selection);
-
 }
 
 template<typename IoType>
@@ -76,12 +54,12 @@ void write(const IoType &instance,const boost::python::object &object,
 
   if(numpy::is_array(object))
   {
-    write(instance,numpy::ArrayAdapter(object),selection);
+    instance.write(numpy::ArrayAdapter(object),selection);
   }
   else
   {
-    boost::python::object temp_array = numpy::to_numpy_array(object);
-    write(instance,numpy::ArrayAdapter(temp_array),selection);
+    boost::python::object temp_array = numpy::ArrayFactory::create(object);
+    instance.write(numpy::ArrayAdapter(temp_array),selection);
   }
 }
 
@@ -91,29 +69,31 @@ template<typename IoType>
 boost::python::object read(const IoType &instance)
 {
   using namespace boost::python;
-  using namespace pni::io;
 
-  if(instance.datatype().get_class() == hdf5::datatype::Class::STRING)
+  object array = numpy::ArrayFactory::create(instance.datatype(),
+                                             instance.dataspace());
+  numpy::ArrayAdapter adapter(array);
+  if(instance.datatype().get_class()==hdf5::datatype::Class::STRING)
   {
-    std::vector<std::string> buffer(instance.dataspace().size());
-    instance.read(buffer);
+    std::vector<std::string> buffer(adapter.size());
+    instance.read(buffer,instance.datatype());
 
-    //copy the content to a list
-    list l;
-    std::for_each(buffer.begin(),buffer.end(),
-                  [&l](const std::string &s) { l.append(s);});
-
-    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,
-                                       nexus::get_dimensions(instance));
+    NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(adapter),
+                                NPY_ITER_READWRITE | NPY_ITER_C_INDEX,
+                                NPY_CORDER , NPY_NO_CASTING,nullptr);
+    NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
+    char **dataptr = NpyIter_GetDataPtrArray(iter);
+    for(const auto &value: buffer)
+    {
+      std::copy(value.begin(),value.end(),*dataptr);
+      iternext(iter);
+    }
   }
   else
   {
-    object array = numpy::ArrayFactory::create(nexus::get_type_id(instance),
-                                       nexus::get_dimensions(instance));
-    numpy::ArrayAdapter adapter(array);
     instance.read(adapter);
-    return array;
   }
+  return array;
 }
 
 //!
@@ -155,25 +135,23 @@ template<typename IoType>
 boost::python::object read(const IoType &instance,const hdf5::dataspace::Selection &selection)
 {
   using namespace boost::python;
-  using namespace pni::io;
 
-  hdf5::Dimensions output_dims = numpy::get_dimensions(selection);
+  object array = numpy::ArrayFactory::create(instance.datatype(),selection);
 
-  if(nexus::get_type_id(instance) == pni::core::type_id_t::STRING)
+  if(instance.datatype().get_class() == hdf5::datatype::Class::STRING)
   {
-    std::vector<std::string> buffer(instance.dataspace().size());
-    instance.read(buffer,selection);
-
-    //copy the content to a list
-    list l;
-    std::for_each(buffer.begin(),buffer.end(),
-                  [&l](const std::string &s) { l.append(s);});
-
-    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,output_dims);
+//    std::vector<std::string> buffer(instance.dataspace().size());
+//    instance.read(buffer,selection);
+//
+//    //copy the content to a list
+//    list l;
+//    std::for_each(buffer.begin(),buffer.end(),
+//                  [&l](const std::string &s) { l.append(s);});
+//
+//    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,output_dims);
   }
   else
   {
-    object array = numpy::ArrayFactory::create(nexus::get_type_id(instance),output_dims);
     numpy::ArrayAdapter adapter(array);
     instance.read(adapter,selection);
     return array;
