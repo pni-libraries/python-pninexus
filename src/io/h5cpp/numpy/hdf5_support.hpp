@@ -80,8 +80,14 @@ template<> class TypeTrait<numpy::ArrayAdapter>
           return hdf5::datatype::String::fixed(array.itemsize());
 #else
         case NPY_STRING:
+        {
+          std::cout<<std::endl;
+          std::cout<<"Create fixed string datatype"<<std::endl;
           std::cout<<array.itemsize()<<std::endl;
-          return hdf5::datatype::String::fixed(array.itemsize()-1);
+          String type = String::fixed(array.itemsize());
+          type.set_padding(StringPad::NULLPAD);
+          return type;
+        }
 #endif
         default:
           throw std::runtime_error("Datatype not supported by HDF5!");

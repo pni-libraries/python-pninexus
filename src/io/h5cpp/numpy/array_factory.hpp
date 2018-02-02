@@ -36,6 +36,9 @@ class ArrayFactory
                                         const numpy::Dimensions &dimensions);
   public:
 
+    static PyObject *create_ptr(const hdf5::datatype::Datatype &datatype,
+                                        const numpy::Dimensions &dimensions);
+
     static boost::python::object create(const hdf5::datatype::Datatype &datatype,
                                         const hdf5::dataspace::Dataspace &dataspace);
 

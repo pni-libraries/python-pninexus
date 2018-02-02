@@ -27,7 +27,6 @@
 #include "../numpy/numpy.hpp"
 
 
-
 namespace io {
 
 template<typename IoType>
@@ -73,25 +72,23 @@ boost::python::object read(const IoType &instance)
   object array = numpy::ArrayFactory::create(instance.datatype(),
                                              instance.dataspace());
   numpy::ArrayAdapter adapter(array);
+  instance.read(adapter);
+
+  //
+  // if we read string data we have to fix the shape of the resulting
+  // numpy array.
+  //
   if(instance.datatype().get_class()==hdf5::datatype::Class::STRING)
   {
-    std::vector<std::string> buffer(adapter.size());
-    instance.read(buffer,instance.datatype());
+    PyArrayObject *array_ptr = static_cast<PyArrayObject*>(adapter);
+    numpy::Dimensions dims{1};
 
-    NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(adapter),
-                                NPY_ITER_READWRITE | NPY_ITER_C_INDEX,
-                                NPY_CORDER , NPY_NO_CASTING,nullptr);
-    NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
-    char **dataptr = NpyIter_GetDataPtrArray(iter);
-    for(const auto &value: buffer)
-    {
-      std::copy(value.begin(),value.end(),*dataptr);
-      iternext(iter);
-    }
-  }
-  else
-  {
-    instance.read(adapter);
+    if(instance.dataspace().type()==hdf5::dataspace::Type::SIMPLE)
+      dims = numpy::Dimensions(hdf5::dataspace::Simple(instance.dataspace()).current_dimensions());
+
+    PyArray_Dims py_dims{dims.data(),dims.size()};
+
+    array = object(handle<>(PyArray_Newshape(array_ptr,&py_dims,NPY_CORDER)));
   }
   return array;
 }

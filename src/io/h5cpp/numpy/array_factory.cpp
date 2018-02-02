@@ -84,18 +84,24 @@ boost::python::object
 ArrayFactory::create(const hdf5::datatype::Datatype &datatype,
                      const numpy::Dimensions &dimensions)
 {
-  auto ptr = reinterpret_cast<PyObject*>(PyArray_New(&PyArray_Type,
-                                         dimensions.ndims(),
-                                         const_cast<npy_intp*>(dimensions.dims()),
-                                         get_type_number(datatype),
-                                         nullptr,
-                                         nullptr,
-                                         get_element_size(datatype),
-                                         NPY_CORDER,
-                                         nullptr));
+  auto ptr = reinterpret_cast<PyObject*>(create_ptr(datatype,dimensions));
   boost::python::handle<> h(ptr);
 
   return boost::python::object(h);
+}
+
+PyObject *ArrayFactory::create_ptr(const hdf5::datatype::Datatype &datatype,
+                                        const numpy::Dimensions &dimensions)
+{
+  return PyArray_New(&PyArray_Type,
+                     dimensions.ndims(),
+                     const_cast<npy_intp*>(dimensions.dims()),
+                     get_type_number(datatype),
+                     nullptr,
+                     nullptr,
+                     get_element_size(datatype),
+                     NPY_CORDER,
+                     nullptr);
 }
 
 boost::python::object

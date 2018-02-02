@@ -33,27 +33,38 @@ class FixedLengthStringBuffer
   private:
     bool  is_borrowed_;
     char *pointer_;
+    size_t size_;
   public:
     FixedLengthStringBuffer():
       is_borrowed_(false),
-      pointer_(nullptr)
+      pointer_(nullptr),
+      size_(0)
     {}
     explicit FixedLengthStringBuffer(size_t size):
         is_borrowed_(false),
-        pointer_(nullptr)
+        pointer_(nullptr),
+        size_(size)
     {
       pointer_=new char[size];
     }
 
-    explicit FixedLengthStringBuffer(char *ptr):
+    explicit FixedLengthStringBuffer(char *ptr,size_t size):
         is_borrowed_(true),
-        pointer_(ptr)
+        pointer_(ptr),
+        size_(size)
     {}
 
     ~FixedLengthStringBuffer()
     {
       if(pointer_ && !is_borrowed_)
         delete pointer_;
+
+      size_ = 0;
+    }
+
+    size_t size() const
+    {
+      return size_;
     }
 
 
@@ -82,12 +93,51 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
 
    static BufferType to_buffer(const DataType &data,const datatype::String &file_type)
    {
-     return BufferType(reinterpret_cast<char*>(const_cast<void*>(data.data())));
+     BufferType buffer((data.itemsize()+1)*data.size());
+
+     NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),
+                                 NPY_ITER_READONLY | NPY_ITER_C_INDEX,
+                                 NPY_CORDER , NPY_NO_CASTING,nullptr);
+     NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
+     char **dataptr = NpyIter_GetDataPtrArray(iter);
+
+     char *buffer_ptr = buffer.data();
+     do
+     {
+       std::copy(*dataptr,*dataptr+data.itemsize()+1,buffer_ptr);
+
+       buffer_ptr+=data.itemsize()+1;
+     }while(iternext(iter));
+
+     NpyIter_Deallocate(iter);
+
+
+     return buffer;
    }
 
    static DataType from_buffer(const BufferType &buffer,const datatype::String &file_type)
    {
-     return DataType();
+     numpy::Dimensions dims{buffer.size()/(file_type.size()+1)};
+
+     numpy::ArrayAdapter adapter(reinterpret_cast<PyArrayObject*>(numpy::ArrayFactory::create_ptr(file_type,dims)));
+
+     NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(adapter),
+                                 NPY_ITER_READWRITE | NPY_ITER_C_INDEX,
+                                 NPY_CORDER , NPY_NO_CASTING,nullptr);
+     NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
+     char **dataptr = NpyIter_GetDataPtrArray(iter);
+
+     const char *buffer_ptr = buffer.data();
+     do
+     {
+       std::copy(buffer_ptr,buffer_ptr+adapter.itemsize()+1,*dataptr);
+       buffer_ptr+=adapter.itemsize()+1;
+     }while(iternext(iter));
+
+     //clear the iterator
+     NpyIter_Deallocate(iter);
+
+     return adapter;
    }
 };
 

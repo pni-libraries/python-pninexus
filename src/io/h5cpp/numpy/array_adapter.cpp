@@ -36,10 +36,12 @@ bool is_array(const boost::python::object &o)
 }
 
 ArrayAdapter::ArrayAdapter():
+    owner_(false),
     pointer_(nullptr)
 {}
 
 ArrayAdapter::ArrayAdapter(const boost::python::object &object):
+    owner_(false),
     pointer_(nullptr)
 {
   if(!is_array(object))
@@ -48,6 +50,45 @@ ArrayAdapter::ArrayAdapter(const boost::python::object &object):
   }
   pointer_ = (PyArrayObject*)object.ptr();
 }
+
+ArrayAdapter::ArrayAdapter(PyArrayObject *ptr):
+    owner_(true),
+    pointer_(ptr)
+{}
+
+ArrayAdapter::~ArrayAdapter()
+{
+  if(owner_)
+    Py_XDECREF(pointer_);
+}
+
+ArrayAdapter::ArrayAdapter(const ArrayAdapter &adapter):
+      owner_(adapter.owner_),
+      pointer_(adapter.pointer_)
+{
+  //increment the reference counter of the new adapter if we hold ownership
+  if(owner_)
+    Py_XINCREF(pointer_);
+}
+
+ArrayAdapter &ArrayAdapter::operator=(const ArrayAdapter &adapter)
+{
+  if(this == &adapter) return *this;
+
+  //first decrement the reference count if there is one
+  if(owner_)
+    Py_XDECREF(pointer_);
+
+  owner_ = adapter.owner_;
+  pointer_ = adapter.pointer_;
+
+  //increment the reference counter of the new adapter if we hold ownership
+  if(owner_)
+    Py_XINCREF(pointer_);
+
+  return *this;
+}
+
 
 int ArrayAdapter::type_number() const
 {

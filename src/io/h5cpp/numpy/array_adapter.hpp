@@ -44,24 +44,99 @@ namespace numpy {
 class ArrayAdapter
 {
   private:
-   PyArrayObject *pointer_;
+    //!
+    //! set to true if we hold the ownership of the array
+    //!
+    bool          owner_;
+
+    //!
+    //! pointer to the numpy array
+    //!
+    PyArrayObject *pointer_;
   public:
-   ArrayAdapter();
-   ArrayAdapter(const boost::python::object &object);
-   ArrayAdapter(const ArrayAdapter &) = default;
+    //!
+    //! @brief default constructor
+    //!
+    ArrayAdapter();
 
-   operator PyArrayObject* () const
-   {
-     return pointer_;
-   }
+    //!
+    //! @brief constructor
+    //!
+    //! This constructor fetches the pointer from an instance of boost::python::object.
+    //! In this case the ownership over the array is managed by the original
+    //! instance of boost::python::object.
+    //!
+    //! @param object reference to a boost::python::object
+    //!
+    explicit ArrayAdapter(const boost::python::object &object);
 
-   int type_number() const;
-   npy_intp itemsize() const;
-   hdf5::Dimensions dimensions() const;
-   size_t size() const;
+    //!
+    //! @brief constructor
+    //!
+    //! This constructor takes ownership over the array.
+    //!
+    //! @param ptr pointer to the original array instance
+    //!
+    explicit ArrayAdapter(PyArrayObject *ptr);
 
-   void *data();
-   const void *data() const;
+    //!
+    //! @brief destructor
+    //!
+    ~ArrayAdapter();
+
+    //!
+    //! @brief copy constructor
+    //!
+    ArrayAdapter(const ArrayAdapter &);
+
+    //!
+    //! @brief copy assignment operator
+    //!
+    ArrayAdapter &operator=(const ArrayAdapter &adapter);
+
+    //!
+    //! @brief conversion to a PyArrayObject
+    //!
+    //! This should allow for easy access to the internal pointer of the array.
+    //! In order to access the pointer an explicit call to static_cast is
+    //! required.
+    //!
+    //! Be aware if you are doing this you are on your own with
+    //! ownership management. So the best is to use this only in the case
+    //! of operations which do not change the reference count of the object.
+    //!
+    explicit operator PyArrayObject* () const
+    {
+      return pointer_;
+    }
+
+    explicit operator boost::python::object () const
+    {
+      //
+      // we have to pump the reference counter in any case here as someone
+      // owns the object (either we do or another instance of boost::python::object.
+      //
+      Py_XINCREF(pointer_);
+
+      boost::python::handle<> h(reinterpret_cast<PyObject*>(pointer_));
+      return boost::python::object(h);
+    }
+
+    //!
+    //! @brief return the Numpy type number for the elements
+    //!
+    //!
+    //! @return Numpy type number
+    //!
+    int type_number() const;
+
+
+    npy_intp itemsize() const;
+    hdf5::Dimensions dimensions() const;
+    size_t size() const;
+
+    void *data();
+    const void *data() const;
 };
 
 //!
