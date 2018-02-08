@@ -26,74 +26,20 @@
 #include "array_adapter.hpp"
 #include "array_factory.hpp"
 
-namespace numpy {
-
-class FixedLengthStringBuffer
-{
-  private:
-    bool  is_borrowed_;
-    char *pointer_;
-    size_t size_;
-  public:
-    FixedLengthStringBuffer():
-      is_borrowed_(false),
-      pointer_(nullptr),
-      size_(0)
-    {}
-    explicit FixedLengthStringBuffer(size_t size):
-        is_borrowed_(false),
-        pointer_(nullptr),
-        size_(size)
-    {
-      pointer_=new char[size];
-    }
-
-    explicit FixedLengthStringBuffer(char *ptr,size_t size):
-        is_borrowed_(true),
-        pointer_(ptr),
-        size_(size)
-    {}
-
-    ~FixedLengthStringBuffer()
-    {
-      if(pointer_ && !is_borrowed_)
-        delete pointer_;
-
-      size_ = 0;
-    }
-
-    size_t size() const
-    {
-      return size_;
-    }
-
-
-
-    const char *data() const
-    {
-      return pointer_;
-    }
-
-    char *data()
-    {
-      return pointer_;
-    }
-};
-
-} // namespace numpy
-
 namespace hdf5 {
 
 template<>
 struct FixedLengthStringTrait<numpy::ArrayAdapter>
 {
    using DataType = numpy::ArrayAdapter;
-   using BufferType = numpy::FixedLengthStringBuffer;
+   using BufferType = FixedLengthStringBuffer<char>;
 
 
-   static BufferType to_buffer(const DataType &data,const datatype::String &file_type)
+   static BufferType to_buffer(const DataType &data,
+                               const datatype::String &memory_type,
+                               const dataspace::Dataspace &memory_space)
    {
-     BufferType buffer((data.itemsize()+1)*data.size());
+     BufferType buffer= BufferType::create(memory_type,memory_space);
 
      NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),
                                  NPY_ITER_READONLY | NPY_ITER_C_INDEX,
@@ -104,9 +50,9 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
      char *buffer_ptr = buffer.data();
      do
      {
-       std::copy(*dataptr,*dataptr+data.itemsize()+1,buffer_ptr);
+       std::copy(*dataptr,*dataptr+data.itemsize(),buffer_ptr);
 
-       buffer_ptr+=data.itemsize()+1;
+       buffer_ptr+=data.itemsize();
      }while(iternext(iter));
 
      NpyIter_Deallocate(iter);
@@ -115,11 +61,15 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
      return buffer;
    }
 
-   static DataType from_buffer(const BufferType &buffer,const datatype::String &file_type)
+   static DataType from_buffer(const BufferType &buffer,
+                               const datatype::String &memory_type,
+                               const dataspace::Dataspace &memory_space)
    {
-     numpy::Dimensions dims{buffer.size()/(file_type.size()+1)};
+     numpy::Dimensions dims{1};
+     if(memory_space.type()==dataspace::Type::SIMPLE)
+       dims = numpy::Dimensions(dataspace::Simple(memory_space).current_dimensions());
 
-     numpy::ArrayAdapter adapter(reinterpret_cast<PyArrayObject*>(numpy::ArrayFactory::create_ptr(file_type,dims)));
+     numpy::ArrayAdapter adapter(reinterpret_cast<PyArrayObject*>(numpy::ArrayFactory::create_ptr(memory_type,dims)));
 
      NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(adapter),
                                  NPY_ITER_READWRITE | NPY_ITER_C_INDEX,
@@ -130,8 +80,8 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
      const char *buffer_ptr = buffer.data();
      do
      {
-       std::copy(buffer_ptr,buffer_ptr+adapter.itemsize()+1,*dataptr);
-       buffer_ptr+=adapter.itemsize()+1;
+       std::copy(buffer_ptr,buffer_ptr+adapter.itemsize(),*dataptr);
+       buffer_ptr+=adapter.itemsize();
      }while(iternext(iter));
 
      //clear the iterator

@@ -26,19 +26,6 @@
 
 namespace {
 
-bool get_create_intermediate_group(const hdf5::property::ObjectCreationList &list)
-{
-  return list.create_intermediate_group();
-}
-
-void set_create_intermediate_group(hdf5::property::ObjectCreationList &list,bool value)
-{
-  if(value)
-    list.enable_create_intermediate_group();
-  else
-    list.disable_create_intermediate_group();
-}
-
 bool get_intermediate_group_creation(const hdf5::property::LinkCreationList &list)
 {
   return list.intermediate_group_creation();
@@ -112,7 +99,6 @@ void create_class_wrappers()
   void (ObjectCreationList::*set_attribute_creation_order)(const CreationOrder &) const = &ObjectCreationList::attribute_creation_order;
 
   class_<ObjectCreationList,bases<List>>("ObjectCreationList")
-      .add_property("create_intermediate_group",&get_create_intermediate_group,&set_create_intermediate_group)
       .add_property("time_tracking",&get_time_tracking,&set_time_tracking)
       .add_property("attribute_creation_order",get_attribute_creation_order,set_attribute_creation_order)
       .def("attribute_storage_thresholds",&ObjectCreationList::attribute_storage_thresholds)

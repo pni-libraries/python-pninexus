@@ -207,7 +207,7 @@ h5cpp_datatype_ext = Extension('pni.io.h5cpp._datatype',
                            extra_compile_args = extra_compile_args
                                 )
 
-h5cpp_datatype_ext = Extension('pni.io.h5cpp._filter',
+h5cpp_filter_ext = Extension('pni.io.h5cpp._filter',
                                 ['src/io/h5cpp/filter/filter.cpp'
                                  
                                  ],
@@ -333,6 +333,7 @@ setup(name="pni",
                    h5cpp_dataspace_ext,
                    h5cpp_datatype_ext,
                    h5cpp_property_ext,
+                   h5cpp_filter_ext,
                    h5cpp_node_ext,
                    io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],

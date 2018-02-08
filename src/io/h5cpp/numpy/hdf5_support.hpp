@@ -81,11 +81,8 @@ template<> class TypeTrait<numpy::ArrayAdapter>
 #else
         case NPY_STRING:
         {
-          std::cout<<std::endl;
-          std::cout<<"Create fixed string datatype"<<std::endl;
-          std::cout<<array.itemsize()<<std::endl;
           String type = String::fixed(array.itemsize());
-          type.set_padding(StringPad::NULLPAD);
+          type.padding(StringPad::NULLPAD);
           return type;
         }
 #endif

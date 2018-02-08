@@ -76,12 +76,14 @@ BOOST_PYTHON_MODULE(_datatype)
       .value("ASCII",CharacterEncoding::ASCII)
       .value("UTF8",CharacterEncoding::UTF8);
 
+  size_t (Datatype::*get_size)() const = &Datatype::size;
+  void (Datatype::*set_size)(size_t) const = &Datatype::size;
   class_<Datatype>("Datatype")
       .add_property("type",&Datatype::get_class)
       .add_property("super",&Datatype::super)
       .def("native_type",&Datatype::native_type,(arg("dir")=Direction::ASCEND))
       .def("has_class",&Datatype::has_class)
-      .add_property("size",&Datatype::size,&Datatype::set_size)
+      .add_property("size",get_size,set_size)
       .add_property("is_valid",&Datatype::is_valid)
       ;
 
@@ -94,12 +96,19 @@ BOOST_PYTHON_MODULE(_datatype)
       .def(init<const Datatype&>())
       ;
 
+
+  void (String::*string_set_size)(size_t) const = &String::size;
+  size_t (String::*string_get_size)() const = &String::size;
+  void (String::*string_set_padding)(StringPad) = &String::padding;
+  StringPad (String::*string_get_padding)() const = &String::padding;
+  void (String::*string_set_encoding)(CharacterEncoding) = &String::encoding;
+  CharacterEncoding (String::*string_get_encoding)() const = &String::encoding;
   class_<String,bases<Datatype>>("String")
       .def(init<const Datatype&>())
       .add_property("is_variable_length",&String::is_variable_length)
-      .add_property("encoding",&String::encoding,&String::set_encoding)
-      .add_property("padding",&String::padding,&String::set_padding)
-      .add_property("size",&String::size,&String::set_size)
+      .add_property("encoding",string_get_encoding,string_set_encoding)
+      .add_property("padding",string_get_padding,string_set_padding)
+      .add_property("size",string_get_size,string_set_size)
       .def("variable",&String::variable)
       .staticmethod("variable")
       .def("fixed",&String::fixed)
