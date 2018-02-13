@@ -41,38 +41,6 @@ void write_all(const hdf5::node::Dataset &self,const boost::python::object &data
   self.write(array_adapter,memory_type,memory_space,file_space);
 }
 
-void write_with_selection(const hdf5::node::Dataset &self,
-                          const boost::python::object &data,
-                          const hdf5::dataspace::Selection &selection)
-{
-  using hdf5::datatype::Datatype;
-  using hdf5::datatype::String;
-  using hdf5::dataspace::Dataspace;
-  using hdf5::dataspace::SelectionOperation;
-
-  boost::python::object temp_object;
-  numpy::ArrayAdapter array_adapter;
-
-  if(numpy::is_array(data))
-    array_adapter = numpy::ArrayAdapter(data);
-  else
-  {
-    temp_object = numpy::ArrayFactory::create(data);
-    array_adapter = numpy::ArrayAdapter(temp_object);
-  }
-
-  Datatype mem_type = hdf5::datatype::create<numpy::ArrayAdapter>(array_adapter);
-  Dataspace mem_space = hdf5::dataspace::create<numpy::ArrayAdapter>(array_adapter);
-  Dataspace file_space = self.dataspace();
-
-  if(io::has_variable_length_string_type(self) &&
-      (mem_type.get_class() == hdf5::datatype::Class::STRING))
-    mem_type = String::variable();
-
-  file_space.selection(SelectionOperation::SET,selection);
-  self.write(array_adapter,mem_type,mem_space,file_space);
-}
-
 boost::python::object read_all(const hdf5::node::Dataset &self)
 {
   return io::read(self);
@@ -124,7 +92,6 @@ void create_dataset_wrapper()
                 ))
       .def("close",&Dataset::close)
       .def("_write",write_all)
-      .def("_write",write_with_selection)
       .def("read",read_all)
       .def("read",read_all_inplace)
       .def("read",read_with_selection)

@@ -63,11 +63,11 @@ class DatasetPartialIOTests(unittest.TestCase):
         # write data
         #
         selection = Hyperslab(offset=(0,0),block=(1,5))
-        dataset.write(data_base,selection)
+        dataset.write(data_base,selection=selection)
         selection.offset(0,1)
-        dataset.write(2*data_base,selection)
+        dataset.write(2*data_base,selection=selection)
         selection.offset(0,2)
-        dataset.write(3*data_base,selection)
+        dataset.write(3*data_base,selection=selection)
         
         #
         # read data back

@@ -46,11 +46,11 @@ def dataset_write(self,data,selection=None):
     #
     file_space = self.dataspace
 
-    if selection == None:
-        self._write(data,memory_type,memory_space,file_space)
-    else:
-        print(data)
-        self._write(data,selection)
+    if selection != None:
+        file_space.selection(dataspace.SelectionOperation.SET,selection)
+        
+    self._write(data,memory_type,memory_space,file_space)
+    
     
     
     
