@@ -29,32 +29,24 @@
 
 namespace {
 
-void write_all(const hdf5::node::Dataset &self,const boost::python::object &data,
-               const hdf5::datatype::Datatype &memory_type,
-               const hdf5::dataspace::Dataspace &memory_space,
-               const hdf5::dataspace::Dataspace &file_space)
+void dataset_write(const hdf5::node::Dataset &self,const boost::python::object &data,
+                   const hdf5::datatype::Datatype &memory_type,
+                   const hdf5::dataspace::Dataspace &memory_space,
+                   const hdf5::dataspace::Dataspace &file_space)
 {
-
-  boost::python::object temp_object;
   numpy::ArrayAdapter array_adapter(data);
 
   self.write(array_adapter,memory_type,memory_space,file_space);
 }
 
-boost::python::object read_all(const hdf5::node::Dataset &self)
+void dataset_read(const hdf5::node::Dataset &self,boost::python::object &data,
+                  const hdf5::datatype::Datatype &memory_type,
+                  const hdf5::dataspace::Dataspace &memory_space,
+                  const hdf5::dataspace::Dataspace &file_space)
 {
-  return io::read(self);
-}
+  numpy::ArrayAdapter array_adapter(data);
 
-void read_all_inplace(const hdf5::node::Dataset &self,boost::python::object &object)
-{
-  io::read(self,object);
-}
-
-boost::python::object read_with_selection(const hdf5::node::Dataset &self,
-                         const hdf5::dataspace::Selection &selection)
-{
-  return io::read(self,selection);
+  self.read(array_adapter,memory_type,memory_space,file_space);
 }
 
 boost::python::object get_datatype(const hdf5::node::Dataset &self)
@@ -91,10 +83,8 @@ void create_dataset_wrapper()
                     )
                 ))
       .def("close",&Dataset::close)
-      .def("_write",write_all)
-      .def("read",read_all)
-      .def("read",read_all_inplace)
-      .def("read",read_with_selection)
+      .def("_write",dataset_write)
+      .def("_read",dataset_read)
       .add_property("creation_list",&Dataset::creation_list)
       .add_property("access_list",&Dataset::access_list)
       .add_property("dataspace",get_dataspace)

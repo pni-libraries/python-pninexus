@@ -1,10 +1,10 @@
-from .._file import File
-from .._file import AccessFlags
-from .._file import Scope
+from pni.io.h5cpp._file import File
+from pni.io.h5cpp._file import AccessFlags
+from pni.io.h5cpp._file import Scope
 
 #
 # utility functions
 #
-from .._file import create
-from .._file import open
-from .._file import is_hdf5_file
+from pni.io.h5cpp._file import create
+from pni.io.h5cpp._file import open
+from pni.io.h5cpp._file import is_hdf5_file

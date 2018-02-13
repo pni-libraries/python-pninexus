@@ -85,6 +85,7 @@ BOOST_PYTHON_MODULE(_datatype)
       .def("has_class",&Datatype::has_class)
       .add_property("size",get_size,set_size)
       .add_property("is_valid",&Datatype::is_valid)
+      .def(self == Datatype())
       ;
 
 

@@ -32,7 +32,7 @@ class GroupConstructionTest(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
         
-        self.file=h5cpp.file.create("GroupTest.h5",h5cpp.AccessFlags.TRUNCATE)
+        self.file=h5cpp.file.create("GroupTest.h5",h5cpp.file.AccessFlags.TRUNCATE)
         
     def tearDown(self):
         
@@ -46,13 +46,13 @@ class GroupConstructionTest(unittest.TestCase):
     def testRootGroupFromFile(self):
         
         root = self.file.root()
-        self.assertEqual(root.attributes.size,6)
+        self.assertEqual(root.attributes.size,0)
         
     def testConstructor(self):
         
         root = self.file.root()
         entry = h5cpp.node.Group(root,"entry")
         self.assertTrue(entry.is_valid)
-        self.assertEqual(entry.type,nexus.NodeType.GROUP)
-        self.assertEqual(entry.link.type,nexus.LinkType.HARD)
-        self.assertEqual(entry.link.path,"/entry")
+        self.assertEqual(entry.type,h5cpp.node.Type.GROUP)
+        self.assertEqual(entry.link.type(),h5cpp.node.LinkType.HARD)
+        self.assertEqual(entry.link.path,h5cpp.Path('/entry'))

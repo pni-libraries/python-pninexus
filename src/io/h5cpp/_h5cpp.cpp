@@ -112,6 +112,7 @@ BOOST_PYTHON_MODULE(_h5cpp)
       .add_property("absolute",set_absolute,get_absolute)
       .def("__str__",path_to_string)
       .def("__repr__",path_to_string)
+      .def(self == hdf5::Path())
       ;
 
 
