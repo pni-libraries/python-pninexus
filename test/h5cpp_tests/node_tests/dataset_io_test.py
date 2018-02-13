@@ -69,15 +69,23 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         self.assertEqual(read,23.321)
         
-    def testWriteStringScalar(self):
+    def testWriteFixedLengthStringScalar(self):
         
         data = "hello world"
         dtype = h5cpp.datatype.String.fixed(len(data))
         dtype.padding = h5cpp.datatype.StringPad.NULLPAD
-        dataset = Dataset(self.root,h5cpp.Path("StringScalar"),dtype,Scalar())
+        dataset = Dataset(self.root,h5cpp.Path("FixedLengthStringScalar"),dtype,Scalar())
         dataset.write(data)
-        #read = dataset.read()
-        #self.assertEqual(read,"hello world")
+        read = dataset.read()
+        self.assertEqual(read,"hello world")
+        
+    def testWriteVariableLength(self):
+        data = "hello world"
+        dtype = h5cpp.datatype.String.variable()
+        dataset = Dataset(self.root,h5cpp.Path("VariableLengthStringScalar"),dtype,Scalar())
+        dataset.write(data)
+        read = dataset.read()
+        self.assertEqual(read,"hello world")
         
     def testWriteIntegerArray(self):
         
@@ -108,17 +116,17 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         npt.assert_array_equal(read,data)
         
-#    def testWriteStringArray(self):
-#        
-#        data = numpy.array([["hello","world","this"],["is","a","test"]])
-#        dtype = h5cpp.datatype.String.fixed(5)
-#        dtype.padding = h5cpp.datatype.StringPad.NULLTERM
-#        dataset = Dataset(self.root,h5cpp.Path("StringArray"),
-#                          dtype,
-#                          Simple((2,3)))
-#        dataset.write(data)
-#        read = dataset.read()
-#        npt.assert_array_equal(read,data)
+    def testWriteStringArray(self):
+        
+        data = numpy.array([["hello","world","this"],["is","a","test"]])
+        dtype = h5cpp.datatype.String.fixed(5)
+        dtype.padding = h5cpp.datatype.StringPad.NULLPAD
+        dataset = Dataset(self.root,h5cpp.Path("StringArray"),
+                          dtype,
+                          Simple((2,3)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read,data)
         
         
                           

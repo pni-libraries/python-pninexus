@@ -37,6 +37,7 @@ extern "C"{
 #include "../errors.hpp"
 #include "../common/converters.hpp"
 #include "../common/io.hpp"
+#include "../numpy/numpy.hpp"
 #include <algorithm>
 
 #if PY_MAJOR_VERSION >= 3
@@ -53,13 +54,64 @@ namespace {
 
 boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
 {
-  return io::read(self);
+  using namespace boost::python;
+
+  //
+  // create a new array instance according to the datatye and dataspace of
+  // the attribute
+  //
+  object array = numpy::ArrayFactory::create(self.datatype(),
+                                             self.dataspace());
+  numpy::ArrayAdapter adapter(array);
+  self.read(adapter,self.datatype());
+
+  //
+  // if we read string data we have to fix the shape of the resulting
+  // numpy array.
+  //
+  if(self.datatype().get_class()==hdf5::datatype::Class::STRING)
+  {
+    hdf5::datatype::String string_type(self.datatype());
+    if(!string_type.is_variable_length())
+    {
+      PyArrayObject *array_ptr = static_cast<PyArrayObject*>(adapter);
+      numpy::Dimensions dims{1};
+
+      if(self.dataspace().type()==hdf5::dataspace::Type::SIMPLE)
+        dims = numpy::Dimensions(hdf5::dataspace::Simple(self.dataspace()).current_dimensions());
+
+      PyArray_Dims py_dims{dims.data(),dims.size()};
+
+      array = object(handle<>(PyArray_Newshape(array_ptr,&py_dims,NPY_CORDER)));
+    }
+  }
+
+  return array;
 }
 
 void attribute_write(const hdf5::attribute::Attribute &self,
                      const boost::python::object &data)
 {
-  io::write(self,data);
+  using hdf5::datatype::Datatype;
+  using hdf5::datatype::String;
+
+  boost::python::object temp_object;
+  numpy::ArrayAdapter array_adapter;
+
+  if(numpy::is_array(data))
+    array_adapter = numpy::ArrayAdapter(data);
+  else
+  {
+    temp_object = numpy::ArrayFactory::create(data);
+    array_adapter = numpy::ArrayAdapter(temp_object);
+  }
+
+  Datatype mem_type = hdf5::datatype::create<numpy::ArrayAdapter>(array_adapter);
+  if(io::has_variable_length_string_type(self) &&
+      (mem_type.get_class() == hdf5::datatype::Class::STRING))
+    mem_type = String::variable();
+
+  self.write(array_adapter,mem_type);
 }
 
 hdf5::attribute::Attribute

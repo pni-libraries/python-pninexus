@@ -50,11 +50,17 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
   else if(datatype == create<long double>()) return NPY_LONGDOUBLE;
   else if(datatype.get_class() == Class::STRING)
   {
+    String string_type = datatype;
+    if(string_type.is_variable_length())
+      return NPY_OBJECT;
+    else
+    {
 #if PY_MAJOR_VERSION >= 3
       return NPY_UNICODE;
 #else
       return NPY_STRING;
 #endif
+    }
   }
   else if(datatype == create<bool>()) return NPY_BOOL;
   else
@@ -126,7 +132,11 @@ ArrayFactory::create(const hdf5::datatype::Datatype &datatype,
 
 boost::python::object ArrayFactory::create(const boost::python::object &object)
 {
-  PyObject *ptr = PyArray_FROM_OF(object.ptr(),NPY_ARRAY_C_CONTIGUOUS);
+
+  PyObject *ptr = PyArray_FROM_OF(object.ptr(),NPY_ARRAY_C_CONTIGUOUS |
+                                               NPY_ARRAY_ENSUREARRAY |
+                                               NPY_ARRAY_ENSURECOPY );
+
   boost::python::handle<> h(ptr);
   return boost::python::object(h);
 }

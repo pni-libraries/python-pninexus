@@ -29,20 +29,49 @@
 
 namespace io {
 
+//!
+//! @brief returns true if an IO object has a variable length string type
+//!
+//! This predicate function template works with attributes and datasets.
+//!
+//! @param object reference to the object for which to determine the type
+//! @return true if variable length string type, false otherwise
+//!
+template<typename IoType>
+bool has_variable_length_string_type(const IoType &object)
+{
+  if(object.datatype().get_class() != hdf5::datatype::Class::STRING)
+    return false;
+
+  hdf5::datatype::String string_type = object.datatype();
+
+  return string_type.is_variable_length();
+}
+
 template<typename IoType>
 void write(const IoType &instance,const boost::python::object &object)
 {
-  using namespace boost::python;
+  boost::python::object temp_array;
+  numpy::ArrayAdapter array_adapter;
 
   if(numpy::is_array(object))
   {
-    instance.write(numpy::ArrayAdapter(object));
+    array_adapter = numpy::ArrayAdapter(object);
   }
   else
   {
     boost::python::object temp_array = numpy::ArrayFactory::create(object);
-    instance.write(numpy::ArrayAdapter(temp_array));
+    array_adapter = numpy::ArrayAdapter(temp_array);
   }
+
+  hdf5::datatype::Datatype memory_type = hdf5::datatype::create<numpy::ArrayAdapter>(array_adapter);
+  hdf5::dataspace::Dataspace memory_space = hdf5::dataspace::create<numpy::ArrayAdapter>(array_adapter);
+  if(has_variable_length_string_type(instance))
+  {
+    memory_type = hdf5::datatype::String::variable();
+  }
+
+  instance.write(array_adapter,memory_type,memory_space,instance.dataspace());
 }
 
 template<typename IoType>

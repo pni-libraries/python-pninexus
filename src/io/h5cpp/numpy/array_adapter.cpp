@@ -102,7 +102,11 @@ npy_intp ArrayAdapter::itemsize() const
 
 hdf5::Dimensions ArrayAdapter::dimensions() const
 {
-  hdf5::Dimensions dims(PyArray_NDIM(pointer_));
+  size_t ndims = PyArray_NDIM(pointer_);
+  if(ndims==0)
+    return hdf5::Dimensions{1};
+
+  hdf5::Dimensions dims(ndims);
 
   size_t index=0;
   for(auto &dim: dims)

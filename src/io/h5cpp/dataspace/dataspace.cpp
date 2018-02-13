@@ -37,11 +37,20 @@ BOOST_PYTHON_MODULE(_dataspace)
       .value("SIMPLE",hdf5::dataspace::Type::SIMPLE)
       ;
 
+  class_<SelectionManager,boost::noncopyable>("SelectionManager",no_init)
+      .add_property("size",&SelectionManager::size)
+      .add_property("type",&SelectionManager::type)
+      .def("all",&SelectionManager::all)
+      .def("none",&SelectionManager::none)
+      .def("__call__",&SelectionManager::operator())
+      ;
+
 
   class_<Dataspace>("Dataspace")
       .add_property("is_valid",&Dataspace::is_valid)
       .add_property("size",&Dataspace::size)
       .add_property("type",&Dataspace::type)
+      .def_readonly("selection",&Dataspace::selection)
       ;
 
   class_<Simple,bases<Dataspace>>("Simple")

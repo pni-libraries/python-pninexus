@@ -70,7 +70,9 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     BufferType buffer;
     npy_intp itemsize = PyArray_ITEMSIZE(static_cast<PyArrayObject*>(data));
 
-    NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),NPY_ITER_READONLY | NPY_ITER_C_INDEX, NPY_CORDER , NPY_NO_CASTING,nullptr);
+    NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),
+                                NPY_ITER_READONLY | NPY_ITER_C_INDEX,
+                                NPY_CORDER , NPY_UNSAFE_CASTING,nullptr);
     NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
     char **dataptr = NpyIter_GetDataPtrArray(iter);
     do
@@ -83,11 +85,59 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
 
   static void from_buffer(const BufferType &buffer,DataType &data)
   {
-//    std::transform(buffer.begin(),buffer.end(),data.begin(),
-//                   [](const char *ptr)
-//                   {
-//                     return std::string(ptr,std::strlen(ptr));
-//                   });
+    PyArray_Descr *dtype = PyArray_DescrFromType(NPY_OBJECT);
+    NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),
+                                NPY_ITER_READWRITE | NPY_ITER_C_INDEX | NPY_ITER_REFS_OK,
+                                NPY_CORDER , NPY_NO_CASTING,nullptr);
+    if(iter==NULL)
+    {
+      Py_XDECREF(dtype);
+      std::cerr<<"Could not instantiate an iterator for the array!"<<std::endl;
+      std::cerr<<data.size()<<std::endl;
+      std::cerr<<data.itemsize()<<std::endl;
+      PyErr_Print();
+      return;
+    }
+    NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
+    if(iternext == NULL)
+    {
+      Py_XDECREF(dtype);
+      std::cerr<<"Could not instantiate next iterator function"<<std::endl;
+      return;
+    }
+    PyObject **dataptr = (PyObject**)NpyIter_GetDataPtrArray(iter);
+    for(auto string: buffer)
+    {
+      std::cout<<string<<std::endl;
+      PyObject *ptr = PyString_FromString(string);
+      if(ptr==NULL)
+      {
+        std::cerr<<"could not create python string!"<<std::endl;
+      }
+      else
+      {
+        std::cerr<<"Created python string: "<<PyString_Size(ptr)<<PyString_AsString(ptr)<<std::endl;
+      }
+
+      PyObject *none = (PyObject*)dataptr[0];
+      if(none == Py_None)
+      {
+        std::cerr<<"We currently store a none in the array"<<std::endl;
+      }
+      else
+      {
+        std::cerr<<"We have: "<<none<<std::endl;
+        std::cerr<<"None is:"<<Py_None<<std::endl;
+        std::cerr<<"And: "<<dataptr<<std::endl;
+        std::cerr<<"And: "<<dataptr[0]<<std::endl;
+      }
+
+      dataptr[0] = ptr;
+      iternext(iter);
+    }
+    //PyArray_INCREF(static_cast<PyArrayObject*>(data));
+    NpyIter_Deallocate(iter);
+    Py_XDECREF(dtype);
   }
 };
 

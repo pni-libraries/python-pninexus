@@ -39,6 +39,7 @@ nxh5_extra_link_args = []
 io_extra_link_args = []
 nx_extra_link_args = []
 h5cpp_extra_link_args =[]
+nexus_extra_link_args =[]
 
 if os.path.exists("conanbuildinfo.txt"):
     c = ConanConfig("conanbuildinfo.txt")
@@ -53,6 +54,7 @@ if os.path.exists("conanbuildinfo.txt"):
     h5cpp_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     io_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../libs")
     nx_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
+    nexus_extra_link_args.append("-Wl,-rpath,'$ORIGIN'/../../libs")
     
     print("linking with libraries:")
     for lib in libraries:
@@ -246,7 +248,20 @@ h5cpp_node_ext = Extension('pni.io.h5cpp._node',
                            language="c++",
                            extra_compile_args = extra_compile_args
                                 )
-
+nexus_extension = Extension('pni.io.nexus._nexus',
+                          ['src/io/nexus/nexus.cpp',
+                           'src/io/nexus/factories.cpp',
+                           'src/io/nexus/predicates.cpp',
+                           'src/io/nexus/list_converters.cpp',
+                           'src/io/nexus/path.cpp'
+                           ],
+                           include_dirs = include_dirs+["src/"],
+                           library_dirs = library_dirs,
+                           libraries = libraries,
+                           extra_link_args = h5cpp_extra_link_args,
+                           language="c++",
+                           extra_compile_args = extra_compile_args
+                                )
 io_ext = Extension("pni.io._io",io_files,
                    include_dirs = include_dirs+["src/"],
                    library_dirs = library_dirs,
@@ -335,6 +350,7 @@ setup(name="pni",
                    h5cpp_property_ext,
                    h5cpp_filter_ext,
                    h5cpp_node_ext,
+                   nexus_extension,
                    io_ext,nx_ext,
                    ex_trans_test,utils_test,numpy_utils_test],
       packages = find_packages(),

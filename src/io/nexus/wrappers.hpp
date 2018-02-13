@@ -17,26 +17,11 @@
 // along with python-pniio.  If not, see <http://www.gnu.org/licenses/>.
 // ===========================================================================
 //
-// Created on: Jan 30, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//  Created on: Feb 8, 2018
+//      Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
 #pragma once
 
-#include <boost/python.hpp>
-
-
-//!
-//! @brief return ture if object is a primitive float object
-//!
-//! @param object reference to the python object
-//! @return true if float, false otherwise
-bool is_float(const boost::python::object &object);
-
-
-bool is_string(const boost::python::object &object);
-
-bool is_integer(const boost::python::object &object);
-
-bool is_numpy_array(const boost::python::object &object);
-
-bool is_numpy_scalar(const boost::python::object &object);
+void create_factory_wrappers();
+void create_predicate_wrappers();
+void create_path_wrappers();

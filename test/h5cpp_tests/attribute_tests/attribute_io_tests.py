@@ -66,7 +66,7 @@ class AttributeIOTests(unittest.TestCase):
         r = a.read()
         self.assertEqual(r,34.5323)
         
-    def testStringScalar(self):
+    def testStringScalarFixedLength(self):
         
         data = "hello world"
         dtype = h5cpp.datatype.String.fixed(len(data))
@@ -75,6 +75,14 @@ class AttributeIOTests(unittest.TestCase):
         a.write("hello world")
         r = a.read()
         self.assertEqual(r,"hello world")
+        
+    def testStringScalarVariableLength(self):
+        
+        data = "hello world"
+        a = self.root.attributes.create("StringScalarVLength",h5cpp.datatype.String.variable())
+        a.write(data)
+        r = a.read()
+        self.assertEqual(r,data)
         
     def testStringArray(self):
         
@@ -85,6 +93,14 @@ class AttributeIOTests(unittest.TestCase):
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r,data)
+        
+    def testStringArrayVariableLength(self):
+        
+        data = numpy.array([["hello","world","this"],["is","a","test"]])
+        a = self.root.attributes.create("StringArrayVLength",h5cpp.datatype.String.variable(),(2,3))
+        a.write(data)
+        #r = a.read()
+        #npt.assert_array_equal(r,data)
         
     def testIntArray(self):
         
