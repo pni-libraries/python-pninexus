@@ -53,6 +53,35 @@ class DatasetPartialIOTests(unittest.TestCase):
         self.root.close()
         self.file.close()
         
+    def testWriteVariabelLengthArrayStrips(self):
+        """
+        The use case here would be a log 
+        """
+        
+        log_lines = ["hello","first entry","second entry"]
+        dtype = h5cpp.datatype.String.variable()
+        lcpl = h5cpp.property.LinkCreationList()
+        dcpl = h5cpp.property.DatasetCreationList()
+        dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
+        dcpl.chunk = (1,)
+        space = h5cpp.dataspace.Simple((0,),(h5cpp.dataspace.UNLIMITED,))
+        dataset = Dataset(self.root,h5cpp.Path("Log"),dtype,space,lcpl,dcpl)
+        
+        #writing data by log 
+        slab = h5cpp.dataspace.Hyperslab(offset=(0,),block=(1,))
+        for line in log_lines:
+            dataset.extent(0,1)
+            dataset.write(data=line,selection=slab)
+            slab.offset(0,slab.offset()[0]+1)
+            
+        #
+        # read back data
+        #         
+        for index in range(3):
+            slab.offset(0,index)
+            line = dataset.read(selection=slab)
+            self.assertEqual(line,log_lines[index])
+        
     def testWriteReadStrips(self):
         
         dataspace = Simple((3,5))
