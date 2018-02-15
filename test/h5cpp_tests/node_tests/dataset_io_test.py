@@ -22,6 +22,7 @@
 #
 from __future__ import print_function
 import unittest
+import os
 from pni.io import h5cpp
 from pni.io.h5cpp.file import AccessFlags
 from pni.io.h5cpp.node import Dataset
@@ -30,9 +31,11 @@ from pni.io.h5cpp.dataspace import Scalar
 import numpy
 import numpy.testing as npt
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+
 class DatasetAllIOTests(unittest.TestCase):
     
-    filename = "DatasetAllIOTests.h5"
+    filename = os.path.join(module_path,"DatasetAllIOTests.h5")
     
     @classmethod
     def setUpClass(cls):

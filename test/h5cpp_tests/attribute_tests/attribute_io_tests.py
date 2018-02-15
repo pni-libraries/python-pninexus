@@ -23,22 +23,28 @@
 from __future__ import print_function
 import unittest
 import numpy
+import os
 import numpy.testing as npt
 from pni.io import h5cpp
+from pni.io.h5cpp.file import AccessFlags
+from pni.io.h5cpp.datatype import kInt32, kFloat32, kVariableString
+from pni.io.h5cpp.datatype import StringPad, String
 
+
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 class AttributeIOTests(unittest.TestCase):
     
-    filename = "AttributeIOTests.h5"
+    filename = os.path.join(module_path,"AttributeIOTests.h5")
     
     @classmethod
     def setUpClass(cls):
         super(AttributeIOTests, cls).setUpClass()
         
-        h5cpp.file.create(cls.filename,h5cpp.file.AccessFlags.TRUNCATE)
+        h5cpp.file.create(cls.filename,AccessFlags.TRUNCATE)
         
     def setUp(self):
-        self.file = h5cpp.file.open(self.filename,h5cpp.file.AccessFlags.READWRITE)
+        self.file = h5cpp.file.open(self.filename,AccessFlags.READWRITE)
         self.root = self.file.root()
         
     def tearDown(self):
@@ -47,21 +53,21 @@ class AttributeIOTests(unittest.TestCase):
         
     def testIntegerScalar(self):
         
-        a = self.root.attributes.create("IntegerScalar",h5cpp.datatype.kInt32)
+        a = self.root.attributes.create("IntegerScalar",kInt32)
         a.write(42)
         r = a.read()
         self.assertEqual(r,42)
         
     def testFloatScalar(self):
         
-        a = self.root.attributes.create("FloatScalar",h5cpp.datatype.kFloat32)
+        a = self.root.attributes.create("FloatScalar",kFloat32)
         a.write(42.345)
         r = a.read()
         self.assertEqual(r,42.345)
         
     def testFloatNumpyScalar(self):
         
-        a = self.root.attributes.create("FloatNumpyScalar",h5cpp.datatype.kFloat32)
+        a = self.root.attributes.create("FloatNumpyScalar",kFloat32)
         a.write(numpy.float32(34.5323))
         r = a.read()
         self.assertEqual(r,34.5323)
@@ -69,8 +75,8 @@ class AttributeIOTests(unittest.TestCase):
     def testStringScalarFixedLength(self):
         
         data = "hello world"
-        dtype = h5cpp.datatype.String.fixed(len(data))
-        dtype.padding=h5cpp.datatype.StringPad.NULLPAD
+        dtype = String.fixed(len(data))
+        dtype.padding = StringPad.NULLPAD
         a = self.root.attributes.create("StringScalar",dtype)
         a.write("hello world")
         r = a.read()
@@ -79,7 +85,7 @@ class AttributeIOTests(unittest.TestCase):
     def testStringScalarVariableLength(self):
         
         data = "hello world"
-        a = self.root.attributes.create("StringScalarVLength",h5cpp.datatype.String.variable())
+        a = self.root.attributes.create("StringScalarVLength",kVariableString)
         a.write(data)
         r = a.read()
         self.assertEqual(r,data)
@@ -87,8 +93,8 @@ class AttributeIOTests(unittest.TestCase):
     def testStringArray(self):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
-        dtype = h5cpp.datatype.String.fixed(5)
-        dtype.padding = h5cpp.datatype.StringPad.NULLPAD
+        dtype = String.fixed(5)
+        dtype.padding = StringPad.NULLPAD
         a = self.root.attributes.create("StringArray",dtype,(2,3))
         a.write(data)
         r = a.read()
@@ -97,7 +103,7 @@ class AttributeIOTests(unittest.TestCase):
     def testStringArrayVariableLength(self):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
-        a = self.root.attributes.create("StringArrayVLength",h5cpp.datatype.String.variable(),(2,3))
+        a = self.root.attributes.create("StringArrayVLength",kVariableString,(2,3))
         a.write(data)
         #r = a.read()
         #npt.assert_array_equal(r,data)
@@ -105,7 +111,7 @@ class AttributeIOTests(unittest.TestCase):
     def testIntArray(self):
         
         data = numpy.array([1,2,3])
-        a = self.root.attributes.create("IntArray",h5cpp.datatype.kInt32,(3,))
+        a = self.root.attributes.create("IntArray",kInt32,(3,))
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r,data)

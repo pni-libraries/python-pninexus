@@ -22,15 +22,23 @@
 #
 from __future__ import print_function
 import unittest
+import os
 from pni.io import h5cpp
+from pni.io.h5cpp.file import AccessFlags
+from pni.io.h5cpp.node import Group
+from pni.io.h5cpp.property import GroupCreationList
+from pni.io.h5cpp.property import LinkCreationList
+from pni.io.h5cpp import Path
+
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 class GroupCreationTests(unittest.TestCase):
     
-    filename = "GroupCreationTests.h5"
+    filename = os.path.join(module_path,"GroupCreationTests.h5")
     
     def setUp(self):
         
-        self.file = h5cpp.file.create(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
+        self.file = h5cpp.file.create(self.filename,AccessFlags.TRUNCATE)
         self.root = self.file.root()
         
     def tearDown(self):
@@ -44,17 +52,18 @@ class GroupCreationTests(unittest.TestCase):
         We simply construct a group with a new name
         """
         
-        g = h5cpp.node.Group(self.root,"test")
+        g = Group(self.root,"test")
         self.assertEqual(g.link.path.name,"test")
+        self.assertEqual(g.link.path,Path("/test"))
         
     def testWithIntermediateGroups(self):
         """somehow a bit more elaborate 
         
         We construct a group with a custom link creation property list
         """
-        lcpl = h5cpp.property.LinkCreationList()
+        lcpl = LinkCreationList()
         lcpl.intermediate_group_creation = True
-        g = h5cpp.node.Group(self.root,"test/sensors/temperature",lcpl)
+        g = Group(self.root,"test/sensors/temperature",lcpl)
         self.assertEqual("{}".format(g.link.path),"/test/sensors/temperature")
         
         self.assertTrue(self.root.nodes.exists("test"))

@@ -22,6 +22,7 @@
 #
 from __future__ import print_function
 import unittest
+import os
 from pni.io import h5cpp
 from pni.io.h5cpp.file import AccessFlags
 from pni.io.h5cpp.node import Dataset
@@ -33,12 +34,14 @@ from pni.io.h5cpp.property import DatasetCreationList
 import numpy
 import numpy.testing as npt
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+
 class DatasetExtentTest(unittest.TestCase):
     """
     Testing the functionality of the ``extent`` methods. 
     """
     
-    filename = "DatasetExtentTest.h5"
+    filename = os.path.join(module_path,"DatasetExtentTest.h5")
     limited_dataspace = Simple((10,10),(100,10))
     unlimited_dataspace = Simple((0,10),(h5cpp.dataspace.UNLIMITED,10))
     lcpl = LinkCreationList()
@@ -64,7 +67,11 @@ class DatasetExtentTest(unittest.TestCase):
         
     def testSetTotalExtentLimited(self):
         
-        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentLimited"),kFloat32,self.limited_dataspace,self.lcpl,self.dcpl)
+        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentLimited"),
+                          kFloat32,
+                          self.limited_dataspace,
+                          self.lcpl,
+                          self.dcpl)
         dataset.extent((90,10))
         #check the new shape
         self.assertEqual(dataset.dataspace.current_dimensions,(90,10))
@@ -83,7 +90,11 @@ class DatasetExtentTest(unittest.TestCase):
         
     def testSetTotalExtentUnlimited(self):
         
-        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentUnlimited"),kFloat32,self.unlimited_dataspace,self.lcpl,self.dcpl)
+        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentUnlimited"),
+                          kFloat32,
+                          self.unlimited_dataspace,
+                          self.lcpl,
+                          self.dcpl)
         dataset.extent((1000,10))
         self.assertEqual(dataset.dataspace.current_dimensions,(1000,10))
         
@@ -92,7 +103,11 @@ class DatasetExtentTest(unittest.TestCase):
         
     def testGrowExtentLimited(self):
         
-        dataset = Dataset(self.root,h5cpp.Path("GrowExtentLimited"),kFloat32,self.limited_dataspace,self.lcpl,self.dcpl)
+        dataset = Dataset(self.root,h5cpp.Path("GrowExtentLimited"),
+                          kFloat32,
+                          self.limited_dataspace,
+                          self.lcpl,
+                          self.dcpl)
         dataset.extent(0,10)
         self.assertEqual(dataset.dataspace.current_dimensions,(20,10))
         
@@ -109,7 +124,11 @@ class DatasetExtentTest(unittest.TestCase):
         
     def testGrowExtentUnlimited(self):
         
-        dataset = Dataset(self.root,h5cpp.Path("GrowExtentUnlimited"),kFloat32,self.unlimited_dataspace,self.lcpl,self.dcpl)
+        dataset = Dataset(self.root,h5cpp.Path("GrowExtentUnlimited"),
+                          kFloat32,
+                          self.unlimited_dataspace,
+                          self.lcpl,
+                          self.dcpl)
         dataset.extent(0,10000)
         self.assertEqual(dataset.dataspace.current_dimensions,(10000,10))
         

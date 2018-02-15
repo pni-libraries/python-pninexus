@@ -22,13 +22,15 @@
 #
 from __future__ import print_function
 import unittest
+import os
 from pni.io.h5cpp.filter import Deflate,Fletcher32,Shuffle
 import pni.io.h5cpp as hdf5
 
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 class FilterCreationTest(unittest.TestCase):
     
-    filename = "FilterCreationTest.h5"
+    filename = os.path.join(module_path,"FilterCreationTest.h5")
     dataspace = hdf5.dataspace.Simple((10,2))
     datatype = hdf5.datatype.kInt32
     lcpl = hdf5.property.LinkCreationList()
@@ -57,19 +59,31 @@ class FilterCreationTest(unittest.TestCase):
         
         filter = Fletcher32()
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Fletcher32"),self.datatype,self.dataspace,self.lcpl,self.dcpl)
+        d = hdf5.node.Dataset(self.root,hdf5.Path("Fletcher32"),
+                              self.datatype,
+                              self.dataspace,
+                              self.lcpl,
+                              self.dcpl)
         
     def testShuffle(self):
         
         filter = Shuffle()
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Shuffle"),self.datatype,self.dataspace,self.lcpl,self.dcpl)
+        d = hdf5.node.Dataset(self.root,hdf5.Path("Shuffle"),
+                              self.datatype,
+                              self.dataspace,
+                              self.lcpl,
+                              self.dcpl)
         
     def testDeflate(self):
         
         filter = Deflate(level=9)
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Deflate"),self.datatype,self.dataspace,self.lcpl,self.dcpl)
+        d = hdf5.node.Dataset(self.root,hdf5.Path("Deflate"),
+                              self.datatype,
+                              self.dataspace,
+                              self.lcpl,
+                              self.dcpl)
         
     def testAll(self):
         
@@ -82,4 +96,8 @@ class FilterCreationTest(unittest.TestCase):
         shuffle(self.dcpl)
         deflate(self.dcpl)
         
-        d = hdf5.node.Dataset(self.root,hdf5.Path("AllFilters"),self.datatype,self.dataspace,self.lcpl,self.dcpl)
+        d = hdf5.node.Dataset(self.root,hdf5.Path("AllFilters"),
+                              self.datatype,
+                              self.dataspace,
+                              self.lcpl,
+                              self.dcpl)

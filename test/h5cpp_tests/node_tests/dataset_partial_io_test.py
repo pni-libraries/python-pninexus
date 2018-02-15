@@ -22,19 +22,26 @@
 #
 from __future__ import print_function
 import unittest
+import os
 from pni.io import h5cpp
 from pni.io.h5cpp.file import AccessFlags
 from pni.io.h5cpp.node import Dataset
 from pni.io.h5cpp.dataspace import Simple
 from pni.io.h5cpp.dataspace import Scalar
 from pni.io.h5cpp.dataspace import Hyperslab
-from pni.io.h5cpp.datatype import kInt32
+from pni.io.h5cpp.datatype  import kInt32
+from pni.io.h5cpp.datatype  import String 
+from pni.io.h5cpp.property  import LinkCreationList
+from pni.io.h5cpp.property  import DatasetCreationList
+from pni.io.h5cpp.property  import DatasetLayout
 import numpy
 import numpy.testing as npt
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+
 class DatasetPartialIOTests(unittest.TestCase):
     
-    filename = "DatasetPartialIOTests.h5"
+    filename = os.path.join(module_path,"DatasetPartialIOTests.h5")
     
     @classmethod
     def setUpClass(cls):
@@ -58,28 +65,40 @@ class DatasetPartialIOTests(unittest.TestCase):
         The use case here would be a log 
         """
         
-        log_lines = ["hello","first entry","second entry"]
-        dtype = h5cpp.datatype.String.variable()
-        lcpl = h5cpp.property.LinkCreationList()
-        dcpl = h5cpp.property.DatasetCreationList()
-        dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
-        dcpl.chunk = (1,)
-        space = h5cpp.dataspace.Simple((0,),(h5cpp.dataspace.UNLIMITED,))
-        dataset = Dataset(self.root,h5cpp.Path("Log"),dtype,space,lcpl,dcpl)
+        
+        #
+        # create file datatype and dataspace
+        #
+        dtype     = String.variable()
+        space     = Simple((0,),(h5cpp.dataspace.UNLIMITED,))
+        #
+        # create property lists
+        #
+        link_creation_list           = LinkCreationList()
+        dataset_creation_list        = DatasetCreationList()
+        dataset_creation_list.layout = DatasetLayout.CHUNKED
+        dataset_creation_list.chunk  = (1,)
+        
+        #
+        # create the dataset
+        #
+        dataset = Dataset(self.root,h5cpp.Path("Log"),dtype,space,
+                          link_creation_list,dataset_creation_list)
         
         #writing data by log 
-        slab = h5cpp.dataspace.Hyperslab(offset=(0,),block=(1,))
+        log_lines = ["hello","first entry","second entry"]
+        line_selection = Hyperslab(offset=(0,),block=(1,))
         for line in log_lines:
             dataset.extent(0,1)
-            dataset.write(data=line,selection=slab)
-            slab.offset(0,slab.offset()[0]+1)
+            dataset.write(data=line,selection=line_selection)
+            line_selection.offset(0,line_selection.offset()[0]+1)
             
         #
         # read back data
         #         
         for index in range(3):
-            slab.offset(0,index)
-            line = dataset.read(selection=slab)
+            line_selection.offset(0,index)
+            line = dataset.read(selection=line_selection)
             self.assertEqual(line,log_lines[index])
         
     def testWriteReadStrips(self):

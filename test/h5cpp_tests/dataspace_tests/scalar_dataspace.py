@@ -25,9 +25,9 @@ import unittest
 import os
 import numpy
 
-from pni.io.nexus.dataspace import Scalar
-from pni.io.nexus.dataspace import Dataspace
-from pni.io.nexus.dataspace import Type
+from pni.io.h5cpp.dataspace import Scalar
+from pni.io.h5cpp.dataspace import Dataspace
+from pni.io.h5cpp.dataspace import Type
 
 class ScalarTest(unittest.TestCase):
     
