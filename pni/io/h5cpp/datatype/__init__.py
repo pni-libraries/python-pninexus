@@ -89,7 +89,7 @@ def to_numpy(hdf5_datatype):
         return "float128"
     elif isinstance(hdf5_datatype,String):
         if hdf5_datatype.is_variable_length:
-            return "string"
+            return "object"
         else:
             return "S{}".format(hdf5_datatype.size)
     else:
