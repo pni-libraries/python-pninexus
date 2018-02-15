@@ -91,8 +91,7 @@ class DatasetPartialIOTests(unittest.TestCase):
             for j in range(5):
                 selection.offset(1,j)
                 dataset.write(data=value,selection=selection)
-                #print(dataset.read(selection=selection))
-                #self.assertEqual(dataset.read(selection=selection)[0],value)
+                self.assertEqual(dataset.read(selection=selection)[0],value)
                 value+=1
                 
         

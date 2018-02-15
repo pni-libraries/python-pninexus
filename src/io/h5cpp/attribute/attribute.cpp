@@ -20,7 +20,6 @@
 // Created on: Sep 17, 2015
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-//
 
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION

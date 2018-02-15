@@ -20,7 +20,7 @@
 // Created on: Jan 25, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-
+//
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
@@ -29,7 +29,8 @@
 
 namespace {
 
-void dataset_write(const hdf5::node::Dataset &self,const boost::python::object &data,
+void dataset_write(const hdf5::node::Dataset &self,
+                   const boost::python::object &data,
                    const hdf5::datatype::Datatype &memory_type,
                    const hdf5::dataspace::Dataspace &memory_space,
                    const hdf5::dataspace::Dataspace &file_space)
@@ -39,7 +40,8 @@ void dataset_write(const hdf5::node::Dataset &self,const boost::python::object &
   self.write(array_adapter,memory_type,memory_space,file_space);
 }
 
-void dataset_read(const hdf5::node::Dataset &self,boost::python::object &data,
+boost::python::object dataset_read(const hdf5::node::Dataset &self,
+                  boost::python::object &data,
                   const hdf5::datatype::Datatype &memory_type,
                   const hdf5::dataspace::Dataspace &memory_space,
                   const hdf5::dataspace::Dataspace &file_space)
@@ -47,6 +49,22 @@ void dataset_read(const hdf5::node::Dataset &self,boost::python::object &data,
   numpy::ArrayAdapter array_adapter(data);
 
   self.read(array_adapter,memory_type,memory_space,file_space);
+
+  if(self.datatype().get_class() == hdf5::datatype::Class::STRING)
+  {
+    hdf5::datatype::String string_type = self.datatype();
+    if(!string_type.is_variable_length())
+    {
+      std::cout<<"Saving fixed length string array!"<<std::endl;
+      PyObject *ptr = reinterpret_cast<PyObject*>(static_cast<PyArrayObject*>(array_adapter));
+      Py_XINCREF(ptr);
+
+      boost::python::handle<> h(ptr);
+      data = boost::python::object(h);
+    }
+  }
+
+  return data;
 }
 
 boost::python::object get_datatype(const hdf5::node::Dataset &self)
