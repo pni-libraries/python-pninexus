@@ -105,7 +105,7 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
       std::cerr<<"Could not instantiate next iterator function"<<std::endl;
       return;
     }
-    PyObject **dataptr = (PyObject**)NpyIter_GetDataPtrArray(iter);
+    PyObject ***dataptr = (PyObject***)NpyIter_GetDataPtrArray(iter);
     for(auto string: buffer)
     {
       std::cout<<string<<std::endl;
@@ -119,20 +119,7 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
         std::cerr<<"Created python string: "<<PyString_Size(ptr)<<PyString_AsString(ptr)<<std::endl;
       }
 
-      PyObject *none = (PyObject*)dataptr[0];
-      if(none == Py_None)
-      {
-        std::cerr<<"We currently store a none in the array"<<std::endl;
-      }
-      else
-      {
-        std::cerr<<"We have: "<<none<<std::endl;
-        std::cerr<<"None is:"<<Py_None<<std::endl;
-        std::cerr<<"And: "<<dataptr<<std::endl;
-        std::cerr<<"And: "<<dataptr[0]<<std::endl;
-      }
-
-      dataptr[0] = ptr;
+      dataptr[0][0] = ptr;
       iternext(iter);
     }
     //PyArray_INCREF(static_cast<PyArrayObject*>(data));
