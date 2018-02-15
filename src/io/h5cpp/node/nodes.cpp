@@ -177,6 +177,7 @@ BOOST_PYTHON_MODULE(_node)
 
 
   create_dataset_wrapper();
+  create_function_wrapper();
 
 
 }

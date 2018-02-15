@@ -239,7 +239,8 @@ h5cpp_property_ext = Extension('pni.io.h5cpp._property',
 
 h5cpp_node_ext = Extension('pni.io.h5cpp._node',
                           ['src/io/h5cpp/node/nodes.cpp',
-                           'src/io/h5cpp/node/dataset.cpp'
+                           'src/io/h5cpp/node/dataset.cpp',
+                           'src/io/h5cpp/node/functions.cpp',                           
                            ]+h5cpp_common_sources,
                            include_dirs = include_dirs+["src/"],
                            library_dirs = library_dirs,

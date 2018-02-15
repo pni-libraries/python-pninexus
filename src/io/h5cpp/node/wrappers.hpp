@@ -23,3 +23,4 @@
 #pragma once
 
 void create_dataset_wrapper();
+void create_function_wrapper();

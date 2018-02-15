@@ -1,4 +1,5 @@
 from __future__ import print_function
+from pni.io.h5cpp._h5cpp import Path
 from pni.io.h5cpp import property
 from pni.io.h5cpp import dataspace
 from pni.io.h5cpp import datatype
@@ -21,6 +22,124 @@ from pni.io.h5cpp._node import Group
 from pni.io.h5cpp._node import Dataset
 from pni.io.h5cpp._node import LinkTarget
 from pni.io.h5cpp._node import Link
+
+#
+# import node related functions
+#
+from pni.io.h5cpp._node import is_dataset
+from pni.io.h5cpp._node import is_group
+from pni.io.h5cpp._node import get_node
+
+from pni.io.h5cpp._node import _copy
+
+def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
+                             object_copy_list = property.ObjectCopyList()):
+    """Copy an object within the HDF5 tree
+    
+    
+    """
+    
+    if path != None:
+        _copy(node,base,path,object_copy_list,link_creation_list)
+    else:
+        _copy(node,base,object_copy_list,link_creation_list)
+
+
+from pni.io.h5cpp._node import _move
+
+def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
+                             link_access_list = property.LinkAccessList()):
+    """Moving a node within the HDF5 tree
+    
+    """
+    
+    if path!=None:
+        _move(node,base,path,link_creation_list,link_access_list)
+    else:
+        _move(node,base,link_creation_list,link_access_list)
+        
+from pni.io.h5cpp._node import _remove
+
+def remove(node=None,base=None,path=None,
+           link_access_list = property.LinkAccessList()):
+    """Remove a node from the HDF5 node tree
+    
+    This function can be used in two modes:
+    * either the node to remove is referenced directly by :param:`node`  
+    * or by :param:`base` and :param:`path`. 
+    
+    :parma Node node: the node to remove
+    :param Group base: base group from which to search
+    :param Path path: HDF5 path to the object to remove 
+    :param LinkAccessList link_access_list: optional link access property list
+    :raises TypeError: if any of the arguments is not of appropriate type
+    :raises RuntimeError: in case of any other error
+    """
+    
+    if not isinstance(link_access_list,property.LinkAccessList):
+        raise TypeError("The 'link_access_list' must be an instance of a link access property list!")
+    
+    if node != None:
+        if not isinstance(node,Node):
+            raise TypeError("The 'node' argument must be an instance of `Node`!")
+        
+        _remove(node,link_access_list)
+    
+    elif base != None and base != None:
+        
+        if not isinstance(base,Group):
+            raise TypeError("The 'base' argument must be a Group instance!")
+    
+        if not isinstance(path,Path):
+            raise TypeError("The 'path' argument must be an instance of an HDF5 path!")
+    
+    
+        _remove(base,path,link_access_list)
+    
+    else:
+        raise RuntimeError("You have to provide either `node` argument or the `base` and `path` argument!")
+    
+from pni.io.h5cpp._node import _link
+
+def link(target,
+         link_base,
+         link_path,
+         target_file = None,
+         link_creation_list = property.LinkCreationList(),
+         link_access_list = property.LinkAccessList()):
+    """Create a new link
+    
+    Create a new soft link to the 'target' below 
+    
+    :param Node/Path target: the target for the new link
+    :param Group link_base: the base for the new link
+    :param Path link_path: the path to the new link relative to the `link_base`
+    :param LinkCreationList link_creation_list: optional reference to a link creation property list
+    :param LinkAccessList link_access_list: optional reference to a link access property list
+    :raises TypeError: if any of the arguments does not match the required type
+    :raises RuntimError: in the case of any other error
+    """
+    
+    if not isinstance(link_creation_list,property.LinkCreationList):
+        raise TypeError("`link_creation_list` must be an instance of a link creation property list!")
+    
+    if not isinstance(link_access_list,property.LinkAccessList):
+        raise TypeError("`link_access_list` must be an instance of a link access property list!")
+    
+    if not isinstance(link_base,Group):
+        raise TypeError("`link_base` must be an instance of `Gruop`!")
+    
+    if not isinstance(link_path,Path):
+        raise TypeError("`link_path` must be an instance of an HDF5 path!")
+    
+    if target_file!=None:
+        
+        _link(target_file,target,link_base,link_path,link_creation_list,link_access_list)
+    else:
+        
+        _link(target,link_base,link_path,link_creation_list,link_access_list)
+    
+    
 
 def selection_to_shape(selection):
     """Convert a selection to a numpy array shape
