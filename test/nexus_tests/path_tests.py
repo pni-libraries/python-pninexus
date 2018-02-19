@@ -89,4 +89,7 @@ class NexusPathTests(unittest.TestCase):
         p = nexus.get_path(detector)
         self.assertEqual(nexus.Path.to_string(p),
                          "/scan_001:NXentry/instrument:NXinstrument/detector_01:NXdetector")
+        
+        for element in p:
+            print(element)
     

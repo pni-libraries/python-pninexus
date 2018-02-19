@@ -163,7 +163,8 @@ nexus_extension = nexus_extension_factory.create(
                                   'src/io/nexus/factories.cpp',
                                   'src/io/nexus/predicates.cpp',
                                   'src/io/nexus/list_converters.cpp',
-                                  'src/io/nexus/path.cpp',])
+                                  'src/io/nexus/path.cpp',
+                                  'src/io/nexus/element_dict_converter.cpp'])
 
 
 

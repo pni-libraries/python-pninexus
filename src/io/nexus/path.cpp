@@ -23,6 +23,7 @@
 
 #include <boost/python.hpp>
 #include <pni/io/nexus.hpp>
+#include "element_dict_converter.hpp"
 
 using namespace boost::python;
 using namespace pni::io;
@@ -33,6 +34,8 @@ void create_path_wrappers()
   boost::filesystem::path (nexus::Path::*get_filename)() const = &nexus::Path::filename;
   void (nexus::Path::*set_attribute)(const std::string &) = &nexus::Path::attribute;
   std::string (nexus::Path::*get_attribute)() const = &nexus::Path::attribute;
+  nexus::Path::ConstElementIterator (nexus::Path::*cbegin)() const = &nexus::Path::begin;
+  nexus::Path::ConstElementIterator (nexus::Path::*cend)() const = &nexus::Path::end;
   class_<nexus::Path>("Path")
       .def("from_string",&nexus::Path::from_string)
       .staticmethod("from_string")
@@ -42,6 +45,14 @@ void create_path_wrappers()
       .add_property("filename",get_filename,set_filename)
       .add_property("has_attribute",&nexus::Path::has_attribute)
       .add_property("attribute",get_attribute,set_attribute)
+      .def("push_back",&nexus::Path::push_back)
+      .def("push_front",&nexus::Path::push_front)
+      .def("pop_back",&nexus::Path::pop_back)
+      .def("pop_front",&nexus::Path::pop_front)
+      .add_property("front",&nexus::Path::front)
+      .add_property("back",&nexus::Path::back)
+      .add_property("size",&nexus::Path::size)
+      .def("__iter__",boost::python::range(cbegin,cend))
       ;
 
   //
@@ -65,4 +76,6 @@ void create_path_wrappers()
   def("get_path",get_path_attr);
 
   def("get_objects",nexus::get_objects);
+
+  nxpath_element_to_dict_converter();
 }
