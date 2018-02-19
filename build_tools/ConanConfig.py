@@ -2,7 +2,10 @@ from __future__ import print_function
 import re
 
 
-class ConanConfig(object):
+class ConanBuildInfo(object):
+    """Reader for the conan build 
+    
+    """
     
     section_re = re.compile(r"^\[(?P<NAME>[A-Za-z_0-9]+)\]$")
 
