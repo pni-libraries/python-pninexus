@@ -37,6 +37,7 @@ void create_path_wrappers()
   nexus::Path::ConstElementIterator (nexus::Path::*cbegin)() const = &nexus::Path::begin;
   nexus::Path::ConstElementIterator (nexus::Path::*cend)() const = &nexus::Path::end;
   class_<nexus::Path>("Path")
+      .def(init<const nexus::Path&>())
       .def("from_string",&nexus::Path::from_string)
       .staticmethod("from_string")
       .def("to_string",&nexus::Path::to_string)
@@ -78,4 +79,5 @@ void create_path_wrappers()
   def("get_objects",nexus::get_objects);
 
   nxpath_element_to_dict_converter();
+  dict_to_nxpath_element_converter();
 }

@@ -1,6 +1,7 @@
 #from .core         import *
 from .h5cpp_tests import *
 from .nexus_tests import *
+from .nx_tests import *
 #from .algorithms   import *
 #from .nxfile_tests import *
 #from .nxgroup_tests import *
