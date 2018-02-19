@@ -58,6 +58,7 @@ BOOST_PYTHON_MODULE(_file)
     //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
     class_<File>("File")
         .def(init<>())
+        .def(init<const File>())
         .add_property("intent",&File::intent)
         .add_property("is_valid",&File::is_valid)
         .add_property("path",&File::path)

@@ -26,13 +26,17 @@ Module implementing the HDF5 backend
 
 """
 
+from .nxfile import nxfile
+from .nxfile import create_file
+from .nxfile import create_files
+from .nxfile import open_file
+
+from .nxgroup import nxgroup
 #from nxh5 import NXObject_NXObject as NXObject
-from ._nxh5 import nxgroup
-from ._nxh5 import nxfile
 #from ._nxh5 import nxfield
-from ._nxh5 import nxattribute
+#from ._nxh5 import nxattribute
 #from ._nxh5 import deflate_filter
-from ._nxh5 import _create_from_xml_string
+#from ._nxh5 import _create_from_xml_string
 #from ._nxh5 import get_name
 #from ._nxh5 import get_rank
 #from ._nxh5 import get_unit
@@ -40,10 +44,10 @@ from ._nxh5 import _create_from_xml_string
 #from ._nxh5 import get_object
 #from ._nxh5 import set_class
 #from ._nxh5 import set_unit
-from ._nxh5 import _get_path_from_attribute
-from ._nxh5 import _get_path_from_dataset
-from ._nxh5 import _get_path_from_group
-from ._nxh5 import _get_path_from_link
+#from ._nxh5 import _get_path_from_attribute
+#from ._nxh5 import _get_path_from_dataset
+#from ._nxh5 import _get_path_from_group
+#from ._nxh5 import _get_path_from_link
 #from ._nxh5 import link
 #from ._nxh5 import nxlink
 #from ._nxh5 import nxlink_status
@@ -53,8 +57,8 @@ from ._nxh5 import _get_path_from_link
 
 
 #import helper methods
-from ._nxh5 import __create_file
-from ._nxh5 import __open_file
+#from ._nxh5 import __create_file
+#from ._nxh5 import __open_file
 #from ._nxh5 import __create_files
 
 #add the path property to the nxlink class
@@ -110,62 +114,10 @@ def xml_to_nexus(xml_data,parent):
     return _create_from_xml_string(parent,xml_data)
 
 
-def create_file(fname,overwrite=False):
-    """create a new NeXus file
-
-    This function creates a new NeXus file. All data will go o this file. If
-    the file already exists the pni.core.FileError exception will be thrown. 
-    In order to overwrite an existing file of equal name set the 
-    overwrite flag to True.
-
-    :param str fname:    the name of the file
-    :param bool overwrite:  overwrite flag (default False)
-    :return:  new file
-    :rtype: instance of :py:class:`nxfile`
-    :raises :py:exc:`pni.core.FileError`: in case of problems
-    """
-    return __create_file(fname,overwrite)
-
-def create_files(fname,split_size,overwrite=False):
-    """create a split file
-
-    Create a new file which is splitted into subfiles of a given size. unlike
-    for the create_file function the file name argument is a C-style 
-    format string which includes a running index for the individual files. 
-
-    A valid filename could look like this *data_file.%05i.nxs*
-    which would lead to a series of files named
-
-    .. code-block:: bash
-
-        data_file.00001.nxs
-        data_file.00002.nxs
-        data_file.00003.nxs
 
 
-    :param str fname:    Format string encoding the name of the files
-    :param long split_size: Size of the individual files
-    :param bool overwrite:  overwrite flag (default False)
-    :return: a new instance of nxfile
-    :rtype: instance of :py:class:`nxfile`
-    :raises :py:exc:`pni.core.FileError`: in case of problems
-    """
 
-    return __create_files(fname,split_size,overwrite)
 
-def open_file(fname,readonly=True):
-    """ Opens an existing Nexus file.
-
-    *fname* can either be a simple path to a file or a C-style format string 
-    as described for py::func:`create_files`. In the later case a series of
-    NeXus files is opened.
-
-    :param str fname: name of the file to open
-    :param bool readonly: if True the file will be in read-only mode
-    :return: new file
-    :rtype: instance of :py:class:`nxfile`
-    """
-    return __open_file(fname,readonly)
 
 
 def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
@@ -214,8 +166,8 @@ def nxgroup_names(self):
         
 
 
-nxgroup.create_field = nxgroup_create_field
-nxgroup.create_group = nxgroup_create_group
-nxgroup.names = nxgroup_names
+#nxgroup.create_field = nxgroup_create_field
+#nxgroup.create_group = nxgroup_create_group
+#nxgroup.names = nxgroup_names
 
 

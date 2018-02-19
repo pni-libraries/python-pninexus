@@ -153,6 +153,8 @@ BOOST_PYTHON_MODULE(_node)
                 arg("gcpl")=hdf5::property::GroupCreationList(),
                 arg("gapl")=hdf5::property::GroupAccessList())
                 ))
+      .def(init<const Group &>())
+      .def(init<>())
       .def_readonly("links",&Group::links)
       .def_readonly("nodes",&Group::nodes)
       .def("close",&Group::close)

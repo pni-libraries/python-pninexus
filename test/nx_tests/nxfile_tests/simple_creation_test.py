@@ -26,17 +26,15 @@ import unittest
 import os
 import numpy
 
-from pni.io       import ObjectError
-from pni.core import FileError
-from pni.io       import InvalidObjectError
 from pni.io.nx.h5 import nxfile
 from pni.io.nx.h5 import create_file
 import time
 
-class simple_creation_test(unittest.TestCase):
+module_path = os.path.dirname(os.path.abspath(__file__))
+
+class SimpleCreationTest(unittest.TestCase):
     
-    file_path = os.path.split(__file__)[0]
-    filename = os.path.join(file_path,"nxfile_creation_tests.nxs")
+    filename = os.path.join(module_path,"nxfile_creation_tests.nxs")
 
     #-------------------------------------------------------------------------
     def tearDown(self):
@@ -78,7 +76,7 @@ class simple_creation_test(unittest.TestCase):
         self.assertFalse(f.is_valid)
 
         #cannot create the file because it already exists
-        self.assertRaises(FileError,create_file,self.filename)
+        self.assertRaises(RuntimeError,create_file,self.filename)
 
     #-------------------------------------------------------------------------
     def test_truncating(self):
