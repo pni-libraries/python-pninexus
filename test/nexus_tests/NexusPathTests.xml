@@ -1,0 +1,31 @@
+<group name="/" type="NXroot">
+<group name="scan_001" type="NXentry">
+
+	<group name="instrument" type="NXinstrument">
+		<group name="detector_01" type="NXdetector"></group>
+		<group name="detector_02" type="NXdetector"></group>
+		<group name="detector_03" type="NXdetector"></group>
+		<group name="detector_04" type="NXdetector"></group>
+	</group>   
+	<group name="sample" type="NXsample"></group>
+	<group name="data" type="NXdata"></group>
+	<field name="experiment_identifier" type="string">EXP_RUN_000001000</field>
+
+</group>
+	
+<group name="scan_002" type="NXentry">
+    <group name="instrument" type="NXinstrument"></group>
+    <group name="sample" type="NXsample"></group>
+    <group name="data" type="NXdata"></group>
+    
+    <field name="experiment_identifier" type="string">EXP_RUN_000001001</field>
+</group>
+
+<group name="scan_003" type="NXentry">
+    <group name="instrument" type="NXinstrument"></group>
+    <group name="sample" type="NXsample"></group>
+    <group name="data" type="NXdata"></group>
+    <field name="experiment_identifier" type="string">EXP_RUN_000001002</field>
+    
+</group>
+</group>

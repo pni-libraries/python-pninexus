@@ -93,8 +93,6 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     {
       Py_XDECREF(dtype);
       std::cerr<<"Could not instantiate an iterator for the array!"<<std::endl;
-      std::cerr<<data.size()<<std::endl;
-      std::cerr<<data.itemsize()<<std::endl;
       PyErr_Print();
       return;
     }
@@ -108,15 +106,10 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     PyObject ***dataptr = (PyObject***)NpyIter_GetDataPtrArray(iter);
     for(auto string: buffer)
     {
-      std::cout<<string<<std::endl;
       PyObject *ptr = PyString_FromString(string);
       if(ptr==NULL)
       {
         std::cerr<<"could not create python string!"<<std::endl;
-      }
-      else
-      {
-        std::cerr<<"Created python string: "<<PyString_Size(ptr)<<PyString_AsString(ptr)<<std::endl;
       }
 
       dataptr[0][0] = ptr;
