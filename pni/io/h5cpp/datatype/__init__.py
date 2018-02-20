@@ -52,9 +52,12 @@ class Factory(object):
     def create(self,dtype):
         
         if dtype.kind == 'S':
-            type = String.fixed(dtype.itemsize)
-            type.padding = StringPad.NULLPAD
-            return type
+            if dtype.itemsize != 0:
+                type = String.fixed(dtype.itemsize)
+                type.padding = StringPad.NULLPAD
+                return type
+            else:
+                return String.variable()
         else:
             return self.type_map[dtype.name]
 

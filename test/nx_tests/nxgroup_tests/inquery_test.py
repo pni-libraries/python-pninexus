@@ -27,12 +27,11 @@ import os
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx import make_relative 
 
-class child_access_test(unittest.TestCase):
+class inquery_test(unittest.TestCase):
     file_path = os.path.split(__file__)[0]
-    file_name = "child_access_test.nxs"
+    file_name = "inquery_test.nxs"
     full_path = os.path.join(file_path,file_name)
 
     def setUp(self):
@@ -43,48 +42,36 @@ class child_access_test(unittest.TestCase):
         e.create_group("data:NXdata")
         e.create_group("sample:NXsample")
         e.create_group("control:NXmonitor")
-        e.create_field("title","string")
-        e.create_field("experiment_identifier","string")
-        e.create_field("experiment_description","string")
-
-        self.names = ["instrument:NXinstrument",
-                      "data:NXdata",
-                      "sample:NXsample",
-                      "control:NXmonitor",
-                      "title",
-                      "experiment_identifier",
-                      "experiment_description"]
-        self.names.sort()
 
     def tearDown(self):
         self.root.close()
         self.nexus_file.close()
 
-    def test_loop_by_index(self):
-        e = get_object(self.root,"entry:NXentry")
-    
-        self.assertEqual(len(e),7)
-        for index in range(len(e)):
-            child = e[index]
-            self.assertEqual(make_relative(e.path,child.path),
-                             self.names[index])
 
-    def test_loop_by_name(self):
+    def test_name_property(self):
+        g = get_object(self.root,"/:NXentry")
+        self.assertEqual(get_object(self.root,"/:NXentry").name,"entry")
+        self.assertEqual(get_object(self.root,"/").name,"/")
+        self.assertEqual(get_object(self.root,"/:NXentry/:NXinstrument").name,
+                         "instrument")
 
-        e = get_object(self.root,"entry:NXentry")
-        
-        for (name,nref) in zip(e.names(),self.names):
-            child = e[name]
-            self.assertEqual(make_relative(e.path,child.path),nref)
+    def test_parent_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument")
+        self.assertEqual(g.parent.name,"entry")
+        self.assertEqual(g.parent.parent.name,"/")
 
-    def test_index_error(self):
-        e = get_object(self.root,"/:NXentry")
-        self.assertRaises(IndexError,e.__getitem__,len(e)+1)
+    def test_filename_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument")
+        self.assertEqual(g.filename,self.full_path)
 
-    def test_key_error(self):
-        e = get_object(self.root,"/:NXentry")
-        self.assertRaises(KeyError,e.__getitem__,"bla")
+    def test_size_property(self):
+        self.assertEqual(self.root.size,1)
+        self.assertEqual(get_object(self.root,"/:NXentry").size,4)
+        self.assertEqual(get_object(self.root,"/:NXentry/:NXdata").size,0)
 
+    def test_path_property(self):
+        g = get_object(self.root,"/:NXentry/:NXinstrument/")
+        self.assertEqual(g.path,"/entry:NXentry/instrument:NXinstrument")
 
 
 

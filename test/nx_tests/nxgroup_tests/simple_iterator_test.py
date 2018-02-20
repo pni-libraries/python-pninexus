@@ -27,7 +27,6 @@ import os
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx import make_relative 
 
 class simple_iterator_test(unittest.TestCase):

@@ -1,6 +1,5 @@
 #
-# (c) Copyright 2015 DESY, 
-#               2015 Eugen Wintersberger <eugen.wintersberger@desy.de>
+# (c) Copyright 2018 DESY               
 #
 # This file is part of python-pni.
 #
@@ -18,11 +17,25 @@
 # along with python-pni.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 #
-# Created on: Oct 2, 2015
+# Created on: Feb 19, 2018
 #     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
-from .creation_test import creation_test
-from .child_access_test import child_access_test
-from .inquery_test import inquery_test
-from .simple_iterator_test import simple_iterator_test
-from .recursive_iterator_test import recursive_iterator_test
+
+from pni.io import nexus
+from pni.io import h5cpp
+
+from ..nxpath import nxpath
+
+
+class nxfield(h5cpp.node.Dataset):
+    
+    def __init__(self,base_instance=None):
+        if base_instance != None:
+            super(nxfield,self).__init__(base_instance)
+        else:
+            super(nxfield,self).__init__()
+
+    @property
+    def path(self):
+        
+        return nxpath(base_instance = nexus.get_path(self))

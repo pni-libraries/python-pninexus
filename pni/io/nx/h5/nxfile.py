@@ -73,7 +73,7 @@ def create_file(fname,overwrite=False):
     if overwrite:
         flags = h5cpp.file.AccessFlags.TRUNCATE
     
-    return nxfile(base_instance = h5cpp.file.create(fname,flags))
+    return nxfile(base_instance = nexus.create_file(fname,flags))
 
 def open_file(fname,readonly=True):
     """ Opens an existing Nexus file.
@@ -92,7 +92,7 @@ def open_file(fname,readonly=True):
     if not readonly:
         flags = h5cpp.file.AccessFlags.READWRITE
     
-    return nxfile(base_instance = h5cpp.file.open(fname,flags))
+    return nxfile(base_instance = nexus.open_file(fname,flags))
 
 
 def create_files(fname,split_size,overwrite=False):

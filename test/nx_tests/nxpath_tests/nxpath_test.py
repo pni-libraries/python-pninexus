@@ -25,7 +25,8 @@ from __future__ import print_function
 import unittest
 import numpy
 
-from pni.core import ShapeMismatchError
+from pni.io import nexus
+
 from pni.io.nx import nxpath
 from pni.io.nx import make_path
 from pni.io.nx import is_root_element
@@ -51,6 +52,13 @@ class nxpath_test(unittest.TestCase):
         self.assertTrue(is_absolute(p))
         self.assertEqual(p.size,4)
         self.assertEqual(p.__str__(),str_path)
+        
+    def test_from_nexus_path(self):
+        
+        nexus_path = nexus.Path.from_string("/scan:NXentry")
+        self.assertEqual(str(nexus_path),"/scan:NXentry")
+        nxpath_instance = nxpath(base_instance = nexus_path)
+        self.assertEqual(str(nxpath_instance),"/scan:NXentry")
 
     def test_front(self):
         str_path = "file.nxs://:NXentry/:NXinstrument/data@units"

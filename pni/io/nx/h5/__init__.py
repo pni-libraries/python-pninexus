@@ -26,6 +26,8 @@ Module implementing the HDF5 backend
 
 """
 
+from pni.io import nexus
+
 from .nxfile import nxfile
 from .nxfile import create_file
 from .nxfile import create_files
@@ -36,14 +38,13 @@ from .nxgroup import nxgroup
 #from ._nxh5 import nxfield
 #from ._nxh5 import nxattribute
 #from ._nxh5 import deflate_filter
-#from ._nxh5 import _create_from_xml_string
-#from ._nxh5 import get_name
-#from ._nxh5 import get_rank
-#from ._nxh5 import get_unit
-#from ._nxh5 import get_class
-#from ._nxh5 import get_object
-#from ._nxh5 import set_class
-#from ._nxh5 import set_unit
+from .algorithms import get_name
+from .algorithms import get_rank
+from .algorithms import get_unit
+from .algorithms import get_class
+from .algorithms import get_object
+from .algorithms import set_class
+from .algorithms import set_unit
 #from ._nxh5 import _get_path_from_attribute
 #from ._nxh5 import _get_path_from_dataset
 #from ._nxh5 import _get_path_from_group
@@ -102,22 +103,6 @@ def get_size(object):
     else:
         raise TypeError("Object must be an instance of attribute, field, or group!")
 
-def xml_to_nexus(xml_data,parent):
-    """ Create node tree from XML data
-    
-    :param str xml_data: a string with XML data
-    :param object parent: the parent object (a group)
-    :return: none
-    :rtype: None 
-    """
-    
-    return _create_from_xml_string(parent,xml_data)
-
-
-
-
-
-
 
 
 def nxgroup_create_field(self,name,type,shape=None,chunk=None,filter=None):
@@ -169,5 +154,11 @@ def nxgroup_names(self):
 #nxgroup.create_field = nxgroup_create_field
 #nxgroup.create_group = nxgroup_create_group
 #nxgroup.names = nxgroup_names
+
+
+def xml_to_nexus(xml_data,parent):
+    
+    
+    return nexus.create_from_string(xml_data,parent)
 
 

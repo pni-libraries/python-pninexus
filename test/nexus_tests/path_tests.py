@@ -92,4 +92,12 @@ class NexusPathTests(unittest.TestCase):
         
         for element in p:
             print(element)
+            
+    def test_get_path(self):
+        
+        entry = self.root.nodes["scan_001"]
+        p = nexus.get_path(entry)
+        self.assertEqual(str(p),"/scan_001:NXentry")
+        p2 = nexus.Path(p)
+        self.assertEqual(str(p2),"/scan_001:NXentry")
     

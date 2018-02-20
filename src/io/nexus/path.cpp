@@ -38,6 +38,7 @@ void create_path_wrappers()
   nexus::Path::ConstElementIterator (nexus::Path::*cend)() const = &nexus::Path::end;
   class_<nexus::Path>("Path")
       .def(init<const nexus::Path&>())
+      .def(init<const hdf5::Path&>())
       .def("from_string",&nexus::Path::from_string)
       .staticmethod("from_string")
       .def("to_string",&nexus::Path::to_string)
@@ -54,6 +55,9 @@ void create_path_wrappers()
       .add_property("back",&nexus::Path::back)
       .add_property("size",&nexus::Path::size)
       .def("__iter__",boost::python::range(cbegin,cend))
+      .def("__str__",nexus::Path::to_string)
+      .def(self == self)
+      .def(self != self)
       ;
 
   //

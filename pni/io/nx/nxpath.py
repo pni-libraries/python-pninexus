@@ -2,7 +2,7 @@ from pni.io import nexus
 from pni.io.nexus import match
 from pni.io.nexus import is_absolute
 from pni.io.nexus import join
-from pni.io.nexus import make_relative
+from pni.io.nexus import make_relative as _make_relative
 
 def get_name_and_base_class(*args):
     
@@ -40,7 +40,7 @@ class nxpath(nexus.Path):
         if base_instance != None:
             super(nxpath,self).__init__(base_instance)
         else:
-            super(nxpath,self).__init__(nexus.Path())
+            super(nxpath,self).__init__()
     
     def __len__(self):
         return self.size
@@ -140,6 +140,18 @@ class nxpath(nexus.Path):
     def __str__(self):
         
         return nexus.Path.to_string(self)
+    
+    def __eq__(self,other):
+        
+        if isinstance(other,str):
+            return self.__str__() == other
+        else:
+            return self == other
+        
+    def __ne__(self,other):
+        
+        return not self.__eq__(other)
+    
 
 def is_root_element(path_element):
     
@@ -196,3 +208,34 @@ def match(path_a,path_b):
         path_b = nexus.Path.from_string(path_b)
         
     return nexus.match(path_a,path_b)
+
+
+def make_relative(parent,old):
+    """Create a relative path
+ 
+    Makes the path old a relative path to parent. For this function to succeed
+    both paths must satisfy two conditions
+ 
+    * old must be longer than parent
+    * both must be absolut paths
+     
+    If any of these conditions is not satisfied a :py:class:`ValueError`
+    exception will be thrown.
+ 
+    .. code-block:: python
+ 
+        parent = "/:NXentry/:NXinstrument"
+        old    = "/:NXentry/:NXinstrument/:NXdetector/data"
+ 
+        rel_path = make_relative(parent,old)
+        print(rel_path)
+        #output: :NXdetector/data
+ 
+    :param str parent: the new root path 
+    :param str old:  the original path which should be made relative to old
+    :return: path refering to the same object as old but relative to parent
+    :rtype: str
+    :raises ValueError: old and parent do not satifisy the above conditions
+    """
+ 
+    return nxpath(base_instance=_make_relative(parent,old))
