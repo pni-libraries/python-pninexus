@@ -17,49 +17,19 @@
 # along with python-pni.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 #
-# Created on: Feb 19, 2018
+# Created on: Feb 21, 2018
 #     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
 
-from pni.io import nexus
 from pni.io import h5cpp
+from pni.io import nexus
 
-from ..nxpath import nxpath
-from __builtin__ import property
-
-
-class nxfield(h5cpp.node.Dataset):
+class nxlink(h5cpp.node.Link):
     
     def __init__(self,base_instance=None):
+        
         if base_instance != None:
-            super(nxfield,self).__init__(base_instance)
+            super(nxlink,self).__init__(base_instance)
         else:
-            super(nxfield,self).__init__()
-
-    @property
-    def path(self):
-        
-        return nxpath(base_instance = nexus.get_path(self))
-    
-    @property
-    def name(self):
-        
-        return self.link.path.name
-    
-    @property
-    def dtype(self):
-        
-        return h5cpp.datatype.to_numpy(self.datatype)
-    
-    @property
-    def shape(self):
-        
-        space = self.dataspace
-        if isinstance(space,h5cpp.dataspace.Scalar):
-            return (1,)
-        else:
-            return h5cpp.dataspace.Simple(space).current_dimensions
-        
-    def __getitem__(self,index):
-        
-        return self.read()
+            super(nxlink,self).__init__()
+            

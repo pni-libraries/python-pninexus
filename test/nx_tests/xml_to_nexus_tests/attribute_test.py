@@ -1,14 +1,11 @@
 import unittest
-import numpy
 import os
 
-import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
+
 from pni.io.nx.h5 import xml_to_nexus
-from pni.io.nx.h5 import get_class
 
 scalar_attribute=\
 """
@@ -76,7 +73,7 @@ class attribute_test(unittest.TestCase):
         xml_to_nexus(scalar_attribute,self.field)
 
         a = get_object(self.root,"/data@transformation_type")
-        self.assertTrue(check_attribute(a,"transformation_type","string",(1,)))
+        self.assertTrue(check_attribute(a,"transformation_type","object",(1,)))
 
     def test_mdim_attribute(self):
         xml_to_nexus(mdim_attribute,self.field)

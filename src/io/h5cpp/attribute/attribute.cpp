@@ -202,6 +202,7 @@ BOOST_PYTHON_MODULE(_attribute)
 #endif
 
     class_<Attribute>("Attribute")
+        .def(init<const Attribute&>())
         .add_property("datatype",get_datatype)
         .add_property("dataspace",get_dataspace)
         .add_property("name",&Attribute::name)

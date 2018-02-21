@@ -1,14 +1,10 @@
 import unittest
-import numpy
 import os
 
-import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx.h5 import xml_to_nexus
-from pni.io.nx.h5 import get_class
 from pni.io.nx.h5 import nxlink
 
 internal_link=\
@@ -49,6 +45,7 @@ master_entry=\
 </group>
 """
 
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 def check_field(f,n,t,s):
     """check name, data type, and shape of a field
@@ -71,26 +68,25 @@ def check_field(f,n,t,s):
            f.shape == s
 
 #implementing test fixture
-class link_test(unittest.TestCase):
+class LinkTest(unittest.TestCase):
     """
     Testing link creation
     """
-    file_path = os.path.split(__file__)[0]
-    file_name = "link_test.nxs"
-    full_path = os.path.join(file_path,file_name)
-    det_path = os.path.join(file_path,"detector.nxs")
+    
+    file_name = os.path.join(module_path,"link_test.nxs")
+    det_path  = os.path.join(module_path,"detector.nxs")
     
     
     @classmethod
     def setUpClass(self):
-        f=create_file(self.full_path,overwrite=True)
+        f=create_file(self.file_name,overwrite=True)
         f.close()
         f = create_file(self.det_path,overwrite=True)
         r = f.root()
         xml_to_nexus(detector_file,r)
    
     def setUp(self):
-        self.gf = open_file(self.full_path,readonly=False)
+        self.gf = open_file(self.file_name,readonly=False)
         self.root = self.gf.root()
 
     def tearDown(self):
@@ -101,14 +97,14 @@ class link_test(unittest.TestCase):
     def test_internal_link(self):
         xml_to_nexus(internal_link,self.root)
 
-        f = get_object(self.root,"/entry_1/:NXdata/data")
+        f = get_object(self.root,"/entry_1:NXentry/:NXdata/data")
         self.assertTrue(check_field(f,"data","uint32",(1,)))
 
     def test_external_link(self):
         os.chdir(os.path.dirname(os.path.abspath(__file__)))
         xml_to_nexus(master_entry,self.root)
 
-        f = get_object(self.root,"/entry_2/:NXdata/data")
+        f = get_object(self.root,"/entry_2:NXentry/:NXdata/data")
         self.assertTrue(check_field(f,"data","uint32",(1,)))
 
 

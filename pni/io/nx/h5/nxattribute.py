@@ -32,3 +32,18 @@ class nxattribute(h5cpp.attribute.Attribute):
             super(nxattribute,self).__init__(base_instance)
         else:
             super(nxattribute,self).__init__()
+            
+    @property
+    def dtype(self):
+        
+        return h5cpp.datatype.to_numpy(self.datatype)
+    
+    @property
+    def shape(self):
+        
+        space = self.dataspace
+        
+        if isinstance(space,h5cpp.dataspace.Scalar):
+            return (1,)
+        else:
+            return h5cpp.dataspace.Simple(space).current_dimensions

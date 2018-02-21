@@ -159,6 +159,6 @@ def nxgroup_names(self):
 def xml_to_nexus(xml_data,parent):
     
     
-    return nexus.create_from_string(xml_data,parent)
+    return nexus.create_from_string(parent,xml_data)
 
 

@@ -54,6 +54,11 @@ def get_class(group):
     
     if not isinstance(group,(h5cpp.node.Group,nxgroup)):
         raise TypeError("`group` must be an instance of `Group` or `nxgroup`!")
+    
+    if not group.attributes.exists("NX_class"):
+        return ""
+    
+    return group.attributes["NX_class"].read()
 
 
 def get_object(parent,path):
@@ -114,6 +119,8 @@ def get_object(parent,path):
         return nxgroup(base_instance = object)
     elif isinstance(object,h5cpp.node.Dataset):
         return nxfield(base_instance = object)
+    elif isinstance(object,h5cpp.attribute.Attribute):
+        return nxattribute(base_instance = object)
     else:
         raise TypeError("Return type not supported")
     

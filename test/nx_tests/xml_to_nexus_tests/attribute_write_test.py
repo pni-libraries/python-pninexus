@@ -1,14 +1,11 @@
 import unittest
-import numpy
 import os
 
-import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx.h5 import xml_to_nexus
-from pni.io.nx.h5 import get_class
+
 
 scalar_attribute=\
 """
@@ -46,24 +43,25 @@ def check_attribute(a,n,t,s):
            len(a.shape) == len(s) and \
            a.shape == s
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+
 #implementing test fixture
-class attribute_write_test(unittest.TestCase):
+class AttributeWriteTest(unittest.TestCase):
     """
     Testing attribute creation
     """
-    file_path = os.path.split(__file__)[0]
-    file_name = "attribute_test.nxs"
-    full_path = os.path.join(file_path,file_name)
+
+    file_name = os.path.join(module_path,"attribute_test.nxs")
     
     
     @classmethod
     def setUpClass(self):
-        f=create_file(self.full_path,overwrite=True)
+        f=create_file(self.file_name,overwrite=True)
         r = f.root()
         r.create_field("data","float32")
    
     def setUp(self):
-        self.gf = open_file(self.full_path,readonly=False)
+        self.gf = open_file(self.file_name,readonly=False)
         self.root = self.gf.root()
         self.field = self.root["data"]
 
@@ -74,14 +72,14 @@ class attribute_write_test(unittest.TestCase):
 
 
     def test_scalar_attribute(self):
-        xml_to_nexus(scalar_attribute,self.field,lambda obj: True)
+        xml_to_nexus(scalar_attribute,self.field)
 
         a = get_object(self.root,"/data@transformation_type")
-        self.assertTrue(check_attribute(a,"transformation_type","string",(1,)))
+        self.assertTrue(check_attribute(a,"transformation_type","object",(1,)))
         self.assertEqual(a[...],"rotation")
 
     def test_mdim_attribute(self):
-        xml_to_nexus(mdim_attribute,self.field,lambda obj: True)
+        xml_to_nexus(mdim_attribute,self.field)
         a = get_object(self.root,"/data@vector")
         self.assertTrue(check_attribute(a,"vector","float32", (3,)))
         d = a[...]

@@ -1,13 +1,12 @@
 import unittest
-import numpy
 import os
 
-import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx.h5 import xml_to_nexus
 from pni.io.nx.h5 import get_class
+
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 single_group=\
 """
@@ -36,13 +35,13 @@ nested_group=\
 """
 
 #implementing test fixture
-class group_test(unittest.TestCase):
+class GroupTest(unittest.TestCase):
     """
     Testing group creation
     """
-    file_path = os.path.split(__file__)[0]
-    file_name = "group_test.nxs"
-    full_path = os.path.join(file_path,file_name)
+    
+    file_name = os.path.join(module_path,"group_test.nxs")
+    
 
     def _check_name_type(self,g,n,t):
         """check name and class of a group
@@ -63,7 +62,7 @@ class group_test(unittest.TestCase):
         return g.name == n and get_class(g)==t
    
     def setUp(self):
-        self.gf = create_file(self.full_path,overwrite=True)
+        self.gf = create_file(self.file_name,overwrite=True)
         self.root = self.gf.root()
 
     def tearDown(self):

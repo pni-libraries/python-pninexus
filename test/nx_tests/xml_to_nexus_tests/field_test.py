@@ -1,14 +1,11 @@
 import unittest
-import numpy
 import os
 
-import pni.io.nx.h5 as nx
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import open_file
 from pni.io.nx.h5 import get_object
-from pni.io import ObjectError
 from pni.io.nx.h5 import xml_to_nexus
-from pni.io.nx.h5 import get_class
+
 
 scalar_field=\
 """
@@ -74,22 +71,23 @@ def check_field(f,n,t,s):
            len(f.shape) == len(s) and \
            f.shape == s
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+
 #implementing test fixture
-class field_test(unittest.TestCase):
+class FieldTest(unittest.TestCase):
     """
     Testing group creation
     """
-    file_path = os.path.split(__file__)[0]
-    file_name = "field_test.nxs"
-    full_path = os.path.join(file_path,file_name)
+    
+    file_name = os.path.join(module_path,"field_test.nxs")
     
     
     @classmethod
     def setUpClass(self):
-        f=create_file(self.full_path,overwrite=True)
+        f=create_file(self.file_name,overwrite=True)
    
     def setUp(self):
-        self.gf = open_file(self.full_path,readonly=False)
+        self.gf = open_file(self.file_name,readonly=False)
         self.root = self.gf.root()
 
     def tearDown(self):
