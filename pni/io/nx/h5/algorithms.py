@@ -77,11 +77,25 @@ def get_object(parent,path):
         pass
     else:
         raise TypeError("Path is of inapproprirate type!")
-        
-        
-    objects = nexus.get_objects(parent,path)
+    
+    #
+    # if we sit on the root group and the root group is requested we have to
+    # return the root group 
+    #
+    if parent.link.path.name == "." and path.__str__() == "/":
+        objects = [parent]
+    else:
+        objects = nexus.get_objects(parent,path)
     
     
+    #
+    # handling error situations:
+    #
+    # -> if more than one object was returned the path is ambiguous and we 
+    #    throw an exception
+    # -> if no object matches the path we throw too - this should maybe be 
+    #    changed to something else.
+    #
     if len(objects) > 1:
         message = "Path [{}] references more than one object!\n".format(path)
         

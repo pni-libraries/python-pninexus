@@ -28,6 +28,29 @@ from pni.io import h5cpp
 from ..nxpath import nxpath
 from .nxfield import nxfield
 
+class RecursiveNodeIterator(h5cpp.node.RecursiveNodeIterator):
+    
+    def __init__(self,iter):
+        
+        self._iter = iter
+        
+    def next(self):
+        
+        object = self._iter.next()
+        
+        if object.type == h5cpp.node.Type.GROUP:
+            return nxgroup(base_instance = object)
+        elif object.type == h5cpp.node.Type.DATASET:
+            return nxfield(base_instance = object)
+        else:
+            raise TypeError("Unknown node type: must be either Dataset or Group!")
+        
+    def __iter__(self):
+        
+        return self
+    
+    
+
 class nxgroup(h5cpp.node.Group):
     
     def __init__(self,base_instance=None):
@@ -50,7 +73,32 @@ class nxgroup(h5cpp.node.Group):
     @property
     def name(self):
         
-        return super(nxgroup,self).link.path.name
+        n = super(nxgroup,self).link.path.name
+        
+        if n == ".":
+            return "/"
+        else:
+            return n
+    
+    @property
+    def filename(self):
+        
+        return super(nxgroup,self).link.file.path
+    
+    @property
+    def parent(self):
+        
+        if self.name == "/":
+            parent_group = self.link.file.root()
+        else:
+            parent_group = super(nxgroup,self).link.parent
+        
+        return nxgroup(base_instance=parent_group)
+    
+    @property
+    def recursive(self):
+        
+        return RecursiveNodeIterator(self.nodes.recursive)
     
     def names(self):
         

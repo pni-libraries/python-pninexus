@@ -88,7 +88,7 @@ class NexusPathTests(unittest.TestCase):
         self.assertEqual(detector.type,h5cpp.node.Type.GROUP)
         p = nexus.get_path(detector)
         self.assertEqual(nexus.Path.to_string(p),
-                         "/scan_001:NXentry/instrument:NXinstrument/detector_01:NXdetector")
+                         "{filename}://scan_001:NXentry/instrument:NXinstrument/detector_01:NXdetector".format(filename=self.filename))
         
         for element in p:
             print(element)
@@ -97,7 +97,7 @@ class NexusPathTests(unittest.TestCase):
         
         entry = self.root.nodes["scan_001"]
         p = nexus.get_path(entry)
-        self.assertEqual(str(p),"/scan_001:NXentry")
+        self.assertEqual(str(p),"{filename}://scan_001:NXentry".format(filename=self.filename))
         p2 = nexus.Path(p)
-        self.assertEqual(str(p2),"/scan_001:NXentry")
+        self.assertEqual(str(p2),"{filename}://scan_001:NXentry".format(filename=self.filename))
     

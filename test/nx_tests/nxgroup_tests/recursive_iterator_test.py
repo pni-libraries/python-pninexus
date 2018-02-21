@@ -27,15 +27,18 @@ import os
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import get_object
-from pni.io.nx import make_relative 
+from pni.io.nx import make_relative
 
-class recursive_iterator_test(unittest.TestCase):
-    file_path = os.path.split(__file__)[0]
-    file_name = "recursive_iterator_test.nxs"
-    full_path = os.path.join(file_path,file_name)
+module_path = os.path.dirname(os.path.abspath(__file__))
+ 
+
+class RecursiveNodeIteratorTest(unittest.TestCase):
+    
+    file_name = os.path.join(module_path,"recursive_iterator_test.nxs")
+    
 
     def setUp(self):
-        self.nexus_file = create_file(self.full_path,overwrite=True)
+        self.nexus_file = create_file(self.file_name,overwrite=True)
         self.root = self.nexus_file.root()
         self.paths = []
         e = self.root.create_group("entry:NXentry")
@@ -60,7 +63,7 @@ class recursive_iterator_test(unittest.TestCase):
 
     def test_recursive_iteration(self):
        
-        for c in self.root.recursive:
+        for c in self.root.recursive:            
             self.paths.remove(c.path)
 
         self.assertEqual(len(self.paths),0)

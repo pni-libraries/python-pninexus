@@ -51,7 +51,7 @@ class nxpath_test(unittest.TestCase):
         p = make_path(str_path)
         self.assertTrue(is_absolute(p))
         self.assertEqual(p.size,4)
-        self.assertEqual(p.__str__(),str_path)
+        self.assertEqual(str(p),str_path)
         
     def test_from_nexus_path(self):
         

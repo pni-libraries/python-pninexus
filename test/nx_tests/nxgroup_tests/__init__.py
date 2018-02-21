@@ -23,6 +23,6 @@
 #
 from .creation_test import *
 from .child_access_test import *
-#from .inquery_test import inquery_test
-#from .simple_iterator_test import simple_iterator_test
-#from .recursive_iterator_test import recursive_iterator_test
+from .inquery_test import *
+from .simple_iterator_test import *
+from .recursive_iterator_test import *

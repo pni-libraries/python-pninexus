@@ -76,6 +76,7 @@ class CreationTest(unittest.TestCase):
         self.assertIsInstance(f,File)
         self.assertTrue(f.is_valid)
         self.assertEqual(f.intent,AccessFlags.READWRITE)
+        self.assertEqual(f.path,self.filename)
 
         #close the file
         f.close()

@@ -27,15 +27,15 @@ import os
 
 from pni.io.nx.h5 import create_file
 from pni.io.nx.h5 import get_object
-from pni.io.nx import make_relative 
 
-class inquery_test(unittest.TestCase):
-    file_path = os.path.split(__file__)[0]
-    file_name = "inquery_test.nxs"
-    full_path = os.path.join(file_path,file_name)
+module_path = os.path.dirname(os.path.abspath(__file__))
+
+class InQueryTest(unittest.TestCase):
+    
+    file_name = os.path.join(module_path,"inquery_test.nxs")
 
     def setUp(self):
-        self.nexus_file = create_file(self.full_path,overwrite=True)
+        self.nexus_file = create_file(self.file_name,overwrite=True)
         self.root = self.nexus_file.root()
         e = self.root.create_group("entry:NXentry")
         i = e.create_group("instrument:NXinstrument")
@@ -50,6 +50,7 @@ class inquery_test(unittest.TestCase):
 
     def test_name_property(self):
         g = get_object(self.root,"/:NXentry")
+        self.assertEqual(self.root.name,"/")
         self.assertEqual(get_object(self.root,"/:NXentry").name,"entry")
         self.assertEqual(get_object(self.root,"/").name,"/")
         self.assertEqual(get_object(self.root,"/:NXentry/:NXinstrument").name,
@@ -62,7 +63,7 @@ class inquery_test(unittest.TestCase):
 
     def test_filename_property(self):
         g = get_object(self.root,"/:NXentry/:NXinstrument")
-        self.assertEqual(g.filename,self.full_path)
+        self.assertEqual(g.filename,self.file_name)
 
     def test_size_property(self):
         self.assertEqual(self.root.size,1)
@@ -71,7 +72,7 @@ class inquery_test(unittest.TestCase):
 
     def test_path_property(self):
         g = get_object(self.root,"/:NXentry/:NXinstrument/")
-        self.assertEqual(g.path,"/entry:NXentry/instrument:NXinstrument")
+        self.assertEqual(g.path,"{filename}://entry:NXentry/instrument:NXinstrument".format(filename=self.file_name))
 
 
 

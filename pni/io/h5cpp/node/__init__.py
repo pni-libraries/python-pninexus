@@ -22,6 +22,7 @@ from pni.io.h5cpp._node import Group
 from pni.io.h5cpp._node import Dataset
 from pni.io.h5cpp._node import LinkTarget
 from pni.io.h5cpp._node import Link
+from pni.io.h5cpp._node import RecursiveNodeIterator
 
 #
 # import node related functions

@@ -80,6 +80,89 @@ boost::python::object get_node_by_name(const hdf5::node::NodeView &self,const st
   return object_from_node(self[name]);
 }
 
+hdf5::node::RecursiveNodeIterator recursive_node_begin(const hdf5::node::Group &self)
+{
+  return hdf5::node::RecursiveNodeIterator::begin(self);
+}
+
+hdf5::node::RecursiveNodeIterator recursive_node_end(const hdf5::node::Group &self)
+{
+  return hdf5::node::RecursiveNodeIterator::end(self);
+}
+
+class RecursiveNodeIteratorWrapper
+{
+  private:
+    hdf5::node::RecursiveNodeIterator begin;
+    hdf5::node::RecursiveNodeIterator end;
+
+  public:
+    RecursiveNodeIteratorWrapper(const hdf5::node::Group &group):
+      begin(hdf5::node::RecursiveNodeIterator::begin(group)),
+      end(hdf5::node::RecursiveNodeIterator::end(group))
+    {}
+
+    static RecursiveNodeIteratorWrapper create(const hdf5::node::NodeView &self)
+    {
+      return RecursiveNodeIteratorWrapper(self.group());
+    }
+
+    boost::python::object next()
+    {
+      if(begin == end)
+      {
+        PyErr_SetString(PyExc_StopIteration,"No more data!");
+        boost::python::throw_error_already_set();
+      }
+
+      boost::python::object result = object_from_node(*begin);
+      begin++;
+      return result;
+
+    }
+
+    RecursiveNodeIteratorWrapper __iter__()
+    {
+      return *this;
+    }
+};
+
+class RecursiveLinkIteratorWrapper
+{
+  private:
+    hdf5::node::RecursiveLinkIterator begin;
+    hdf5::node::RecursiveLinkIterator end;
+
+  public:
+    RecursiveLinkIteratorWrapper(const hdf5::node::Group &group):
+      begin(hdf5::node::RecursiveLinkIterator::begin(group)),
+      end(hdf5::node::RecursiveLinkIterator::end(group))
+    {}
+
+    static RecursiveLinkIteratorWrapper create(const hdf5::node::NodeView &self)
+    {
+      return RecursiveLinkIteratorWrapper(self.group());
+    }
+
+    hdf5::node::Link next()
+    {
+      if(begin == end)
+      {
+        PyErr_SetString(PyExc_StopIteration,"No more data!");
+        boost::python::throw_error_already_set();
+      }
+
+      hdf5::node::Link result = *begin;
+      begin++;
+      return result;
+
+    }
+
+    RecursiveLinkIteratorWrapper __iter__()
+    {
+      return *this;
+    }
+};
 
 
 
@@ -130,16 +213,28 @@ BOOST_PYTHON_MODULE(_node)
       .add_property("size",&GroupView::size)
           ;
 
+  class_<RecursiveNodeIteratorWrapper>("RecursiveNodeIterator",no_init)
+      .def("next",&RecursiveNodeIteratorWrapper::next)
+      .def("__iter__",&RecursiveNodeIteratorWrapper::__iter__)
+      ;
+
   class_<NodeView,bases<GroupView>>("NodeView",init<Group &>())
       .def("exists",&NodeView::exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
       .def("__getitem__",get_node_by_index)
       .def("__getitem__",get_node_by_name)
+      .add_property("recursive",RecursiveNodeIteratorWrapper::create)
+      ;
+
+  class_<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator",no_init)
+      .def("next",&RecursiveLinkIteratorWrapper::next)
+      .def("__iter__",&RecursiveLinkIteratorWrapper::__iter__)
       ;
 
   class_<LinkView,bases<GroupView>>("LinkView",init<Group &>())
       .def("exists",&LinkView::exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
       .def("__getitem__",get_link_by_index)
       .def("__getitem__",get_link_by_name)
+      .add_property("recursive",RecursiveLinkIteratorWrapper::create)
           ;
 
   class_<Group,bases<Node>>("Group")

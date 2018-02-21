@@ -146,7 +146,7 @@ class nxpath(nexus.Path):
         if isinstance(other,str):
             return self.__str__() == other
         else:
-            return self == other
+            return super(nxpath,self).__eq__(other)
         
     def __ne__(self,other):
         
