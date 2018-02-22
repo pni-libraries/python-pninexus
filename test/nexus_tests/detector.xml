@@ -1,0 +1,12 @@
+<group name="mythen" type="NXdetector">
+	<field name="data" type="uint16">
+		<dimensions rank="3">
+			<dim index="1" value="0"></dim>
+			<dim index="2" value="512"></dim>
+			<dim index="3" value="1024"></dim></dimensions>
+		<chunk rank="3">
+			<dim index="1" value="1"></dim>
+			<dim index="2" value="512"></dim>
+			<dim index="3" value="1024"></dim></chunk></field>
+	<field name="description" type="string"><![CDATA[DECTRIS strip detector]]></field>
+	<field name="layout" type="string"><![CDATA[linear]]></field></group>
