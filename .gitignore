@@ -22,3 +22,7 @@ MANIFEST
 /DatasetPartialIOTests.h5
 /FilterCreationTest.h5
 /H5pyCompatibilityReading.h5
+/pni.egg-info/
+/conan_imports_manifest.txt
+/conanbuildinfo.txt
+/conaninfo.txt
