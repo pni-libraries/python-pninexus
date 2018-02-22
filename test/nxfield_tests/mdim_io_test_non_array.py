@@ -26,13 +26,13 @@ import numpy
 import numpy.random as random
 import os
 
-import pni.io.nx.h5 as nx
-from pni.io.nx.h5 import nxfile
-from pni.io.nx.h5 import nxgroup
-from pni.io.nx.h5 import nxfield
-from pni.io.nx.h5 import deflate_filter
-from pni.io.nx.h5 import create_file
-from pni.io.nx.h5 import open_file
+import nx as nx
+from nx import nxfile
+from nx import nxgroup
+from nx import nxfield
+from nx import deflate_filter
+from nx import create_file
+from nx import open_file
 from pni.core import ShapeMismatchError
 from pni.core import SizeMismatchError
 from .. data_generator import random_generator_factory

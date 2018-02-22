@@ -35,8 +35,8 @@ from .nxfile import open_file
 
 from .nxgroup import nxgroup
 #from nxh5 import NXObject_NXObject as NXObject
-#from ._nxh5 import nxfield
-#from ._nxh5 import nxattribute
+from .nxfield import nxfield
+from .nxattribute import nxattribute
 #from ._nxh5 import deflate_filter
 from .algorithms import get_name
 from .algorithms import get_rank
@@ -49,8 +49,8 @@ from .algorithms import set_unit
 #from ._nxh5 import _get_path_from_dataset
 #from ._nxh5 import _get_path_from_group
 #from ._nxh5 import _get_path_from_link
-#from ._nxh5 import link
-#from ._nxh5 import nxlink
+from .nxlink import link
+from .nxlink import nxlink
 #from ._nxh5 import nxlink_status
 #from ._nxh5 import nxlink_type
 #from ._nxh5 import get_links_recursive

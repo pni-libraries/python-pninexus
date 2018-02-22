@@ -25,7 +25,7 @@ from __future__ import print_function
 import unittest
 import os
 
-import pni.io.nx.h5 as nexus
+import pni.io.nx.h5 as nx
 
 file_struct=\
 """
@@ -45,18 +45,18 @@ file_struct=\
 </group>
 """
 
-class internal_link_test(unittest.TestCase):
+module_path = os.path.dirname(os.path.abspath(__file__))
+
+class InternalLinkTest(unittest.TestCase):
     
-    test_dir = os.path.split(__file__)[0]
-    file_name = "internal_link_test.nxs"
-    full_path = os.path.join(test_dir,file_name)
+    file_name = os.path.join(module_path,"internal_link_test.nxs")
     
     def setUp(self):
-        self.file = nexus.create_file(self.full_path,True)
+        self.file = nx.create_file(self.file_name,True)
         self.root = self.file.root()
-        nexus.xml_to_nexus(file_struct,self.root)
+        nx.xml_to_nexus(file_struct,self.root)
 
-        self.nxdata = nexus.get_object(self.root,"/:NXentry/:NXdata")
+        self.nxdata = nx.get_object(self.root,"/:NXentry/:NXdata")
 
     def tearDown(self):
         self.root.close()
@@ -69,12 +69,12 @@ class internal_link_test(unittest.TestCase):
         Test link creation from a path. The target is only specified by its
         path. 
         """
-        nexus.link("/entry/instrument/detector/data",self.nxdata,"plot_data")
+        nx.link("/entry/instrument/detector/data",self.nxdata,"plot_data")
         d = self.nxdata["plot_data"]
         self.assertEqual(d.name,"plot_data")
         self.assertEqual(d.size,0)
         self.assertEqual(d.dtype,"uint16")
-        self.assertEqual(d.path,"/entry:NXentry/data:NXdata/plot_data")
+        self.assertEqual(str(d.path),"{filename}://entry:NXentry/data:NXdata/plot_data".format(filename=self.file_name))
 
     def test_link_from_object(self):
         """
@@ -82,19 +82,19 @@ class internal_link_test(unittest.TestCase):
         object.
         """
 
-        det_data = nexus.get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector/data")
-        nexus.link(det_data,self.nxdata,"plot_data")
+        det_data = nx.get_object(self.root,"/:NXentry/:NXinstrument/:NXdetector/data")
+        nx.link(det_data,self.nxdata,"plot_data")
         d = self.nxdata["plot_data"] 
         self.assertEqual(d.name,"plot_data")
         self.assertEqual(d.size,0)
         self.assertEqual(d.dtype,"uint16")
-        self.assertEqual(d.path,"/entry:NXentry/data:NXdata/plot_data")
+        self.assertEqual(str(d.path),"{filename}://entry:NXentry/data:NXdata/plot_data".format(filename=self.file_name))
 
     def test_unresolvable_link(self):
-        data = nexus.get_object(self.root,"/:NXentry/:NXdata")
-        nexus.link("/entry/instrument/monochromator/energy",data,"data")
-        l = nexus.get_object(self.root,"/:NXentry/:NXdata/data")
-        self.assertTrue(isinstance(l,nexus.nxlink))
-        self.assertEqual(l.status,nexus.nxlink_status.INVALID)
-        self.assertEqual(l.type,nexus.nxlink_type.SOFT)
+        data = nx.get_object(self.root,"/:NXentry/:NXdata")
+        nx.link("/entry/instrument/monochromator/energy",data,"data")
+        l = nx.get_object(self.root,"/:NXentry/:NXdata/data")
+        self.assertTrue(isinstance(l,nx.nxlink))
+        self.assertEqual(l.status,nx.nxlink_status.INVALID)
+        self.assertEqual(l.type,nx.nxlink_type.SOFT)
         self.assertEqual(l.path,"/entry:NXentry/data:NXdata/data")

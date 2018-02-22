@@ -26,12 +26,12 @@ import os
 import numpy
 
 from pni.io import ObjectError
-from pni.io.nx.h5 import nxfile
-from pni.io.nx.h5 import create_file
-from pni.io.nx.h5 import create_files
-from pni.io.nx.h5 import open_file
-from pni.io.nx.h5 import nxgroup
-from pni.io.nx.h5 import get_name
+from nx import nxfile
+from nx import create_file
+from nx import create_files
+from nx import open_file
+from nx import nxgroup
+from nx import get_name
 
 
 #implementing test fixture

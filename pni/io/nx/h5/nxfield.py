@@ -60,6 +60,11 @@ class nxfield(h5cpp.node.Dataset):
         else:
             return h5cpp.dataspace.Simple(space).current_dimensions
         
+    @property
+    def size(self):
+        
+        return self.dataspace.size
+        
     def __getitem__(self,index):
         
         return self.read()

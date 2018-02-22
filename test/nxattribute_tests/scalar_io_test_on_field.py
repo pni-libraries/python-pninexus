@@ -26,8 +26,8 @@ import numpy
 import numpy.random as random
 import os
 
-from pni.io.nx.h5 import create_file
-from pni.io.nx.h5 import open_file
+from nx import create_file
+from nx import open_file
 from pni.core import SizeMismatchError
 from .. data_generator import random_generator_factory
 from .. import io_test_utils as iotu

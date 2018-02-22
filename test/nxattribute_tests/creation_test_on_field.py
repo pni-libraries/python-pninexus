@@ -25,11 +25,11 @@ import unittest
 import numpy
 import os
 
-import pni.io.nx.h5 as nx
-from pni.io.nx.h5 import nxfield
-from pni.io.nx.h5 import deflate_filter
-from pni.io.nx.h5 import create_file
-from pni.io.nx.h5 import open_file
+import nx as nx
+from nx import nxfield
+from nx import deflate_filter
+from nx import create_file
+from nx import open_file
 from pni.io import ObjectError
 
 #implementing test fixture

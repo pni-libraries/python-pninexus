@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import pni.io.nx.h5 as nexus
+import nx as nexus
 import os
 import sys
 

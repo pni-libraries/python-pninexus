@@ -24,6 +24,15 @@
 from pni.io import h5cpp
 from pni.io import nexus
 
+class nxlink_type(object):
+    HARD = 1
+    SOFT = 2
+    EXTERNAL = 3
+
+class nxlink_status(object):
+    VALID = 1
+    INVALID = 2
+
 class nxlink(h5cpp.node.Link):
     
     def __init__(self,base_instance=None):
@@ -33,3 +42,23 @@ class nxlink(h5cpp.node.Link):
         else:
             super(nxlink,self).__init__()
             
+    @property
+    def type(self):
+        pass
+    
+    @property
+    def status(self):
+        pass
+            
+
+
+
+def link(target,base,link_path):
+    
+    if isinstance(link_path,str):
+        link_path = h5cpp.Path(link_path)
+        
+    if isinstance(target,str):
+        target = h5cpp.Path(target)
+    
+    h5cpp.node.link(target,base,link_path)

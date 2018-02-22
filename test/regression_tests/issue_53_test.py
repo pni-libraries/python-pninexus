@@ -25,7 +25,7 @@
 
 import unittest
 
-import pni.io.nx.h5 as nx
+import nx as nx
 from pni.core import SizeMismatchError
 
 class Issue_53_Test(unittest.TestCase):

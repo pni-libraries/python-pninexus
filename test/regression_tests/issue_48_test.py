@@ -26,7 +26,7 @@
 import unittest
 import numpy
 
-import pni.io.nx.h5 as nx
+import nx as nx
 
 class Issue_48_Test(unittest.TestCase):
     def setUp(self):

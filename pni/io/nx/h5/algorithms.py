@@ -27,6 +27,7 @@ from pni.io import nexus
 from .nxfield import nxfield
 from .nxgroup import nxgroup
 from .nxattribute import nxattribute
+from .nxlink import nxlink
 from ..nxpath import nxpath
 
 
@@ -61,6 +62,36 @@ def get_class(group):
     return group.attributes["NX_class"].read()
 
 
+def __convert_to_nx_object(object):
+    """Convert an nx* object
+    
+    Internal utility function converting a new API object to an old style nx*
+    instance. The new interface works entirely with h5cpp objects. To keep the 
+    old interface theses objects must be put into their corresponding adapter 
+    instances. 
+    
+    In order to succeed `object` must be an instance of 
+    
+    * :py:class:`pni.io.h5cpp.node.Group`
+    * :py:class:`pni.io.h5cpp.node.Dataset`
+    * :py:class:`pni.io.h5cpp.attribute.Attribute` 
+    
+    :param object: object to convert 
+    :raises TypeError: if the type of object is not supported
+    
+    """
+    if isinstance(object,h5cpp.node.Group):
+        return nxgroup(base_instance = object)
+    elif isinstance(object,h5cpp.node.Dataset):
+        return nxfield(base_instance = object)
+    elif isinstance(object,h5cpp.attribute.Attribute):
+        return nxattribute(base_instance = object)
+    else:
+        raise TypeError("Return type not supported")
+    
+
+     
+
 def get_object(parent,path):
     """get an object from a group
     
@@ -74,11 +105,35 @@ def get_object(parent,path):
     :param path: the path to use for the search
     """
     
+    def __to_single_object(objects):
+        #
+        # handling error situations:
+        #
+        # -> if more than one object was returned the path is ambiguous and we 
+        #    throw an exception
+        # -> if no object matches the path we throw too - this should maybe be 
+        #    changed to something else.
+        #
+        if len(objects) > 1:
+            message = "Path [{}] references more than one object!\n".format(path)
+            
+            for object in objects:
+                message += "{}\n".format(object.link.path)
+                
+            raise ValueError(message)
+        elif len(objects)==0:
+            parent_path = nexus.get_path(parent)
+            message = "Path [{}] references no object below [{}]".format(path,parent_path)
+            raise ValueError(message)
+        
+        return objects[0]
+        
+    
     if isinstance(path,str):
         path = nexus.Path.from_string(path)
     elif isinstance(path,h5cpp.Path):
         path = nexus.Path(path)
-    elif isinstance(path,nxpath):
+    elif isinstance(path,(nxpath,nexus.Path)):
         pass
     else:
         raise TypeError("Path is of inapproprirate type!")
@@ -88,41 +143,45 @@ def get_object(parent,path):
     # return the root group 
     #
     if parent.link.path.name == "." and path.__str__() == "/":
-        objects = [parent]
+        nodes = [parent]
     else:
-        objects = nexus.get_objects(parent,path)
-    
-    
-    #
-    # handling error situations:
-    #
-    # -> if more than one object was returned the path is ambiguous and we 
-    #    throw an exception
-    # -> if no object matches the path we throw too - this should maybe be 
-    #    changed to something else.
-    #
-    if len(objects) > 1:
-        message = "Path [{}] references more than one object!\n".format(path)
-        
-        for object in objects:
-            message += "{}\n".format(object.link.path)
+        try:
+            nodes = nexus.get_objects(parent,path)
+        except RuntimeError, error:
+            print(error)
+            #
+            # if we fail to acquire any objects we try to obtain a link to the
+            # very last element (which might be a dangling link)
+            #
+            last_element_name = path.back["name"]
             
-        raise ValueError(message)
-    elif len(objects)==0:
-        parent_path = nexus.get_path(parent)
-        message = "Path [{}] references no object below [{}]".format(path,parent_path)
-        raise ValueError(message)
+            if last_element_name == "":
+                message = "Could not find [{path}] - and last name does not have a name!".format(path=str(path))
+                raise ValueError(message)
+            
+            #
+            # remove the last element from the current path and try again
+            # - if we're lucky there is at list a link of that name 
+            #
+            print(path.size)
+            path.pop_back()
+            print(path.size)
+            print("LAST RESORT: ",str(path),type(path))
+            nodes = nexus.get_objects(parent,nexus.Path.from_string("/:NXentry/:NXinstrument"))
+            node = __to_single_object(nodes)
+            
+            if node.links.exists(last_element_name):
+                print("LAST ELEMENT NAME: ",last_element_name)
+                return nxlink(base_instance = node.links[last_element_name])
+            
+            else:
+                raise RuntimeError("Error finding object")
     
-    object = objects[0]
     
-    if isinstance(object,h5cpp.node.Group):
-        return nxgroup(base_instance = object)
-    elif isinstance(object,h5cpp.node.Dataset):
-        return nxfield(base_instance = object)
-    elif isinstance(object,h5cpp.attribute.Attribute):
-        return nxattribute(base_instance = object)
-    else:
-        raise TypeError("Return type not supported")
+    
+    node = __to_single_object(nodes)
+    
+    return __convert_to_nx_object(node)
     
     
     

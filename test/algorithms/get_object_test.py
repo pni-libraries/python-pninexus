@@ -25,13 +25,13 @@ import unittest
 import os
 import numpy
 
-from pni.io.nx.h5 import open_file
-from pni.io.nx.h5 import get_object
-from pni.io.nx.h5 import xml_to_nexus
-from pni.io.nx.h5 import get_name
-from pni.io.nx.h5 import get_unit
-from pni.io.nx.h5 import get_class
-from pni.io.nx.h5 import create_file
+from nx import open_file
+from nx import get_object
+from nx import xml_to_nexus
+from nx import get_name
+from nx import get_unit
+from nx import get_class
+from nx import create_file
 from pni.io.nx import nxpath,make_path
 
 file_struct = \

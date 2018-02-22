@@ -21,7 +21,7 @@
 # Created on: Oct 13, 2015
 #     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
-import pni.io.nx.h5 as nexus
+import nx as nexus
 import numpy
 import unittest
 import os 
