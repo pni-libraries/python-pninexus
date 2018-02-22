@@ -110,9 +110,11 @@ BOOST_PYTHON_MODULE(_h5cpp)
       .add_property("size",&hdf5::Path::size)
       .add_property("parent",&hdf5::Path::parent)
       .add_property("absolute",set_absolute,get_absolute)
+      .def("append",&hdf5::Path::append)
       .def("__str__",path_to_string)
       .def("__repr__",path_to_string)
       .def(self == hdf5::Path())
+      .def(self + hdf5::Path())
       ;
 
 
