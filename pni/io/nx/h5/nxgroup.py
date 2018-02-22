@@ -39,7 +39,7 @@ class RecursiveNodeIterator(h5cpp.node.RecursiveNodeIterator):
         object = self._iter.next()
         
         if object.type == h5cpp.node.Type.GROUP:
-            return nxgroup(base_instance = object)
+            return nxgroup(object)
         elif object.type == h5cpp.node.Type.DATASET:
             return nxfield(base_instance = object)
         else:
@@ -52,28 +52,32 @@ class RecursiveNodeIterator(h5cpp.node.RecursiveNodeIterator):
     
 
 class nxgroup(h5cpp.node.Group):
+    """Adapter class for h5cpp.node.Group
     
-    def __init__(self,base_instance=None):
-        if base_instance!=None:
-            super(nxgroup,self).__init__(base_instance)
-        else:
-            super(nxgroup,self).__init__()
+    """
+    
+    def __init__(self,group):
+        
+        if not isinstance(group,h5cpp.node.Group):
+            raise TypeError("`group` must be an instance of `h5cpp.node.Gruop`")
+        
+        self._group = group
             
     @property
     def path(self):
         
-        nexus_path = nexus.get_path(self)
+        nexus_path = nexus.get_path(self._group)
         return nxpath(base_instance = nexus_path)
     
     @property
     def size(self):
         
-        return super(nxgroup,self).nodes.size
+        return self._group.nodes.size
     
     @property
     def name(self):
         
-        n = super(nxgroup,self).link.path.name
+        n = self._group.link.path.name
         
         if n == ".":
             return "/"
@@ -89,44 +93,45 @@ class nxgroup(h5cpp.node.Group):
     def parent(self):
         
         if self.name == "/":
-            parent_group = self.link.file.root()
+            return nxgroup(self._group.link.file.root())
         else:
-            parent_group = super(nxgroup,self).link.parent
-        
-        return nxgroup(base_instance=parent_group)
+            return nxgroup(self._group.link.parent)
     
     @property
     def recursive(self):
         
-        return RecursiveNodeIterator(self.nodes.recursive)
+        return RecursiveNodeIterator(self._group.nodes.recursive)
     
     def names(self):
         
         name_list = []
-        for node in self.nodes:
+        for node in self._group.nodes:
             name_list.append(node.link.path.name)
             
         return name_list
     
     def __len__(self):
         
-        return super(nxgroup,self).nodes.size
+        return self._group.nodes.size
     
     
     def __getitem__(self,index):
         
-        object = self.nodes[index]
+        node = self._group.nodes[index]
         
-        if isinstance(object,h5cpp.node.Group):
-            return nxgroup(base_instance = object)
-        elif isinstance(object,h5cpp.node.Dataset):
-            return nxfield(base_instance = object)
+        if isinstance(node,h5cpp.node.Group):
+            return nxgroup(node)
+        elif isinstance(node,h5cpp.node.Dataset):
+            return nxfield(base_instance = node)
     
+    def close(self):
+        
+        self._group.close()
             
     def create_group(self,*args,**kwargs):
         
         if len(args) == 2:
-            group = nexus.BaseClassFactory.create(self,h5cpp.Path(args[0]),args[1])
+            group = nexus.BaseClassFactory.create(self._group,h5cpp.Path(args[0]),args[1])
         elif len(args)==1:
     
             nxclass = None
@@ -141,14 +146,14 @@ class nxgroup(h5cpp.node.Group):
                 name = args[0]
                
             if nxclass:
-                group = nexus.BaseClassFactory.create(self,h5cpp.Path(name),nxclass)
+                group = nexus.BaseClassFactory.create(self._group,h5cpp.Path(name),nxclass)
             else:
-                group = h5cpp.node.Group(self,name)
+                group = h5cpp.node.Group(self._group,name)
     
         else:
             raise ValueError
         
-        return nxgroup(base_instance=group)
+        return nxgroup(group)
     
     
     def create_field(self,name,type,shape=None,chunk=None,filter=None):
@@ -173,11 +178,10 @@ class nxgroup(h5cpp.node.Group):
             space = h5cpp.dataspace.Scalar()
         
         if chunk != None:
-            field = nexus.FieldFactory.create_chunked(self,h5cpp.Path(name),dtype,space,chunk)
+            field = nexus.FieldFactory.create_chunked(self._group,h5cpp.Path(name),dtype,space,chunk)
         else:
-            field = nexus.FieldFactory.create(self,h5cpp.Path(name),dtype,space)
+            field = nexus.FieldFactory.create(self._group,h5cpp.Path(name),dtype,space)
             
         return nxfield(base_instance = field)
         
-            
-
+    

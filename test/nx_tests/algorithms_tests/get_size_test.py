@@ -25,18 +25,19 @@ import unittest
 import os
 import numpy
 
-from pni.io import ObjectError
-from nx import nxfile
-from nx import create_file
-from nx import create_files
-from nx import open_file
-from nx import nxgroup
-from nx import get_size
+from pni.io import h5cpp
+from pni.io.nx.h5 import nxfile
+from pni.io.nx.h5 import create_file
+from pni.io.nx.h5 import open_file
+from pni.io.nx.h5 import nxgroup
+from pni.io.nx.h5 import get_size
 
+module_path = os.path.dirname(os.path.abspath(__file__))
 
 #implementing test fixture
-class get_size_test(unittest.TestCase):
-    filename = "get_size_test.nxs"
+class GetSizeTest(unittest.TestCase):
+    
+    filename = os.path.join(module_path,"get_size_test.nxs")
 
     def setUp(self):
         self._file = create_file(self.filename,overwrite=True)
@@ -50,10 +51,13 @@ class get_size_test(unittest.TestCase):
         #this should work as the file does not exist yet
         root = self._file.root()
 
-        a = root.attributes.create("test_scalar","float32")
+        a = root.attributes.create("test_scalar",
+                                   h5cpp.datatype.kFactory.create(numpy.dtype("float32")))
         self.assertEqual(get_size(a),1)
 
-        a = root.attributes.create("test_multidim","ui64",shape=(3,4))
+        a = root.attributes.create("test_multidim",
+                                   h5cpp.datatype.kFactory.create(numpy.dtype("ui64")),
+                                   shape=(3,4))
         self.assertEqual(get_size(a),12)
 
     def test_with_field(self):

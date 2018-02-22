@@ -45,6 +45,7 @@ from .algorithms import get_class
 from .algorithms import get_object
 from .algorithms import set_class
 from .algorithms import set_unit
+from .algorithms import get_size
 #from ._nxh5 import _get_path_from_attribute
 #from ._nxh5 import _get_path_from_dataset
 #from ._nxh5 import _get_path_from_group
@@ -85,23 +86,7 @@ def get_path(object):
     else:
         raise TypeError("unknown NeXus object type")
 
-def get_size(object):
-    """Returns the size of an object
-    
-    The semantics of size depends on the object. In the case of a group 
-    the number of children is returned. For attributes and fields the 
-    number of elements. The object must be either an instance of 
-    :py:class:`nxfield`, :py:class:`nxattribute` or :py:class:`nxgroup`.
 
-    :param object object: object for which to determine the size
-    :return: number of elements or children
-    :rtype: long
-    """
-    
-    if isinstance(object,(nxattribute,nxfield,nxgroup)):
-        return object.size()
-    else:
-        raise TypeError("Object must be an instance of attribute, field, or group!")
 
 
 

@@ -48,7 +48,7 @@ class nxfile(h5cpp.file.File):
         
     def root(self):
         
-        return nxgroup(base_instance=super(nxfile,self).root())
+        return nxgroup(super(nxfile,self).root())
     
         
         
