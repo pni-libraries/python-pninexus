@@ -24,10 +24,6 @@ def get_build_dir():
 # if a conanbuildinfo.txt file exists in the root directory of the package the
 # conan variant will be used automatically.
 #------------------------------------------------------------------------------
-core_extra_link_args = []
-nxh5_extra_link_args = []
-io_extra_link_args = []
-nx_extra_link_args = []
 h5cpp_extra_link_args =[]
 nexus_extra_link_args =[]
 
@@ -38,7 +34,6 @@ if os.path.exists("conanbuildinfo.txt"):
     core_config  = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
-    core_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../libs")
     
     print("linking with libraries:")
     for lib in nexus_config.link_libraries:
@@ -65,7 +60,6 @@ else:
 #
 
 nexus_config.add_include_directories(get_numpy_include_dirs())
-core_config.add_include_directories(get_numpy_include_dirs())
 
 
 #-----------------------------------------------------------------------------
@@ -77,14 +71,11 @@ else:
     arguments = ['-std=c++11','-Wall','-Wextra','-fdiagnostics-show-option',
                  '-Wno-strict-prototypes']
     nexus_config.add_compiler_arguments(arguments)
-    core_config.add_compiler_arguments(arguments)
 
 # ----------------------------------------------------------------------------
 # creating the extension factories
 # ----------------------------------------------------------------------------
 nexus_extension_factory = CppExtensionFactory(config = nexus_config)
-core_extension_factory = CppExtensionFactory(config = core_config)
-
 
 #-----------------------------------------------------------------------------
 # list of files for the pnicore extensions
@@ -92,18 +83,6 @@ core_extension_factory = CppExtensionFactory(config = core_config)
 
 core_lib_dir=os.path.join(get_build_dir(),"pni","core")
 
-#-----------------------------------------------------------------------------
-# setup for the core extension
-#-----------------------------------------------------------------------------
-core_ext = core_extension_factory.create(
-           module_name = "pni.core._core",
-           source_files = ["src/core/bool_converter.cpp",
-                           "src/core/numpy_scalar_converter.cpp",
-                           "src/core/errors.cpp",
-                           "src/core/_core.cpp",
-                           "src/core/numpy_utils.cpp",
-                           "src/core/utils.cpp",
-                           ])
 
 #------------------------------------------------------------------------------
 # setup for the h5cpp and nexus extensions
@@ -185,7 +164,7 @@ class pni_install(install):
 # setup for the pnicore package
 #-----------------------------------------------------------------------------
 
-setup(name="pni",
+setup(name="pninexus",
       author="Eugen Wintersberger",
       author_email="eugen.wintersberger@desy.de",
       description="Python wrapper for the PNI libraries",
@@ -194,10 +173,9 @@ setup(name="pni",
       maintainer = "Eugen Wintersberger",
       maintainer_email = "eugen.wintersberger@desy.de",
       license = "GPLv2",
-      version = "1.1.0",
+      version = "2.0.0",
       requires = ["numpy"],
-      ext_modules=[core_ext,
-                   h5cpp_core_ext,
+      ext_modules=[h5cpp_core_ext,
                    h5cpp_attribute_ext,
                    h5cpp_file_ext,
                    h5cpp_dataspace_ext,
@@ -207,7 +185,7 @@ setup(name="pni",
                    h5cpp_node_ext,
                    nexus_extension,
                    ],
-      packages = find_packages(),
+      packages = ['pni.io.h5cpp','pni.io.nexus'],
       url="https://github.com/pni-libraries/python-pni",
       test_suite="test",
       test_loader = "unittest:TestLoader",

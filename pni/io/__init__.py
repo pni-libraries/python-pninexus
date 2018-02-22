@@ -1,3 +1,1 @@
-from pni import core
-from pni.io import h5cpp
-from pni.io import nexus
+__path__ = __import__('pkgutil').extend_path(__path__,__name__)

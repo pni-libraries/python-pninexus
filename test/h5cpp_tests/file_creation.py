@@ -26,7 +26,6 @@ import unittest
 import os
 
 from pni.io.h5cpp.file import File
-from pni.io.h5cpp.file import Scope
 from pni.io.h5cpp.file import AccessFlags
 from pni.io.h5cpp.file import create
 import time
