@@ -20,6 +20,7 @@ The ``pni.io.h5cpp`` package
    h5cpp/attributes
    h5cpp/dataspace
    h5cpp/datatype
+   h5cpp/file
    h5cpp/properties
 
 
