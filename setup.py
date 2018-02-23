@@ -4,11 +4,16 @@ import sys
 import os
 import os.path
 from numpy.distutils.misc_util import get_numpy_include_dirs
-from pkgconfig import package
-from setuptools import setup, find_packages, Extension
+from setuptools import setup
+from sphinx.setup_command import BuildDoc
 from distutils.command.install import install
 import sysconfig
 from build_tools import CppExtensionFactory,ConanBuildInfoBuilder
+
+cmdclass = {'build_sphinx':BuildDoc}
+name = "pninexus"
+version = "2.0"
+release = "2.0.0"
 
 def get_build_dir():
     build_dir = "lib.{platform}-{version[0]}.{version[1]}"
@@ -39,20 +44,7 @@ if os.path.exists("conanbuildinfo.txt"):
     for lib in nexus_config.link_libraries:
         print(lib)
 else:
-    #--------------------------------------------------------------------------
-    # load pni configuration with pkg-config
-    #--------------------------------------------------------------------------
-    pnicore  = package('pnicore')
-    pniio    = package('pniio')
-
-    #add the configuration to libraries, include directories and library 
-    #directories
-    include_dirs = pnicore.include_dirs + pniio.include_dirs
-    library_dirs = pnicore.library_dirs + pniio.library_dirs
-    libraries    = pnicore.libraries + pniio.libraries
-    libraries.append('boost_python-py{version[0]}{version[1]}'.format(version=sys.version_info))
-    extra_compile_args.extend(pnicore.compiler_flags)
-    extra_link_args = []
+    pass
 
 
 #
@@ -173,7 +165,7 @@ setup(name="pninexus",
       maintainer = "Eugen Wintersberger",
       maintainer_email = "eugen.wintersberger@desy.de",
       license = "GPLv2",
-      version = "2.0.0",
+      version = release,
       requires = ["numpy"],
       ext_modules=[h5cpp_core_ext,
                    h5cpp_attribute_ext,
@@ -189,6 +181,13 @@ setup(name="pninexus",
       url="https://github.com/pni-libraries/python-pni",
       test_suite="test",
       test_loader = "unittest:TestLoader",
-      cmdclass={"install":pni_install}
+      cmdclass={"install":pni_install},
+      command_options = { 
+          'build_sphinx' : {
+              'project':('setup.py',name),
+              'version':('setup.py',version),
+              'release':('setup.py',release)
+              }
+          }
     )
 
