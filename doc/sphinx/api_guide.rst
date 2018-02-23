@@ -18,6 +18,7 @@ The ``pni.io.h5cpp`` package
    :maxdepth: 1
    
    h5cpp/attributes
+   h5cpp/dataspace
    h5cpp/properties
 
 

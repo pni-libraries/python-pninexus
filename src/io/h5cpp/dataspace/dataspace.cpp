@@ -32,6 +32,13 @@ BOOST_PYTHON_MODULE(_dataspace)
   using namespace boost::python;
   using namespace hdf5::dataspace;
 
+  //
+  // setting up the documentation options
+  //
+  docstring_options doc_opts;
+  doc_opts.disable_signatures();
+  doc_opts.enable_user_defined();
+
   enum_<Type>("Type")
       .value("SCALAR",hdf5::dataspace::Type::SCALAR)
       .value("SIMPLE",hdf5::dataspace::Type::SIMPLE)
@@ -58,7 +65,7 @@ BOOST_PYTHON_MODULE(_dataspace)
       .def(init<hdf5::Dimensions>())
       .def(init<hdf5::Dimensions,hdf5::Dimensions>())
       .add_property("rank",&Simple::rank)
-      .def("dimensions",&Simple::dimensions)
+      .def("dimensions",&Simple::dimensions,(arg("current"),arg("maximum")))
       .add_property("current_dimensions",&Simple::current_dimensions)
       .add_property("maximum_dimensions",&Simple::maximum_dimensions)
       ;

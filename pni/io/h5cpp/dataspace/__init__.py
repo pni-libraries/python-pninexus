@@ -5,6 +5,7 @@ from pni.io.h5cpp._dataspace import Scalar
 from pni.io.h5cpp._dataspace import UNLIMITED
 
 #from .._dataspace import Selection
+from pni.io.h5cpp._dataspace import SelectionManager
 from pni.io.h5cpp._dataspace import Hyperslab
 from pni.io.h5cpp._dataspace import SelectionType
 from pni.io.h5cpp._dataspace import SelectionOperation
