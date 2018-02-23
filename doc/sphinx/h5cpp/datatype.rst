@@ -7,6 +7,17 @@
 Enumerations
 ============
 
+.. autosummary::
+
+   Class
+   Order
+   Sign
+   Norm
+   Pad
+   StringPad
+   Direction
+   CharacterEncoding
+
 .. autoclass:: Class
 
    Enumeration determining the class to which a type belongs. 

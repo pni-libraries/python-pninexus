@@ -4,6 +4,15 @@
 
 .. automodule:: pni.io.h5cpp.file
 
+.. autosummary::
+
+   AccessFlags
+   Scope
+   File
+   create
+   open
+   is_hdf5_file
+
 
 .. autoclass:: AccessFlags
 
