@@ -36,6 +36,9 @@ from pni.io.h5cpp._datatype import kFloat128
 from pni.io.h5cpp._datatype import kVariableString
 
 class Factory(object):
+    """Construct HDF5 datatypes from numpy types
+    
+    """
     
     type_map = {"int8":kInt8,
            "uint8":kUInt8,
@@ -50,6 +53,12 @@ class Factory(object):
            "float128":kFloat128}
     
     def create(self,dtype):
+        """Create HDF5 type from numpy type 
+        
+        :param numpy.dtype dtype: numpy datat type 
+        :return: HDF5 datatype
+        :rtype: Datatype
+        """
         
         if dtype.kind == 'S':
             if dtype.itemsize != 0:
@@ -64,6 +73,16 @@ class Factory(object):
 kFactory = Factory()
 
 def to_numpy(hdf5_datatype):
+    """Convert an HDF5 datatype to a numpy type 
+    
+    Takes an HDF5 datatype and converts it to the string representation 
+    of its numpy counterpart. 
+    
+    :param Datatype hdf5_datatype: the HDF5 datatype to convert
+    :return: numpy type 
+    :rtype: str
+    """
+    
     
     if not isinstance(hdf5_datatype,Datatype):
         raise TypeError("Instance of an HDF5 datatype required!")
