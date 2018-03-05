@@ -30,6 +30,7 @@ from pni.io.h5cpp._property import CreationOrder
 from pni.io.h5cpp._property import List
 from pni.io.h5cpp._property import DatasetTransferList
 from pni.io.h5cpp._property import FileAccessList
+from pni.io.h5cpp._property import FileCreationList
 from pni.io.h5cpp._property import FileMountList
 from pni.io.h5cpp._property import LinkAccessList
 from pni.io.h5cpp._property import ObjectCopyList

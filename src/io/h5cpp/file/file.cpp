@@ -59,6 +59,10 @@ BOOST_PYTHON_MODULE(_file)
             .value("TRUNCATE",AccessFlags::TRUNCATE)
             .value("EXCLUSIVE",AccessFlags::EXCLUSIVE)
             .value("READWRITE",AccessFlags::READWRITE)
+#ifdef H5_VERSION_GE(10.0.0)
+            .value("SWMRREAD",AccessFlags::SWMR_READ)
+            .value("SWMRWRITE",AccessFlags::SWMR_WRITE)
+#endif
             .value("READONLY",AccessFlags::READONLY);
 
 
