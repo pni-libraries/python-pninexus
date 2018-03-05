@@ -29,13 +29,16 @@ using namespace boost::python;
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(root_overloads,root,0,0);
 
 hdf5::file::File create_file(const boost::filesystem::path &file_path,
-                             hdf5::file::AccessFlags flags)
+                             hdf5::file::AccessFlagsBase flags,
+                             const hdf5::property::FileCreationList &fcpl,
+                             const hdf5::property::FileAccessList &fapl)
 {
   return hdf5::file::create(file_path,flags);
 }
 
 hdf5::file::File open_file(const boost::filesystem::path &file_path,
-                           hdf5::file::AccessFlags flags)
+                           hdf5::file::AccessFlagsBase flags,
+                           const hdf5::property::FileAccessList &fapl)
 {
   return hdf5::file::open(file_path,flags);
 }
@@ -59,7 +62,7 @@ BOOST_PYTHON_MODULE(_file)
             .value("TRUNCATE",AccessFlags::TRUNCATE)
             .value("EXCLUSIVE",AccessFlags::EXCLUSIVE)
             .value("READWRITE",AccessFlags::READWRITE)
-#ifdef H5_VERSION_GE(10.0.0)
+#if H5_VERSION_GE(1,10,0)
             .value("SWMRREAD",AccessFlags::SWMR_READ)
             .value("SWMRWRITE",AccessFlags::SWMR_WRITE)
 #endif
@@ -81,7 +84,10 @@ BOOST_PYTHON_MODULE(_file)
 
   //need some functions
   def("is_hdf5_file",&is_hdf5_file);
-  def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::EXCLUSIVE));
-  def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY));
+  def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::EXCLUSIVE,
+                             arg("fcpl")=hdf5::property::FileCreationList(),
+                             arg("fapl")=hdf5::property::FileAccessList()));
+  def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY,
+                         arg("fapl")=hdf5::property::FileAccessList()));
 }
 
