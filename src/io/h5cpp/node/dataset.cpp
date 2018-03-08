@@ -110,5 +110,8 @@ void create_dataset_wrapper()
       .add_property("datatype",get_datatype)
       .def("extent",set_full_extent)
       .def("extent",grow_dimension)
+#if H5_VERSION_GE(1,10,0)
+      .def("refresh",&Dataset::refresh)
+#endif
       ;
 }

@@ -56,7 +56,8 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
     else
     {
 #if PY_MAJOR_VERSION >= 3
-      return NPY_UNICODE;
+      //return NPY_UNICODE;
+    	return NPY_STRING;
 #else
       return NPY_STRING;
 #endif

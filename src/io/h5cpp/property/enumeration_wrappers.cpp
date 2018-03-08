@@ -29,7 +29,7 @@ void create_enumeration_wrappers()
   using namespace boost::python;
   using namespace hdf5::property;
 
-  enum_<DatasetFillValueStatus>("DatasetFillValueStatus")
+  enum_<DatasetFillValueStatus>("DatasetFillValueStatus","status of the fill value setup for a dataset")
       .value("UNDEFINED",DatasetFillValueStatus::UNDEFINED)
       .value("DEFAULT",DatasetFillValueStatus::DEFAULT)
       .value("USER_DEFINED",DatasetFillValueStatus::USER_DEFINED);

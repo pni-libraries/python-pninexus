@@ -30,6 +30,13 @@ BOOST_PYTHON_MODULE(_datatype)
   using namespace boost::python;
   using namespace hdf5::datatype;
 
+  //
+  // setting up the documentation options
+  //
+  docstring_options doc_opts;
+  doc_opts.disable_signatures();
+  doc_opts.enable_user_defined();
+
 
   enum_<Class>("Class")
       .value("NONE",Class::NONE)

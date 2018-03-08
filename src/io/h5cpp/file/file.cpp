@@ -29,13 +29,16 @@ using namespace boost::python;
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(root_overloads,root,0,0);
 
 hdf5::file::File create_file(const boost::filesystem::path &file_path,
-                             hdf5::file::AccessFlags flags)
+                             hdf5::file::AccessFlagsBase flags,
+                             const hdf5::property::FileCreationList &fcpl,
+                             const hdf5::property::FileAccessList &fapl)
 {
   return hdf5::file::create(file_path,flags);
 }
 
 hdf5::file::File open_file(const boost::filesystem::path &file_path,
-                           hdf5::file::AccessFlags flags)
+                           hdf5::file::AccessFlagsBase flags,
+                           const hdf5::property::FileAccessList &fapl)
 {
   return hdf5::file::open(file_path,flags);
 }
@@ -44,32 +47,47 @@ BOOST_PYTHON_MODULE(_file)
 {
   using namespace hdf5::file;
 
-    enum_<Scope>("Scope","The scope of a file")
-        .value("LOCAL",Scope::LOCAL)
-        .value("GLOBAL",Scope::GLOBAL);
+  //
+  // setting up the documentation options
+  //
+  docstring_options doc_opts;
+  doc_opts.disable_signatures();
+  doc_opts.enable_user_defined();
 
-    enum_<AccessFlags>("AccessFlags","The access flags used to open the file")
-        .value("TRUNCATE",AccessFlags::TRUNCATE)
-        .value("EXCLUSIVE",AccessFlags::EXCLUSIVE)
-        .value("READWRITE",AccessFlags::READWRITE)
-        .value("READONLY",AccessFlags::READONLY);
+  enum_<Scope>("Scope","The scope of a file")
+            .value("LOCAL",Scope::LOCAL)
+            .value("GLOBAL",Scope::GLOBAL);
+
+  enum_<AccessFlags>("AccessFlags","The access flags used to open the file")
+            .value("TRUNCATE",AccessFlags::TRUNCATE)
+            .value("EXCLUSIVE",AccessFlags::EXCLUSIVE)
+            .value("READWRITE",AccessFlags::READWRITE)
+#if H5_VERSION_GE(1,10,0)
+            .value("SWMRREAD",AccessFlags::SWMR_READ)
+            .value("SWMRWRITE",AccessFlags::SWMR_WRITE)
+#endif
+            .value("READONLY",AccessFlags::READONLY);
 
 
-    //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
-    class_<File>("File")
-        .def(init<>())
-        .def(init<const File>())
-        .add_property("intent",&File::intent)
-        .add_property("is_valid",&File::is_valid)
-        .add_property("path",&File::path)
-        .add_property("size",&File::size)
-        .def("flush",&File::flush,(arg("scope")=Scope::GLOBAL))
-        .def("close",&File::close)
-        .def("root",&File::root,root_overloads())
-        ;
-    //need some functions
-    def("is_hdf5_file",&is_hdf5_file);
-    def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::EXCLUSIVE));
-    def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY));
+  //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
+  class_<File>("File")
+            .def(init<>())
+            .def(init<const File>())
+            .add_property("intent",&File::intent)
+            .add_property("is_valid",&File::is_valid)
+            .add_property("path",&File::path)
+            .add_property("size",&File::size)
+            .def("flush",&File::flush,(arg("scope")=Scope::GLOBAL))
+            .def("close",&File::close)
+            .def("root",&File::root,root_overloads())
+            ;
+
+  //need some functions
+  def("is_hdf5_file",&is_hdf5_file);
+  def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::EXCLUSIVE,
+                             arg("fcpl")=hdf5::property::FileCreationList(),
+                             arg("fapl")=hdf5::property::FileAccessList()));
+  def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY,
+                         arg("fapl")=hdf5::property::FileAccessList()));
 }
 

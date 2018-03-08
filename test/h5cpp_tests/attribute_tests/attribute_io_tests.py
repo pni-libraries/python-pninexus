@@ -27,7 +27,7 @@ import os
 import numpy.testing as npt
 from pni.io import h5cpp
 from pni.io.h5cpp.file import AccessFlags
-from pni.io.h5cpp.datatype import kInt32, kFloat32, kVariableString
+from pni.io.h5cpp.datatype import kInt32, kFloat32, kUInt8, kVariableString
 from pni.io.h5cpp.datatype import StringPad, String
 
 
@@ -50,6 +50,19 @@ class AttributeIOTests(unittest.TestCase):
     def tearDown(self):
         self.root.close()
         self.file.close()
+        
+    def testBooleanScalar(self):
+        
+        a = self.root.attributes.create("BooleanScalar",kUInt8)
+        a.write(True)
+        self.assertTrue(a.read())
+        
+    def testBooleanArray(self):
+        
+        a = self.root.attributes.create("BooleanArray",kUInt8,(4,))
+        data = [True,False,False,True]
+        a.write(data)
+        npt.assert_array_equal(a.read(),numpy.array(data))
         
     def testIntegerScalar(self):
         
@@ -105,8 +118,8 @@ class AttributeIOTests(unittest.TestCase):
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         a = self.root.attributes.create("StringArrayVLength",kVariableString,(2,3))
         a.write(data)
-        #r = a.read()
-        #npt.assert_array_equal(r,data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
     def testIntArray(self):
         

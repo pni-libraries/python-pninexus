@@ -50,10 +50,11 @@ class H5pyCompatibilityReading(unittest.TestCase):
         super(H5pyCompatibilityReading, cls).setUpClass()
         
         f = h5py.File(cls.filename,"w")
-        f.create_dataset("FixedLengthStringData",cls.str_data.shape,data=cls.str_data,dtype="S10")
+        f.create_dataset("FixedLengthStringData",cls.str_data.shape,data=cls.str_data.astype("S"),dtype="S10")
         
         dt = h5py.special_dtype(vlen=bytes)
-        f.create_dataset("VariableLengthStringData",cls.str_data.shape,data=cls.str_data,dtype=dt)
+        f.create_dataset("VariableLengthStringData",cls.str_data.shape,data=cls.str_data.astype("S"),dtype=dt)
+        
         
     def setUp(self):
         
@@ -67,13 +68,13 @@ class H5pyCompatibilityReading(unittest.TestCase):
     def testReadingFixedLengthStringData(self):
         
         dataset = self.root.nodes["FixedLengthStringData"]
-        #read = dataset.read()
-        #npt.assert_array_equal(read,self.str_data)
+        read = dataset.read()
+        npt.assert_array_equal(read,self.str_data)
         
     def testReadingVariableLengthStringData(self):
         
         dataset = self.root.nodes["VariableLengthStringData"]
-        #read = dataset.read()
-        #npt.assert_array_equal(read,self.str_data)
+        read = dataset.read()
+        npt.assert_array_equal(read,self.str_data)
 
         
