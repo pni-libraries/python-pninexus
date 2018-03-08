@@ -1,9 +1,9 @@
 from __future__ import print_function
 import numpy
 
-from pni.io.h5cpp import property
-from pni.io.h5cpp._attribute import AttributeManager
-from pni.io.h5cpp._attribute import Attribute
+from pninexus.h5cpp import property
+from pninexus.h5cpp._attribute import AttributeManager
+from pninexus.h5cpp._attribute import Attribute
 
 
 def attribute__getitem__(self,index):
