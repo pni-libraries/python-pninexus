@@ -46,7 +46,7 @@ class BuildConfiguration(object):
         self._include_directories.extend(directories)
         
     def add_include_directory(self,directory):        
-        self._include_directores.append(directory)
+        self._include_directories.append(directory)
         
     #
     # setting library directories

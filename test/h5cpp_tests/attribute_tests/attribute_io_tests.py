@@ -105,8 +105,8 @@ class AttributeIOTests(unittest.TestCase):
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         a = self.root.attributes.create("StringArrayVLength",kVariableString,(2,3))
         a.write(data)
-        #r = a.read()
-        #npt.assert_array_equal(r,data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
     def testIntArray(self):
         

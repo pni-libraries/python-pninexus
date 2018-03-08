@@ -8,7 +8,7 @@ from setuptools import setup
 from sphinx.setup_command import BuildDoc
 from distutils.command.install import install
 import sysconfig
-from build_tools import CppExtensionFactory,ConanBuildInfoBuilder
+from build_tools import CppExtensionFactory,ConanBuildInfoBuilder,BuildConfiguration
 
 cmdclass = {'build_sphinx':BuildDoc}
 name = "pninexus"
@@ -44,7 +44,12 @@ if os.path.exists("conanbuildinfo.txt"):
     for lib in nexus_config.link_libraries:
         print(lib)
 else:
-    pass
+    nexus_config = BuildConfiguration()
+    nexus_config.add_link_library('pnicore')
+    nexus_config.add_link_library('pniio')
+    nexus_config.add_link_library('h5cpp')
+    nexus_config.add_link_library('boost_python')
+    nexus_config.add_include_directory('/usr/include/hdf5/serial')
 
 
 #
