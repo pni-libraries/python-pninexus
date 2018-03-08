@@ -1,37 +1,37 @@
 from __future__ import print_function
-from pni.io.h5cpp._h5cpp import Path
-from pni.io.h5cpp import property
-from pni.io.h5cpp import dataspace
-from pni.io.h5cpp import datatype
+from pninexus.h5cpp._h5cpp import Path
+from pninexus.h5cpp import property
+from pninexus.h5cpp import dataspace
+from pninexus.h5cpp import datatype
 import numpy
 from collections import OrderedDict
 #
 # import enumeration wrappers
 #
-from pni.io.h5cpp._node import Type
-from pni.io.h5cpp._node import LinkType
+from pninexus.h5cpp._node import Type
+from pninexus.h5cpp._node import LinkType
 
 #
 # import node classes
 #
-from pni.io.h5cpp._node import Node
-from pni.io.h5cpp._node import GroupView
-from pni.io.h5cpp._node import NodeView
-from pni.io.h5cpp._node import LinkView
-from pni.io.h5cpp._node import Group
-from pni.io.h5cpp._node import Dataset
-from pni.io.h5cpp._node import LinkTarget
-from pni.io.h5cpp._node import Link
-from pni.io.h5cpp._node import RecursiveNodeIterator
+from pninexus.h5cpp._node import Node
+from pninexus.h5cpp._node import GroupView
+from pninexus.h5cpp._node import NodeView
+from pninexus.h5cpp._node import LinkView
+from pninexus.h5cpp._node import Group
+from pninexus.h5cpp._node import Dataset
+from pninexus.h5cpp._node import LinkTarget
+from pninexus.h5cpp._node import Link
+from pninexus.h5cpp._node import RecursiveNodeIterator
 
 #
 # import node related functions
 #
-from pni.io.h5cpp._node import is_dataset
-from pni.io.h5cpp._node import is_group
-from pni.io.h5cpp._node import get_node
+from pninexus.h5cpp._node import is_dataset
+from pninexus.h5cpp._node import is_group
+from pninexus.h5cpp._node import get_node
 
-from pni.io.h5cpp._node import _copy
+from pninexus.h5cpp._node import _copy
 
 def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              object_copy_list = property.ObjectCopyList()):
@@ -46,7 +46,7 @@ def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
         _copy(node,base,object_copy_list,link_creation_list)
 
 
-from pni.io.h5cpp._node import _move
+from pninexus.h5cpp._node import _move
 
 def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              link_access_list = property.LinkAccessList()):
@@ -59,7 +59,7 @@ def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
     else:
         _move(node,base,link_creation_list,link_access_list)
         
-from pni.io.h5cpp._node import _remove
+from pninexus.h5cpp._node import _remove
 
 def remove(node=None,base=None,path=None,
            link_access_list = property.LinkAccessList()):
@@ -100,7 +100,7 @@ def remove(node=None,base=None,path=None,
     else:
         raise RuntimeError("You have to provide either `node` argument or the `base` and `path` argument!")
     
-from pni.io.h5cpp._node import _link
+from pninexus.h5cpp._node import _link
 
 def link(target,
          link_base,

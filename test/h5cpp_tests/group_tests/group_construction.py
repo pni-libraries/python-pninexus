@@ -25,7 +25,7 @@ import unittest
 import os
 import numpy
 
-from pni.io import h5cpp
+from pninexus import h5cpp
 
 class GroupConstructionTest(unittest.TestCase):
     
