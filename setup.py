@@ -48,7 +48,8 @@ else:
     nexus_config.add_link_library('pnicore')
     nexus_config.add_link_library('pniio')
     nexus_config.add_link_library('h5cpp')
-    nexus_config.add_link_library('boost_python')
+    nexus_config.add_link_library("boost_python-py{major}{minor}".format(major=sys.version_info.major,
+                                                                         minor=sys.version_info.minor))
     nexus_config.add_include_directory('/usr/include/hdf5/serial')
 
 

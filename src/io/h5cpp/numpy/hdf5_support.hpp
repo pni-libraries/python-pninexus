@@ -78,14 +78,13 @@ template<> class TypeTrait<numpy::ArrayAdapter>
 #if PY_MAJOR_VERSION >= 3
         case NPY_UNICODE:
           return hdf5::datatype::String::fixed(array.itemsize());
-#else
+#endif
         case NPY_STRING:
         {
           String type = String::fixed(array.itemsize());
           type.padding(StringPad::NULLPAD);
           return type;
         }
-#endif
         default:
           throw std::runtime_error("Datatype not supported by HDF5!");
       }

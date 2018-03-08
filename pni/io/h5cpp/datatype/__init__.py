@@ -60,7 +60,7 @@ class Factory(object):
         :rtype: Datatype
         """
         
-        if dtype.kind == 'S':
+        if dtype.kind == 'S' or dtype.kind == 'U':
             if dtype.itemsize != 0:
                 type = String.fixed(dtype.itemsize)
                 type.padding = StringPad.NULLPAD
