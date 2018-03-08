@@ -50,7 +50,6 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
      char *buffer_ptr = buffer.data();
      do
      {
-    	 std::cout<<data.itemsize()<<std::endl;
        std::copy(*dataptr,*dataptr+data.itemsize(),buffer_ptr);
 
        buffer_ptr+=data.itemsize();

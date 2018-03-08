@@ -20,7 +20,6 @@
 // Created on: Sep 17, 2015
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 //
-//
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
@@ -209,7 +208,7 @@ BOOST_PYTHON_MODULE(_attribute)
         .add_property("is_valid",&Attribute::is_valid)
         .add_property("parent_link",make_function(&Attribute::parent_link,return_internal_reference<>()))
         .def("close",&Attribute::close)
-        .def("read",attribute_read)
+        .def("_read",attribute_read)
         .def("_write",attribute_write)
         ;
 

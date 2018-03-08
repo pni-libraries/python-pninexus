@@ -26,7 +26,18 @@ def attribute_write(self,data):
     except RuntimeError:
         print(write_data,write_data.dtype)
         
+def attribute_read(self):
+    
+    read_data = self._read()
+    
+    if isinstance(read_data,numpy.ndarray) and read_data.dtype.kind=='S':
+        return read_data.astype('U')
+    else:
+        return read_data
+            
+        
 
 
 Attribute.__getitem__ = attribute__getitem__
 Attribute.write = attribute_write
+Attribute.read = attribute_read

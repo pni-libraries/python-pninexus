@@ -79,16 +79,16 @@ class AttributeIOTests(unittest.TestCase):
         dtype.padding = StringPad.NULLPAD
         a = self.root.attributes.create("StringScalar",dtype)
         a.write("hello world")
-        #r = a.read()
-        #self.assertEqual(r,"hello world")
+        r = a.read()
+        self.assertEqual(r,"hello world")
         
     def testStringScalarVariableLength(self):
         
         data = "hello world"
         a = self.root.attributes.create("StringScalarVLength",kVariableString)
         a.write(data)
-        #r = a.read()
-        #self.assertEqual(r,data)
+        r = a.read()
+        self.assertEqual(r,data)
         
     def testStringArray(self):
         
@@ -97,16 +97,16 @@ class AttributeIOTests(unittest.TestCase):
         dtype.padding = StringPad.NULLPAD
         a = self.root.attributes.create("StringArray",dtype,(2,3))
         a.write(data)
-        #r = a.read()
-        #npt.assert_array_equal(r,data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
     def testStringArrayVariableLength(self):
         
         data = numpy.array([["hello","world","this"],["is","a","test"]])
         a = self.root.attributes.create("StringArrayVLength",kVariableString,(2,3))
         a.write(data)
-        #r = a.read()
-        #npt.assert_array_equal(r,data)
+        r = a.read()
+        npt.assert_array_equal(r,data)
         
     def testIntArray(self):
         
