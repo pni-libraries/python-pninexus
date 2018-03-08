@@ -38,12 +38,17 @@ class VarLengthStringBuffer : public hdf5::VarLengthStringBuffer<char>
     void push_back(const std::string &data)
     {
       cache_.push_back(data);
-      Base::push_back(const_cast<char*>(cache_.back().c_str()));
     }
 
     const Cache &cache() const
     {
       return cache_;
+    }
+    
+    void commit_from_cache()
+    {
+      std::for_each(cache_.begin(),cache_.end(),
+      [this](const std::string &str) { Base::push_back(const_cast<char*>(str.c_str()));});
     }
 
     void commit_to_data_to_cache()
@@ -72,13 +77,17 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
 
     NpyIter *iter = NpyIter_New(static_cast<PyArrayObject*>(data),
                                 NPY_ITER_READONLY | NPY_ITER_C_INDEX,
-                                NPY_CORDER , NPY_UNSAFE_CASTING,nullptr);
+                                NPY_CORDER , NPY_NO_CASTING,nullptr);
     NpyIter_IterNextFunc *iternext = NpyIter_GetIterNext(iter,nullptr);
     char **dataptr = NpyIter_GetDataPtrArray(iter);
     do
     {
-      buffer.push_back(std::string(*dataptr,itemsize));
+      std::string value = std::string(*dataptr,itemsize);
+      buffer.push_back(value);
+      
     }while(iternext(iter));
+    
+    buffer.commit_from_cache();
     NpyIter_Deallocate(iter);
     return buffer;
   }

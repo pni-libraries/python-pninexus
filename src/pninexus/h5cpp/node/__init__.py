@@ -1,37 +1,37 @@
 from __future__ import print_function
-from pni.io.h5cpp._h5cpp import Path
-from pni.io.h5cpp import property
-from pni.io.h5cpp import dataspace
-from pni.io.h5cpp import datatype
+from pninexus.h5cpp._h5cpp import Path
+from pninexus.h5cpp import property
+from pninexus.h5cpp import dataspace
+from pninexus.h5cpp import datatype
 import numpy
 from collections import OrderedDict
 #
 # import enumeration wrappers
 #
-from pni.io.h5cpp._node import Type
-from pni.io.h5cpp._node import LinkType
+from pninexus.h5cpp._node import Type
+from pninexus.h5cpp._node import LinkType
 
 #
 # import node classes
 #
-from pni.io.h5cpp._node import Node
-from pni.io.h5cpp._node import GroupView
-from pni.io.h5cpp._node import NodeView
-from pni.io.h5cpp._node import LinkView
-from pni.io.h5cpp._node import Group
-from pni.io.h5cpp._node import Dataset
-from pni.io.h5cpp._node import LinkTarget
-from pni.io.h5cpp._node import Link
-from pni.io.h5cpp._node import RecursiveNodeIterator
+from pninexus.h5cpp._node import Node
+from pninexus.h5cpp._node import GroupView
+from pninexus.h5cpp._node import NodeView
+from pninexus.h5cpp._node import LinkView
+from pninexus.h5cpp._node import Group
+from pninexus.h5cpp._node import Dataset
+from pninexus.h5cpp._node import LinkTarget
+from pninexus.h5cpp._node import Link
+from pninexus.h5cpp._node import RecursiveNodeIterator
 
 #
 # import node related functions
 #
-from pni.io.h5cpp._node import is_dataset
-from pni.io.h5cpp._node import is_group
-from pni.io.h5cpp._node import get_node
+from pninexus.h5cpp._node import is_dataset
+from pninexus.h5cpp._node import is_group
+from pninexus.h5cpp._node import get_node
 
-from pni.io.h5cpp._node import _copy
+from pninexus.h5cpp._node import _copy
 
 def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              object_copy_list = property.ObjectCopyList()):
@@ -46,7 +46,7 @@ def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
         _copy(node,base,object_copy_list,link_creation_list)
 
 
-from pni.io.h5cpp._node import _move
+from pninexus.h5cpp._node import _move
 
 def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              link_access_list = property.LinkAccessList()):
@@ -59,7 +59,7 @@ def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
     else:
         _move(node,base,link_creation_list,link_access_list)
         
-from pni.io.h5cpp._node import _remove
+from pninexus.h5cpp._node import _remove
 
 def remove(node=None,base=None,path=None,
            link_access_list = property.LinkAccessList()):
@@ -100,7 +100,7 @@ def remove(node=None,base=None,path=None,
     else:
         raise RuntimeError("You have to provide either `node` argument or the `base` and `path` argument!")
     
-from pni.io.h5cpp._node import _link
+from pninexus.h5cpp._node import _link
 
 def link(target,
          link_base,
@@ -188,6 +188,13 @@ def dataset_write(self,data,selection=None):
         data = numpy.array(data)
         
     #
+    # if the data is a unicode numpy array we have to convert it to a 
+    # simple string array
+    #
+    if data.dtype.kind == 'U':
+        data = data.astype('S')
+        
+    #
     # determine memory datatype and dataspace
     # - if the file type is a variable length string we have to adjust the 
     #   memory type accordingly
@@ -219,6 +226,10 @@ def dataset_read(self,data=None,selection=None):
         file_space.selection(dataspace.SelectionOperation.SET,selection)
     
     if data!=None:
+        #
+        # if data has been provided by the user we have to determine the 
+        # datatype and dataspace for the memory representation
+        #
         if not isinstance(data,numpy.ndarray):
             raise TypeError("Inplace reading is only supported for numpy arrays!")
         
@@ -230,6 +241,10 @@ def dataset_read(self,data=None,selection=None):
                 memory_type = datatype.String.variable()
                 
     else:
+        #
+        # if no data was provided by the user we can safely take the 
+        # dataspace and datatype from the dataset in the file
+        #
         memory_type  = self.datatype
         
         if selection != None:
@@ -241,11 +256,19 @@ def dataset_read(self,data=None,selection=None):
             if file_space.type == dataspace.Type.SIMPLE:
                 shape = dataspace.Simple(file_space).current_dimensions
             
-        
+        #
+        # create an empty numpy array to which we read the data
+        #
         data = numpy.empty(shape,dtype=datatype.to_numpy(memory_type))
         
         
     data = self._read(data,memory_type,memory_space,file_space)
+    
+    if data.dtype.kind == 'S':
+        try:
+            data = data.astype('U')
+        except: 
+            print(data)
     
     return data
         

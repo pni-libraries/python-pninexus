@@ -1,20 +1,20 @@
 #
 # (c) Copyright 2018 DESY
 #
-# This file is part of python-pni.
+# This file is part of python-pninexus.
 #
-# python-pni is free software: you can redistribute it and/or modify
+# python-pninexus is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 #
-# python-pni is distributed in the hope that it will be useful,
+# python-pninexus is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with python-pni.  If not, see <http://www.gnu.org/licenses/>.
+# along with python-pninexus.  If not, see <http://www.gnu.org/licenses/>.
 # ===========================================================================
 #
 # Created on: Jan 30, 2018
@@ -25,10 +25,10 @@ import unittest
 import numpy
 import os
 import numpy.testing as npt
-from pni.io import h5cpp
-from pni.io.h5cpp.file import AccessFlags
-from pni.io.h5cpp.datatype import kInt32, kFloat32, kVariableString
-from pni.io.h5cpp.datatype import StringPad, String
+from pninexus import h5cpp
+from pninexus.h5cpp.file import AccessFlags
+from pninexus.h5cpp.datatype import kInt32, kFloat32, kUInt8, kVariableString
+from pninexus.h5cpp.datatype import StringPad, String
 
 
 module_path = os.path.dirname(os.path.abspath(__file__))
@@ -50,6 +50,19 @@ class AttributeIOTests(unittest.TestCase):
     def tearDown(self):
         self.root.close()
         self.file.close()
+        
+    def testBooleanScalar(self):
+        
+        a = self.root.attributes.create("BooleanScalar",kUInt8)
+        a.write(True)
+        self.assertTrue(a.read())
+        
+    def testBooleanArray(self):
+        
+        a = self.root.attributes.create("BooleanArray",kUInt8,(4,))
+        data = [True,False,False,True]
+        a.write(data)
+        npt.assert_array_equal(a.read(),numpy.array(data))
         
     def testIntegerScalar(self):
         

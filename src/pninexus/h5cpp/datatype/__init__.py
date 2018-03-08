@@ -2,38 +2,38 @@ import numpy
 #
 # Import enumerations
 #
-from pni.io.h5cpp._datatype import Class
-from pni.io.h5cpp._datatype import Order
-from pni.io.h5cpp._datatype import Sign
-from pni.io.h5cpp._datatype import Norm
-from pni.io.h5cpp._datatype import Pad
-from pni.io.h5cpp._datatype import StringPad
-from pni.io.h5cpp._datatype import Direction
-from pni.io.h5cpp._datatype import CharacterEncoding
+from pninexus.h5cpp._datatype import Class
+from pninexus.h5cpp._datatype import Order
+from pninexus.h5cpp._datatype import Sign
+from pninexus.h5cpp._datatype import Norm
+from pninexus.h5cpp._datatype import Pad
+from pninexus.h5cpp._datatype import StringPad
+from pninexus.h5cpp._datatype import Direction
+from pninexus.h5cpp._datatype import CharacterEncoding
 
 #
 # Import classes
 # 
-from pni.io.h5cpp._datatype import Datatype
-from pni.io.h5cpp._datatype import Float
-from pni.io.h5cpp._datatype import Integer
-from pni.io.h5cpp._datatype import String
+from pninexus.h5cpp._datatype import Datatype
+from pninexus.h5cpp._datatype import Float
+from pninexus.h5cpp._datatype import Integer
+from pninexus.h5cpp._datatype import String
 
 #
 # Import predefined constant types
 #
-from pni.io.h5cpp._datatype import kUInt8
-from pni.io.h5cpp._datatype import kInt8
-from pni.io.h5cpp._datatype import kUInt16
-from pni.io.h5cpp._datatype import kInt16
-from pni.io.h5cpp._datatype import kUInt32
-from pni.io.h5cpp._datatype import kInt32
-from pni.io.h5cpp._datatype import kUInt64
-from pni.io.h5cpp._datatype import kInt64
-from pni.io.h5cpp._datatype import kFloat64
-from pni.io.h5cpp._datatype import kFloat32
-from pni.io.h5cpp._datatype import kFloat128
-from pni.io.h5cpp._datatype import kVariableString
+from pninexus.h5cpp._datatype import kUInt8
+from pninexus.h5cpp._datatype import kInt8
+from pninexus.h5cpp._datatype import kUInt16
+from pninexus.h5cpp._datatype import kInt16
+from pninexus.h5cpp._datatype import kUInt32
+from pninexus.h5cpp._datatype import kInt32
+from pninexus.h5cpp._datatype import kUInt64
+from pninexus.h5cpp._datatype import kInt64
+from pninexus.h5cpp._datatype import kFloat64
+from pninexus.h5cpp._datatype import kFloat32
+from pninexus.h5cpp._datatype import kFloat128
+from pninexus.h5cpp._datatype import kVariableString
 
 class Factory(object):
     """Construct HDF5 datatypes from numpy types
@@ -60,7 +60,7 @@ class Factory(object):
         :rtype: Datatype
         """
         
-        if dtype.kind == 'S':
+        if dtype.kind == 'S' or dtype.kind == 'U':
             if dtype.itemsize != 0:
                 type = String.fixed(dtype.itemsize)
                 type.padding = StringPad.NULLPAD

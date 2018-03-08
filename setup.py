@@ -1,4 +1,4 @@
-#setup script for python-pni
+#setup script for python-pninexus
 from __future__ import print_function
 import sys
 import os
@@ -8,7 +8,7 @@ from setuptools import setup
 from sphinx.setup_command import BuildDoc
 from distutils.command.install import install
 import sysconfig
-from build_tools import CppExtensionFactory,ConanBuildInfoBuilder
+from build_tools import CppExtensionFactory,ConanBuildInfoBuilder,BuildConfiguration
 
 cmdclass = {'build_sphinx':BuildDoc}
 name = "pninexus"
@@ -44,7 +44,13 @@ if os.path.exists("conanbuildinfo.txt"):
     for lib in nexus_config.link_libraries:
         print(lib)
 else:
-    pass
+    nexus_config = BuildConfiguration()
+    nexus_config.add_link_library('pnicore')
+    nexus_config.add_link_library('pniio')
+    nexus_config.add_link_library('h5cpp')
+    nexus_config.add_link_library("boost_python-py{major}{minor}".format(major=sys.version_info.major,
+                                                                         minor=sys.version_info.minor))
+    nexus_config.add_include_directory('/usr/include/hdf5/serial')
 
 
 #
@@ -73,72 +79,69 @@ nexus_extension_factory = CppExtensionFactory(config = nexus_config)
 # list of files for the pnicore extensions
 #-----------------------------------------------------------------------------
 
-core_lib_dir=os.path.join(get_build_dir(),"pni","core")
+core_lib_dir=os.path.join(get_build_dir(),"pninexus","core")
 
 
 #------------------------------------------------------------------------------
 # setup for the h5cpp and nexus extensions
 #------------------------------------------------------------------------------
 
-h5cpp_common_sources = ['src/io/h5cpp/common/converters.cpp',
-                        'src/io/h5cpp/numpy/dimensions.cpp',
-                        'src/io/h5cpp/numpy/array_factory.cpp',
-                        'src/io/h5cpp/numpy/array_adapter.cpp']
+h5cpp_common_sources = ['src/cpp/h5cpp/common/converters.cpp',
+                        'src/cpp/h5cpp/numpy/dimensions.cpp',
+                        'src/cpp/h5cpp/numpy/array_factory.cpp',
+                        'src/cpp/h5cpp/numpy/array_adapter.cpp']
 
 h5cpp_core_ext = nexus_extension_factory.create(
-                 module_name = "pni.io.h5cpp._h5cpp",
-                 source_files = ['src/io/h5cpp/_h5cpp.cpp',
-                                 'src/io/h5cpp/boost_filesystem_path_conversion.cpp',
-                                 'src/io/h5cpp/dimensions_conversion.cpp',
-                                 'src/io/h5cpp/errors.cpp'])
+                 module_name = "pninexus.h5cpp._h5cpp",
+                 source_files = ['src/cpp/h5cpp/_h5cpp.cpp',
+                                 'src/cpp/h5cpp/boost_filesystem_path_conversion.cpp',
+                                 'src/cpp/h5cpp/dimensions_conversion.cpp',
+                                 'src/cpp/h5cpp/errors.cpp'])
 
 h5cpp_attribute_ext = nexus_extension_factory.create(
-                      module_name = 'pni.io.h5cpp._attribute',
-                      source_files = ['src/io/h5cpp/attribute/attribute.cpp']+h5cpp_common_sources)
+                      module_name = 'pninexus.h5cpp._attribute',
+                      source_files = ['src/cpp/h5cpp/attribute/attribute.cpp']+h5cpp_common_sources)
 
 h5cpp_file_ext = nexus_extension_factory.create(
-                      module_name = 'pni.io.h5cpp._file',
-                      source_files = ['src/io/h5cpp/file/file.cpp'])
+                      module_name = 'pninexus.h5cpp._file',
+                      source_files = ['src/cpp/h5cpp/file/file.cpp'])
 
 h5cpp_dataspace_ext = nexus_extension_factory.create(
-                      module_name = 'pni.io.h5cpp._dataspace',
-                      source_files = ['src/io/h5cpp/dataspace/dataspace.cpp',
-                                      'src/io/h5cpp/dataspace/selections.cpp'])
+                      module_name = 'pninexus.h5cpp._dataspace',
+                      source_files = ['src/cpp/h5cpp/dataspace/dataspace.cpp',
+                                      'src/cpp/h5cpp/dataspace/selections.cpp'])
 
 h5cpp_datatype_ext = nexus_extension_factory.create(
-                     module_name = 'pni.io.h5cpp._datatype',
-                     source_files = ['src/io/h5cpp/datatype/datatype.cpp'])
+                     module_name = 'pninexus.h5cpp._datatype',
+                     source_files = ['src/cpp/h5cpp/datatype/datatype.cpp'])
 
 h5cpp_filter_ext = nexus_extension_factory.create(
-                   module_name = 'pni.io.h5cpp._filter',
-                   source_files = ['src/io/h5cpp/filter/filter.cpp'])
+                   module_name = 'pninexus.h5cpp._filter',
+                   source_files = ['src/cpp/h5cpp/filter/filter.cpp'])
 
 h5cpp_property_ext = nexus_extension_factory.create(
-                     module_name = 'pni.io.h5cpp._property',
-                     source_files = ['src/io/h5cpp/property/property.cpp',
-                                     'src/io/h5cpp/property/enumeration_wrappers.cpp',
-                                     'src/io/h5cpp/property/class_wrappers.cpp',
-                                     'src/io/h5cpp/property/copy_flag_wrapper.cpp',
-                                     'src/io/h5cpp/property/chunk_cache_parameters.cpp',
-                                     'src/io/h5cpp/property/creation_order.cpp'])
+                     module_name = 'pninexus.h5cpp._property',
+                     source_files = ['src/cpp/h5cpp/property/property.cpp',
+                                     'src/cpp/h5cpp/property/enumeration_wrappers.cpp',
+                                     'src/cpp/h5cpp/property/class_wrappers.cpp',
+                                     'src/cpp/h5cpp/property/copy_flag_wrapper.cpp',
+                                     'src/cpp/h5cpp/property/chunk_cache_parameters.cpp',
+                                     'src/cpp/h5cpp/property/creation_order.cpp'])
 
 h5cpp_node_ext = nexus_extension_factory.create(
-                 module_name = 'pni.io.h5cpp._node',
-                 source_files = ['src/io/h5cpp/node/nodes.cpp',
-                                 'src/io/h5cpp/node/dataset.cpp',
-                                 'src/io/h5cpp/node/functions.cpp',]+h5cpp_common_sources)
+                 module_name = 'pninexus.h5cpp._node',
+                 source_files = ['src/cpp/h5cpp/node/nodes.cpp',
+                                 'src/cpp/h5cpp/node/dataset.cpp',
+                                 'src/cpp/h5cpp/node/functions.cpp',]+h5cpp_common_sources)
 
 nexus_extension = nexus_extension_factory.create(
-                  module_name = 'pni.io.nexus._nexus',
-                  source_files = ['src/io/nexus/nexus.cpp',
-                                  'src/io/nexus/factories.cpp',
-                                  'src/io/nexus/predicates.cpp',
-                                  'src/io/nexus/list_converters.cpp',
-                                  'src/io/nexus/path.cpp',
-                                  'src/io/nexus/element_dict_converter.cpp'])
-
-
-
+                  module_name = 'pninexus.nexus._nexus',
+                  source_files = ['src/cpp/nexus/nexus.cpp',
+                                  'src/cpp/nexus/factories.cpp',
+                                  'src/cpp/nexus/predicates.cpp',
+                                  'src/cpp/nexus/list_converters.cpp',
+                                  'src/cpp/nexus/path.cpp',
+                                  'src/cpp/nexus/element_dict_converter.cpp'])
 
 #-----------------------------------------------------------------------------
 # customized version of the `install` command. The original version shipped 
@@ -177,8 +180,18 @@ setup(name="pninexus",
                    h5cpp_node_ext,
                    nexus_extension,
                    ],
-      packages = ['pni.io.h5cpp','pni.io.nexus'],
-      url="https://github.com/pni-libraries/python-pni",
+      package_dir={'':'src'},
+      packages = ['pninexus',
+                  'pninexus.h5cpp',
+                  'pninexus.h5cpp.attribute',
+                  'pninexus.h5cpp.dataspace',
+                  'pninexus.h5cpp.datatype',
+                  'pninexus.h5cpp.file',
+                  'pninexus.h5cpp.filter',
+                  'pninexus.h5cpp.node',
+                  'pninexus.h5cpp.property',
+                  'pninexus.nexus'],
+      url="https://github.com/pninexus-libraries/python-pninexus",
       test_suite="test",
       test_loader = "unittest:TestLoader",
       cmdclass={"install":pni_install},

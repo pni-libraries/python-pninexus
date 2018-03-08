@@ -1,1 +1,1 @@
-from predefined_type_tests import *
+from .predefined_type_tests import *
