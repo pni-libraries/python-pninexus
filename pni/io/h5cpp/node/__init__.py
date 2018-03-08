@@ -188,6 +188,13 @@ def dataset_write(self,data,selection=None):
         data = numpy.array(data)
         
     #
+    # if the data is a unicode numpy array we have to convert it to a 
+    # simple string array
+    #
+    if data.dtype.kind == 'U':
+        data = data.astype('S')
+        
+    #
     # determine memory datatype and dataspace
     # - if the file type is a variable length string we have to adjust the 
     #   memory type accordingly
@@ -219,6 +226,10 @@ def dataset_read(self,data=None,selection=None):
         file_space.selection(dataspace.SelectionOperation.SET,selection)
     
     if data!=None:
+        #
+        # if data has been provided by the user we have to determine the 
+        # datatype and dataspace for the memory representation
+        #
         if not isinstance(data,numpy.ndarray):
             raise TypeError("Inplace reading is only supported for numpy arrays!")
         
@@ -230,6 +241,10 @@ def dataset_read(self,data=None,selection=None):
                 memory_type = datatype.String.variable()
                 
     else:
+        #
+        # if no data was provided by the user we can safely take the 
+        # dataspace and datatype from the dataset in the file
+        #
         memory_type  = self.datatype
         
         if selection != None:
@@ -241,11 +256,19 @@ def dataset_read(self,data=None,selection=None):
             if file_space.type == dataspace.Type.SIMPLE:
                 shape = dataspace.Simple(file_space).current_dimensions
             
-        
+        #
+        # create an empty numpy array to which we read the data
+        #
         data = numpy.empty(shape,dtype=datatype.to_numpy(memory_type))
         
         
     data = self._read(data,memory_type,memory_space,file_space)
+    
+    if data.dtype.kind == 'S':
+        try:
+            data = data.astype('U')
+        except: 
+            print(data)
     
     return data
         

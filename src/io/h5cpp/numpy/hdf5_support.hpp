@@ -75,6 +75,7 @@ template<> class TypeTrait<numpy::ArrayAdapter>
         case NPY_FLOAT: return hdf5::datatype::create<float>();
         case NPY_DOUBLE: return hdf5::datatype::create<double>();
         case NPY_LONGDOUBLE: return hdf5::datatype::create<long double>();
+        case NPY_BOOL: return hdf5::datatype::create<bool>();
 #if PY_MAJOR_VERSION >= 3
         case NPY_UNICODE:
           return hdf5::datatype::String::fixed(array.itemsize());
