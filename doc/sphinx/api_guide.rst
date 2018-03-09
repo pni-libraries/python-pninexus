@@ -8,8 +8,8 @@ The package consists of two major subpackages
 * and :py:mod:`pninexus.nexus` which wraps classes and functions from the 
   :cpp:any:`pni::io::nexus` namespace of *libpniio*. 
 
-The ``pni.io.h5cpp`` package
-============================
+The ``pninexus.h5cpp`` package
+==============================
 
 .. automodule:: pninexus.h5cpp
    :members:
@@ -29,11 +29,14 @@ The ``pni.io.h5cpp`` package
 
 
 
-The ``pni.io.nexus`` package
-============================
+The ``pninexus.nexus`` package
+==============================
 
 .. automodule:: pninexus.nexus
    :members:
    :undoc-members:
 
-
+.. toctree::
+   :maxdepth: 1
+   
+   nexus/files

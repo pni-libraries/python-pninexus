@@ -1,6 +1,6 @@
-================================
-:py:mod:`pni.io.h5cpp.attribute`
-================================
+==================================
+:py:mod:`pninexus.h5cpp.attribute`
+==================================
 
 .. automodule:: pninexus.h5cpp.attribute
 

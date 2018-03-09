@@ -405,7 +405,6 @@ Classes
    
 .. autoclass:: LinkTarget
    :members:
-   :undoc-members:
    
    :py:class:`LinkTarget` describes the target for a link. It could be used 
    to access this target without dereferencing the link. It is thus useful 
@@ -433,16 +432,34 @@ Node related functions
 
 .. autofunction:: is_dataset(node)
 
-   Returns :py:const:`True` if the node instance represents a group, 
+   Returns :py:const:`True` if the node instance represents a dataset, 
    :py:const:`False` otherwise. 
    
    :param Node node: reference to a node to check
-   :return: :py:const:`True` if `node` is a group, :py:const:`False` otherwise
+   :return: :py:const:`True` if `node` is a dataset, :py:const:`False` otherwise
    :rtype: boolean
 
 .. autofunction:: is_group(node)
 
-.. autofunction:: get_node
+   Returns :py:const:`True` if the `Node` instance represents a group, 
+   :py:const:`False` otherwise. 
+   
+   :param Node node: reference to the node to check
+   :return: :py:const:`True` if `node` is a group, :py:const:`False` otherwise
+   :rtype: boolean
+
+.. autofunction:: get_node(base,path,lapl=pninexus.h5cpp.property.LinkAccessList())
+
+   Returns a determined by `base` and `path`. If `path` is relative it is 
+   considered relative to `base`. If `path` is absolute `base` is only used 
+   to determine the file and root group where to look for the node. 
+   
+   :param Group base: the base group from which to start the search
+   :param Path path: absolute or relative path to the node to obtain
+   :param pninexus.h5cpp.property.LinkAccessList lapl: optional link access property list
+   :return: new node instance (dataset or group)
+   :rtype: :py:class:`Group` or :py:class:`Dataset`
+   :raises RuntimeError: in case of a failure
 
 .. autofunction:: copy
 

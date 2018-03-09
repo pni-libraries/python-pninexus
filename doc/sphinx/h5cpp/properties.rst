@@ -1,6 +1,6 @@
-===============================
-:py:mod:`pni.io.h5cpp.property`
-===============================
+=================================
+:py:mod:`pninexus.h5cpp.property`
+=================================
 
 .. automodule:: pninexus.h5cpp.property
 
