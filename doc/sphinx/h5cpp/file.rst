@@ -2,7 +2,7 @@
 :py:mod:`pni.io.h5cpp.file`
 ===========================
 
-.. automodule:: pni.io.h5cpp.file
+.. automodule:: pninexus.h5cpp.file
 
 .. autosummary::
 

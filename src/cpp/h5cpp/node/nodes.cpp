@@ -139,7 +139,7 @@ class RecursiveLinkIteratorWrapper
       end(hdf5::node::RecursiveLinkIterator::end(group))
     {}
 
-    static RecursiveLinkIteratorWrapper create(const hdf5::node::NodeView &self)
+    static RecursiveLinkIteratorWrapper create(const hdf5::node::LinkView &self)
     {
       return RecursiveLinkIteratorWrapper(self.group());
     }
@@ -163,6 +163,20 @@ class RecursiveLinkIteratorWrapper
       return *this;
     }
 };
+
+//
+// this function is a hack - it seems that the default exists() method
+// of NodeView does not work as expected from Python though it does
+// in C++. Further investigation is required. However, for the moment,
+// this seems to work.
+//
+bool custom_node_view_exists(const hdf5::node::NodeView &self,
+                             const std::string &node_name,
+                             const hdf5::property::LinkAccessList &lapl)
+{
+  return self.group().links.exists(node_name,lapl) &&
+         self.group().links[node_name].is_resolvable();
+}
 
 
 
@@ -219,7 +233,7 @@ BOOST_PYTHON_MODULE(_node)
       ;
 
   class_<NodeView,bases<GroupView>>("NodeView",init<Group &>())
-      .def("exists",&NodeView::exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("exists",custom_node_view_exists,(arg("name"),arg("lapl")=hdf5::property::LinkAccessList()))
       .def("__getitem__",get_node_by_index)
       .def("__getitem__",get_node_by_name)
       .add_property("recursive",RecursiveNodeIteratorWrapper::create)

@@ -2,7 +2,7 @@
 :py:mod:`pni.io.h5cpp.dataspace`
 ================================
 
-.. automodule:: pni.io.h5cpp.dataspace
+.. automodule:: pninexus.h5cpp.dataspace
 
 :py:class:`Type`
 ================

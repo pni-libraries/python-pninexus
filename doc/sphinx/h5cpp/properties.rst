@@ -2,7 +2,10 @@
 :py:mod:`pni.io.h5cpp.property`
 ===============================
 
-.. automodule:: pni.io.h5cpp.property
+.. automodule:: pninexus.h5cpp.property
+
+Enumerations
+============
 
 .. autoclass:: DatasetFillValueStatus
 
@@ -65,5 +68,172 @@
 .. autoclass:: LibVersion
 
    .. autoattribute:: LibVersion.LATEST
+      :annotation: denotes the latest library version
    
    .. autoattribute:: LibVersion.EARLIEST
+      :annotation: denotes the earliest library version
+   
+.. autoclass:: CopyFlag
+
+   Flag controlling the copying behavior in HDF5.
+
+   .. autoattribute:: SHALLOW_HIERARCHY
+      :annotation: no recursive copying
+   
+   .. autoattribute:: EXPAND_SOFT_LINKS
+      :annotation: expand soft links when copying
+   
+   .. autoattribute:: EXPAND_EXTERNAL_LINKS
+      :annotation: expand external links when copyin
+   
+   .. autoattribute:: EXPAND_REFERENCES
+      :annotation: expand references when copying
+   
+   .. autoattribute:: WITHOUT_ATTRIBUTES
+      :annotation: do not include attributes when copying
+   
+   .. autoattribute:: MERGE_COMMITTED_TYPES
+      :annotation: merge committed types during copying 
+   
+Utility classes
+===============
+   
+ 
+.. autoclass:: CopyFlags
+   :members:
+   :undoc-members:
+
+.. autoclass:: ChunkCacheParameters
+   :members:
+   :undoc-members:
+ 
+.. autoclass:: CreationOrder
+   :members:
+   :undoc-members:
+ 
+Property list classes
+=====================
+ 
+.. autoclass:: List
+   :members:
+   :undoc-members:
+ 
+   Base class for all property lists. 
+   
+.. autoclass:: StringCreationList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: AttributeCreationList
+   :members:
+   :undoc-membes:
+   
+Object property lists
+---------------------
+
+.. autoclass:: ObjectCopyList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: ObjectCreationList
+   :members:
+   :undoc-members:
+   
+Dataset property lists
+----------------------
+   
+.. autoclass:: DatasetCreationList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: DatasetTransferList
+   :members:
+   :undoc-members:
+
+   Property list controlling the data transfer during dataset IO operations.
+   
+.. autoclass:: DatasetAccessList
+   :members: 
+   :undoc-members:
+   
+   Property list controlling access to a dataset
+   
+File property lists
+-------------------
+   
+.. autoclass:: FileAccessList
+   
+   Property list controlling how files are accessed. 
+   
+   .. autoattribute:: library_version_bound_high
+   
+      Read-only property returning the version uppermost version boundary. 
+      
+      :return: library boundary
+      :rtype: LibVersion
+   
+   .. autoattribute:: library_version_bound_low
+   
+      Read-only property returning the lowest compatible HDF5 version. 
+      
+      :return: library bound
+      :rtype: LibVersion
+   
+   .. automethod:: library_version_bounds(lower,upper)
+   
+      Set the upper and lower compatibility version bounds for a new file. 
+      
+      :param LibVersion lower: determines the lowest compat. version
+      :param LibVersion upper: determines the highest compat. version
+      
+   
+.. autoclass:: FileCreationList
+   :members:
+   :undoc-members:
+   
+   Property list controlling the file creation process
+   
+
+   
+.. autoclass:: FileMountList
+   :members:
+   :undoc-members:
+   
+   Property List controlling the mounting of external files. 
+   
+   
+Group property lists
+--------------------
+
+.. autoclass:: GroupCreationList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: GroupAccessList
+   :members:
+   :undoc-members:
+   
+Link property lists
+-------------------
+
+.. autoclass:: LinkCreationList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: LinkAccessList
+   :members:
+   :undoc-members:
+   
+Type property lists
+-------------------
+
+.. autoclass:: TypeCreationList
+   :members:
+   :undoc-members:
+   
+.. autoclass:: DatatypeAccessList
+   :members:
+   :undoc-members:
+
+ 
+ 

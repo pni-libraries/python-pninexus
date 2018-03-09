@@ -30,6 +30,13 @@ BOOST_PYTHON_MODULE(_property)
 {
   using namespace boost::python;
 
+  //
+  // setting up the documentation options
+  //
+  docstring_options doc_opts;
+  doc_opts.disable_signatures();
+  doc_opts.enable_user_defined();
+
   create_enumeration_wrappers();
   create_class_wrappers();
   create_copyflag_wrapper();

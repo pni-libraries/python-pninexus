@@ -2,7 +2,7 @@
 :py:mod:`pni.io.h5cpp.datatype`
 ===============================
 
-.. automodule:: pni.io.h5cpp.datatype
+.. automodule:: pninexus.h5cpp.datatype
 
 Enumerations
 ============

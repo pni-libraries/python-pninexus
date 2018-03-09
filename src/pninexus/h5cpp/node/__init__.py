@@ -23,6 +23,7 @@ from pninexus.h5cpp._node import Dataset
 from pninexus.h5cpp._node import LinkTarget
 from pninexus.h5cpp._node import Link
 from pninexus.h5cpp._node import RecursiveNodeIterator
+    
 
 #
 # import node related functions
@@ -66,10 +67,12 @@ def remove(node=None,base=None,path=None,
     """Remove a node from the HDF5 node tree
     
     This function can be used in two modes:
-    * either the node to remove is referenced directly by :param:`node`  
-    * or by :param:`base` and :param:`path`. 
     
-    :parma Node node: the node to remove
+    * either the node to remove is referenced directly by `node`  
+    * or by `base` and `path`.
+     
+    
+    :param Node node: the node to remove
     :param Group base: base group from which to search
     :param Path path: HDF5 path to the object to remove 
     :param LinkAccessList link_access_list: optional link access property list
@@ -179,6 +182,14 @@ def selection_to_shape(selection):
     return shape
 
 def dataset_write(self,data,selection=None):
+    """ write data to a dataset
+    
+    Writes `data` to a dataset 
+    
+    :param object data: Python object with data to write
+    :param pninexus.h5cpp.dataspace.Selection selection: an optional selection  
+    :raises RuntimeError: in case of a failure
+    """
     
     #
     # in case that the parameter passed is not an numpy array we 
