@@ -12,7 +12,6 @@ The ``pninexus.h5cpp`` package
 ==============================
 
 .. automodule:: pninexus.h5cpp
-   :members:
    
 .. toctree::
    :maxdepth: 1
@@ -33,10 +32,9 @@ The ``pninexus.nexus`` package
 ==============================
 
 .. automodule:: pninexus.nexus
-   :members:
-   :undoc-members:
 
 .. toctree::
    :maxdepth: 1
    
    nexus/files
+   nexus/factories

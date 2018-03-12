@@ -64,30 +64,30 @@ void create_factory_wrappers()
   // wrapping factory classes
   //
   class_<nexus::BaseClassFactory>("BaseClassFactory")
-      .def("create",&nexus::BaseClassFactory::create,
+      .def("create_",&nexus::BaseClassFactory::create,
            (arg("parent"),
             arg("path"),
             arg("base_class"),
             arg("lcpl")=hdf5::property::LinkCreationList(),
             arg("gcpl")=hdf5::property::GroupCreationList(),
             arg("gapl")=hdf5::property::GroupAccessList()))
-      .staticmethod("create")
+      .staticmethod("create_")
       ;
 
   class_<pni::io::nexus::FieldFactory>("FieldFactory")
-      .def("create",create_without_chunk,
+      .def("create_",create_without_chunk,
            (arg("parent"),arg("path"),arg("type"),arg("space"),
             arg("lcpl") = hdf5::property::LinkCreationList(),
             arg("dcpl") = hdf5::property::DatasetCreationList(),
             arg("dapl") = hdf5::property::DatasetAccessList())
            )
-      .staticmethod("create")
-      .def("create_chunked",create_with_chunk,
+      .staticmethod("create_")
+      .def("create_chunked_",create_with_chunk,
            (arg("parent"),arg("path"),arg("type"),arg("space"),arg("chunk"),
             arg("lcpl") = hdf5::property::LinkCreationList(),
             arg("dcpl") = hdf5::property::DatasetCreationList(),
             arg("dapl") = hdf5::property::DatasetAccessList())
       )
-      .staticmethod("create_chunked")
+      .staticmethod("create_chunked_")
       ;
 }
