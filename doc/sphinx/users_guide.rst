@@ -33,23 +33,26 @@ Reading legacy ASCII and binary files
 
 Nexus support
 -------------
-At the current status (version 1.0.0) the ``libpniio`` does only support
-Nexus using the HDF5 storage backend. In order to use the provided Nexus
-functionality import the package with something like this
 
-.. code-block:: python
-    
-    import pni.io.nx.h5 as nexus
+NeXus is supported with the HDF5 file format as the physical storage format. 
+:py:mod:`pninexus` provides NeXus support via two packages 
 
+* :py:mod:`pninexus.h5cpp` which is a low level wrapper around the *h5cpp* 
+  C++ library for HDF5 
+* and :py:mod:`pninexus.nexus` providing high level functions related to the 
+  NeXus file format. 
+  
+.. attention::
+
+   It is strongly encouraged to read the following two chapters in the correct 
+   order: start with the uses guide for the :py:mod:`pninexus.h5cpp` package
+   and than read the chapter about :py:mod:`pninexus.h5cpp`. 
 
 .. toctree::
-    :maxdepth: 2 
+   :maxdepth: 1
    
-    nexus_path
-    nexus_files
-    nexus_groups
-    nexus_fields
-    nexus_attributes
-    nexus_links
-    nexus_xml
+   using_h5cpp
+   using_nexus
+
+
 

@@ -331,6 +331,20 @@ Classes
       :param pninexus.h5cpp.property.LinkAccessList lapl: optional link access property list
       :return: :py:const:`True` if the node exists, :py:const:`False` otherwise
       :rtype: boolean
+      
+      
+   .. automethod:: __getitem__(key)
+   
+      Allows access to the *immediate* child nodes of a group.
+      
+      .. code-block:: python
+      
+         data = group.nodes["data"] 
+      
+      :param str key: name of the child node's link
+      :return: group or dataset instance
+      :rtype: :py:class:`Dataset` or :py:class:`Group`
+      :raises RuntimeError: in case of a failure
    
 .. autoclass:: Link
    :members:

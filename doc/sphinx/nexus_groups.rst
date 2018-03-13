@@ -2,164 +2,51 @@
 Working with groups
 ===================
 
-Groups are the fundamental containers in Nexus. They can hold other groups as
-well as fields. 
+Groups are the fundamental containers in NeXus. Technically NeXus groups are
+nothing else than ordinary HDF5 groups (:py:class:`pninexus.h5cpp.node.Group`)
+ with two additional features 
 
-Creation
-========
+* in order to be NeXus compliant a the name of a groups link must adhere 
+  to the NeXus naming convention 
+* the group can represent a particular *base class* if it has a string 
+  attribute `NX_class` attached to it and set to the name of the desired 
+  *base class*. 
 
-To create a new group use the :py:meht
-There are several ways how to create groups and fields. The most natural one is
-to use the :py:meth:`create_group` method of a group instance.  The former one is
-rather easy to use
+The task of creating a NeXus compliant group or *base class* can be split 
+into two subtasks
 
-.. code-block:: python
-    
-    from __future__ import print_function
-    import pni.io.nx.h5 as nexus
-
-    f = nexus.create_file("groups_test.nxs",overwrite=True)
-    root_group = f.root()
-
-    e1 = root_group.create_group("entry_1")
-    e2 = root_group.create_group("entry_2","NXentry")
-    e3 = root_group.create_group("entry_3:NXentry")
-    e4 = root_group.create_group("entry_4",nxclass="NXentry")
-
-The first call creates a group of name ``entry_1`` while the second 
-one create a group of name ``entry_2`` of type ``NXentry``. 
-The type of a group is determined by an attribute name ``NX_class``
-attached to the group (we will learn more about attributes latter).
-The calls three and four are synonymous to the second call, just the group type
-is represented in a different way.
-
-The :py:meth:`create_group` method can only create groups which are direct
-children of the their parent group. So using 
+* first check if the name of the new group obeys the NeXus naming rules
+* attach a `NX_class` attribute to the new group and set it to the name 
+  of the desired base class. 
+  
+In principle one could create a group simply by using the constructor of the 
+:py:class:`h5cpp.node.Group` class and perform the two takes mentioned above 
+manually. However to make life easier the :py:mod:`nexus` package provides 
+a utility class :py:class:`pninexus.nexus.BaseClassFactory` which provides a single static 
+method :py:meth:`create` which takes away the burden to write all the boiler 
+plate code yourself. 
 
 .. code-block:: python
 
-    g = root_group.create_group("entry/instrument/detector")
+   from pninexus.nexus import BaseClassFactory
+   
+   #open a file an obtain the root group 
+   
+   entry = nexus.BaseClassFactory.create(parent = root_group,
+                                         name = "scan_00001",
+                                         base_class = "NXentry")
+                                         
+In order to customize the group creation this static method can be provided 
+with three additional named arguments 
 
-will fail if `entry` and/or `instrument` do not exist. It may sounds strange
-that one cannot create intermediate groups automatically, a feature the HDF5
-library and the :py:mod:`h5py` wrapper support. However, we cannot use this
-feature as it creates groups only by name and does not add type information.
-However, if the intermediate groups exist the above call will succeed 
-
-.. code-block:: python
-
-    root_group.create_group("entry:NXentry").\
-               create_group("instrument:NXinstrument")
-
-    root_group.create_group("detector","NXdetector")
-
-
-Inquery
-=======
-
-In order to determine the number of (direct) children of a group we can 
-either use the :py:attr:`size` attribute of an instance of 
-:py:class:`nxgroup` or use the build-in function :py:func:`len` with an 
-instance of :py:class:`nxgroup` as its argument. 
-
-.. code-block:: python
-
-    g = ....
-    g.size == len(g)
-
-
-:py:class:`nxgroup` exposes some more read-only attributes to obtain 
-more information about a particular instance
-
-=====================  ====================================================
-Attribute name         Description 
-=====================  ====================================================
-:py:attr:`is_valid`    :py:const:`True` if the group is a valid object
-:py:attr:`name`        returns the name of the group 
-:py:attr:`parent`      returns the groups parent group 
-:py:attr:`size`        the number of children a group has 
-:py:attr:`filename`    name of the file the group belongs to 
-:py:attr:`attributes`  property providing access to the groups' attributes
-:py:attr:`path`        provides the path for the group
-=====================  ====================================================
-
-Accessing a groups children
-===========================
-
-The direct children of a group can be accessed by its `[]` operator where 
-the key can be either the index of the child 
-
-.. code-block:: python
-
-    for index in range(len(root_group)):
-        print(root_group[index].name)
-
-or the name of the child
-
-.. code-block:: python
-
-    for name in root_group.names():
-        print(root_group[name].name)
-
-The return value of the `[]` operator is either an instance of 
-:py:class:`nxfield`, :py:class:`nxgroup`, or :py:class:`nxlink`. The latter is
-returned in situations where a child is a link which cannot be resolved. 
-Thus it is possible to investigate the target of the link and its current
-status. 
-
-.. code-block:: python
-
-    for name in root_group.names():
-        child = root_group[name]
-
-        if isinstance(child,nexus.nxlink):
-            print("link ",child.name," cannot be resolved")
-
-Iteration
----------
-
-As containers, instances of :py:class:`nxgroup` expose two different iterator
-interfaces
-
-* a simple one directly provided by :py:class:`nxgroup` which iterates only 
-  over the direct children of a group
-* and a recursive iterator provided by the :py:attr:`nxgroup.recursive` of 
-  an instance of :py:class:`nxgroup`.
-
-The latter one iterates over all children of a group and the children of its
-subgroups. Simple iteration can be done with
-
-.. code-block:: python
-
-    for child in group: print(child.path)
-
-while the recursive iterator can be accessed via the 
-:py:attr:`recursive` attribute of an instance of :py:class:`nxgroup`
-
-.. code-block:: python
-
-    for child in group.recursive: print(child.path)
-
-Recursive iteration is a quite usefull feature along with list comprehension to
-generate lists of particular object types.  
-A typical application for recursive iteration would be to find all the fields
-that have been involved in a measurement. We assume here that for all fields
-the first dimension indicates the number of scan points. We thus can simply use
-the following list comprehension 
-
-.. code-block:: python 
-
-    from __future__ import print_function
-    import pni.io.nx.h5 as nx 
-
-    f = nx.open_file("test.nxs")
-
-    def scanned_field(obj):
-        return is_instance(obj,nx.nxfield) and obj.shape[0]>1
-
-    scanned_fields = [ obj for obj in f.root().recursive if scanned_field(obj)]
-
-    for field in scanned_fields:
-        print field.path
++----------+-------------------------------------------------------+------------------------------+
+| argument | type                                                  | description                  |
++==========+=======================================================+==============================+
+| `lcpl`   | :py:class:`pninexus.h5cpp.property.LinkCreationList`  | link creation property list  |
++----------+-------------------------------------------------------+------------------------------+
+| `gcpl`   | :py:class:`pninexus.h5cpp.property.GroupCreationList` | group creation property list |
++----------+-------------------------------------------------------+------------------------------+
+| `gapl`   | :py:class:`pninexus.h5cpp.property.GroupAccessList`   | group access property list   |
++----------+-------------------------------------------------------+------------------------------+
 
 
