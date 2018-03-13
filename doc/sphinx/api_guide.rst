@@ -17,6 +17,7 @@ The ``pninexus.h5cpp`` package
 .. toctree::
    :maxdepth: 1
    
+   h5cpp/h5cpp
    h5cpp/attributes
    h5cpp/dataspace
    h5cpp/datatype
