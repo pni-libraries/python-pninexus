@@ -69,7 +69,14 @@ def base_class_factory_create(parent, name, base_class,
     if gapl == None:
         gapl = h5cpp.property.GroupAccessList()
         
-    return BaseClassFactory.create_(parent,h5cpp.Path(name),base_class,lcpl,gcpl,gapl)
+    if isinstance(name,str):
+        name = h5cpp.Path(name)
+    elif isinstance(name,h5cpp.Path):
+        pass
+    else:
+        raise TypeError("`name` must be either a h5cpp.Path or a str instance!")
+        
+    return BaseClassFactory.create_(parent,name,base_class,lcpl,gcpl,gapl)
 
 BaseClassFactory.create = staticmethod(base_class_factory_create)
 
