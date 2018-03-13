@@ -228,7 +228,12 @@ BOOST_PYTHON_MODULE(_node)
           ;
 
   class_<RecursiveNodeIteratorWrapper>("RecursiveNodeIterator",no_init)
-      .def("next",&RecursiveNodeIteratorWrapper::next)
+#if PY_MAJOR_VERSION >= 3
+      .def("__next__",&RecursiveNodeIteratorWrapper::next)
+#else
+	  .def("next",&RecursiveNodeIteratorWrapper::next)
+#endif
+
       .def("__iter__",&RecursiveNodeIteratorWrapper::__iter__)
       ;
 
@@ -240,7 +245,11 @@ BOOST_PYTHON_MODULE(_node)
       ;
 
   class_<RecursiveLinkIteratorWrapper>("RecursiveLinkIterator",no_init)
+#if PY_MAJOR_VERSION >=3
+	  .def("__next__",&RecursiveLinkIteratorWrapper::next)
+#else
       .def("next",&RecursiveLinkIteratorWrapper::next)
+#endif
       .def("__iter__",&RecursiveLinkIteratorWrapper::__iter__)
       ;
 
