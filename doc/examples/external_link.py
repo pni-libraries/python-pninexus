@@ -1,59 +1,46 @@
 from __future__ import print_function
-import pni.io.nx.h5 as nexus
-import sys
-import utilities as utils
 
-master_file_struct = \
-"""
-<group name="entry" type="NXentry">
-    <group name="instrument" type="NXinstrument">
-        <group name="detector" type="NXdetector">
-        </group>
-    </group>
+from pninexus import h5cpp
+from pninexus.h5cpp import Path
+from pninexus.h5cpp.file import AccessFlags
+from pninexus.h5cpp.node import Group,link
 
-    <group name="sample" type="NXsample">
-    </group>
 
-    <group name="data" type="NXdata">
-    </group>
-</group>
-"""
+def create_external_data(filename):
+    
+    f = h5cpp.file.create(filename,AccessFlags.TRUNCATE)
+    r = f.root()
+    
+    Group(r,"temperature_calibration")
 
-detector_file_struct = \
-"""
-<group name="entry" type="NXentry">
-    <group name="instrument" type="NXinstrument">
-        <group name="detector" type="NXdetector">
-            <field name="data" type="uint32" units="cps">
-                <dimensions rank="1">
-                    <dim index="1" value="10"/>
-                </dimensions>
-                12 9 199 150 123 99 65 87 94 55
-            </field>
-        </group>
-    </group>
 
-</group>
-"""
+create_external_data("sensor_calibration.h5")
 
-detector_file = nexus.create_file("detector.nxs",True)
-root =detector_file.root()
-nexus.xml_to_nexus(detector_file_struct,root,utils.write_everything)
-root.close()
-detector_file.close()
+h5file = h5cpp.file.create("sensor_data.h5",AccessFlags.TRUNCATE)
+root   = h5file.root()
 
-master_file = nexus.create_file("master_file.nxs",True)
-root = master_file.root()
-nexus.xml_to_nexus(master_file_struct,root)
-try:
-    dg = nexus.get_object(root,"/:NXentry/:NXinstrument/:NXdetector")
-except KeyError:
-    print("Could not find detector group in master file!")
-    sys.exit(1)
+#
+# create external link to existing group
+#
+link(target=Path("/temperature_calibration"),
+     link_base = root,
+     link_path = Path("/temperature_calibration"),
+     target_file="sensor_calibration.h5")
 
-nexus.link("detector.nxs://entry/instrument/detector/data",dg,"data")
+#
+# create external link to non-existing gruop
+#
+link(target=Path("/pressure_calibration"),
+     link_base = root,
+     link_path = Path("pressure_calibration"),
+     target_file = "sensors_calibration.h5")
 
-data = nexus.get_object(root,"/:NXentry/:NXinstrument/:NXdetector/data")
-print(data[...])
+#
+# show the result
+#
+for link in root.links:
+    print("{path} -> {type} [{resolvable}]".format(path=link.path,
+                                                   type=link.type(),
+                                                   resolvable=link.is_resolvable))
 
 
