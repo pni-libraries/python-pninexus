@@ -25,4 +25,7 @@ though it is not extremely hard to use it).
    
    h5cpp_files
    h5cpp_groups
+   h5cpp_datatypes
+   h5cpp_dataspace
+   h5cpp_dataset
    h5cpp_attributes
