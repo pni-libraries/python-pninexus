@@ -57,6 +57,11 @@ std::string path_to_string(const hdf5::Path &self)
   return std::string(self);
 }
 
+void print_hdf5_errors(bool value)
+{
+  hdf5::error::Singleton::instance().auto_print(value);
+}
+
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_h5cpp)
@@ -117,7 +122,7 @@ BOOST_PYTHON_MODULE(_h5cpp)
       .def(self + hdf5::Path())
       ;
 
-
+  def("print_hdf5_errors",print_hdf5_errors);
 
   exception_registration();
 }

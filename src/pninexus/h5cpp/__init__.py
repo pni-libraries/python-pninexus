@@ -19,3 +19,4 @@ from pninexus.h5cpp._h5cpp import IteratorConfig
 from pninexus.h5cpp._h5cpp import IterationOrder
 from pninexus.h5cpp._h5cpp import IterationIndex
 from pninexus.h5cpp._h5cpp import Path
+from pninexus.h5cpp._h5cpp import print_hdf5_errors

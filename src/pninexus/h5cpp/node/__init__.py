@@ -23,6 +23,7 @@ from pninexus.h5cpp._node import Dataset
 from pninexus.h5cpp._node import LinkTarget
 from pninexus.h5cpp._node import Link
 from pninexus.h5cpp._node import RecursiveNodeIterator
+    
 
 #
 # import node related functions
@@ -37,7 +38,22 @@ def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              object_copy_list = property.ObjectCopyList()):
     """Copy an object within the HDF5 tree
     
+    Copies an existing object `node` to a new location. The new location is 
+    determined by `base` and `path` argument. If `path` is not given a 
+    copy of the original object will be created with the same name under 
+    `base`. If `path` is given, it determines the new path and thus name 
+    of the copied object relative to the `base` object.
     
+    The behavior of the copy operation can be controlled by a link and 
+    object copy property list which can be passed as optional arguments.  
+    
+    :param Node node: the object to copy
+    :param Group base: the base group for the new location
+    :param pninexus.h5cpp.Path path: optional HDF5 path determining the final 
+                                     location of the copied object
+    :param LinkCreationList link_creation_list: optional link creation property list
+    :param ObjectCopyList object_copy_list: optional object copy property list
+    :raise RuntimeError: in case of errors 
     """
     
     if path != None:
@@ -52,6 +68,22 @@ def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
                              link_access_list = property.LinkAccessList()):
     """Moving a node within the HDF5 tree
     
+    Move an instance of :py:class:`Node` (dataset or group) to a new location. 
+    The new location is determined by the `base` and `path` argument. 
+    If `path` is not given `node` is moved below the `base` using the same 
+    link name as it has under its original group. 
+    If `path` is given the new location is determined by this path relative 
+    to the `base` group. 
+    
+    Technically this function does not move any data but, like on a filesystem, 
+    only links are altered.
+    
+    :param Node node: the node (dataset or group) to move
+    :param Group base: the base group where to move the node
+    :param Path path: optional HDF5 path determining the new location of the
+                      node to be moved relative to the `base` group
+    :param LinkCreationList link_creation_list: optional link creation property list
+    :param LinkAccessList link_access_list: optional link access property list
     """
     
     if path!=None:
@@ -66,10 +98,21 @@ def remove(node=None,base=None,path=None,
     """Remove a node from the HDF5 node tree
     
     This function can be used in two modes:
-    * either the node to remove is referenced directly by :param:`node`  
-    * or by :param:`base` and :param:`path`. 
     
-    :parma Node node: the node to remove
+    * either the node to remove is referenced directly by `node`  
+    * or by `base` and `path`.
+    
+    .. attention::
+    
+        It is important that this function does not remove any data from the 
+        file. It only removes the link to the given node. An object is 
+        considered deleted if no link leading to this node exists. However, 
+        the file size will not change. In order to remove all the data associated 
+        with this node `h5repack` has to be used which will simply not copy
+        nodes without links to the new file. 
+     
+    
+    :param Node node: the node to remove
     :param Group base: base group from which to search
     :param Path path: HDF5 path to the object to remove 
     :param LinkAccessList link_access_list: optional link access property list
@@ -110,7 +153,15 @@ def link(target,
          link_access_list = property.LinkAccessList()):
     """Create a new link
     
-    Create a new soft link to the 'target' below 
+    Create a new soft link to a node referenced by `target` under `link_path` 
+    relative to `link_base`. If `target_file` is set an external link is 
+    provided an external link is created. 
+    
+    .. attention::
+    
+        The target object does not need to exist at the time the link is 
+        created. Only when the new link should be dereferenced the target 
+        object has to exist. 
     
     :param Node/Path target: the target for the new link
     :param Group link_base: the base for the new link
@@ -179,6 +230,14 @@ def selection_to_shape(selection):
     return shape
 
 def dataset_write(self,data,selection=None):
+    """ write data to a dataset
+    
+    Writes `data` to a dataset 
+    
+    :param object data: Python object with data to write
+    :param pninexus.h5cpp.dataspace.Selection selection: an optional selection  
+    :raises RuntimeError: in case of a failure
+    """
     
     #
     # in case that the parameter passed is not an numpy array we 
