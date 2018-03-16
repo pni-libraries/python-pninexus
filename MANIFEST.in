@@ -5,5 +5,6 @@ include doc/sphinx/*
 include build_tools/*.py
 include pkgconfig.py
 exclude .gitignore
+exclude doc/sphinx/.gitignore
 graft build/sphinx/html 
 recursive-include doc/c++api/c++api *
