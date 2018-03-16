@@ -1,0 +1,215 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HDF5 attributes &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
+    <link rel="next" title="Using the pninexus.nexus package" href="using_nexus.html" />
+    <link rel="prev" title="HDF5 datasets" href="h5cpp_dataset.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="using_nexus.html" title="Using the pninexus.nexus package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_dataset.html" title="HDF5 datasets"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HDF5 attributes</a><ul>
+<li><a class="reference internal" href="#creating-attributes">Creating attributes</a></li>
+<li><a class="reference internal" href="#accessing-and-managing-attributes">Accessing and managing attributes</a></li>
+<li><a class="reference internal" href="#reading-and-writing-data">Reading and writing data</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="h5cpp_dataset.html"
+                        title="previous chapter">HDF5 datasets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="using_nexus.html"
+                        title="next chapter">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/h5cpp_attributes.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hdf5-attributes">
+<span id="working-with-attributes"></span><h1>HDF5 attributes<a class="headerlink" href="#hdf5-attributes" title="Permalink to this headline">¶</a></h1>
+<p>Nodes (datasets and groups) have attributes attached to them which can
+be used to store meta-data or other related data close to the group or
+dataset they are associated with.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Though attributes in many ways behave like datasets, unlike those, they
+are not intended to store large data!</p>
+</div>
+<p>The attributes of a node can be accessed and managed via the
+<code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code> interface accessible from every node via its
+<code class="xref py py-attr docutils literal"><span class="pre">attributes</span></code> property.</p>
+<div class="section" id="creating-attributes">
+<h2>Creating attributes<a class="headerlink" href="#creating-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Creating attributes follows more or less the same scheme than creating
+datasets. You first have to create and HDF5 datataype and dataspace which
+is then passed to the <code class="xref py py-func docutils literal"><span class="pre">create()</span></code> function of the <code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code>
+instance of a node</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.datatype</span> <span class="kn">import</span> <span class="n">kVariableString</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp.dataspace</span> <span class="kn">import</span> <span class="n">Scalar</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="n">kVariableString</span><span class="p">,</span><span class="n">space</span><span class="o">=</span><span class="n">Scalar</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Though this seems to be a bit verbose and there is definitely more typing
+work to do than in the case of other wrappers, however, on the other side
+this gives you full control of how an attribute is created (and <em>full control</em>
+is the intention of this wrapper).
+You can also pass an instance of <code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.AttributeCreationList</span></code>
+as a fourth argument which would give you the same level of control over
+attribute creation as the C-API.</p>
+</div>
+<div class="section" id="accessing-and-managing-attributes">
+<h2>Accessing and managing attributes<a class="headerlink" href="#accessing-and-managing-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Attributes can be accessed either by their numerical index or by their name
+using the <code class="xref py py-meth docutils literal"><span class="pre">__getitem__()</span></code> method of the <code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code>
+instance of a node.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+
+<span class="c1">#or</span>
+
+<span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#get the first attribute</span>
+</pre></div>
+</div>
+<p>To check whether an existing attribute exists us the <code class="xref py py-meth docutils literal"><span class="pre">exists()</span></code> method
+provided by <code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">):</span>
+   <span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code> provides also an interator interface for attributes.
+So in order to iterate over all attributes attached to a node we could do</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Existing attributes can be removed from a node using the <code class="xref py py-meth docutils literal"><span class="pre">remove()</span></code> method
+of <code class="xref py py-class docutils literal"><span class="pre">AttributeManager</span></code> which takes either a numerical index or the
+name of the attribute to delete. Finally the <code class="xref py py-meth docutils literal"><span class="pre">size()</span></code> method returns
+the number of attributes attached to a node.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;This node has {} attributes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-and-writing-data">
+<h2>Reading and writing data<a class="headerlink" href="#reading-and-writing-data" title="Permalink to this headline">¶</a></h2>
+<p>Reading data from and writing data to an attribute is quite simple. The
+<code class="xref py py-class docutils literal"><span class="pre">Attribute</span></code> class provides two methods for this <code class="xref py py-meth docutils literal"><span class="pre">read()</span></code>
+and <code class="xref py py-meth docutils literal"><span class="pre">write()</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+<span class="n">attr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;degree&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Like for datasets the <code class="xref py py-meth docutils literal"><span class="pre">read()</span></code> method returns an instance of
+<code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code> and the <code class="xref py py-class docutils literal"><span class="pre">write</span></code> function internally
+converts every argument to a numpy array before writing (unless it is not
+already a numpy array).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="using_nexus.html" title="Using the pninexus.nexus package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_dataset.html" title="HDF5 datasets"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

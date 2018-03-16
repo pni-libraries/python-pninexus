@@ -1,0 +1,225 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Working with Nexus files &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="up" title="Users Guide" href="users_guide.html" />
+    <link rel="next" title="Working with groups" href="nexus_groups.html" />
+    <link rel="prev" title="Addressing objects: the NeXus path" href="nexus_path.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="nexus_groups.html" title="Working with groups"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nexus_path.html" title="Addressing objects: the NeXus path"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" accesskey="U">Users Guide</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nexus_path.html"
+                        title="previous chapter">Addressing objects: the NeXus path</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nexus_groups.html"
+                        title="next chapter">Working with groups</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nexus_files.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="working-with-nexus-files">
+<h1>Working with Nexus files<a class="headerlink" href="#working-with-nexus-files" title="Permalink to this headline">¶</a></h1>
+<p>The most fundamental thing you may want to do is to create, open, and close
+files. File creation and closing could look like this</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;test.nxs&quot;</span><span class="p">)</span>
+<span class="c1">#... do some work here</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If the file you try to create already exists an exception will be thrown. To
+override this behavior the <code class="xref py py-func docutils literal"><span class="pre">create_file()</span></code> function has a boolean
+keyword argument <cite>overwrite</cite></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;text.nxs&quot;</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When using <code class="docutils literal"><span class="pre">overwrite=True</span></code> an already existing file will be overwritten.
+Existing files can be opened using the <code class="xref py py-func docutils literal"><span class="pre">open_file()</span></code> function</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;test.nxs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which by default opens an existing file in read-only mode. Use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;test.nxs&quot;</span><span class="p">,</span><span class="n">readonly</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to open the file for reading and writing. In order to check the status of a
+file object one can query its <code class="xref py py-attr docutils literal"><span class="pre">is_valid</span></code> property. If an instance of
+<code class="xref py py-class docutils literal"><span class="pre">nxfile</span></code> represents a valid file object the value of
+<code class="xref py py-attr docutils literal"><span class="pre">is_valid</span></code> is <code class="xref py py-const docutils literal"><span class="pre">True</span></code>. This should be the case in most
+situations. A case where <code class="xref py py-attr docutils literal"><span class="pre">is_valid</span></code> is not <code class="xref py py-const docutils literal"><span class="pre">True</span></code> would be
+a default constructed file object</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">nxfile</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">is_valid</span><span class="p">)</span>
+<span class="c1">#output: False</span>
+</pre></div>
+</div>
+<p>The mode a file is opened in (read-only or read-write) can be determined from
+the <code class="xref py py-attr docutils literal"><span class="pre">readonly</span></code> property. It is <code class="xref py py-const docutils literal"><span class="pre">True</span></code> if the file is in
+read-only mode and <code class="xref py py-const docutils literal"><span class="pre">False</span></code> otherwise.
+The file object returned by <code class="xref py py-func docutils literal"><span class="pre">create_file()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">open_file()</span></code>
+provides only very limited functionality.  In order to do some useful work you
+have to obtain the root node of the Nexus tree (in HDF5 this is the root group
+of the file) with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-func docutils literal"><span class="pre">create_file()</span></code> function creates a simple single file into which all
+data will be stored. This can causes some problems when the files become large
+(several hundred Gigabytes) and the data should be archived in a tape library
+or if the data should be transfered via a network. The HDF5 library offers a
+possiblity to split files into smaller portions. <cite>libpniio</cite> provides a
+simple interface to this functionality via the <code class="xref py py-func docutils literal"><span class="pre">create_files()</span></code> function
+(note the usage of the plural <cite>files</cite> in the functions name).
+The <code class="xref py py-func docutils literal"><span class="pre">create_files()</span></code> function works quite similar to its single file
+counterpart <code class="xref py py-func docutils literal"><span class="pre">create_file()</span></code> with to exceptions</p>
+<ul class="simple">
+<li>it has an additional keyword argument <cite>split_size</cite> which determines the
+size of the individual files</li>
+<li>the filename must be a C-like format string encoding a running file index.</li>
+</ul>
+<p>In code this could look like this</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_files</span><span class="p">(</span><span class="s2">&quot;test.</span><span class="si">%05i</span><span class="s2">.nxs&quot;</span><span class="p">,</span>
+                       <span class="n">overwrite</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                       <span class="n">split_size</span><span class="o">=</span><span class="mi">30</span><span class="o">*</span><span class="mi">1024</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The file will be split into subfiles of 30 GByte size. After filling data into
+the file we would get files like</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ ls
+  test.00001.nxs
+  test.00002.nxs
+  test.00003.nxs
+</pre></div>
+</div>
+<p>It is important to note that the files cannot be used invidually.</p>
+<p>In order to
+access the data all of the must be available and should be valid.
+Opening such a <cite>distributed</cite> file straight forward, just pass the C-format
+string as a filename to the <code class="xref py py-func docutils literal"><span class="pre">open_file()</span></code> function</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s1">&#39;test.</span><span class="si">%05i</span><span class="s1">.nxs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>No additional action has to be taken by the user. The splitted file behaves the
+same as the single flie created by <code class="xref py py-func docutils literal"><span class="pre">create_file()</span></code>.</p>
+<p>Finally, a file instance has an method <code class="xref py py-meth docutils literal"><span class="pre">flush()</span></code> which forces the
+underlying HDF5 library to write all data currently scheduled for writing.
+This can be a first step towards save NeXus code avoiding corrupted files.
+A typical design pattern showing the usage of <code class="xref py py-meth docutils literal"><span class="pre">flush()</span></code> would be</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;data.nxs&quot;</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="n">recording_data</span><span class="p">():</span>
+    <span class="c1">#</span>
+    <span class="c1"># gather data and write it to their target fields</span>
+    <span class="c1">#</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>  <span class="c1">#ensure that after every cycle the data is writen to disk</span>
+</pre></div>
+</div>
+<p>This approach does not make your program totaly robust against corrupted files,
+however, it is a first measure in this direction.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="nexus_groups.html" title="Working with groups"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nexus_path.html" title="Addressing objects: the NeXus path"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="next" title="Users Guide" href="users_guide.html" />
+    <link rel="prev" title="Welcome to libpnicore Python bindings’s documentation!" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="users_guide.html" title="Users Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to libpnicore Python bindings’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#build-requirements">Build requirements</a></li>
+<li><a class="reference internal" href="#building-the-package">Building the package</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to libpnicore Python bindings&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="users_guide.html"
+                        title="next chapter">Users Guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="build-requirements">
+<h2>Build requirements<a class="headerlink" href="#build-requirements" title="Permalink to this headline">¶</a></h2>
+<p>For the build of the package the following dependencies must be satisfied</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">package</th>
+<th class="head">version</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>libpnicore</td>
+<td>&gt;=1.0.0</td>
+</tr>
+<tr class="row-odd"><td>libpniio</td>
+<td>&gt;=1.1.0</td>
+</tr>
+<tr class="row-even"><td>numpy</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>gcc compiler</td>
+<td>&gt;=4.7</td>
+</tr>
+<tr class="row-even"><td>python</td>
+<td>&gt;=2.7 or &gt;=3.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="building-the-package">
+<h2>Building the package<a class="headerlink" href="#building-the-package" title="Permalink to this headline">¶</a></h2>
+<p>The wrapper package follows the standard Python build and installation
+protocoll using Python setuptools.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python setup.py build
+$ python setup.py install
+</pre></div>
+</div>
+<p>or for Python3</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 setup.py build
+$ python3 setup.py install
+</pre></div>
+</div>
+<p>In order to build the Sphinx documentation use</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 setup.py build_sphinx
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="users_guide.html" title="Users Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to libpnicore Python bindings’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

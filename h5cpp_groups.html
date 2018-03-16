@@ -1,0 +1,414 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HDF5 nodes, links, and groups &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
+    <link rel="next" title="HDF5 datatypes" href="h5cpp_datatypes.html" />
+    <link rel="prev" title="Working with files" href="h5cpp_files.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_files.html" title="Working with files"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HDF5 nodes, links, and groups</a><ul>
+<li><a class="reference internal" href="#links-and-paths">Links and paths</a></li>
+<li><a class="reference internal" href="#groups">Groups</a><ul>
+<li><a class="reference internal" href="#creating-groups">Creating groups</a></li>
+<li><a class="reference internal" href="#accessing-child-nodes">Accessing child nodes</a></li>
+<li><a class="reference internal" href="#accessing-links">Accessing links</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a><ul>
+<li><a class="reference internal" href="#retrieving-nodes-by-path">Retrieving nodes by path</a></li>
+<li><a class="reference internal" href="#creating-links">Creating links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="h5cpp_files.html"
+                        title="previous chapter">Working with files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="h5cpp_datatypes.html"
+                        title="next chapter">HDF5 datatypes</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/h5cpp_groups.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hdf5-nodes-links-and-groups">
+<h1>HDF5 nodes, links, and groups<a class="headerlink" href="#hdf5-nodes-links-and-groups" title="Permalink to this headline">¶</a></h1>
+<p>In HDF5 data is stored as a tree of nodes connected via links</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/hdf5_basic_tree.svg"><img alt="_images/hdf5_basic_tree.svg" src="_images/hdf5_basic_tree.svg" width="40%" /></a>
+</div>
+<p>The root of the tree is the root group which is itself a <em>group node</em>.
+Currently two kinds of nodes are supported</p>
+<ul class="simple">
+<li><em>groups</em> (<code class="xref py py-class docutils literal"><span class="pre">Group</span></code>)</li>
+<li>and <em>datasets</em> (<code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code>)</li>
+</ul>
+<p>which both are subclasses of <code class="xref py py-class docutils literal"><span class="pre">Node</span></code>. The nodes are connected
+via <em>links</em> (<code class="xref py py-class docutils literal"><span class="pre">Link</span></code>). There is a common misconception about HDF5
+that nodes (datasets and groups) have names. It is not the node which
+has a name but rather the link which connects a particular node with its
+parent node. It is possible that several links with different name point to
+the same node within a file. Thus the concept of a name for a node
+does not make too much sense. What makes sense instead is the concept of a
+<em>path</em> used to access a particular node (see below).</p>
+<p>Every node can have <em>attributes</em> attached to it
+(<code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.attribute.Attribute</span></code>) which can be used to store
+meta-data about a particular node. The attributes of a node can be accessed via
+the <code class="xref py py-attr docutils literal"><span class="pre">Node.attributes</span></code> property.
+We will discuss attributes later (see <a class="reference internal" href="h5cpp_attributes.html#working-with-attributes"><span class="std std-ref">HDF5 attributes</span></a> for more
+details). Aside from attributes the most important property of
+<code class="xref py py-class docutils literal"><span class="pre">Node</span></code> is the <code class="xref py py-attr docutils literal"><span class="pre">link</span></code> property. It provides information about
+the link via which the node was accessed.</p>
+<p>In this section we will discuss <em>groups</em> and <em>links</em>.</p>
+<div class="section" id="links-and-paths">
+<h2>Links and paths<a class="headerlink" href="#links-and-paths" title="Permalink to this headline">¶</a></h2>
+<p>Links can be considered the glue which sticks the nodes within an HDF5
+tree together. A link connects a particular node (dataset or group) with its
+parent group. Every link has a name which must be unique for all  links
+below the same parent group.</p>
+<p>A concept closely related to links is a <em>path</em> (<code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.Path</span></code>)
+which is technically nothing else than a list of link names used to access
+a particular object. <em>Paths</em> have a string representation which resembles
+that of a Unix file-system path. So for instance the path
+<code class="docutils literal"><span class="pre">`/sensors/temperature`</span></code> would be the list of link names to access a
+dataset (most probably storing temperature data) in the HDF5 tree depicted
+above.  The <code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.Path</span></code> class is used throughout the
+code to represent such a path. See the API documentation for more information
+about how to use this class.</p>
+<p>Links are usually not created directly by a user but rather returned by several
+methods and class properties. The relevant property for this section is the
+<code class="xref py py-attr docutils literal"><span class="pre">Node.link</span></code> property of the <code class="xref py py-class docutils literal"><span class="pre">Node</span></code> class. This read
+only property returns an instance of <code class="xref py py-class docutils literal"><span class="pre">Link</span></code> describing the link
+used to access a particular node.
+In HDF5 links come in three flavors</p>
+<ul class="simple">
+<li><em>hard links</em> which are created when a new node is created</li>
+<li><em>soft links</em> which can be used to reference already existing nodes within
+the same file (they are thus similar to symbolic links on a UNIX file system)</li>
+<li><em>external links</em> which allow referencing nodes in a different HDF5 file.</li>
+</ul>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">Link</span></code> class provides several useful properties and methods
+to query the status of a link. We will restrict ourselves here to the most
+important ones. Consult the API documentation for <code class="xref py py-class docutils literal"><span class="pre">Link</span></code> for
+more detailed information.</p>
+<p>In order to determine what kind of link we are dealing with we can query the
+<code class="xref py py-meth docutils literal"><span class="pre">type()</span></code> method of <code class="xref py py-class docutils literal"><span class="pre">Link</span></code> which returns an enumeration
+of <code class="xref py py-class docutils literal"><span class="pre">LinkType</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">#we somehow get a reference to a link</span>
+
+<span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">HARD</span><span class="p">:</span>
+   <span class="k">print</span><span class="p">(</span><span class="s2">&quot;we got a hard link&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">SOFT</span><span class="p">:</span>
+   <span class="k">print</span><span class="p">(</span><span class="s2">&quot;we got a soft link&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">EXTERNAL</span><span class="p">:</span>
+   <span class="k">print</span><span class="p">(</span><span class="s2">&quot;we got an external link&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since in HDF5 <em>soft-</em> and <em>external-links</em> can be created even if the target
+the link refers to does not exist (yet) we have to know whether or not a link
+can be resolved. This is where the <code class="xref py py-attr docutils literal"><span class="pre">is_resolvable</span></code> property of
+<code class="xref py py-class docutils literal"><span class="pre">Link</span></code> comes in handy</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">is_resolvable</span><span class="p">:</span>
+   <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;link cannot be resolved&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once we know that that a link is resolvable we can use the <code class="xref py py-attr docutils literal"><span class="pre">node</span></code>
+property to retrieve the node referenced by the link</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">link</span> <span class="o">==</span> <span class="o">...</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">is_resolvable</span><span class="p">:</span>
+   <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;link cannot be resolved&quot;</span><span class="p">)</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">node</span>
+</pre></div>
+</div>
+<p>which returns either an instance of <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> or <code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code>.
+If a link is not resolvable a good address to ask why is to use the
+<code class="xref py py-class docutils literal"><span class="pre">target</span></code> method (see API docs for details) which allows you to
+identify the node the link would refer to.</p>
+</div>
+<div class="section" id="groups">
+<h2>Groups<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h2>
+<p>Groups are containers for links which refer to the <em>child nodes</em>  of a group.
+The <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> class provides an interface to work with groups
+and which will be discussed in more detail in this section.</p>
+<div class="section" id="creating-groups">
+<h3>Creating groups<a class="headerlink" href="#creating-groups" title="Permalink to this headline">¶</a></h3>
+<p>Groups are created by calling their constructor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp.node</span> <span class="kn">import</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">root</span>   <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+
+<span class="n">run</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="s2">&quot;run_0001&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are two notable things taking place in this example.</p>
+<ol class="arabic simple">
+<li>the entry point to the HDF5 node hierarchy is the root group which can be
+obtained from the <code class="xref py py-meth docutils literal"><span class="pre">root()</span></code> method of the file class. It returns an
+instance of <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> as any other group would be. Unlike for many
+HDF5 wrappers and the C-API itself the file object does not have any
+group semantics.</li>
+<li>the constructor of <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> takes two parameters<ul>
+<li>the first one is a reference to the parent group of the new group</li>
+<li>and the second is path to the new group relative to the base.</li>
+</ul>
+</li>
+</ol>
+<p>If the path to the new group comprises more than one element all the
+intermediate groups must exist. If you want to create also these groups
+collectively you have to provide a special link creation property list</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.property</span> <span class="kn">import</span> <span class="n">LinkCreationList</span>
+
+<span class="n">lcpl</span> <span class="o">=</span> <span class="n">LinkCreationList</span><span class="p">()</span>
+<span class="n">lcpl</span><span class="o">.</span><span class="n">intermediate_group_creation</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="s2">&quot;run_0001/sensors/temperature&quot;</span><span class="p">,</span><span class="n">lcpl</span><span class="o">=</span><span class="n">lcpl</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are three distinct things you can do with an instance of <code class="xref py py-class docutils literal"><span class="pre">Group</span></code></p>
+<ol class="arabic simple">
+<li>you can use it as a parent group for new nodes (datasets and groups)</li>
+<li>you can iterate over its child nodes</li>
+<li>you can iterate over the links attached to it.</li>
+</ol>
+</div>
+<div class="section" id="accessing-child-nodes">
+<h3>Accessing child nodes<a class="headerlink" href="#accessing-child-nodes" title="Permalink to this headline">¶</a></h3>
+<p>Access to the child nodes of a particular group is provided via its
+<code class="xref py py-attr docutils literal"><span class="pre">Group.nodes</span></code>
+property which returns an instance of <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code>.
+To access a particular child one could use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">):</span>
+   <span class="n">data</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code> instance only provides access to the <em>immediate</em>
+children of a group. <code class="xref py py-meth docutils literal"><span class="pre">NodeView.__getitem__()</span></code> returns either an
+instance of <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> or <code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code>.</p>
+<p>In order to iterate over the child nodes of a group one has two choices.
+For iteration over the <em>immediate</em> child nodes only, the <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code>
+instance provides a Python iterator interface</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="p">;</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-attr docutils literal"><span class="pre">path</span></code> property of the <code class="xref py py-class docutils literal"><span class="pre">Link</span></code> class returns the
+HDF5 path of the link (and hence, in this case, to the node it dereferences).
+Alternatively, if you want to iterate recursively over all the nodes below
+a group including that of its subgroups, the <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code> class
+provides a recursive node iterator via its <code class="xref py py-attr docutils literal"><span class="pre">recursive</span></code> property</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">....</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">recursive</span><span class="p">;</span>
+   <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Though this iterator approach is quite simple it has a significant downside:
+it assumes that all the links accessed via the iteration can be resolved.
+If a link does not exist and cannot be resolved to an object a
+<code class="xref py py-exc docutils literal"><span class="pre">RuntimeError</span></code> exception will be thrown.
+So in the case of a file whose structure is mainly unknown rather follow
+the approach in  the next subsection and iterate over links rather than
+over nodes.</p>
+</div>
+</div>
+<div class="section" id="accessing-links">
+<h3>Accessing links<a class="headerlink" href="#accessing-links" title="Permalink to this headline">¶</a></h3>
+<p>Similar to the <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code> interface there is also a <code class="xref py py-class docutils literal"><span class="pre">LinkView</span></code>
+interface attached to <code class="xref py py-class docutils literal"><span class="pre">Group</span></code> which can be accessed via its
+<code class="xref py py-attr docutils literal"><span class="pre">links</span></code> property.</p>
+<p>To access a particular link attached to a group you could use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">):</span>
+   <span class="n">link</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+
+   <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">is_resolvable</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Unresolvable link: &quot;</span><span class="o">+</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+   <span class="n">data</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">node</span> <span class="c1">#get the object referenced by the link</span>
+</pre></div>
+</div>
+<p>Like for <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code>, <code class="xref py py-class docutils literal"><span class="pre">LinkView</span></code> provides an iterator
+interface over the link <em>immediately</em> attached to a group while
+<code class="xref py py-attr docutils literal"><span class="pre">LinkView.recursive</span></code> returns a recursive link iterator.</p>
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<p>There are several utility functions available for working with groups and links.
+Two of them shall be presented here.</p>
+<div class="section" id="retrieving-nodes-by-path">
+<h3>Retrieving nodes by path<a class="headerlink" href="#retrieving-nodes-by-path" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">NodeView</span></code> interface allows only access by name to <em>immediate</em> child
+nodes of a group. The idea was that a group should have a similar semantic
+as a Python <em>dictionary</em>. However, if you want to access nodes via a path
+you may consider using the <code class="xref py py-func docutils literal"><span class="pre">get_node()</span></code> function</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.node</span> <span class="kn">import</span> <span class="n">get_node</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">get_node</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;run_0001/sensors/temperature&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-links">
+<h3>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this headline">¶</a></h3>
+<p>Another important topic is to create links. This can be done with the
+<code class="xref py py-func docutils literal"><span class="pre">link()</span></code> function. This function allows you to create two types
+of links: soft links and external links. For a detailed description
+about the arguments of <code class="xref py py-func docutils literal"><span class="pre">link()</span></code> see the API documentation. We will
+show here only the function in action.</p>
+<p>The easiest way to create a soft link to an existing node would be this</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp.node</span> <span class="kn">import</span> <span class="n">link</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">link</span><span class="p">(</span><span class="n">group</span><span class="p">,</span><span class="n">root</span><span class="p">,</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;link_to_group&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Where the first argument is the target for the link, in this case a group.
+The second is the base relative to which the new link should be created, and
+the third argument is the path to the new link.
+When using the above syntax the target node obviously must already exist at the
+time the link is created.
+However, there is also an alternative approach for situations where you want to
+create the link in advance of the target. In this case, the above example
+would read somehow like</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">link</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/absolute/path/to/target&quot;</span><span class="p">),</span><span class="n">base</span><span class="p">,</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;link_to_group&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here the first argument is an HDF5 path rather than a node instance. Since
+the existence of the target path is not checked when the link is created,
+you can safely create a link in advance of its target. However, when you
+try to access the node referenced by the new link the target must exist
+for the operation to succeed.</p>
+<p>If you want to create a link to a node in a different file you could use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">link</span><span class="p">(</span><span class="n">target</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/node&quot;</span><span class="p">)</span>
+     <span class="n">link_base</span>   <span class="o">=</span> <span class="n">base_group</span><span class="p">,</span>
+     <span class="n">link_path</span>   <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;link_name&quot;</span><span class="p">),</span>
+     <span class="n">target_file</span> <span class="o">=</span> <span class="s2">&quot;external_data.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The important argument here is the <cite>target_file</cite> argument. When provided
+<code class="xref py py-func docutils literal"><span class="pre">link()</span></code> creates an external link assuming that <cite>target</cite> refers
+to a node in the file determined by <cite>target_file</cite>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_files.html" title="Working with files"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,206 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Working with files &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
+    <link rel="next" title="HDF5 nodes, links, and groups" href="h5cpp_groups.html" />
+    <link rel="prev" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="h5cpp_groups.html" title="HDF5 nodes, links, and groups"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="using_h5cpp.html" title="Using the pninexus.h5cpp package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Working with files</a><ul>
+<li><a class="reference internal" href="#creating-a-file">Creating a file</a></li>
+<li><a class="reference internal" href="#opening-files">Opening files</a></li>
+<li><a class="reference internal" href="#id1">Working with files</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="using_h5cpp.html"
+                        title="previous chapter">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="h5cpp_groups.html"
+                        title="next chapter">HDF5 nodes, links, and groups</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/h5cpp_files.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="working-with-files">
+<h1>Working with files<a class="headerlink" href="#working-with-files" title="Permalink to this headline">¶</a></h1>
+<p>The first thing to do when working with HDF5 is to create new or opening
+existing files. Classes and functions related to file operations can be
+found in the <code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.file</span></code> package.</p>
+<div class="section" id="creating-a-file">
+<h2>Creating a file<a class="headerlink" href="#creating-a-file" title="Permalink to this headline">¶</a></h2>
+<p>In the <code class="xref py py-func docutils literal"><span class="pre">create()</span></code> function is used to create new files. In
+the simplest case you can use this function with a single argument: the name
+of the new file</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
+
+<span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function returns an instance of <code class="xref py py-class docutils literal"><span class="pre">File</span></code> which can be used
+for all further operations on files. Unlike with other HDF5 Python wrappers
+the <code class="xref py py-class docutils literal"><span class="pre">File</span></code> class cannot be used as an entry point to the node
+hierarchy in the file. For that purpose one has to obtain the root group
+with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">h5file</span> <span class="o">=</span> <span class="o">....</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This sounds like a inconvenience at first but has the major advantage that the
+semantic of classes remains clear: a file is not a group and thus should not
+behave as one.</p>
+<p>A subsequent call to <code class="xref py py-func docutils literal"><span class="pre">create()</span></code> with the same filename would raise
+a <code class="xref py py-exc docutils literal"><span class="pre">RuntimeError</span></code> exception as the file already exists. In order
+to overwrite existing files the second argument must be set with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">,</span><span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">AccessFlags</span><span class="o">.</span><span class="n">TRUNCATE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the API documentation of <code class="xref py py-class docutils literal"><span class="pre">AccessFlags</span></code> for all
+available flags.
+Additional fine tuning of the file creation process is possible using
+two more keyword arguments to this function: <cite>fcpl</cite> and <cite>fapl</cite>
+which accept instances of <code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.FileCreationList</span></code> and
+<code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.FileAccessList</span></code>. These classes refer to a
+<em>file creation property list</em> and a <em>file access property list</em> respectively.</p>
+</div>
+<div class="section" id="opening-files">
+<h2>Opening files<a class="headerlink" href="#opening-files" title="Permalink to this headline">¶</a></h2>
+<p>To open an existing file use the <code class="xref py py-func docutils literal"><span class="pre">open()</span></code> function.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
+
+<span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which, by default, opens the file in read-only mode. To get read-write
+access to a file use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">,</span><span class="n">flags</span><span class="o">=</span><span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">AccessFlags</span><span class="o">.</span><span class="n">READWRITE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-func docutils literal"><span class="pre">open()</span></code> would raise an exception if the filename refers not
+to an HDF5 file. To avoid such situations use the <code class="xref py py-func docutils literal"><span class="pre">is_hdf5_file()</span></code>
+to check if the requested file is an HDF5 file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">is_hdf5_file</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">):</span>
+   <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;not an HDF5 file&quot;</span><span class="p">)</span>
+
+<span class="n">h5file</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Working with files<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>At first: a file can be closed by calling its <code class="xref py py-func docutils literal"><span class="pre">close()</span></code> method.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>However, this is only necessary if the file should be closed deliberately.
+Usually all objects imported by <code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp</span></code> are automatically
+destroyed when they&#8217;re losing their scope.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="h5cpp_groups.html" title="HDF5 nodes, links, and groups"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="using_h5cpp.html" title="Using the pninexus.h5cpp package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>

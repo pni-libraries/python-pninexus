@@ -1,0 +1,6 @@
+# Site settings
+title: python-pni
+email: jan.kotanski@desy.de
+description: "python-pni"
+
+include: ['_sources', '_static', '_images', 'nexus', 'h5cpp']

@@ -1,0 +1,243 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Working with attributes &#8212; pninexus 2.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
+    <link rel="next" title="Working with links" href="nexus_links.html" />
+    <link rel="prev" title="Working with fields" href="nexus_fields.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="nexus_links.html" title="Working with links"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nexus_fields.html" title="Working with fields"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Working with attributes</a><ul>
+<li><a class="reference internal" href="#attribute-inquiry">Attribute inquiry</a></li>
+<li><a class="reference internal" href="#attribute-retrieval-and-iteration">Attribute retrieval and iteration</a></li>
+<li><a class="reference internal" href="#reading-and-writing-data-from-and-to-an-attribute">Reading and writing data from and to an attribute</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nexus_fields.html"
+                        title="previous chapter">Working with fields</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nexus_links.html"
+                        title="next chapter">Working with links</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nexus_attributes.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="working-with-attributes">
+<h1>Working with attributes<a class="headerlink" href="#working-with-attributes" title="Permalink to this headline">¶</a></h1>
+<p>Fields and groups can have attributes attached which provide additional
+metadata. In fact Nexus makes heavy use of attributes to store additional
+information about a field or group. It is thus not recommended to use
+attributes too excessively as one may runs into name conflicts with future Nexus
+development.
+Attributes can be accessed from fields and groups via their <code class="xref py py-attr docutils literal"><span class="pre">attributes</span></code>
+member. Attributes behave basically like fields with some restrictions</p>
+<ul class="simple">
+<li>they cannot grow</li>
+<li>one cannot apply compression to attributes.</li>
+</ul>
+<p>Due to this restrictions one should not use attributes to store large amounts of
+data.</p>
+<p>To create attributes use the <code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> method of the
+<code class="xref py py-obj docutils literal"><span class="pre">attributes</span></code> member</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nx</span>
+
+<span class="n">field</span> <span class="o">=</span> <span class="o">....</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which would create a scalar attribute of name <code class="docutils literal"><span class="pre">temperature</span></code> and with a 32-bit
+floating point type. Multidimensional attributes can be created with the
+optional <code class="docutils literal"><span class="pre">shape</span></code> keyword argument</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If an attribute already exists it can be overwritten using the <code class="docutils literal"><span class="pre">overwrite</span></code>
+keyword argument (<code class="xref py py-const docutils literal"><span class="pre">False</span></code> by default).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span>
+                            <span class="n">overwrite</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="attribute-inquiry">
+<h2>Attribute inquiry<a class="headerlink" href="#attribute-inquiry" title="Permalink to this headline">¶</a></h2>
+<p>Like fields and groups attributes have a couple of properties which can be
+queried to obtain metadata for a particular attribute instance</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">property</th>
+<th class="head">description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="xref py py-attr docutils literal"><span class="pre">shape</span></code></td>
+<td>a tuple with the number of elements along each
+dimension of the attribute</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-attr docutils literal"><span class="pre">dtype</span></code></td>
+<td>the string representation of the attributes data type</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-attr docutils literal"><span class="pre">is_valid</span></code></td>
+<td>true if the attribute is a valid object</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-attr docutils literal"><span class="pre">name</span></code></td>
+<td>the name of the attribute (the key which can be used
+to retrieve the attribute from its parent)</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></td>
+<td>provides access to the attributes data</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-attr docutils literal"><span class="pre">path</span></code></td>
+<td>returns the path of the attribute</td>
+</tr>
+</tbody>
+</table>
+<p>The following code</p>
+<p>will produce</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>HDF5_version         : /@HDF5_version       <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+NX_class             : /@NX_class           <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+NeXus_version        : /@NeXus_version      <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+file_name            : /@file_name          <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+file_time            : /@file_time          <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+file_update_time     : /@file_update_time   <span class="nv">type</span><span class="o">=</span>string     <span class="nv">size</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="attribute-retrieval-and-iteration">
+<h2>Attribute retrieval and iteration<a class="headerlink" href="#attribute-retrieval-and-iteration" title="Permalink to this headline">¶</a></h2>
+<p>There are basically three ways to to access the attributes attached to a group
+or a field</p>
+<ul class="simple">
+<li>by name via <code class="xref py py-meth docutils literal"><span class="pre">__getitem__()</span></code> (using <cite>[]</cite>)</li>
+<li>by the attributes index</li>
+<li>by an iterator.</li>
+</ul>
+<p>The <code class="xref py py-attr docutils literal"><span class="pre">attributes</span></code> attribute of groups and fields exposes an iterable
+interface. The following example shows all three ways how to access the
+attributes of a files root group</p>
+<p>The output is</p>
+</div>
+<div class="section" id="reading-and-writing-data-from-and-to-an-attribute">
+<h2>Reading and writing data from and to an attribute<a class="headerlink" href="#reading-and-writing-data-from-and-to-an-attribute" title="Permalink to this headline">¶</a></h2>
+<p>Concerning IO operations attributes heave pretty much like fields as shown in
+the next example</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">r</span><span class="o">=</span> <span class="o">[</span>-1.  <span class="m">0</span>.  <span class="m">0</span>.<span class="o">]</span>
+<span class="nv">x</span><span class="o">=</span> -1.0
+<span class="nv">y</span><span class="o">=</span> <span class="m">0</span>.0
+<span class="nv">z</span><span class="o">=</span> <span class="m">0</span>.0
+</pre></div>
+</div>
+<p>There is not too much more to day about that. When reading and writing
+multidimensional data numpy arrays must be used in any case (also for strings).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="nexus_links.html" title="Working with links"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nexus_fields.html" title="Working with fields"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+    </div>
+  </body>
+</html>
