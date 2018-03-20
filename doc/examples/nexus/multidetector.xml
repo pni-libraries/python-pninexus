@@ -2,6 +2,14 @@
 	<group name="scan_0001" type="NXentry">
 		<group name="instrument" type="NXinstrument">
 			<group name="detector_001" type="NXdetector">
+			  <field name="data" type="uint32" units="cps">
+			     <dimensions rank="1">
+			         <dim value="0" index="1"/>
+			     </dimensions>
+			     <chunk rank="1">
+			         <dim value="104857600" index="1"/>
+			     </chunk>
+			  </field> 
 			</group>
 			<group name="detector_002" type="NXdetector">
 			</group>
@@ -14,7 +22,17 @@
 	
 	<group name="scan_0002" type="NXentry">
 		<group name="instrument" type="NXinstrument">
-			<group name="detector_001" type="NXdetector">
+			<group name="mythen" type="NXdetector">
+			 <field name="data" type="uint32" units="cps">
+			     <dimensions rank="2">
+			         <dim value="0" index="1"/>
+			         <dim value="2048" index="2"/>
+			     </dimensions>
+			     <chunk rank="2">
+			         <dim value="10" index="1"/>
+			         <dim value="2048" index="2"/>
+			     </chunk>
+			 </field>
 			</group>
 		</group>
 	</group>
