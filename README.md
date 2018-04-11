@@ -47,3 +47,4 @@ $ python setup.py test
 
 For Python3 just replace python with python3 in the above instructions.
 
+More information can be found at [online documentation](https://pni-libraries.github.io/python-pni/index.html).
