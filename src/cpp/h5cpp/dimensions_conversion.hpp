@@ -23,6 +23,7 @@
 #pragma once
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <boost/python/stl_iterator.hpp>
 
 //!
 //! @brief convert hdf5::Dimensions to a Python tuple
