@@ -54,7 +54,7 @@ class H5pyCompatibilityReading(unittest.TestCase):
         
         dt = h5py.special_dtype(vlen=bytes)
         f.create_dataset("VariableLengthStringData",cls.str_data.shape,data=cls.str_data.astype("S"),dtype=dt)
-        
+        f.close()
         
     def setUp(self):
         
