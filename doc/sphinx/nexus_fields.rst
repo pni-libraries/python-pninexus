@@ -27,7 +27,7 @@ This example shows field creation using all possible arguments
 
 .. code-block:: python
 
-    import pni.io.nx.h5 as nx
+    import pninexus.nexus as nx
 
     path = "/:NXentry/:NXinstrument/:NXdetector"
     file = nx.open_file("data.nxs",readonly=False)
@@ -136,7 +136,7 @@ following example
 .. code-block:: python
 
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("run1.nxs",readonly=False)
     root = f.root()
@@ -157,7 +157,7 @@ stored in a field
 .. code-block:: python
 
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("run1.nxs",readonly=False)
     root = f.root()
@@ -176,7 +176,7 @@ As in the :py:mod:`h5py` data can also be written from lists and nested lists.
 .. code-block:: python
     
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.create_file("run2.nxs",readonly=False)
     root = f.root()
@@ -201,7 +201,7 @@ The code should be rather self explaining
 
 .. code-block:: python
     
-    import pni.io.nx.h5 as nx
+    import pninexus.nexus as nx
 
     file = nx.open_file("run_01.nxs")
     root_group = file.root()

@@ -227,7 +227,7 @@ To create a NeXus file from XML is rather simple. Just use the
 
 .. code-block:: python
 
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     xml_struct = \
     """
