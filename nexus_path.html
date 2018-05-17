@@ -218,26 +218,26 @@ be obtained via the, read-only, <code class="xref py py-attr docutils literal"><
 <p>Functions and classes concerning NeXus paths are available from the
 <code class="xref py py-mod docutils literal"><span class="pre">pni.io.nx</span></code> package.
 A NeXus path is represented by an instance of <code class="xref py py-class docutils literal"><span class="pre">nxpath</span></code>.
-The <code class="xref py py-func docutils literal"><span class="pre">make_path()</span></code> utiltiy function creates a new instance of a path</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">nxpath</span><span class="p">,</span><span class="n">make_path</span>
+The <code class="xref py py-func docutils literal"><span class="pre">Path.from_string()</span></code> utiltiy function creates a new instance of a path</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>An empyt instance can be obtained by usint the default constructor
 of <code class="xref py py-class docutils literal"><span class="pre">nxpath</span></code></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">nxpath</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">p</span> <span class="o">=</span> <span class="n">nxpath</span><span class="p">()</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The <em>file-</em> and <em>attribute-section</em> of the path is accessible via the
 <code class="xref py py-attr docutils literal"><span class="pre">filename</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">attribute</span></code> attributes of a path instance
 which are both read- and writeable</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units&quot;</span><span class="p">)</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
 <span class="n">path</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;test.nxs&quot;</span>
@@ -250,9 +250,9 @@ which are both read- and writeable</p>
 accessible via the <code class="xref py py-attr docutils literal"><span class="pre">front</span></code> and the last element vai the
 <code class="xref py py-attr docutils literal"><span class="pre">back</span></code> attribute. These attributes are only readable.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">path</span> <span class="o">=</span>  <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span>  <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument&quot;</span><span class="p">)</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">front</span><span class="p">)</span> <span class="c1">#output: {&#39;name&#39;:&#39;/&#39;,&#39;base_class&#39;:&#39;NXroot&#39;}</span>
 <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">back</span><span class="p">)</span>  <span class="c1">#output: {&#39;name&#39;:&#39;&#39;,&#39;base_class&#39;:&#39;NXinstrument&#39;}</span>
@@ -265,8 +265,9 @@ or field and the latter one, in the case of a group, is the value of the
 entry is always an empty string.</p>
 <p>Appending and prepending elements to the <em>object-section</em></p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="nn">make_path</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
 <span class="n">path</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="s2">&quot;scan_1:NXentry&quot;</span><span class="p">)</span>
 <span class="n">path</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;instrument&quot;</span><span class="p">,</span><span class="n">base_class</span><span class="o">=</span><span class="s2">&quot;NXinstrument&quot;</span><span class="p">)</span>
@@ -282,9 +283,9 @@ entry is always an empty string.</p>
 </div>
 <p>Using a path as a stack</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="n">nxpath</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/mythen:NXdetector/data&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/mythen:NXdetector/data&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="c1">#output: /:NXentry/:NXinstrument/mythen:NXdetector/data</span>
 
@@ -304,55 +305,22 @@ entry is always an empty string.</p>
 </div>
 <p>One can iterate of the <em>object-section</em> of a path</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="s2">&quot;base_class&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-<p>Paths can be joined using the <code class="docutils literal"><span class="pre">+</span></code> operator</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument&quot;</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;:NXdetector/data&quot;</span><span class="p">)</span>
-
-<span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="c1">#output: /:NXentry/:NXinstrument/:NXdetector/data</span>
-</pre></div>
-</div>
-<p>However, the two paths have to follow some rules in order to be joined</p>
-<ul class="simple">
-<li><code class="xref py py-data docutils literal"><span class="pre">a</span></code> must not have a <em>attribute-section</em></li>
-<li><code class="xref py py-data docutils literal"><span class="pre">b</span></code> must not have a <em>file-section</em></li>
-<li><code class="xref py py-data docutils literal"><span class="pre">b</span></code> must not be an absolute path</li>
-</ul>
-<p>Though these rules seem to be complicated at the first glimpse they are totally
-natural if you think about them for a moment. For instance, how would you join
-two paths if the left hand side of the operator has an attribute section which
-is most naturally the terminal element of every path.
-If any of these rules is violated a <code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> exception will be
-thrown.</p>
-<p>One can also join a path object with a string representing a path</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span>
-
-<span class="n">base_path</span>     <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/&quot;</span><span class="p">)</span>
-<span class="n">detector_path</span> <span class="o">=</span> <span class="n">base_path</span> <span class="o">+</span> <span class="s2">&quot;:NXdetector&quot;</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;base_class&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>To check if two paths are matching use the <code class="xref py py-func docutils literal"><span class="pre">match()</span></code> function</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pni.io.nx</span> <span class="kn">import</span> <span class="n">make_path</span><span class="p">,</span><span class="n">match</span>
+<span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
-<span class="n">det_path</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector&quot;</span><span class="p">)</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">make_path</span><span class="p">(</span><span class="s2">&quot;/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector&quot;</span><span class="p">)</span>
+<span class="n">det_path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector&quot;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span>  <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector&quot;</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">det_path</span><span class="p">,</span><span class="n">p</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">nexus</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">det_path</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
 <span class="c1">#output: True</span>
 </pre></div>
 </div>

@@ -136,22 +136,22 @@ be obtained via the, read-only, :py:attr:`filename` attribute.
 Functions and classes concerning NeXus paths are available from the 
 :py:mod:`pni.io.nx` package.
 A NeXus path is represented by an instance of :py:class:`nxpath`.  
-The :py:func:`make_path` utiltiy function creates a new instance of a path
+The :py:func:`Path.from_string` utiltiy function creates a new instance of a path
 
 .. code-block:: python 
 
-    from pni.io.nx import nxpath,make_path
+    from pninexus import nexus
 
-    p = make_path("/:NXentry/:NXinstrument/:NXdetector/data")
+    p = nexus.Path.from_string("/:NXentry/:NXinstrument/:NXdetector/data")
 
 An empyt instance can be obtained by usint the default constructor 
 of :py:class:`nxpath`
 
 .. code-block:: python
 
-    from pni.io.nx import nxpath
+    from pninexus import nexus
 
-    p = nxpath()
+    p = nexus.Path()
     
 
 The *file-* and *attribute-section* of the path is accessible via the 
@@ -161,9 +161,9 @@ which are both read- and writeable
 .. code-block:: python
     
     from __future__ import print_function
-    from pni.io.nx import make_path
+    from pninexus import nexus
 
-    path = make_path("test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units")
+    path = nexus.Path.from_string("test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units")
 
     print(path.filename)
     path.filename = "test.nxs"
@@ -179,9 +179,9 @@ accessible via the :py:attr:`front` and the last element vai the
 .. code-block:: python
 
     from __future__ import print_function
-    from pni.io.nx import make_path
+    from pninexus import nexus
 
-    path =  make_path("/:NXentry/:NXinstrument")
+    path =  nexus.Path.from_string("/:NXentry/:NXinstrument")
 
     print(path.front) #output: {'name':'/','base_class':'NXroot'}
     print(path.back)  #output: {'name':'','base_class':'NXinstrument'}
@@ -198,8 +198,9 @@ Appending and prepending elements to the *object-section*
 .. code-block:: python
 
     from __future__ import print_function
-    from pni.io.nx make_path
-    path = make_path("/")
+    from pninexus import nexus
+
+    path = nexus.Path.from_string("/")
 
     path.push_back("scan_1:NXentry")
     path.push_back(name="instrument",base_class="NXinstrument")
@@ -217,9 +218,9 @@ Using a path as a stack
 .. code-block:: python
 
     from __future__ import print_function
-    from pni.io.nx import make_path
+    from pninexus import nexus
 
-    path = nxpath("/:NXentry/:NXinstrument/mythen:NXdetector/data")
+    path = nexus.Path.from_string("/:NXentry/:NXinstrument/mythen:NXdetector/data")
     print(path)
     #output: /:NXentry/:NXinstrument/mythen:NXdetector/data
 
@@ -243,62 +244,23 @@ One can iterate of the *object-section* of a path
 .. code-block:: python
 
     from __future__ import print_function
-    from pni.io.nx import make_path
+    from pninexus import nexus
     
-    path = make_path(":NXentry/:NXinstrument/:NXdetector/data")
+    path = nexus.Path.from_string(":NXentry/:NXinstrument/:NXdetector/data")
 
     for e in path:
-        print(e["name"],p["base_class"])
-
-Paths can be joined using the ``+`` operator 
-
-.. code-block:: python
-    
-    from __future__ import print_function
-    from pni.io.nx import make_path 
-
-    a = make_path("/:NXentry/:NXinstrument")
-    b = make_path(":NXdetector/data")
-
-    c = a+b
-
-    print(c)
-    #output: /:NXentry/:NXinstrument/:NXdetector/data
-
-However, the two paths have to follow some rules in order to be joined 
-
-* :py:data:`a` must not have a *attribute-section*
-* :py:data:`b` must not have a *file-section*
-* :py:data:`b` must not be an absolute path
-
-Though these rules seem to be complicated at the first glimpse they are totally
-natural if you think about them for a moment. For instance, how would you join
-two paths if the left hand side of the operator has an attribute section which
-is most naturally the terminal element of every path. 
-If any of these rules is violated a :py:exc:`ValueError` exception will be
-thrown. 
-
-One can also join a path object with a string representing a path  
-
-.. code-block:: python
-
-    from __future__ import print_function
-    from pni.io.nx import make_path
-
-    base_path     = make_path("/:NXentry/:NXinstrument/")
-    detector_path = base_path + ":NXdetector"
-
+        print(e["name"], p["base_class"])
 
 To check if two paths are matching use the :py:func:`match` function
 
 .. code-block:: python
 
     from __future__ import print_function
-    from pni.io.nx import make_path,match
+    from pninexus import nexus
 
-    det_path = make_path("/:NXentry/:NXinstrument/:NXdetector")
-    p = make_path("/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector")
+    det_path = nexus.Path.from_string("/:NXentry/:NXinstrument/:NXdetector")
+    p =  nexus.Path.from_string("/scan_1:NXentry/p08:NXinstrument/mythen:NXdetector")
 
-    print(match(det_path,p))
+    print(nexus.match(det_path, p))
     #output: True
 
