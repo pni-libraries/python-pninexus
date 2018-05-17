@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pninexus.h5cpp.property &#8212; pninexus 2.0.0 documentation</title>
+    <title>pninexus.h5cpp.property &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="../index.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="../index.html" />
     <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="next" title="pninexus.h5cpp.node" href="node.html" />
     <link rel="prev" title="pninexus.h5cpp.file" href="file.html" />
@@ -45,12 +45,15 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="node.html" title="pninexus.h5cpp.node"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="file.html" title="pninexus.h5cpp.file"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -105,33 +108,536 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pninexus-h5cpp-property">
-<h1><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.property</span></code><a class="headerlink" href="#pninexus-h5cpp-property" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pninexus.h5cpp.property">
+<span id="pninexus-h5cpp-property"></span><h1><a class="reference internal" href="#module-pninexus.h5cpp.property" title="pninexus.h5cpp.property"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.property</span></code></a><a class="headerlink" href="#module-pninexus.h5cpp.property" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="enumerations">
 <h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetFillValueStatus">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetFillValueStatus</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillValueStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>status of the fill value setup for a dataset</p>
+<p>Determines the status of the fill value for a given dataset.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillValueStatus.UNDEFINED">
+<code class="descname">UNDEFINED</code><em class="property"> no fill value is defined</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillValueStatus.UNDEFINED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillValueStatus.DEFAULT">
+<code class="descname">DEFAULT</code><em class="property"> a default fill value has been set</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillValueStatus.DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillValueStatus.USER_DEFINED">
+<code class="descname">USER_DEFINED</code><em class="property"> a fill value has been provided by the user</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillValueStatus.USER_DEFINED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetFillTime">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetFillTime</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines whenthe fill value for a dataset will be set</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillTime.IFSET">
+<code class="descname">IFSET</code><em class="property"> fill value will be set during setup</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillTime.IFSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillTime.ALLOC">
+<code class="descname">ALLOC</code><em class="property"> fill value will be set during allocation</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillTime.ALLOC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetFillTime.NEVER">
+<code class="descname">NEVER</code><em class="property"> the fill value will never be set</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetFillTime.NEVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetAllocTime">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetAllocTime</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAllocTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration determining the point in time when space for a dataset will be
+allocated.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetAllocTime.DEFAULT">
+<code class="descname">DEFAULT</code><em class="property"> use the default allocation time</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAllocTime.DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetAllocTime.EARLY">
+<code class="descname">EARLY</code><em class="property"> as early as possible</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAllocTime.EARLY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetAllocTime.INCR">
+<code class="descname">INCR</code><em class="property"> incremental</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAllocTime.INCR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetAllocTime.LATE">
+<code class="descname">LATE</code><em class="property"> as late as possible</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAllocTime.LATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetLayout">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetLayout</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration determining the layout of an HDF5 dataset</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetLayout.COMPACT">
+<code class="descname">COMPACT</code><em class="property"> use a compact layout</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetLayout.COMPACT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetLayout.CONTIGUOUS">
+<code class="descname">CONTIGUOUS</code><em class="property"> use a contiguous layout</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetLayout.CONTIGUOUS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetLayout.CHUNKED">
+<code class="descname">CHUNKED</code><em class="property"> use a chunked layout</em><a class="headerlink" href="#pninexus.h5cpp.property.DatasetLayout.CHUNKED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.LibVersion">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">LibVersion</code><a class="headerlink" href="#pninexus.h5cpp.property.LibVersion" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.LibVersion.LATEST">
+<code class="descname">LATEST</code><em class="property"> denotes the latest library version</em><a class="headerlink" href="#pninexus.h5cpp.property.LibVersion.LATEST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.LibVersion.EARLIEST">
+<code class="descname">EARLIEST</code><em class="property"> denotes the earliest library version</em><a class="headerlink" href="#pninexus.h5cpp.property.LibVersion.EARLIEST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.CopyFlag">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">CopyFlag</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag controlling the copying behavior in HDF5.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.SHALLOW_HIERARCHY">
+<code class="descname">SHALLOW_HIERARCHY</code><em class="property"> no recursive copying</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.SHALLOW_HIERARCHY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.EXPAND_SOFT_LINKS">
+<code class="descname">EXPAND_SOFT_LINKS</code><em class="property"> expand soft links when copying</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.EXPAND_SOFT_LINKS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.EXPAND_EXTERNAL_LINKS">
+<code class="descname">EXPAND_EXTERNAL_LINKS</code><em class="property"> expand external links when copyin</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.EXPAND_EXTERNAL_LINKS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.EXPAND_REFERENCES">
+<code class="descname">EXPAND_REFERENCES</code><em class="property"> expand references when copying</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.EXPAND_REFERENCES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.WITHOUT_ATTRIBUTES">
+<code class="descname">WITHOUT_ATTRIBUTES</code><em class="property"> do not include attributes when copying</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.WITHOUT_ATTRIBUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlag.MERGE_COMMITTED_TYPES">
+<code class="descname">MERGE_COMMITTED_TYPES</code><em class="property"> merge committed types during copying</em><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlag.MERGE_COMMITTED_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="utility-classes">
 <h2>Utility classes<a class="headerlink" href="#utility-classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.CopyFlags">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">CopyFlags</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.expand_external_links">
+<code class="descname">expand_external_links</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.expand_external_links" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.expand_references">
+<code class="descname">expand_references</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.expand_references" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.expand_soft_links">
+<code class="descname">expand_soft_links</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.expand_soft_links" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.merge_committed_types">
+<code class="descname">merge_committed_types</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.merge_committed_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.shallow_hierarchy">
+<code class="descname">shallow_hierarchy</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.shallow_hierarchy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CopyFlags.without_attributes">
+<code class="descname">without_attributes</code><a class="headerlink" href="#pninexus.h5cpp.property.CopyFlags.without_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.ChunkCacheParameters">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">ChunkCacheParameters</code><a class="headerlink" href="#pninexus.h5cpp.property.ChunkCacheParameters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.ChunkCacheParameters.chunk_cache_size">
+<code class="descname">chunk_cache_size</code><a class="headerlink" href="#pninexus.h5cpp.property.ChunkCacheParameters.chunk_cache_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.ChunkCacheParameters.chunk_slots">
+<code class="descname">chunk_slots</code><a class="headerlink" href="#pninexus.h5cpp.property.ChunkCacheParameters.chunk_slots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.ChunkCacheParameters.preemption_policy">
+<code class="descname">preemption_policy</code><a class="headerlink" href="#pninexus.h5cpp.property.ChunkCacheParameters.preemption_policy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.CreationOrder">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">CreationOrder</code><a class="headerlink" href="#pninexus.h5cpp.property.CreationOrder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.CreationOrder.indexed">
+<code class="descname">indexed</code><a class="headerlink" href="#pninexus.h5cpp.property.CreationOrder.indexed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.CreationOrder.tracked">
+<code class="descname">tracked</code><a class="headerlink" href="#pninexus.h5cpp.property.CreationOrder.tracked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="property-list-classes">
 <h2>Property list classes<a class="headerlink" href="#property-list-classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.List">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">List</code><a class="headerlink" href="#pninexus.h5cpp.property.List" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all property lists.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.List.class">
+<code class="descname">class</code><a class="headerlink" href="#pninexus.h5cpp.property.List.class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.StringCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">StringCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.StringCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.StringCreationList.character_encoding">
+<code class="descname">character_encoding</code><a class="headerlink" href="#pninexus.h5cpp.property.StringCreationList.character_encoding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.AttributeCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">AttributeCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.AttributeCreationList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <div class="section" id="object-property-lists">
 <h3>Object property lists<a class="headerlink" href="#object-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.ObjectCopyList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">ObjectCopyList</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCopyList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.ObjectCopyList.flags">
+<code class="descname">flags</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCopyList.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.ObjectCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">ObjectCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.ObjectCreationList.attribute_creation_order">
+<code class="descname">attribute_creation_order</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList.attribute_creation_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.ObjectCreationList.attribute_storage_maximum_compact">
+<code class="descname">attribute_storage_maximum_compact</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList.attribute_storage_maximum_compact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.ObjectCreationList.attribute_storage_minimum_dense">
+<code class="descname">attribute_storage_minimum_dense</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList.attribute_storage_minimum_dense" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.property.ObjectCreationList.attribute_storage_thresholds">
+<code class="descname">attribute_storage_thresholds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList.attribute_storage_thresholds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.ObjectCreationList.time_tracking">
+<code class="descname">time_tracking</code><a class="headerlink" href="#pninexus.h5cpp.property.ObjectCreationList.time_tracking" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="dataset-property-lists">
 <h3>Dataset property lists<a class="headerlink" href="#dataset-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetCreationList.allocation_time">
+<code class="descname">allocation_time</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList.allocation_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetCreationList.chunk">
+<code class="descname">chunk</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList.chunk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetCreationList.fill_time">
+<code class="descname">fill_time</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList.fill_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetCreationList.fill_value_status">
+<code class="descname">fill_value_status</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList.fill_value_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetCreationList.layout">
+<code class="descname">layout</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetCreationList.layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetTransferList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetTransferList</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetTransferList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property list controlling the data transfer during dataset IO operations.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatasetAccessList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatasetAccessList</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAccessList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property list controlling access to a dataset</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.DatasetAccessList.chunk_cache_parameters">
+<code class="descname">chunk_cache_parameters</code><a class="headerlink" href="#pninexus.h5cpp.property.DatasetAccessList.chunk_cache_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="file-property-lists">
 <h3>File property lists<a class="headerlink" href="#file-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.FileAccessList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">FileAccessList</code><a class="headerlink" href="#pninexus.h5cpp.property.FileAccessList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property list controlling how files are accessed.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileAccessList.library_version_bound_high">
+<code class="descname">library_version_bound_high</code><a class="headerlink" href="#pninexus.h5cpp.property.FileAccessList.library_version_bound_high" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the version uppermost version boundary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">library boundary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pninexus.h5cpp.property.LibVersion" title="pninexus.h5cpp.property.LibVersion">LibVersion</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileAccessList.library_version_bound_low">
+<code class="descname">library_version_bound_low</code><a class="headerlink" href="#pninexus.h5cpp.property.FileAccessList.library_version_bound_low" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the lowest compatible HDF5 version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">library bound</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pninexus.h5cpp.property.LibVersion" title="pninexus.h5cpp.property.LibVersion">LibVersion</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.property.FileAccessList.library_version_bounds">
+<code class="descname">library_version_bounds</code><span class="sig-paren">(</span><em>lower</em>, <em>upper</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.property.FileAccessList.library_version_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the upper and lower compatibility version bounds for a new file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lower</strong> (<a class="reference internal" href="#pninexus.h5cpp.property.LibVersion" title="pninexus.h5cpp.property.LibVersion"><em>LibVersion</em></a>) &#8211; determines the lowest compat. version</li>
+<li><strong>upper</strong> (<a class="reference internal" href="#pninexus.h5cpp.property.LibVersion" title="pninexus.h5cpp.property.LibVersion"><em>LibVersion</em></a>) &#8211; determines the highest compat. version</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.FileCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">FileCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property list controlling the file creation process</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.btree_rank">
+<code class="descname">btree_rank</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.btree_rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.btree_symbols">
+<code class="descname">btree_symbols</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.btree_symbols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.chunk_tree_rank">
+<code class="descname">chunk_tree_rank</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.chunk_tree_rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.object_length_size">
+<code class="descname">object_length_size</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.object_length_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.object_offset_size">
+<code class="descname">object_offset_size</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.object_offset_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.FileCreationList.user_block">
+<code class="descname">user_block</code><a class="headerlink" href="#pninexus.h5cpp.property.FileCreationList.user_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.FileMountList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">FileMountList</code><a class="headerlink" href="#pninexus.h5cpp.property.FileMountList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property List controlling the mounting of external files.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="group-property-lists">
 <h3>Group property lists<a class="headerlink" href="#group-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.GroupCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">GroupCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.estimated_link_name_length">
+<code class="descname">estimated_link_name_length</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.estimated_link_name_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.estimated_number_of_links">
+<code class="descname">estimated_number_of_links</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.estimated_number_of_links" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.link_creation_order">
+<code class="descname">link_creation_order</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.link_creation_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.link_storage_maximum_compact">
+<code class="descname">link_storage_maximum_compact</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.link_storage_maximum_compact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.link_storage_minimum_dense">
+<code class="descname">link_storage_minimum_dense</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.link_storage_minimum_dense" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.property.GroupCreationList.link_storage_thresholds">
+<code class="descname">link_storage_thresholds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.link_storage_thresholds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.GroupCreationList.local_heap_size_hint">
+<code class="descname">local_heap_size_hint</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupCreationList.local_heap_size_hint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.GroupAccessList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">GroupAccessList</code><a class="headerlink" href="#pninexus.h5cpp.property.GroupAccessList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="link-property-lists">
 <h3>Link property lists<a class="headerlink" href="#link-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.LinkCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">LinkCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.LinkCreationList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.LinkCreationList.intermediate_group_creation">
+<code class="descname">intermediate_group_creation</code><a class="headerlink" href="#pninexus.h5cpp.property.LinkCreationList.intermediate_group_creation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.LinkAccessList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">LinkAccessList</code><a class="headerlink" href="#pninexus.h5cpp.property.LinkAccessList" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="pninexus.h5cpp.property.LinkAccessList.external_link_prefix">
+<code class="descname">external_link_prefix</code><a class="headerlink" href="#pninexus.h5cpp.property.LinkAccessList.external_link_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.property.LinkAccessList.maximum_link_traversals">
+<code class="descname">maximum_link_traversals</code><a class="headerlink" href="#pninexus.h5cpp.property.LinkAccessList.maximum_link_traversals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="type-property-lists">
 <h3>Type property lists<a class="headerlink" href="#type-property-lists" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pninexus.h5cpp.property.TypeCreationList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">TypeCreationList</code><a class="headerlink" href="#pninexus.h5cpp.property.TypeCreationList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="pninexus.h5cpp.property.DatatypeAccessList">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.property.</code><code class="descname">DatatypeAccessList</code><a class="headerlink" href="#pninexus.h5cpp.property.DatatypeAccessList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 </div>
@@ -149,12 +655,15 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="node.html" title="pninexus.h5cpp.node"
              >next</a> |</li>
         <li class="right" >
           <a href="file.html" title="pninexus.h5cpp.file"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>

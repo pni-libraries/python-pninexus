@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pninexus.h5cpp.dataspace &#8212; pninexus 2.0.0 documentation</title>
+    <title>pninexus.h5cpp.dataspace &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="../index.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="../index.html" />
     <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="next" title="pninexus.h5cpp.datatype" href="datatype.html" />
     <link rel="prev" title="pninexus.h5cpp.attribute" href="attributes.html" />
@@ -45,12 +45,15 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="datatype.html" title="pninexus.h5cpp.datatype"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="attributes.html" title="pninexus.h5cpp.attribute"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -101,28 +104,344 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pninexus-h5cpp-dataspace">
-<h1><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.dataspace</span></code><a class="headerlink" href="#pninexus-h5cpp-dataspace" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pninexus.h5cpp.dataspace">
+<span id="pninexus-h5cpp-dataspace"></span><h1><a class="reference internal" href="../h5cpp_dataspace.html#module-pninexus.h5cpp.dataspace" title="pninexus.h5cpp.dataspace"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.dataspace</span></code></a><a class="headerlink" href="#module-pninexus.h5cpp.dataspace" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="type">
-<h2><code class="xref py py-class docutils literal"><span class="pre">Type</span></code><a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.Type" title="pninexus.h5cpp.dataspace.Type"><code class="xref py py-class docutils literal"><span class="pre">Type</span></code></a><a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.Type">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">Type</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration type used to determine the type of a dataspace.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Type.SCALAR">
+<code class="descname">SCALAR</code><em class="property"> = Denotes a scalar dataspace</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.Type.SCALAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Type.SIMPLE">
+<code class="descname">SIMPLE</code><em class="property"> = Denotes a simple dataspace</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.Type.SIMPLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="selectiontype">
-<h2><code class="xref py py-class docutils literal"><span class="pre">SelectionType</span></code><a class="headerlink" href="#selectiontype" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionType" title="pninexus.h5cpp.dataspace.SelectionType"><code class="xref py py-class docutils literal"><span class="pre">SelectionType</span></code></a><a class="headerlink" href="#selectiontype" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.SelectionType">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">SelectionType</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration type determining the type of selection.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionType.NONE">
+<code class="descname">NONE</code><em class="property"> = nothing is selected.</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionType.NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionType.ALL">
+<code class="descname">ALL</code><em class="property"> = all elements in a dataspace are selected</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionType.ALL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionType.POINTS">
+<code class="descname">POINTS</code><em class="property"> = the selection is a point selection</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionType.POINTS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionType.HYPERSLAB">
+<code class="descname">HYPERSLAB</code><em class="property"> = the selection is a hyperslab selection</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionType.HYPERSLAB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="selectionoperation">
-<h2><code class="xref py py-class docutils literal"><span class="pre">SelectionOperation</span></code><a class="headerlink" href="#selectionoperation" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionOperation" title="pninexus.h5cpp.dataspace.SelectionOperation"><code class="xref py py-class docutils literal"><span class="pre">SelectionOperation</span></code></a><a class="headerlink" href="#selectionoperation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">SelectionOperation</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration type determining how a particular selection is applied on a
+dataspace (and on possible previous selections).</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.SET">
+<code class="descname">SET</code><em class="property"> replace all previously applied with this selection</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.SET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.OR">
+<code class="descname">OR</code><em class="property"> use a logical or relation</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.OR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.AND">
+<code class="descname">AND</code><em class="property"> logical and relation</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.AND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.XOR">
+<code class="descname">XOR</code><em class="property"> logical xor operation</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.XOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.NOTB">
+<code class="descname">NOTB</code><em class="property"> ???</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.NOTB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.NOTA">
+<code class="descname">NOTA</code><em class="property"> ???</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.NOTA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.APPEND">
+<code class="descname">APPEND</code><em class="property"> ???</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.APPEND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionOperation.PREPEND">
+<code class="descname">PREPEND</code><em class="property"> ???</em><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionOperation.PREPEND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="selectionmanager">
-<h2><code class="xref py py-class docutils literal"><span class="pre">SelectionManager</span></code><a class="headerlink" href="#selectionmanager" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionManager" title="pninexus.h5cpp.dataspace.SelectionManager"><code class="xref py py-class docutils literal"><span class="pre">SelectionManager</span></code></a><a class="headerlink" href="#selectionmanager" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">SelectionManager</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionManager" title="pninexus.h5cpp.dataspace.SelectionManager"><code class="xref py py-class docutils literal"><span class="pre">SelectionManager</span></code></a> controls the application of selections on a
+particular dataspace.</p>
+<dl class="method">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager.all">
+<code class="descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>select all elements in the dataset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager.none">
+<code class="descname">none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager.none" title="Permalink to this definition">¶</a></dt>
+<dd><p>deselect all elements in the dataset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager.size">
+<code class="descname">size</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the number of elements currently selected
+in the dataspace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of selected elements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager.type">
+<code class="descname">type</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the particular type of selections applied.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">type of applied selections</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionType" title="pninexus.h5cpp.dataspace.SelectionType"><code class="xref py py-class docutils literal"><span class="pre">SelectionType</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.dataspace.SelectionManager.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.dataspace.SelectionManager.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a selection to a dataset.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">hyperslab</span> <span class="o">=</span> <span class="n">Hyperslab</span><span class="p">()</span>
+
+<span class="n">dataset</span><span class="o">.</span><span class="n">selection</span><span class="p">(</span><span class="n">SelectionOperation</span><span class="o">.</span><span class="n">SET</span><span class="p">,</span><span class="n">hyperslab</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>operation</strong> (<a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionOperation" title="pninexus.h5cpp.dataspace.SelectionOperation"><em>SelectionOperation</em></a>) &#8211; how the selection should be applied</li>
+<li><strong>selection</strong> (<em>Selection</em>) &#8211; the selection to apply</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>RuntimError</strong> &#8211; in case of a failure</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="dataspace">
-<h2><code class="xref py py-class docutils literal"><span class="pre">Dataspace</span></code><a class="headerlink" href="#dataspace" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.Dataspace" title="pninexus.h5cpp.dataspace.Dataspace"><code class="xref py py-class docutils literal"><span class="pre">Dataspace</span></code></a><a class="headerlink" href="#dataspace" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.Dataspace">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">Dataspace</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Dataspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class of all dataspaces.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Dataspace.is_valid">
+<code class="descname">is_valid</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Dataspace.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal"><span class="pre">True</span></code> if the dataspace is a valid HDF5 object,
+<code class="xref py py-const docutils literal"><span class="pre">False</span></code> otherwise.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-const docutils literal"><span class="pre">True</span></code> if valid, <code class="xref py py-const docutils literal"><span class="pre">False</span></code> otherwise</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Dataspace.selection">
+<code class="descname">selection</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Dataspace.selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property providing access to the <a class="reference internal" href="#pninexus.h5cpp.dataspace.SelectionManager" title="pninexus.h5cpp.dataspace.SelectionManager"><code class="xref py py-class docutils literal"><span class="pre">SelectionManager</span></code></a>
+instance of the dataspace.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Dataspace.size">
+<code class="descname">size</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Dataspace.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the number of data elements in the current
+dataspace. This will always return the number of elements for the total
+dataspace independent of whether a selection has been applied to that
+dataspace or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">number of data elements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Dataspace.type">
+<code class="descname">type</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Dataspace.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only attribute returning the type of the dataspace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dataspace type</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#pninexus.h5cpp.dataspace.Type" title="pninexus.h5cpp.dataspace.Type">Type</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="simple">
-<h2><code class="xref py py-class docutils literal"><span class="pre">Simple</span></code><a class="headerlink" href="#simple" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.Simple" title="pninexus.h5cpp.dataspace.Simple"><code class="xref py py-class docutils literal"><span class="pre">Simple</span></code></a><a class="headerlink" href="#simple" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.Simple">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">Simple</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Simple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple dataspace describing a regular array of data elements. In order to
+construct an instance of <a class="reference internal" href="#pninexus.h5cpp.dataspace.Simple" title="pninexus.h5cpp.dataspace.Simple"><code class="xref py py-class docutils literal"><span class="pre">Simple</span></code></a> use either</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dataspace</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Which will produce a dataspace where the current and maximum dimensions are
+equal. Or, for extensible datasets one could use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">space</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1024</span><span class="p">),(</span><span class="n">pni</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">h5cpp</span><span class="o">.</span><span class="n">dataspace</span><span class="o">.</span><span class="n">UNLIMITED</span><span class="p">,</span><span class="mi">1024</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>where the second tuple provides the maximum dimensions for the dataspace.</p>
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Simple.current_dimensions">
+<code class="descname">current_dimensions</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Simple.current_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the current dimensions of the simple dataspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple with dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Simple.maximum_dimensions">
+<code class="descname">maximum_dimensions</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Simple.maximum_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only attribute returning the current maximum dimensions of the
+simple dataspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tuple with dimensions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of integers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pninexus.h5cpp.dataspace.Simple.rank">
+<code class="descname">rank</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Simple.rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the number of dimensions of the dataspace</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pninexus.h5cpp.dataspace.Simple.dimensions">
+<code class="descname">dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.dataspace.Simple.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the current and maximum dimensions of a dataspace</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>current</strong> (<em>tuple/list</em>) &#8211; tuple or list with the current dimensions</li>
+<li><strong>maximum</strong> (<em>tuple/list</em>) &#8211; tuple or list with the maximum dimensions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="scalar">
-<h2><code class="xref py py-class docutils literal"><span class="pre">Scalar</span></code><a class="headerlink" href="#scalar" title="Permalink to this headline">¶</a></h2>
+<h2><a class="reference internal" href="#pninexus.h5cpp.dataspace.Scalar" title="pninexus.h5cpp.dataspace.Scalar"><code class="xref py py-class docutils literal"><span class="pre">Scalar</span></code></a><a class="headerlink" href="#scalar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pninexus.h5cpp.dataspace.Scalar">
+<em class="property">class </em><code class="descclassname">pninexus.h5cpp.dataspace.</code><code class="descname">Scalar</code><a class="headerlink" href="#pninexus.h5cpp.dataspace.Scalar" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class describes a dataspace for a single scalar value of a particular
+element type.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dataspace</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It provides no additional methods or properties.</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -139,12 +458,15 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="datatype.html" title="pninexus.h5cpp.datatype"
              >next</a> |</li>
         <li class="right" >
           <a href="attributes.html" title="pninexus.h5cpp.attribute"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>

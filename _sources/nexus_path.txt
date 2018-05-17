@@ -1,41 +1,69 @@
+==================================
 Addressing objects: the NeXus path
 ==================================
 
-An introduction
----------------
+.. automodule:: pninexus.nexus
 
-Every object within a NeXus file can be addressed by a so called *NeXus path*.
-*Nexus paths* can become rather complex and a good starting point is to have a
-look on some examples. Lets start with a very simple one
+An introduction
+===============
+
+One of the major contributions added by *libpniio* to the standard HDF5 library
+is its *Path* class which is provided by :py:mod:`pninexus.nexus` via the 
+:py:class:`Path`. The most obvious difference between a plain HDF5 path and a
+NeXus path as introduced by *libpniio* is 
+
+1. a NeXus path can include the name of the file the object referenced by the
+   path 
+2. a NeXus path can also address an attribute.
+
+However, the major difference between a NeXus path and an HDF5 path is the 
+fact that a NeXus path can address object not only by their links name 
+but also by type (base class). This feature allows, under certain circumstances, 
+the construction of path's which can address objects without knowing their 
+names and thus remain generic.   
+
+The best way to understand thus path's is by example. So lets start with 
+a simple one:
 
 .. code-block:: bash
 
     detector_1.nxs://scan_1/instrument/detector/transformation/phi 
 
-which refers to the field holding the data of motor *phi* in the transformation
-group of a detector. To access the `units` attribute we could use 
+This looks pretty much like a common HDF5 path but with the name of the 
+file where to find the dataset prepended (separated from the rest of the path 
+by `:/`). If we would like to address an attribute by a path we could do so
+with NeXus paths by appending the name of the attribute to the path 
+of the object the attribute is attached to 
 
 .. code-block:: bash
 
     detector_1.nxs://scan_1/instrument/detector/transformation/phi@units 
 
-However, this path is merely more than a standard HDF5 path with a 
-filename prepended and an attribute name appended to it. To make this path more
-NeXus-style we can add the group types 
-
+wher the attributes name is separated from its parent node path by a `@` 
+character. With the concept of base classes in place we can further determine 
+the path of an object by adding the base classes the intermediate objects belong
+to: 
 
 .. code-block:: bash
 
     detector_1.nxs://scan_1:NXentry/instrument:NXinstrument/ \
                     detector:NXdetector/transformation:NXtransformation/phi@units 
 
-in which case we do not only specify the names of the groups but also their
-types. In a final step we could make this path more generic by omitting the 
-group names 
+This would mean that the first element of name `scan_1` must be a group 
+belonging to the base class `NXentry`. The second one of name `instrument` 
+and of type `NXinstrument`. As the last element in the path is a dataset 
+(or *field* in NeXus terminology) there is no means of further specifying it. 
+
+If we now assume that, in the above example, each base class appears only 
+once below its parent group we could even omit the names of the links 
+which leaves us for this example with 
 
 .. code-block:: bash
 
     detector_1.nxs://:NXentry/:NXinstrument/:NXdetector/:NXtransformation/phi@units 
+
+Being independent of any link name, such a path can be used on every file 
+which satisfies the above conditions. 
 
 Which would still work if every type appears only once below its parent.
 However, as we have removed the group names the path becomes generic in a sense

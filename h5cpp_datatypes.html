@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HDF5 datatypes &#8212; pninexus 2.0.0 documentation</title>
+    <title>HDF5 datatypes &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="index.html" />
     <link rel="up" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
     <link rel="next" title="HDF5 dataspaces and selections" href="h5cpp_dataspace.html" />
     <link rel="prev" title="HDF5 nodes, links, and groups" href="h5cpp_groups.html" />
@@ -45,12 +45,15 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="h5cpp_dataspace.html" title="HDF5 dataspaces and selections"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="h5cpp_groups.html" title="HDF5 nodes, links, and groups"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
       </ul>
@@ -96,8 +99,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="hdf5-datatypes">
-<h1>HDF5 datatypes<a class="headerlink" href="#hdf5-datatypes" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pninexus.h5cpp.datatype">
+<span id="hdf5-datatypes"></span><h1>HDF5 datatypes<a class="headerlink" href="#module-pninexus.h5cpp.datatype" title="Permalink to this headline">¶</a></h1>
 <p>Beneath HDF5s IO model there are two fundamental concepts</p>
 <ul class="simple">
 <li><em>datatypes</em></li>
@@ -111,17 +114,17 @@ numbers, strings but also complex compound data types like heterogeneous
 records of a database table. Currently, this wrapper only supports three
 types of data types</p>
 <ul class="simple">
-<li><em>integers</em> via <code class="xref py py-class docutils literal"><span class="pre">Integer</span></code></li>
-<li><em>floats</em> via <code class="xref py py-class docutils literal"><span class="pre">Float</span></code></li>
-<li>and <em>stings</em> via <code class="xref py py-class docutils literal"><span class="pre">String</span></code></li>
+<li><em>integers</em> via <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.Integer" title="pninexus.h5cpp.datatype.Integer"><code class="xref py py-class docutils literal"><span class="pre">Integer</span></code></a></li>
+<li><em>floats</em> via <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.Float" title="pninexus.h5cpp.datatype.Float"><code class="xref py py-class docutils literal"><span class="pre">Float</span></code></a></li>
+<li>and <em>stings</em> via <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.String" title="pninexus.h5cpp.datatype.String"><code class="xref py py-class docutils literal"><span class="pre">String</span></code></a></li>
 </ul>
-<p>which can be found in the <code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.datatype</span></code> package and are
-all decendents of the <code class="xref py py-class docutils literal"><span class="pre">Datatype</span></code> class. This
+<p>which can be found in the <a class="reference internal" href="#module-pninexus.h5cpp.datatype" title="pninexus.h5cpp.datatype"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.datatype</span></code></a> package and are
+all decendents of the <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.Datatype" title="pninexus.h5cpp.datatype.Datatype"><code class="xref py py-class docutils literal"><span class="pre">Datatype</span></code></a> class. This
 package currently not provides the full functionality of the corresponding
 C++ namespace <code class="xref cpp cpp-any docutils literal"><span class="pre">hdf5::datatype</span></code> of <em>h5cpp</em> but enough to get started
 from within Python.
 Usually you do not want to create a datatype manually. Instead there is is a
-factory class <code class="xref py py-class docutils literal"><span class="pre">Factory</span></code> which provides a method to
+factory class <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.Factory" title="pninexus.h5cpp.datatype.Factory"><code class="xref py py-class docutils literal"><span class="pre">Factory</span></code></a> which provides a method to
 create HDF5 datatypes from numpy dtypes or their string representation.
 For conveniance there is a module global instance <code class="xref py py-const docutils literal"><span class="pre">kFactory</span></code> available
 to make life a bit easier.</p>
@@ -134,7 +137,7 @@ could use something like this</p>
 </pre></div>
 </div>
 <p>There exists also an inverse function which converts an HDF5 datatype to an
-appropriate numpy type: <code class="xref py py-func docutils literal"><span class="pre">to_numpy()</span></code>. This function returns the
+appropriate numpy type: <a class="reference internal" href="h5cpp/datatype.html#pninexus.h5cpp.datatype.to_numpy" title="pninexus.h5cpp.datatype.to_numpy"><code class="xref py py-func docutils literal"><span class="pre">to_numpy()</span></code></a>. This function returns the
 string representation of the appropriate numpy data type</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pninexus.h5cpp.datatype</span> <span class="kn">import</span> <span class="n">to_numpy</span>
@@ -143,7 +146,7 @@ string representation of the appropriate numpy data type</p>
 <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">datatype</span><span class="p">()))</span>
 </pre></div>
 </div>
-<p>The <code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.datatype</span></code> package also provides a set of predefined
+<p>The <a class="reference internal" href="#module-pninexus.h5cpp.datatype" title="pninexus.h5cpp.datatype"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp.datatype</span></code></a> package also provides a set of predefined
 datatypes</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -232,12 +235,15 @@ the array. In terms of HDF5 that would be</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="h5cpp_dataspace.html" title="HDF5 dataspaces and selections"
              >next</a> |</li>
         <li class="right" >
           <a href="h5cpp_groups.html" title="HDF5 nodes, links, and groups"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li> 
       </ul>

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Working with links &#8212; pninexus 2.0.0 documentation</title>
+    <title>Working with links &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,8 +28,8 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
-    <link rel="up" title="Users Guide" href="users_guide.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
     <link rel="next" title="Nexus and XML" href="nexus_xml.html" />
     <link rel="prev" title="Working with attributes" href="nexus_attributes.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,13 +45,17 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_xml.html" title="Nexus and XML"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="nexus_attributes.html" title="Working with attributes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="users_guide.html" accesskey="U">Users Guide</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -157,7 +161,7 @@ The signature of the function is the same for internal and external links.
 Only the path to the link target differs.
 An internal links can be created linke this</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;master.nxs&quot;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
@@ -175,7 +179,7 @@ about NeXus semantics.  The object the HDF5 path referes to must not
 necessarily  exist at link time.  Alternatively, within a file we can do a link
 of an existing object. In this case the above example would look like this</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;master.nxs&quot;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
@@ -194,7 +198,7 @@ the call to <code class="xref py py-func docutils literal"><span class="pre">get
 for internal links. The only difference is that the path to the link target
 starts with a filename</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;master.nxs&quot;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
@@ -215,7 +219,7 @@ As an alternative to iterating over a group one could use either
 <code class="xref py py-func docutils literal"><span class="pre">get_links()</span></code> or <code class="xref py py-func docutils literal"><span class="pre">get_links_recursive()</span></code> in order to obtain
 a list of links in the file and investigate their status before accessing the
 objects the links refer to.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;scan_000001.nxs&quot;</span><span class="p">)</span>
 <span class="n">entry</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">(),</span><span class="s2">&quot;/:NXentry&quot;</span><span class="p">)</span>
@@ -248,13 +252,17 @@ while <code class="xref py py-obj docutils literal"><span class="pre">objects</s
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_xml.html" title="Nexus and XML"
              >next</a> |</li>
         <li class="right" >
           <a href="nexus_attributes.html" title="Working with attributes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

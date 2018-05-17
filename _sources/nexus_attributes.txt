@@ -20,7 +20,7 @@ To create attributes use the :py:meth:`create` method of the
 
 .. code-block:: python
     
-    import pni.io.nx.h5 as nx
+    import pninexus.nexus as nx
 
     field = ....
 

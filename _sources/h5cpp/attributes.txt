@@ -60,7 +60,7 @@
       
       :param str name: the name of an attribute
       :return: :py:const:`True` if the attribute exists, :py:const:`False` otherwise
-      :rtype: :py:type:`bool`
+      :rtype: :py:obj:`bool`
   
    .. automethod:: AttributeManager.__getitem__
    

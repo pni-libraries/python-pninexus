@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Nexus and XML &#8212; pninexus 2.0.0 documentation</title>
+    <title>Nexus and XML &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,8 +28,8 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
-    <link rel="up" title="Users Guide" href="users_guide.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="index.html" />
+    <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
     <link rel="next" title="API documentation" href="api_guide.html" />
     <link rel="prev" title="Working with links" href="nexus_links.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -45,13 +45,17 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="api_guide.html" title="API documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="nexus_links.html" title="Working with links"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="users_guide.html" accesskey="U">Users Guide</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -293,7 +297,7 @@ in a different file like this</p>
 <h2>From XML to NeXus<a class="headerlink" href="#from-xml-to-nexus" title="Permalink to this headline">¶</a></h2>
 <p>To create a NeXus file from XML is rather simple. Just use the
 <code class="xref py py-func docutils literal"><span class="pre">xml_to_nexus()</span></code> function provided by the package</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">xml_struct</span> <span class="o">=</span> \
 <span class="sd">&quot;&quot;&quot;</span>
@@ -346,13 +350,17 @@ If only fields of size one should be written we can use the following approach</
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="api_guide.html" title="API documentation"
              >next</a> |</li>
         <li class="right" >
           <a href="nexus_links.html" title="Working with links"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

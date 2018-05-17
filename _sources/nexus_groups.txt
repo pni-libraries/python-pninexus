@@ -4,7 +4,7 @@ Working with groups
 
 Groups are the fundamental containers in NeXus. Technically NeXus groups are
 nothing else than ordinary HDF5 groups (:py:class:`pninexus.h5cpp.node.Group`)
- with two additional features 
+with two additional features 
 
 * in order to be NeXus compliant a the name of a groups link must adhere 
   to the NeXus naming convention 

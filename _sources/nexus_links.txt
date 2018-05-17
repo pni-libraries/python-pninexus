@@ -95,7 +95,7 @@ An internal links can be created linke this
 .. code-block:: python
     
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("master.nxs",False)
     r = f.root()
@@ -115,7 +115,7 @@ of an existing object. In this case the above example would look like this
 .. code-block:: python
     
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("master.nxs",False)
     r = f.root()
@@ -137,7 +137,7 @@ starts with a filename
 .. code-block:: python
     
     from __future__ import print_function
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("master.nxs",False)
     r = f.root()
@@ -161,7 +161,7 @@ objects the links refer to.
 
 .. code-block:: python
 
-    import pni.io.nx.h5 as nexus
+    import pninexus.nexus as nexus
 
     f = nexus.open_file("scan_000001.nxs")
     entry = nexus.get_object(f.root(),"/:NXentry")

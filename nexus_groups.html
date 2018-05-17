@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Working with groups &#8212; pninexus 2.0.0 documentation</title>
+    <title>Working with groups &#8212; pninexus 1.2.3 documentation</title>
     
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.0.0',
+        VERSION:     '1.2.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,10 +28,10 @@
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 2.0.0 documentation" href="index.html" />
+    <link rel="top" title="pninexus 1.2.3 documentation" href="index.html" />
     <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
     <link rel="next" title="Working with fields" href="nexus_fields.html" />
-    <link rel="prev" title="Working with Nexus files" href="nexus_files.html" />
+    <link rel="prev" title="Addressing objects: the NeXus path" href="nexus_path.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
@@ -45,12 +45,15 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_fields.html" title="Working with fields"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="nexus_files.html" title="Working with Nexus files"
+          <a href="nexus_path.html" title="Addressing objects: the NeXus path"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
@@ -58,8 +61,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="nexus_files.html"
-                        title="previous chapter">Working with Nexus files</a></p>
+  <p class="topless"><a href="nexus_path.html"
+                        title="previous chapter">Addressing objects: the NeXus path</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="nexus_fields.html"
                         title="next chapter">Working with fields</a></p>
@@ -91,9 +94,8 @@
   <div class="section" id="working-with-groups">
 <h1>Working with groups<a class="headerlink" href="#working-with-groups" title="Permalink to this headline">¶</a></h1>
 <p>Groups are the fundamental containers in NeXus. Technically NeXus groups are
-nothing else than ordinary HDF5 groups (<code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.node.Group</span></code>)</p>
-<blockquote>
-<div>with two additional features</div></blockquote>
+nothing else than ordinary HDF5 groups (<a class="reference internal" href="h5cpp/node.html#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.node.Group</span></code></a>)
+with two additional features</p>
 <ul class="simple">
 <li>in order to be NeXus compliant a the name of a groups link must adhere
 to the NeXus naming convention</li>
@@ -111,7 +113,7 @@ of the desired base class.</li>
 <p>In principle one could create a group simply by using the constructor of the
 <code class="xref py py-class docutils literal"><span class="pre">h5cpp.node.Group</span></code> class and perform the two takes mentioned above
 manually. However to make life easier the <code class="xref py py-mod docutils literal"><span class="pre">nexus</span></code> package provides
-a utility class <code class="xref py py-class docutils literal"><span class="pre">pninexus.nexus.BaseClassFactory</span></code> which provides a single static
+a utility class <a class="reference internal" href="nexus/factories.html#pninexus.nexus.BaseClassFactory" title="pninexus.nexus.BaseClassFactory"><code class="xref py py-class docutils literal"><span class="pre">pninexus.nexus.BaseClassFactory</span></code></a> which provides a single static
 method <code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> which takes away the burden to write all the boiler
 plate code yourself.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.nexus</span> <span class="kn">import</span> <span class="n">BaseClassFactory</span>
@@ -139,15 +141,15 @@ with three additional named arguments</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><cite>lcpl</cite></td>
-<td><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.LinkCreationList</span></code></td>
+<td><a class="reference internal" href="h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.LinkCreationList</span></code></a></td>
 <td>link creation property list</td>
 </tr>
 <tr class="row-odd"><td><cite>gcpl</cite></td>
-<td><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.GroupCreationList</span></code></td>
+<td><a class="reference internal" href="h5cpp/properties.html#pninexus.h5cpp.property.GroupCreationList" title="pninexus.h5cpp.property.GroupCreationList"><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.GroupCreationList</span></code></a></td>
 <td>group creation property list</td>
 </tr>
 <tr class="row-even"><td><cite>gapl</cite></td>
-<td><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.GroupAccessList</span></code></td>
+<td><a class="reference internal" href="h5cpp/properties.html#pninexus.h5cpp.property.GroupAccessList" title="pninexus.h5cpp.property.GroupAccessList"><code class="xref py py-class docutils literal"><span class="pre">pninexus.h5cpp.property.GroupAccessList</span></code></a></td>
 <td>group access property list</td>
 </tr>
 </tbody>
@@ -167,12 +169,15 @@ with three additional named arguments</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_fields.html" title="Working with fields"
              >next</a> |</li>
         <li class="right" >
-          <a href="nexus_files.html" title="Working with Nexus files"
+          <a href="nexus_path.html" title="Addressing objects: the NeXus path"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
