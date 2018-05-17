@@ -12,8 +12,8 @@ from build_tools import CppExtensionFactory,ConanBuildInfoBuilder,BuildConfigura
 
 cmdclass = {'build_sphinx':BuildDoc}
 name = "pninexus"
-version = "1.2.1"
-release = "1.2.1"
+version = "1.2.3"
+release = "1.2.3"
 
 def get_build_dir():
     build_dir = "lib.{platform}-{version[0]}.{version[1]}"
