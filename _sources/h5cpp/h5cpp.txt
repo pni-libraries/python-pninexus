@@ -34,7 +34,7 @@
       
       .. code-block:: python 
       
-         from pninexus improt h5cpp
+         from pninexus import h5cpp
          
          path = h5cpp.Path("/run_001/sensors/temperature")
          print(path)
