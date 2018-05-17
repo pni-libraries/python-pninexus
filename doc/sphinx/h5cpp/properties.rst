@@ -126,7 +126,7 @@ Property list classes
    
 .. autoclass:: AttributeCreationList
    :members:
-   :undoc-membes:
+   :undoc-members:
    
 Object property lists
 ---------------------

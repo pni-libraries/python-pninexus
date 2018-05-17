@@ -4,7 +4,7 @@ File related functions
 
 .. automodule:: pninexus.nexus
 
-The :py:module:`pninexus.nexus` package adds some useful wrapper functions 
+The :py:mod:`pninexus.nexus` package adds some useful wrapper functions 
 around the native HDF5 functions. 
 
 .. autofunction:: create_file(path,flags=AccessFlags.EXCLUSIVE,fcpl=FileCreationList(),fapl=FileAccessList())

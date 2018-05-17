@@ -23,7 +23,7 @@
          
    * or construct from a string representation
    
-      .. code-block:: path
+      .. code-block:: python
         
          path = Path("sensors/temperature/data")
    
