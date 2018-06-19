@@ -164,4 +164,3 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
 
 FieldFactory.create = staticmethod(field_factory_create)
 
-        
