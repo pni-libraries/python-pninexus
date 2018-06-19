@@ -136,7 +136,7 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
     #
     # setup for chunking
     #
-    print(dcpl.layout)
+    # print(dcpl.layout)
     if chunk!=None:
         dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
         dcpl.chunk = chunk
