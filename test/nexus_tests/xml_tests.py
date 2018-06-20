@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY 
+# (c) Copyright 2018 DESY
 #
 # This file is part of python-pninexus.
 #
@@ -35,16 +35,16 @@ basic_file = """
     <group name="instrument" type="NXinstrument">
         <group name="source" type="NXsource">
         </group>
-        
+
         <group name="undulator" type="NXinsertion_device">
         </group>
-        
-        
+
+
     </group>
-    
+
     <group name="sample" type="NXsample">
     </group>
-    
+
     <group name="data" type="NXdata">
     </group>
 
@@ -54,33 +54,33 @@ basic_file = """
 
 
 class XMLTests(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"XMLTests.nxs")
-    detector_file = os.path.join(module_path,"detector.xml")
-    
+
+    filename = os.path.join(module_path, "XMLTests.nxs")
+    detector_file = os.path.join(module_path, "detector.xml")
+
     def setUp(self):
-        
-        self.file = nexus.create_file(self.filename,AccessFlags.TRUNCATE)
+
+        self.file = nexus.create_file(self.filename, AccessFlags.TRUNCATE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
-        
+
         self.root.close()
         self.file.close()
-        
+
     def test_create_from_string(self):
-        
-        nexus.create_from_string(self.root,basic_file)
-        
+
+        nexus.create_from_string(self.root, basic_file)
+
     def test_create_from_file(self):
-        
-        nexus.create_from_string(self.root,basic_file)
-        instrument = h5cpp.node.get_node(self.root,h5cpp.Path("/entry/instrument"))
-        nexus.create_from_file(instrument,self.detector_file)
-        detector = h5cpp.node.get_node(self.root,h5cpp.Path("/entry/instrument/mythen"))
-        
-        self.assertEqual(detector.link.path.name,'mythen')
-        self.assertEqual(detector.nodes["description"].read(),"DECTRIS strip detector")
-        
-        
-        
+
+        nexus.create_from_string(self.root, basic_file)
+        instrument = h5cpp.node.get_node(
+            self.root, h5cpp.Path("/entry/instrument"))
+        nexus.create_from_file(instrument, self.detector_file)
+        detector = h5cpp.node.get_node(
+            self.root, h5cpp.Path("/entry/instrument/mythen"))
+
+        self.assertEqual(detector.link.path.name, 'mythen')
+        self.assertEqual(detector.nodes["description"].read(),
+                         "DECTRIS strip detector")

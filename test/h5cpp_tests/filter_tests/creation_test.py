@@ -23,81 +23,83 @@
 from __future__ import print_function
 import unittest
 import os
-from pninexus.h5cpp.filter import Deflate,Fletcher32,Shuffle
+from pninexus.h5cpp.filter import Deflate, Fletcher32, Shuffle
 import pninexus.h5cpp as hdf5
+
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class FilterCreationTest(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"FilterCreationTest.h5")
-    dataspace = hdf5.dataspace.Simple((10,2))
+
+    filename = os.path.join(module_path, "FilterCreationTest.h5")
+    dataspace = hdf5.dataspace.Simple((10, 2))
     datatype = hdf5.datatype.kInt32
     lcpl = hdf5.property.LinkCreationList()
     dcpl = hdf5.property.DatasetCreationList()
-    
-    
+
     @classmethod
     def setUpClass(cls):
         super(FilterCreationTest, cls).setUpClass()
-        
-        hdf5.file.create(cls.filename,hdf5.file.AccessFlags.TRUNCATE)
-        
+
+        hdf5.file.create(cls.filename, hdf5.file.AccessFlags.TRUNCATE)
+
     def setUp(self):
-        
-        self.file = hdf5.file.open(self.filename,hdf5.file.AccessFlags.READWRITE)
+
+        self.file = hdf5.file.open(
+            self.filename, hdf5.file.AccessFlags.READWRITE)
         self.root = self.file.root()
         self.dcpl = hdf5.property.DatasetCreationList()
         self.dcpl.layout = hdf5.property.DatasetLayout.CHUNKED
-        self.dcpl.chunk = (10,2)
-        
+        self.dcpl.chunk = (10, 2)
+
     def tearDown(self):
         self.root.close()
         self.file.close()
-        
+
     def testFletcher32(self):
-        
+
         filter = Fletcher32()
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Fletcher32"),
-                              self.datatype,
-                              self.dataspace,
-                              self.lcpl,
-                              self.dcpl)
-        
+        hdf5.node.Dataset(self.root, hdf5.Path("Fletcher32"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+
     def testShuffle(self):
-        
+
         filter = Shuffle()
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Shuffle"),
-                              self.datatype,
-                              self.dataspace,
-                              self.lcpl,
-                              self.dcpl)
-        
+        hdf5.node.Dataset(self.root, hdf5.Path("Shuffle"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+
     def testDeflate(self):
-        
+
         filter = Deflate(level=9)
         filter(self.dcpl)
-        d = hdf5.node.Dataset(self.root,hdf5.Path("Deflate"),
-                              self.datatype,
-                              self.dataspace,
-                              self.lcpl,
-                              self.dcpl)
-        
+        hdf5.node.Dataset(self.root, hdf5.Path("Deflate"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+
     def testAll(self):
-        
+
         deflate = Deflate()
         deflate.level = 5
         shuffle = Shuffle()
         fletcher = Fletcher32()
-        
+
         fletcher(self.dcpl)
         shuffle(self.dcpl)
         deflate(self.dcpl)
-        
-        d = hdf5.node.Dataset(self.root,hdf5.Path("AllFilters"),
-                              self.datatype,
-                              self.dataspace,
-                              self.lcpl,
-                              self.dcpl)
+
+        hdf5.node.Dataset(self.root, hdf5.Path("AllFilters"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)

@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2015 DESY, 
+# (c) Copyright 2015 DESY,
 #               2015 Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
 # This file is part of python-pninexus.
@@ -25,36 +25,36 @@ from __future__ import print_function
 import unittest
 import os
 
-from pninexus.h5cpp.file import File
+# from pninexus.h5cpp.file import File
 from pninexus.h5cpp.file import create
 from pninexus.h5cpp.file import open
 from pninexus.h5cpp.file import AccessFlags
-import time
-import re
+# import time
+# import re
+
 
 class OpenTest(unittest.TestCase):
     file_path = os.path.split(__file__)[0]
     file_name = "OpenTest.h5"
-    full_path = os.path.join(file_path,file_name)
+    full_path = os.path.join(file_path, file_name)
 
     def setUp(self):
-        f = create(self.full_path,AccessFlags.TRUNCATE)
+        f = create(self.full_path, AccessFlags.TRUNCATE)
         f.close()
 
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     def test_read_only(self):
         """
         Open a single file in read only mode.
         """
-        f = open(self.full_path) 
-        self.assertEqual(f.intent,AccessFlags.READONLY)
+        f = open(self.full_path)
+        self.assertEqual(f.intent, AccessFlags.READONLY)
 
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     def test_read_write(self):
         """
         Open a single file in read-write mode.
         """
 
-        f = open(self.full_path,AccessFlags.READWRITE)
-        self.assertEqual(f.intent,AccessFlags.READWRITE)
+        f = open(self.full_path, AccessFlags.READWRITE)
+        self.assertEqual(f.intent, AccessFlags.READWRITE)

@@ -25,37 +25,35 @@ import unittest
 import os
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
-from pninexus.h5cpp.datatype import kInt32,kVariableString
+from pninexus.h5cpp.datatype import kInt32, kVariableString
 from pninexus.h5cpp.datatype import Class
 from pninexus.h5cpp.dataspace import Type
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class AttributeCreationTest(unittest.TestCase):
-    
-    filename = os.path.join(module_path,'AttributeCreationTest.h5')
-    
+
+    filename = os.path.join(module_path, 'AttributeCreationTest.h5')
+
     def setUp(self):
-        
-        self.file = h5cpp.file.create(self.filename,AccessFlags.TRUNCATE)
+
+        self.file = h5cpp.file.create(self.filename, AccessFlags.TRUNCATE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
         self.root.close()
         self.file.close()
-        
-    def testScalarIntAttribute(self):
-        
-        a = self.root.attributes.create("test",kInt32)
-        self.assertEqual(a.dataspace.type,Type.SCALAR)
-        self.assertEqual(a.datatype.type,Class.INTEGER)
-        
-    def testScalarStringAttribute(self):
-        
-        a = self.root.attributes.create("test",kVariableString)
-        self.assertEqual(a.dataspace.type,Type.SCALAR)
-        self.assertEqual(a.datatype.type,Class.STRING)
-        self.assertTrue(a.datatype.is_variable_length)
-        
-        
 
+    def testScalarIntAttribute(self):
+
+        a = self.root.attributes.create("test", kInt32)
+        self.assertEqual(a.dataspace.type, Type.SCALAR)
+        self.assertEqual(a.datatype.type, Class.INTEGER)
+
+    def testScalarStringAttribute(self):
+
+        a = self.root.attributes.create("test", kVariableString)
+        self.assertEqual(a.dataspace.type, Type.SCALAR)
+        self.assertEqual(a.datatype.type, Class.STRING)
+        self.assertTrue(a.datatype.is_variable_length)

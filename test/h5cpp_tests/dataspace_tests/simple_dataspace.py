@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pninexus.
 #
@@ -22,39 +22,36 @@
 #
 from __future__ import print_function
 import unittest
-import os
-import numpy
+# import os
+# import numpy
 
 from pninexus.h5cpp.dataspace import Simple
 from pninexus.h5cpp.dataspace import Dataspace
 from pninexus.h5cpp.dataspace import Type
 
+
 class TestSimple(unittest.TestCase):
-    
+
     def test_default_construction(self):
-        
+
         space = Simple()
-        self.assertEqual(space.type,Type.SIMPLE)
-        self.assertEqual(space.size,0)
-        self.assertEqual(space.current_dimensions,())
-        self.assertEqual(space.maximum_dimensions,())
-        self.assertTrue(isinstance(space,Simple))
-        self.assertTrue(isinstance(space,Dataspace))
-        
+        self.assertEqual(space.type, Type.SIMPLE)
+        self.assertEqual(space.size, 0)
+        self.assertEqual(space.current_dimensions, ())
+        self.assertEqual(space.maximum_dimensions, ())
+        self.assertTrue(isinstance(space, Simple))
+        self.assertTrue(isinstance(space, Dataspace))
+
     def test_current_dimensions_construction(self):
-        
-        space = Simple((10,20))
-        self.assertEqual(space.size,200)
-        self.assertEqual(space.current_dimensions,(10,20))
-        self.assertEqual(space.maximum_dimensions,(10,20))
-        
-        
+
+        space = Simple((10, 20))
+        self.assertEqual(space.size, 200)
+        self.assertEqual(space.current_dimensions, (10, 20))
+        self.assertEqual(space.maximum_dimensions, (10, 20))
+
     def test_all_dimensions_construction(self):
-        
-        space = Simple((1,23),(100,300));
-        self.assertEqual(space.size,23)
-        self.assertEqual(space.current_dimensions,(1,23))
-        self.assertEqual(space.maximum_dimensions,(100,300))
-        
-        
-        
+
+        space = Simple((1, 23), (100, 300))
+        self.assertEqual(space.size, 23)
+        self.assertEqual(space.current_dimensions, (1, 23))
+        self.assertEqual(space.maximum_dimensions, (100, 300))

@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY 
+# (c) Copyright 2018 DESY
 #
 # This file is part of python-pninexus.
 #
@@ -27,45 +27,45 @@ import os
 from pninexus import h5cpp
 from pninexus import nexus
 
+
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class Issue23Regression(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"Issue23Regression.nxs")
+
+    filename = os.path.join(module_path, "Issue23Regression.nxs")
     group_name = h5cpp.Path("scan_2017-06-19T07:47:35.554207+0200")
-    
+
     def setUp(self):
         unittest.TestCase.setUp(self)
-        
-        self.file = nexus.create_file(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
+
+        self.file = nexus.create_file(
+            self.filename, h5cpp.file.AccessFlags.TRUNCATE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
-        
+
         self.root.close()
         self.file.close()
-        
+
     def test_creation_fail_with_base_class_factory(self):
         """
-        The creation of an ill named group should not work using the BaseClassFactory
+        The creation of an ill named group should not work using
+        the BaseClassFactory
         """
-         
-        self.assertRaises(RuntimeError,nexus.BaseClassFactory.create,
+
+        self.assertRaises(RuntimeError, nexus.BaseClassFactory.create,
                           self.root,
                           self.group_name,
                           "NXentry")
-        
+
     def test_opening(self):
         """
-        it should be possible to create such a group with HDF5 - 
+        it should be possible to create such a group with HDF5 -
         still have to handle it for opening
         """
-        
-        h5cpp.node.Group(self.root,str(self.group_name))
-        
+
+        h5cpp.node.Group(self.root, str(self.group_name))
+
         g = self.root.nodes[str(self.group_name)]
-        self.assertEqual(g.link.path,h5cpp.Path("/")+self.group_name)
-    
-    
-    
-    
+        self.assertEqual(g.link.path, h5cpp.Path("/") + self.group_name)
