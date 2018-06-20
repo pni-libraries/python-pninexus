@@ -14,7 +14,7 @@
 # Additional features:
 #   - the line numbers in Travis match the local branch on the PR
 #     author machine.
-#   - bash ci/flake8_diff.sh can be run locally for quick turn-around
+#   - bash .flake8/flake8.sh can be run locally for quick turn-around
 #     (and it accepts additional flake8 options)
 #
 # Known problems:
@@ -95,7 +95,7 @@ if [[ -z "$COMMIT_RANGE" ]]; then
     # Make sure that $REMOTE_DEVELOP_REF is a valid reference
     echo -e "\nFetching $REMOTE_DEVELOP_REF"
     echo '--------------------------------------------------------------------------------'
-    git fetch $REMOTE develop:refs/remotes/$REMOTE_DEVELOP_REF
+    git fetch $REMOTE master:refs/remotes/$REMOTE_DEVELOP_REF
     LOCAL_BRANCH_SHORT_HASH=$(git rev-parse --short $LOCAL_BRANCH_REF)
     REMOTE_DEVELOP_SHORT_HASH=$(git rev-parse --short $REMOTE_DEVELOP_REF)
 
@@ -143,7 +143,7 @@ else
         echo '--------------------------------------------------------------------------------'
         echo "autopep8 tool may be useful in fixing these errors."
         echo -e "More information on: https://pypi.python.org/pypi/autopep8.\n"
-        echo "Also remember that ci/flake8_diff.sh can be run locally for quick turn-around"
+        echo "Also remember that .flake8/flake8.sh can be run locally for quick turn-around"
         echo -e "(you will need flake8 installed) - just commit your changes and run the script.\n"
         exit $RET
     fi
