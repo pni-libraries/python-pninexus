@@ -56,7 +56,7 @@ def copy(node,base,path=None,link_creation_list = property.LinkCreationList(),
     :raise RuntimeError: in case of errors 
     """
     
-    if path != None:
+    if path is not None:
         _copy(node,base,path,object_copy_list,link_creation_list)
     else:
         _copy(node,base,object_copy_list,link_creation_list)
@@ -86,7 +86,7 @@ def move(node,base,path=None,link_creation_list = property.LinkCreationList(),
     :param LinkAccessList link_access_list: optional link access property list
     """
     
-    if path!=None:
+    if path is not None:
         _move(node,base,path,link_creation_list,link_access_list)
     else:
         _move(node,base,link_creation_list,link_access_list)
@@ -123,13 +123,13 @@ def remove(node=None,base=None,path=None,
     if not isinstance(link_access_list,property.LinkAccessList):
         raise TypeError("The 'link_access_list' must be an instance of a link access property list!")
     
-    if node != None:
+    if node is not None:
         if not isinstance(node,Node):
             raise TypeError("The 'node' argument must be an instance of `Node`!")
         
         _remove(node,link_access_list)
     
-    elif base != None and base != None:
+    elif base is not None and base is not None:
         
         if not isinstance(base,Group):
             raise TypeError("The 'base' argument must be a Group instance!")
@@ -184,7 +184,7 @@ def link(target,
     if not isinstance(link_path,Path):
         raise TypeError("`link_path` must be an instance of an HDF5 path!")
     
-    if target_file!=None:
+    if target_file is not None:
         
         _link(target_file,target,link_base,link_path,link_creation_list,link_access_list)
     else:
@@ -269,7 +269,7 @@ def dataset_write(self,data,selection=None):
     #
     file_space = self.dataspace
 
-    if selection != None:
+    if selection is not None:
         file_space.selection(dataspace.SelectionOperation.SET,selection)
         
     self._write(data,memory_type,memory_space,file_space)
@@ -281,10 +281,10 @@ def dataset_read(self,data=None,selection=None):
     memory_type  = None
     file_space   = self.dataspace
     
-    if selection != None:
+    if selection is not None:
         file_space.selection(dataspace.SelectionOperation.SET,selection)
     
-    if data!=None:
+    if data is not None:
         #
         # if data has been provided by the user we have to determine the 
         # datatype and dataspace for the memory representation
@@ -306,7 +306,7 @@ def dataset_read(self,data=None,selection=None):
         #
         memory_type  = self.datatype
         
-        if selection != None:
+        if selection is not None:
             shape = selection_to_shape(selection)
             memory_space = dataspace.Simple(shape)
         else:

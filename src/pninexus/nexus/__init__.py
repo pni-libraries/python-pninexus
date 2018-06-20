@@ -60,13 +60,13 @@ def base_class_factory_create(parent, name, base_class,
     :raises RuntimeError: in case of a failure    
     """
     
-    if lcpl == None:
+    if lcpl is None:
         lcpl = h5cpp.property.LinkCreationList()
         
-    if gcpl == None:
+    if gcpl is None:
         gcpl = h5cpp.property.GroupCreationList()
         
-    if gapl == None:
+    if gapl is None:
         gapl = h5cpp.property.GroupAccessList()
         
     if isinstance(name,str):
@@ -102,13 +102,13 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
     :raises RuntimeError: in case of a failure
     """
     
-    if lcpl == None:
+    if lcpl is None:
         lcpl = h5cpp.property.LinkCreationList()
         
-    if dcpl == None:
+    if dcpl is None:
         dcpl = h5cpp.property.DatasetCreationList()
         
-    if dapl == None:
+    if dapl is None:
         dapl = h5cpp.property.DatasetAccessList()
     
     #
@@ -124,9 +124,10 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
     #
     # create the dataspace
     #
-    if shape!=None:
+    if shape is not None:
         #if no maximum shape is given we use the current shape
-        if max_shape==None: max_shape=shape
+        if max_shape is None:
+            max_shape=shape
         
         dataspace = h5cpp.dataspace.Simple(shape,max_shape)
     else:
@@ -137,7 +138,7 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
     # setup for chunking
     #
     # print(dcpl.layout)
-    if chunk!=None:
+    if chunk is not None:
         dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
         dcpl.chunk = chunk
     else:
@@ -152,7 +153,7 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
     #
     # if units are given we have to attache them as an attribute
     #
-    if units!=None:
+    if units is not None:
         
         if not isinstance(units,str):
             raise TypeError("`units` must be an instance of `str`!")
