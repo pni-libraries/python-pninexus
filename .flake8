@@ -6,3 +6,4 @@ exclude=
     __pycache__,
     build
 max-complexity = 10
+ignore = F401, F403, E722
