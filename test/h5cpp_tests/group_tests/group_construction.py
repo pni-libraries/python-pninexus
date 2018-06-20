@@ -33,7 +33,7 @@ class GroupConstructionTest(unittest.TestCase):
     def setUp(self):
         unittest.TestCase.setUp(self)
 
-        self.file=h5cpp.file.create(
+        self.file = h5cpp.file.create(
             "GroupTest.h5", h5cpp.file.AccessFlags.TRUNCATE)
 
     def tearDown(self):
