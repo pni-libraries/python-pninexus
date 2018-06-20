@@ -14,7 +14,7 @@
 # Additional features:
 #   - the line numbers in Travis match the local branch on the PR
 #     author machine.
-#   - bash .flake8/flake8.sh can be run locally for quick turn-around
+#   - bash ci/flake8.sh can be run locally for quick turn-around
 #     (and it accepts additional flake8 options)
 #
 # Known problems:
@@ -143,7 +143,7 @@ else
         echo '--------------------------------------------------------------------------------'
         echo "autopep8 tool may be useful in fixing these errors."
         echo -e "More information on: https://pypi.python.org/pypi/autopep8.\n"
-        echo "Also remember that .flake8/flake8.sh can be run locally for quick turn-around"
+        echo "Also remember that ci/flake8.sh can be run locally for quick turn-around"
         echo -e "(you will need flake8 installed) - just commit your changes and run the script.\n"
         exit $RET
     fi
