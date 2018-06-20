@@ -19,6 +19,7 @@
 //
 // Created on: Feb 1, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 #pragma once
 
@@ -115,6 +116,11 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     PyObject ***dataptr = (PyObject***)NpyIter_GetDataPtrArray(iter);
     for(auto string: buffer)
     {
+      if(string == NULL)
+	{
+	  char empty[] = {'\0'};
+	  string = empty;
+	}
 #if PY_MAJOR_VERSION >= 3
       PyObject *ptr = PyUnicode_FromString(string);
 #else
