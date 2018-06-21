@@ -7,7 +7,7 @@
 #   - computing a similar diff to what github is showing in a PR. The
 #     diff is done between:
 #       1. the common ancestor of the local branch and the
-#          sardana-org/sardana remote
+#          pni-libraries/python-pni remote
 #       2. the local branch
 #   - run flake8 --diff --show-source on the computed diff
 #
