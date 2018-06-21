@@ -1,19 +1,7 @@
 recursive-include src *.hpp *.cpp
-recursive-include pni/test *.hpp *.cpp
-include doc/examples/*.py
+# recursive-include pni/test *.hpp *.cpp
 include doc/sphinx/*
 include build_tools/*.py
 include pkgconfig.py
-exclude .gitignore
-exclude .settings/.gitignore
-exclude doc/.gitignore
-exclude doc/examples/.gitignore
-exclude doc/sphinx/.gitignore
-exclude doc/ug/.gitignore
-exclude pninexus.egg-info/.gitignore
-exclude src/.gitignore
-exclude src/pninexus/.gitignore
-exclude src/pninexus.egg-info/.gitignore
-exclude test/.gitignore
 graft build/sphinx/html 
-recursive-include doc/c++api/c++api *
+# recursive-include doc/c++api/c++api *
