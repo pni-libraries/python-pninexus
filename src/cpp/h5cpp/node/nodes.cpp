@@ -18,7 +18,8 @@
 // ===========================================================================
 //
 // Created on: Jan 25, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors: Eugen Wintersberger <eugen.wintersberger@desy.de>,
+//              Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
@@ -276,8 +277,19 @@ BOOST_PYTHON_MODULE(_node)
       .def_readonly("links",&Group::links)
       .def_readonly("nodes",&Group::nodes)
       .def("close",&Group::close)
+      .def("get_group", &Group::get_group,
+	   (arg("base"), arg("path"),
+	    arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("get_dataset", &Group::get_dataset,
+	   (arg("base"), arg("path"),
+	    arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("has_group", &Group::has_group,
+	   (arg("base"), arg("path"),
+	    arg("lapl")=hdf5::property::LinkAccessList()))
+      .def("has_dataset", &Group::has_dataset,
+	   (arg("base"), arg("path"),
+	    arg("lapl")=hdf5::property::LinkAccessList()))
       ;
-
 
   class_<LinkTarget>("LinkTarget")
       .add_property("file_path",&LinkTarget::file_path)
