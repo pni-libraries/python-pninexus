@@ -280,13 +280,13 @@ BOOST_PYTHON_MODULE(_node)
       .def("get_group", &Group::get_group,
 	   (arg("base"), arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
-      .def("get_dataset", &Group::get_group,
+      .def("get_dataset", &Group::get_dataset,
 	   (arg("base"), arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
       .def("has_group", &Group::has_group,
 	   (arg("base"), arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
-      .def("has_dataset", &Group::has_group,
+      .def("has_dataset", &Group::has_dataset,
 	   (arg("base"), arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
       ;
