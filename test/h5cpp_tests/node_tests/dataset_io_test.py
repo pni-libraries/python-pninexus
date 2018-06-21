@@ -31,116 +31,120 @@ from pninexus.h5cpp.dataspace import Scalar
 import numpy
 import numpy.testing as npt
 
+
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class DatasetAllIOTests(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"DatasetAllIOTests.h5")
-    
+
+    filename = os.path.join(module_path, "DatasetAllIOTests.h5")
+
     @classmethod
     def setUpClass(cls):
         super(DatasetAllIOTests, cls).setUpClass()
-        
-        h5cpp.file.create(cls.filename,AccessFlags.TRUNCATE)
-        
+
+        h5cpp.file.create(cls.filename, AccessFlags.TRUNCATE)
+
     def setUp(self):
-        
-        self.file = h5cpp.file.open(self.filename,AccessFlags.READWRITE)
+
+        self.file = h5cpp.file.open(self.filename, AccessFlags.READWRITE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
         unittest.TestCase.tearDown(self)
-        
+
         self.root.close()
         self.file.close()
-        
+
     def testWriteIntegerScalar(self):
-        
+
         dataset = Dataset(parent=self.root,
                           path=h5cpp.Path("IntegerScalar"),
                           type=h5cpp.datatype.kInt32,
                           space=Scalar())
         dataset.write(42)
         read = dataset.read()
-        self.assertEqual(read,42)
-        
+        self.assertEqual(read, 42)
+
     def testWriteFloatScalar(self):
-        
-        dataset = Dataset(self.root,h5cpp.Path("FloatScalar"),
-                          h5cpp.datatype.kFloat32,Scalar())
+
+        dataset = Dataset(self.root, h5cpp.Path("FloatScalar"),
+                          h5cpp.datatype.kFloat32, Scalar())
         dataset.write(23.321)
         read = dataset.read()
-        self.assertEqual(read,23.321)
-        
+        self.assertEqual(read, 23.321)
+
     def testWriteFixedLengthStringScalar(self):
-        
+
         data = "hello world"
         dtype = h5cpp.datatype.String.fixed(len(data))
         dtype.padding = h5cpp.datatype.StringPad.NULLPAD
-        dataset = Dataset(self.root,h5cpp.Path("FixedLengthStringScalar"),dtype,Scalar())
+        dataset = Dataset(
+            self.root, h5cpp.Path("FixedLengthStringScalar"), dtype, Scalar())
         dataset.write(data)
         read = dataset.read()
-        self.assertEqual(read,"hello world")
-        
+        self.assertEqual(read, "hello world")
+
     def testWriteVariableLengthScalar(self):
         data = "hello world"
         dtype = h5cpp.datatype.String.variable()
-        dataset = Dataset(self.root,h5cpp.Path("VariableLengthStringScalar"),dtype,Scalar())
+        dataset = Dataset(
+            self.root, h5cpp.Path("VariableLengthStringScalar"),
+            dtype, Scalar())
         dataset.write(data)
         read = dataset.read()
-        self.assertEqual(read,"hello world")
-        
+        self.assertEqual(read, "hello world")
+
     def testWriteIntegerArray(self):
-        
-        data = numpy.array([[1,2,3,4],[5,6,7,8]])
-        dataset = Dataset(self.root,h5cpp.Path("IntegerArray"),
-                          h5cpp.datatype.kInt32,Simple((2,4)))
+
+        data = numpy.array([[1, 2, 3, 4], [5, 6, 7, 8]])
+        dataset = Dataset(self.root, h5cpp.Path("IntegerArray"),
+                          h5cpp.datatype.kInt32, Simple((2, 4)))
         dataset.write(data)
         read = dataset.read()
-        npt.assert_array_equal(read,data)
-        
+        npt.assert_array_equal(read, data)
+
         #
         # test inplace reading
         #
-        read = numpy.zeros(dataset.dataspace.current_dimensions,dtype="int64")
+        read = numpy.zeros(dataset.dataspace.current_dimensions, dtype="int64")
         dataset.read(read)
-        npt.assert_array_equal(read,data)
-        
-        read = numpy.zeros((2,2),dtype="float32")
-        self.assertRaises(RuntimeError,dataset.read,read)
-        
-        
+        npt.assert_array_equal(read, data)
+
+        read = numpy.zeros((2, 2), dtype="float32")
+        self.assertRaises(RuntimeError, dataset.read, read)
+
     def testWriteFloatArray(self):
-        
-        data = numpy.array([[1,2,3,4],[5,6,7,8]],dtype="float64")
-        dataset = Dataset(self.root,h5cpp.Path("FloatArray"),
-                          h5cpp.datatype.kFloat64,Simple((2,4)))
+
+        data = numpy.array(
+            [[1, 2, 3, 4], [5, 6, 7, 8]], dtype="float64")
+        dataset = Dataset(self.root, h5cpp.Path("FloatArray"),
+                          h5cpp.datatype.kFloat64, Simple((2, 4)))
         dataset.write(data)
         read = dataset.read()
-        npt.assert_array_equal(read,data)
-        
+        npt.assert_array_equal(read, data)
+
     def testWriteFixedLengthStringArray(self):
-        
-        data = numpy.array([["hello","world","this"],["is","a","test"]])
+
+        data = numpy.array(
+            [["hello", "world", "this"], ["is", "a", "test"]])
         dtype = h5cpp.datatype.String.fixed(5)
         dtype.padding = h5cpp.datatype.StringPad.NULLPAD
-        dataset = Dataset(self.root,h5cpp.Path("FixedLengthStringArray"),
+        dataset = Dataset(self.root, h5cpp.Path("FixedLengthStringArray"),
                           dtype,
-                          Simple((2,3)))
+                          Simple((2, 3)))
         dataset.write(data)
         read = dataset.read()
-        npt.assert_array_equal(read,data)
-        
+        npt.assert_array_equal(read, data)
+
     def testWriteVariableLengthStringArray(self):
-        
-        data = numpy.array([["hello","world","this"],["is","a","test"]])
+
+        data = numpy.array(
+            [["hello", "world", "this"], ["is", "a", "test"]])
         dtype = h5cpp.datatype.String.variable()
-        dataset = Dataset(self.root,h5cpp.Path("VariableLengthStringArray"),
+        dataset = Dataset(self.root, h5cpp.Path("VariableLengthStringArray"),
                           dtype,
-                          Simple((2,3)))
+                          Simple((2, 3)))
         dataset.write(data)
         read = dataset.read()
-        npt.assert_array_equal(read,data)
-        
-        
-                          
+        npt.assert_array_equal(read, data)

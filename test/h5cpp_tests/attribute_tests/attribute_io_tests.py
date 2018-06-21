@@ -33,100 +33,100 @@ from pninexus.h5cpp.datatype import StringPad, String
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class AttributeIOTests(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"AttributeIOTests.h5")
-    
+
+    filename = os.path.join(module_path, "AttributeIOTests.h5")
+
     @classmethod
     def setUpClass(cls):
         super(AttributeIOTests, cls).setUpClass()
-        
-        h5cpp.file.create(cls.filename,AccessFlags.TRUNCATE)
-        
+
+        h5cpp.file.create(cls.filename, AccessFlags.TRUNCATE)
+
     def setUp(self):
-        self.file = h5cpp.file.open(self.filename,AccessFlags.READWRITE)
+        self.file = h5cpp.file.open(self.filename, AccessFlags.READWRITE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
         self.root.close()
         self.file.close()
-        
+
     def testBooleanScalar(self):
-        
-        a = self.root.attributes.create("BooleanScalar",kUInt8)
+
+        a = self.root.attributes.create("BooleanScalar", kUInt8)
         a.write(True)
         self.assertTrue(a.read())
-        
+
     def testBooleanArray(self):
-        
-        a = self.root.attributes.create("BooleanArray",kUInt8,(4,))
-        data = [True,False,False,True]
+
+        a = self.root.attributes.create("BooleanArray", kUInt8, (4,))
+        data = [True, False, False, True]
         a.write(data)
-        npt.assert_array_equal(a.read(),numpy.array(data))
-        
+        npt.assert_array_equal(a.read(), numpy.array(data))
+
     def testIntegerScalar(self):
-        
-        a = self.root.attributes.create("IntegerScalar",kInt32)
+
+        a = self.root.attributes.create("IntegerScalar", kInt32)
         a.write(42)
         r = a.read()
-        self.assertEqual(r,42)
-        
+        self.assertEqual(r, 42)
+
     def testFloatScalar(self):
-        
-        a = self.root.attributes.create("FloatScalar",kFloat32)
+
+        a = self.root.attributes.create("FloatScalar", kFloat32)
         a.write(42.345)
         r = a.read()
-        self.assertEqual(r,42.345)
-        
+        self.assertEqual(r, 42.345)
+
     def testFloatNumpyScalar(self):
-        
-        a = self.root.attributes.create("FloatNumpyScalar",kFloat32)
+
+        a = self.root.attributes.create("FloatNumpyScalar", kFloat32)
         a.write(numpy.float32(34.5323))
         r = a.read()
-        self.assertEqual(r,34.5323)
-        
+        self.assertEqual(r, 34.5323)
+
     def testStringScalarFixedLength(self):
-        
+
         data = "hello world"
         dtype = String.fixed(len(data))
         dtype.padding = StringPad.NULLPAD
-        a = self.root.attributes.create("StringScalar",dtype)
+        a = self.root.attributes.create("StringScalar", dtype)
         a.write("hello world")
         r = a.read()
-        self.assertEqual(r,"hello world")
-        
+        self.assertEqual(r, "hello world")
+
     def testStringScalarVariableLength(self):
-        
+
         data = "hello world"
-        a = self.root.attributes.create("StringScalarVLength",kVariableString)
+        a = self.root.attributes.create("StringScalarVLength", kVariableString)
         a.write(data)
         r = a.read()
-        self.assertEqual(r,data)
-        
+        self.assertEqual(r, data)
+
     def testStringArray(self):
-        
-        data = numpy.array([["hello","world","this"],["is","a","test"]])
+
+        data = numpy.array([["hello", "world", "this"], ["is", "a", "test"]])
         dtype = String.fixed(5)
         dtype.padding = StringPad.NULLPAD
-        a = self.root.attributes.create("StringArray",dtype,(2,3))
+        a = self.root.attributes.create("StringArray", dtype, (2, 3))
         a.write(data)
         r = a.read()
-        npt.assert_array_equal(r,data)
-        
+        npt.assert_array_equal(r, data)
+
     def testStringArrayVariableLength(self):
-        
-        data = numpy.array([["hello","world","this"],["is","a","test"]])
-        a = self.root.attributes.create("StringArrayVLength",kVariableString,(2,3))
+
+        data = numpy.array([["hello", "world", "this"], ["is", "a", "test"]])
+        a = self.root.attributes.create(
+            "StringArrayVLength", kVariableString, (2, 3))
         a.write(data)
         r = a.read()
-        npt.assert_array_equal(r,data)
-        
+        npt.assert_array_equal(r, data)
+
     def testIntArray(self):
-        
-        data = numpy.array([1,2,3])
-        a = self.root.attributes.create("IntArray",kInt32,(3,))
+
+        data = numpy.array([1, 2, 3])
+        a = self.root.attributes.create("IntArray", kInt32, (3,))
         a.write(data)
         r = a.read()
-        npt.assert_array_equal(r,data)
-        
-        
+        npt.assert_array_equal(r, data)

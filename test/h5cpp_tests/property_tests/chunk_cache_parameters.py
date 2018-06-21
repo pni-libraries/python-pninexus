@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pninexus.
 #
@@ -24,23 +24,24 @@ import unittest
 
 from pninexus.h5cpp.property import ChunkCacheParameters
 
+
 class ChunkCacheParametersTest(unittest.TestCase):
-    
+
     def testConstruction(self):
-        
-        params = ChunkCacheParameters(1000000,20313,9.234)
-        self.assertEqual(params.chunk_slots,1000000)
-        self.assertEqual(params.chunk_cache_size,20313)
-        self.assertEqual(params.preemption_policy,9.234)
-        
+
+        params = ChunkCacheParameters(1000000, 20313, 9.234)
+        self.assertEqual(params.chunk_slots, 1000000)
+        self.assertEqual(params.chunk_cache_size, 20313)
+        self.assertEqual(params.preemption_policy, 9.234)
+
     def testSetters(self):
-        
+
         params = ChunkCacheParameters()
         params.chunk_slots = 3400000
         self.assertEqual(params.chunk_slots, 3400000)
-        
+
         params.chunk_cache_size = 20313
-        self.assertEqual(params.chunk_cache_size,20313)
-        
+        self.assertEqual(params.chunk_cache_size, 20313)
+
         params.preemption_policy = 934.234
-        self.assertEqual(params.preemption_policy,934.234)
+        self.assertEqual(params.preemption_policy, 934.234)

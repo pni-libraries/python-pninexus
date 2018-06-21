@@ -1,0 +1,10 @@
+[flake8]
+exclude=
+    .git,
+    docs,
+    doc,
+    dist,
+    __pycache__,
+    build
+# max-complexity = 10
+ignore = F401, F403, E722

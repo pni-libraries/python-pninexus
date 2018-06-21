@@ -22,12 +22,12 @@
 #
 from __future__ import print_function
 import unittest
-import sys
+# import sys
 import os.path
 
 from pninexus import h5cpp
 #
-# we use here some nexus functionality to simplify the generation of the 
+# we use here some nexus functionality to simplify the generation of the
 # test file
 #
 from pninexus import nexus
@@ -39,61 +39,64 @@ file_structure = """
     <group name="instrument" type="NXinstrument">
         <group name="source" type="NXsource">
         </group>
-        
-        <link name="detector_module_1" 
+
+        <link name="detector_module_1"
               target="Lambda_module_1://entry/instrument/detector"/>
-        <link name="detector_module_2" 
+        <link name="detector_module_2"
               target="Lambda_module_2://entry/instrument/detector"/>
-        <link name="detector_module_3" 
+        <link name="detector_module_3"
               target="Lambda_module_3://entry/instrument/detector"/>
     </group>
-    
+
     <group name="sample" type="NXsample">
     </group>
-    
+
     <group name="data" type="NXdata">
     </group>
 </group>
 """
 
+
 class LinkIterationTest(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"LinkIterationTest.h5")
-    
+
+    filename = os.path.join(module_path, "LinkIterationTest.h5")
+
     @classmethod
     def setUpClass(cls):
         super(LinkIterationTest, cls).setUpClass()
-        
-        file = nexus.create_file(cls.filename,h5cpp.file.AccessFlags.TRUNCATE)
-        nexus.create_from_string(file.root(),file_structure)
-        
+
+        file = nexus.create_file(
+            cls.filename, h5cpp.file.AccessFlags.TRUNCATE)
+        nexus.create_from_string(file.root(), file_structure)
+
     def setUp(self):
         unittest.TestCase.setUp(self)
-        
-        self.file = nexus.open_file(self.filename,h5cpp.file.AccessFlags.READONLY)
+
+        self.file = nexus.open_file(
+            self.filename, h5cpp.file.AccessFlags.READONLY)
         self.root = self.file.root()
-        
+
     def tearDown(self):
         unittest.TestCase.tearDown(self)
-        
+
         self.root.close()
         self.file.root()
-        
+
     def test_direct_iteration(self):
-        
+
         entry = self.root.nodes["entry"]
-        
+
         links = [link.path.name for link in entry.links]
-        
-        self.assertListEqual(links,["data","instrument","sample"],
+
+        self.assertListEqual(links, ["data", "instrument", "sample"],
                              "Comparison of link names {}".format(links))
-    
+
     def test_recursive_iteration(self):
-        
+
         entry = self.root.nodes["entry"]
-        
+
         links = [link.path.name for link in entry.links.recursive]
-        
+
         refnames = ["data",
                     "instrument",
                     "source",
@@ -102,7 +105,4 @@ class LinkIterationTest(unittest.TestCase):
                     "detector_module_3",
                     "sample"]
         self.assertListEqual(links, refnames,
-                             "Comparison of link names {}".format(links) )
-        
-        
-        
+                             "Comparison of link names {}".format(links))

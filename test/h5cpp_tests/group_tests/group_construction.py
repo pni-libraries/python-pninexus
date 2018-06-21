@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pni.
 #
@@ -22,37 +22,39 @@
 #
 from __future__ import print_function
 import unittest
-import os
-import numpy
+# import os
+# import numpy
 
 from pninexus import h5cpp
 
+
 class GroupConstructionTest(unittest.TestCase):
-    
+
     def setUp(self):
         unittest.TestCase.setUp(self)
-        
-        self.file=h5cpp.file.create("GroupTest.h5",h5cpp.file.AccessFlags.TRUNCATE)
-        
+
+        self.file = h5cpp.file.create(
+            "GroupTest.h5", h5cpp.file.AccessFlags.TRUNCATE)
+
     def tearDown(self):
-        
+
         self.file.close()
-        
+
     def testDefaultConstruction(self):
-        
+
         g = h5cpp.node.Group()
         self.assertFalse(g.is_valid)
-        
+
     def testRootGroupFromFile(self):
-        
+
         root = self.file.root()
-        self.assertEqual(root.attributes.size,0)
-        
+        self.assertEqual(root.attributes.size, 0)
+
     def testConstructor(self):
-        
+
         root = self.file.root()
-        entry = h5cpp.node.Group(root,"entry")
+        entry = h5cpp.node.Group(root, "entry")
         self.assertTrue(entry.is_valid)
-        self.assertEqual(entry.type,h5cpp.node.Type.GROUP)
-        self.assertEqual(entry.link.type(),h5cpp.node.LinkType.HARD)
-        self.assertEqual(entry.link.path,h5cpp.Path('/entry'))
+        self.assertEqual(entry.type, h5cpp.node.Type.GROUP)
+        self.assertEqual(entry.link.type(), h5cpp.node.LinkType.HARD)
+        self.assertEqual(entry.link.path, h5cpp.Path('/entry'))

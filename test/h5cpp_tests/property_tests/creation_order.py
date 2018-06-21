@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pninexus.
 #
@@ -24,30 +24,30 @@ import unittest
 
 from pninexus.h5cpp.property import CreationOrder
 
+
 class CreationOrderTest(unittest.TestCase):
-    
+
     def testDefaultConstruction(self):
-        
+
         order = CreationOrder()
-        
+
         self.assertFalse(order.tracked)
         self.assertFalse(order.indexed)
-        
+
     def testTrackedSetter(self):
-        
+
         order = CreationOrder()
         order.tracked = True
         self.assertTrue(order.tracked)
         self.assertFalse(order.indexed)
-        
+
     def testIndexedSetter(self):
-        
+
         order = CreationOrder()
         order.indexed = True
-        
+
         #
         # setting indexed to true implies tracking order
         #
         self.assertTrue(order.tracked)
         self.assertTrue(order.indexed)
-        

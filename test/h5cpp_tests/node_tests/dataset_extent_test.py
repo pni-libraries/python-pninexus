@@ -27,114 +27,109 @@ from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.node import Dataset
 from pninexus.h5cpp.dataspace import Simple
-from pninexus.h5cpp.dataspace import Scalar
+# from pninexus.h5cpp.dataspace import Scalar
 from pninexus.h5cpp.datatype import kFloat32
 from pninexus.h5cpp.property import LinkCreationList
 from pninexus.h5cpp.property import DatasetCreationList
-import numpy
-import numpy.testing as npt
+# import numpy
+# import numpy.testing as npt
+
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class DatasetExtentTest(unittest.TestCase):
     """
-    Testing the functionality of the ``extent`` methods. 
+    Testing the functionality of the ``extent`` methods.
     """
-    
-    filename = os.path.join(module_path,"DatasetExtentTest.h5")
-    limited_dataspace = Simple((10,10),(100,10))
-    unlimited_dataspace = Simple((0,10),(h5cpp.dataspace.UNLIMITED,10))
+
+    filename = os.path.join(module_path, "DatasetExtentTest.h5")
+    limited_dataspace = Simple((10, 10), (100, 10))
+    unlimited_dataspace = Simple((0, 10), (h5cpp.dataspace.UNLIMITED, 10))
     lcpl = LinkCreationList()
     dcpl = DatasetCreationList()
-    
+
     @classmethod
     def setUpClass(cls):
         super(DatasetExtentTest, cls).setUpClass()
-        
-        h5cpp.file.create(cls.filename,AccessFlags.TRUNCATE)
-        cls.dcpl.layout =  h5cpp.property.DatasetLayout.CHUNKED
-        cls.dcpl.chunk = (1,10)
-        
+
+        h5cpp.file.create(cls.filename, AccessFlags.TRUNCATE)
+        cls.dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
+        cls.dcpl.chunk = (1, 10)
+
     def setUp(self):
-        
-        self.file = h5cpp.file.open(self.filename,AccessFlags.READWRITE)
+
+        self.file = h5cpp.file.open(self.filename, AccessFlags.READWRITE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
-        
+
         self.root.close()
         self.file.close()
-        
+
     def testSetTotalExtentLimited(self):
-        
-        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentLimited"),
+
+        dataset = Dataset(self.root, h5cpp.Path("SetTotalExtentLimited"),
                           kFloat32,
                           self.limited_dataspace,
                           self.lcpl,
                           self.dcpl)
-        dataset.extent((90,10))
-        #check the new shape
-        self.assertEqual(dataset.dataspace.current_dimensions,(90,10))
-        
-        self.assertRaises(RuntimeError,dataset.extent,(90,11))
-        self.assertRaises(RuntimeError,dataset.extent,(101,10))
-        #dimensions should remain unaltered
-        self.assertEqual(dataset.dataspace.current_dimensions,(90,10))
-        
+        dataset.extent((90, 10))
+        # check the new shape
+        self.assertEqual(dataset.dataspace.current_dimensions, (90, 10))
+
+        self.assertRaises(RuntimeError, dataset.extent, (90, 11))
+        self.assertRaises(RuntimeError, dataset.extent, (101, 10))
+        # dimensions should remain unaltered
+        self.assertEqual(dataset.dataspace.current_dimensions, (90, 10))
+
         #
         # now we shring the dataset again
-        # 
-        dataset.extent((45,5))
-        self.assertEqual(dataset.dataspace.current_dimensions,(45,5))
-        
-        
+        #
+        dataset.extent((45, 5))
+        self.assertEqual(dataset.dataspace.current_dimensions, (45, 5))
+
     def testSetTotalExtentUnlimited(self):
-        
-        dataset = Dataset(self.root,h5cpp.Path("SetTotalExtentUnlimited"),
+
+        dataset = Dataset(self.root, h5cpp.Path("SetTotalExtentUnlimited"),
                           kFloat32,
                           self.unlimited_dataspace,
                           self.lcpl,
                           self.dcpl)
-        dataset.extent((1000,10))
-        self.assertEqual(dataset.dataspace.current_dimensions,(1000,10))
-        
-        self.assertRaises(RuntimeError,dataset.extent,(1000,11))
-        
-        
+        dataset.extent((1000, 10))
+        self.assertEqual(dataset.dataspace.current_dimensions, (1000, 10))
+
+        self.assertRaises(RuntimeError, dataset.extent, (1000, 11))
+
     def testGrowExtentLimited(self):
-        
-        dataset = Dataset(self.root,h5cpp.Path("GrowExtentLimited"),
+
+        dataset = Dataset(self.root, h5cpp.Path("GrowExtentLimited"),
                           kFloat32,
                           self.limited_dataspace,
                           self.lcpl,
                           self.dcpl)
-        dataset.extent(0,10)
-        self.assertEqual(dataset.dataspace.current_dimensions,(20,10))
-        
-        self.assertRaises(RuntimeError,dataset.extent,0,90)
-        self.assertRaises(RuntimeError,dataset.extent,1,1)
-        self.assertEqual(dataset.dataspace.current_dimensions,(20,10))
-        
+        dataset.extent(0, 10)
+        self.assertEqual(dataset.dataspace.current_dimensions, (20, 10))
+
+        self.assertRaises(RuntimeError, dataset.extent, 0, 90)
+        self.assertRaises(RuntimeError, dataset.extent, 1, 1)
+        self.assertEqual(dataset.dataspace.current_dimensions, (20, 10))
+
         #
         # shrink the dataset again
         #
-        dataset.extent(0,-2)
-        dataset.extent(1,-3)
-        self.assertEqual(dataset.dataspace.current_dimensions,(18,7))
-        
+        dataset.extent(0, -2)
+        dataset.extent(1, -3)
+        self.assertEqual(dataset.dataspace.current_dimensions, (18, 7))
+
     def testGrowExtentUnlimited(self):
-        
-        dataset = Dataset(self.root,h5cpp.Path("GrowExtentUnlimited"),
+
+        dataset = Dataset(self.root, h5cpp.Path("GrowExtentUnlimited"),
                           kFloat32,
                           self.unlimited_dataspace,
                           self.lcpl,
                           self.dcpl)
-        dataset.extent(0,10000)
-        self.assertEqual(dataset.dataspace.current_dimensions,(10000,10))
-        
-        self.assertRaises(RuntimeError,dataset.extent,1,1)
-        
-        
-        
-    
-    
+        dataset.extent(0, 10000)
+        self.assertEqual(dataset.dataspace.current_dimensions, (10000, 10))
+
+        self.assertRaises(RuntimeError, dataset.extent, 1, 1)

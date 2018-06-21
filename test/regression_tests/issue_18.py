@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY 
+# (c) Copyright 2018 DESY
 #
 # This file is part of python-pninexus.
 #
@@ -29,28 +29,28 @@ from pninexus import nexus
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class Issue18Regression(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"Issue18Regression.nxs")
-    
+
+    filename = os.path.join(module_path, "Issue18Regression.nxs")
+
     def test_just_with_files(self):
-        
-        f = nexus.create_file(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
+
+        f = nexus.create_file(self.filename, h5cpp.file.AccessFlags.TRUNCATE)
         f.close()
-        nexus.create_file(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
-        
+        nexus.create_file(self.filename, h5cpp.file.AccessFlags.TRUNCATE)
+
     def test_with_other_objects_in_place(self):
-        
-        f = nexus.create_file(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
+
+        f = nexus.create_file(self.filename, h5cpp.file.AccessFlags.TRUNCATE)
         root = f.root()
-        
-        dataset = h5cpp.node.Dataset(root,h5cpp.Path("data"),
+
+        dataset = h5cpp.node.Dataset(root, h5cpp.Path("data"),
                                      h5cpp.datatype.kInt32,
-                                     h5cpp.dataspace.Scalar()
-                                     )
-        
+                                     h5cpp.dataspace.Scalar())
+
         dataset.close()
         root.close()
         f.close()
-        
-        nexus.create_file(self.filename,h5cpp.file.AccessFlags.TRUNCATE)
+
+        nexus.create_file(self.filename, h5cpp.file.AccessFlags.TRUNCATE)

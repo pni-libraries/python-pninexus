@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pninexus.
 #
@@ -21,12 +21,13 @@
 #     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
 #
 import unittest
-from pninexus.h5cpp.property import ObjectCopyList,CopyFlags,CopyFlag
+from pninexus.h5cpp.property import ObjectCopyList, CopyFlags, CopyFlag
+
 
 class ObjectCopyListTest(unittest.TestCase):
-    
+
     def testDefaultConstruction(self):
-        
+
         list = ObjectCopyList()
         flags = list.flags
         self.assertFalse(flags.shallow_hierarchy)
@@ -35,19 +36,18 @@ class ObjectCopyListTest(unittest.TestCase):
         self.assertFalse(flags.expand_references)
         self.assertFalse(flags.without_attributes)
         self.assertFalse(flags.merge_committed_types)
-        
+
     def testFlagsAssigment(self):
-        
+
         list = ObjectCopyList()
-        list.flags = CopyFlag.EXPAND_REFERENCES | CopyFlag.MERGE_COMMITTED_TYPES
+        list.flags = CopyFlag.EXPAND_REFERENCES | \
+            CopyFlag.MERGE_COMMITTED_TYPES
         self.assertTrue(list.flags.expand_references)
         self.assertTrue(list.flags.merge_committed_types)
-        
+
     def testSingleFlagAssignment(self):
-        
+
         list = ObjectCopyList()
-        
+
         list.flags = CopyFlags() | CopyFlag.EXPAND_REFERENCES
         self.assertTrue(list.flags.expand_references)
-
-

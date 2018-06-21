@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2018 DESY, 
+# (c) Copyright 2018 DESY,
 #
 # This file is part of python-pninexus.
 #
@@ -22,22 +22,19 @@
 #
 from __future__ import print_function
 import unittest
-import os
-import numpy
+
+# import os
+# import numpy
 
 from pninexus.h5cpp.dataspace import Scalar
-from pninexus.h5cpp.dataspace import Dataspace
+# from pninexus.h5cpp.dataspace import Dataspace
 from pninexus.h5cpp.dataspace import Type
 
+
 class ScalarTest(unittest.TestCase):
-    
+
     def testCreation(self):
-        
+
         space = Scalar()
-        self.assertEqual(space.size,1)
-        self.assertEqual(space.type,Type.SCALAR)
-        
-        
-        
-        
-        
+        self.assertEqual(space.size, 1)
+        self.assertEqual(space.type, Type.SCALAR)

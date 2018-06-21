@@ -26,52 +26,51 @@ import os
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.node import Group
-from pninexus.h5cpp.property import GroupCreationList
+# from pninexus.h5cpp.property import GroupCreationList
 from pninexus.h5cpp.property import LinkCreationList
 from pninexus.h5cpp import Path
 
+
 module_path = os.path.dirname(os.path.abspath(__file__))
 
+
 class GroupCreationTests(unittest.TestCase):
-    
-    filename = os.path.join(module_path,"GroupCreationTests.h5")
-    
+
+    filename = os.path.join(module_path, "GroupCreationTests.h5")
+
     def setUp(self):
-        
-        self.file = h5cpp.file.create(self.filename,AccessFlags.TRUNCATE)
+
+        self.file = h5cpp.file.create(self.filename, AccessFlags.TRUNCATE)
         self.root = self.file.root()
-        
+
     def tearDown(self):
-        
+
         self.root.close()
         self.file.close()
-        
+
     def testSimpleConstruction(self):
         """The most essential test case
-        
+
         We simply construct a group with a new name
         """
-        
-        g = Group(self.root,"test")
-        self.assertEqual(g.link.path.name,"test")
-        self.assertEqual(g.link.path,Path("/test"))
-        
+
+        g = Group(self.root, "test")
+        self.assertEqual(g.link.path.name, "test")
+        self.assertEqual(g.link.path, Path("/test"))
+
     def testWithIntermediateGroups(self):
-        """somehow a bit more elaborate 
-        
+        """somehow a bit more elaborate
+
         We construct a group with a custom link creation property list
         """
         lcpl = LinkCreationList()
         lcpl.intermediate_group_creation = True
-        g = Group(self.root,"test/sensors/temperature",lcpl)
-        self.assertEqual("{}".format(g.link.path),"/test/sensors/temperature")
-        
+        g = Group(self.root, "test/sensors/temperature", lcpl)
+        self.assertEqual(
+            "{}".format(g.link.path), "/test/sensors/temperature")
+
         self.assertTrue(self.root.nodes.exists("test"))
         g = self.root.nodes["test"]
         self.assertTrue(g.nodes.exists("sensors"))
         g = g.nodes["sensors"]
         self.assertTrue(g.nodes.exists("temperature"))
-        
-        
-    
-        

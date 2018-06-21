@@ -9,14 +9,6 @@ from pninexus.h5cpp._property import DatasetLayout
 from pninexus.h5cpp._property import LibVersion
 from pninexus.h5cpp._property import CopyFlag
 
-def CopyFlag_or(self,b):
-    if isinstance(b,(CopyFlag,CopyFlags)):
-        return CopyFlags(self) | b
-    else:
-        raise TypeError("RHS of | operator must be a CopyFlag instance!")
-    
-CopyFlag.__or__ = CopyFlag_or
-
 #
 # import utility classes
 #
@@ -44,3 +36,24 @@ from pninexus.h5cpp._property import GroupCreationList
 from pninexus.h5cpp._property import TypeCreationList
 from pninexus.h5cpp._property import AttributeCreationList
 from pninexus.h5cpp._property import LinkCreationList
+
+
+def CopyFlag_or(self, b):
+    if isinstance(b, (CopyFlag, CopyFlags)):
+        return CopyFlags(self) | b
+    else:
+        raise TypeError("RHS of | operator must be a CopyFlag instance!")
+
+
+CopyFlag.__or__ = CopyFlag_or
+
+
+__all__ = [CopyFlag, DatasetFillValueStatus, DatasetFillTime,
+           DatasetAllocTime, DatasetLayout, LibVersion, CopyFlag,
+           CopyFlags, ChunkCacheParameters, CreationOrder, List,
+           DatasetTransferList, FileAccessList, FileCreationList,
+           FileMountList, LinkAccessList, ObjectCopyList,
+           ObjectCreationList, StringCreationList, DatasetAccessList,
+           DatatypeAccessList, GroupAccessList, DatasetCreationList,
+           GroupCreationList, TypeCreationList, AttributeCreationList,
+           LinkCreationList]
