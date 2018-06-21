@@ -2,6 +2,7 @@
 exclude=
     .git,
     docs,
+    doc,
     dist,
     __pycache__,
     build
