@@ -18,7 +18,9 @@
 # ===========================================================================
 #
 # Created on: Jan 29, 2018
-#     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+#     Authors:
+#             Eugen Wintersberger <eugen.wintersberger@desy.de>
+#             Jan Kotanski <jan.kotanski@desy.de>
 #
 from __future__ import print_function
 import unittest

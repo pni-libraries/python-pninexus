@@ -18,7 +18,9 @@
 # ===========================================================================
 #
 # Created on: Feb 8, 2018
-#     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+#     Authors:
+#             Eugen Wintersberger <eugen.wintersberger@desy.de>
+#             Jan Kotanski <jan.kotanski@desy.de>
 #
 from __future__ import print_function
 import unittest
@@ -72,20 +74,23 @@ class CreatFileTest(unittest.TestCase):
 
         self.assertEqual(root.attributes["NX_class"].read(), "NXroot")
 
-
     def test_h5create(self):
-        
+
         fapl = h5cpp.property.FileAccessList()
-        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
+        self.assertEqual(
+            fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
         fapl.set_close_degree(h5cpp._property.CloseDegree.WEAK)
-        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.WEAK)
+        self.assertEqual(
+            fapl.close_degree, h5cpp._property.CloseDegree.WEAK)
         fapl.set_close_degree(h5cpp._property.CloseDegree.SEMI)
-        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.SEMI)
+        self.assertEqual(
+            fapl.close_degree, h5cpp._property.CloseDegree.SEMI)
         fapl.set_close_degree(h5cpp._property.CloseDegree.DEFAULT)
-        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
+        self.assertEqual(
+            fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
         fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
-        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.STRONG)
+        self.assertEqual(
+            fapl.close_degree, h5cpp._property.CloseDegree.STRONG)
 
         f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
-        root = f.root()
-
+        f.root()

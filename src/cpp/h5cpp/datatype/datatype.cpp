@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 25, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
