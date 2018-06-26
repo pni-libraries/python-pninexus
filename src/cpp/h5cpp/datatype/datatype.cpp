@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 25, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
@@ -98,6 +100,8 @@ BOOST_PYTHON_MODULE(_datatype)
 
   class_<Integer,bases<Datatype>>("Integer")
       .def(init<const Datatype&>())
+      .def("make_signed", &Integer::make_signed)
+      .def("is_signed", &Integer::is_signed)
       ;
 
   class_<Float,bases<Datatype>>("Float")

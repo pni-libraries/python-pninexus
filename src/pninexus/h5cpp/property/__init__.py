@@ -7,6 +7,7 @@ from pninexus.h5cpp._property import DatasetFillTime
 from pninexus.h5cpp._property import DatasetAllocTime
 from pninexus.h5cpp._property import DatasetLayout
 from pninexus.h5cpp._property import LibVersion
+from pninexus.h5cpp._property import CloseDegree
 from pninexus.h5cpp._property import CopyFlag
 
 #
@@ -52,7 +53,7 @@ __all__ = [CopyFlag, DatasetFillValueStatus, DatasetFillTime,
            DatasetAllocTime, DatasetLayout, LibVersion, CopyFlag,
            CopyFlags, ChunkCacheParameters, CreationOrder, List,
            DatasetTransferList, FileAccessList, FileCreationList,
-           FileMountList, LinkAccessList, ObjectCopyList,
+           FileMountList, LinkAccessList, ObjectCopyList, CloseDegree,
            ObjectCreationList, StringCreationList, DatasetAccessList,
            DatatypeAccessList, GroupAccessList, DatasetCreationList,
            GroupCreationList, TypeCreationList, AttributeCreationList,

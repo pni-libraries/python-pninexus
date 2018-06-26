@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 26, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include <boost/python.hpp>
@@ -53,6 +55,12 @@ void create_enumeration_wrappers()
   enum_<LibVersion>("LibVersion")
       .value("LATEST",LibVersion::LATEST)
       .value("EARLIEST",LibVersion::EARLIEST);
+
+  enum_<CloseDegree>("CloseDegree")
+      .value("WEAK", CloseDegree::WEAK)
+      .value("SEMI", CloseDegree::SEMI)
+      .value("STRONG", CloseDegree::STRONG)
+      .value("DEFAULT", CloseDegree::DEFAULT);
 
 
 }

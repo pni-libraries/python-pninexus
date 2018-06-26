@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 26, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include <boost/python.hpp>
@@ -68,6 +70,8 @@ void create_class_wrappers()
 
   class_<FileAccessList,bases<List>>("FileAccessList")
       .def("library_version_bounds",&FileAccessList::library_version_bounds)
+      .def<void (FileAccessList::*)(CloseDegree) const>("set_close_degree",&FileAccessList::close_degree)
+      .add_property<CloseDegree (FileAccessList::*)() const>("close_degree",&FileAccessList::close_degree)
       .add_property("library_version_bound_high",&FileAccessList::library_version_bound_high)
       .add_property("library_version_bound_low",&FileAccessList::library_version_bound_low)
       ;
