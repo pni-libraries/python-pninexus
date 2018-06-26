@@ -57,6 +57,7 @@ class IsNexusFileTest(unittest.TestCase):
 class CreatFileTest(unittest.TestCase):
 
     filename = os.path.join(module_path, "CreateFileTest.nxs")
+    h5filename = os.path.join(module_path, "CreateFileTest.h5")
 
     def test(self):
 
@@ -70,3 +71,21 @@ class CreatFileTest(unittest.TestCase):
         self.assertTrue(root.attributes.exists("NeXus_version"))
 
         self.assertEqual(root.attributes["NX_class"].read(), "NXroot")
+
+
+    def test_h5create(self):
+        
+        fapl = h5cpp.property.FileAccessList()
+        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
+        fapl.set_close_degree(h5cpp._property.CloseDegree.WEAK)
+        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.WEAK)
+        fapl.set_close_degree(h5cpp._property.CloseDegree.SEMI)
+        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.SEMI)
+        fapl.set_close_degree(h5cpp._property.CloseDegree.DEFAULT)
+        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.DEFAULT)
+        fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+        self.assertEqual(fapl.close_degree, h5cpp._property.CloseDegree.STRONG)
+
+        f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
+        root = f.root()
+

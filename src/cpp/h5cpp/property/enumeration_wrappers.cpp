@@ -54,5 +54,11 @@ void create_enumeration_wrappers()
       .value("LATEST",LibVersion::LATEST)
       .value("EARLIEST",LibVersion::EARLIEST);
 
+  enum_<CloseDegree>("CloseDegree")
+      .value("WEAK", CloseDegree::WEAK)
+      .value("SEMI", CloseDegree::SEMI)
+      .value("STRONG", CloseDegree::STRONG)
+      .value("DEFAULT", CloseDegree::DEFAULT);
+
 
 }

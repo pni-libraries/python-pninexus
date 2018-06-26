@@ -98,6 +98,8 @@ BOOST_PYTHON_MODULE(_datatype)
 
   class_<Integer,bases<Datatype>>("Integer")
       .def(init<const Datatype&>())
+      .def("make_signed", &Integer::make_signed)
+      .def("is_signed", &Integer::is_signed)
       ;
 
   class_<Float,bases<Datatype>>("Float")

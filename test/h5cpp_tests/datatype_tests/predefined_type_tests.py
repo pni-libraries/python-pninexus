@@ -37,48 +37,79 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype = h5cpp.datatype.kUInt8
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 1)
+        self.assertEqual(dtype.is_signed(), False)
+
+        dtype.make_signed(True)
+        self.assertEqual(dtype.is_signed(), True)
 
     def testInt8(self):
 
         dtype = h5cpp.datatype.kInt8
         self.assertTrue(isinstance(dtype, self.int_types))
-        self.assertEqual(dtype.size, 1)
+        self.assertEqual(dtype.is_signed(), True)
+
+        dtype.make_signed(False)
+        self.assertEqual(dtype.is_signed(), False)
 
     def testUInt16(self):
 
         dtype = h5cpp.datatype.kUInt16
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 2)
+        self.assertEqual(dtype.is_signed(), False)
+
+        dtype.make_signed(True)
+        self.assertEqual(dtype.is_signed(), True)
 
     def testInt16(self):
 
         dtype = h5cpp.datatype.kInt16
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 2)
+        self.assertEqual(dtype.is_signed(), True)
+
+        dtype.make_signed(False)
+        self.assertEqual(dtype.is_signed(), False)
 
     def testUInt32(self):
 
         dtype = h5cpp.datatype.kUInt32
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 4)
+        self.assertEqual(dtype.is_signed(), False)
+
+        dtype.make_signed(True)
+        self.assertEqual(dtype.is_signed(), True)
 
     def testInt32(self):
 
         dtype = h5cpp.datatype.kInt32
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 4)
+        self.assertEqual(dtype.is_signed(), True)
+
+        dtype.make_signed(False)
+        self.assertEqual(dtype.is_signed(), False)
 
     def testUInt64(self):
 
         dtype = h5cpp.datatype.kUInt64
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 8)
+        self.assertEqual(dtype.is_signed(), False)
+
+        dtype.make_signed(True)
+        self.assertEqual(dtype.is_signed(), True)
 
     def testInt64(self):
 
         dtype = h5cpp.datatype.kInt64
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 8)
+        self.assertEqual(dtype.is_signed(), True)
+
+        dtype.make_signed(False)
+        self.assertEqual(dtype.is_signed(), False)
 
     def testFloat32(self):
 
