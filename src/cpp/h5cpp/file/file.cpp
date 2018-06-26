@@ -33,14 +33,14 @@ hdf5::file::File create_file(const boost::filesystem::path &file_path,
                              const hdf5::property::FileCreationList &fcpl,
                              const hdf5::property::FileAccessList &fapl)
 {
-  return hdf5::file::create(file_path,flags);
+  return hdf5::file::create(file_path,flags,fcpl,fapl);
 }
 
 hdf5::file::File open_file(const boost::filesystem::path &file_path,
                            hdf5::file::AccessFlagsBase flags,
                            const hdf5::property::FileAccessList &fapl)
 {
-  return hdf5::file::open(file_path,flags);
+  return hdf5::file::open(file_path,flags,fapl);
 }
 
 BOOST_PYTHON_MODULE(_file)
