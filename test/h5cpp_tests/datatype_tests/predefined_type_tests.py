@@ -129,7 +129,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype = h5cpp.datatype.kFloat128
         self.assertTrue(isinstance(dtype, self.float_types))
-        self.assertEqual(dtype.size, 16)
+        self.assertTrue(dtype.size in [8, 12, 16])
 
     def testVariableString(self):
 
