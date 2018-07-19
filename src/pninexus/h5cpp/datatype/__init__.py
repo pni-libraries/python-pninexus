@@ -40,7 +40,8 @@ class Factory(object):
 
     """
 
-    type_map = {"int8": kInt8,
+    type_map = {"bool": kUInt8,
+                "int8": kInt8,
                 "uint8": kUInt8,
                 "int16": kInt16,
                 "uint16": kUInt16,
