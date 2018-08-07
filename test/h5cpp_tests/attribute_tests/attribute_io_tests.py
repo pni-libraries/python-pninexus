@@ -27,7 +27,8 @@ import os
 import numpy.testing as npt
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
-from pninexus.h5cpp.datatype import kInt32, kFloat32, kUInt8, kVariableString
+from pninexus.h5cpp.datatype import (
+    kInt32, kFloat32, kUInt8, kVariableString, kEBool)
 from pninexus.h5cpp.datatype import StringPad, String
 
 
@@ -54,13 +55,13 @@ class AttributeIOTests(unittest.TestCase):
 
     def testBooleanScalar(self):
 
-        a = self.root.attributes.create("BooleanScalar", kUInt8)
+        a = self.root.attributes.create("BooleanScalar", kEBool)
         a.write(True)
         self.assertTrue(a.read())
 
     def testBooleanArray(self):
 
-        a = self.root.attributes.create("BooleanArray", kUInt8, (4,))
+        a = self.root.attributes.create("BooleanArray", kEBool, (4,))
         data = [True, False, False, True]
         a.write(data)
         npt.assert_array_equal(a.read(), numpy.array(data))
