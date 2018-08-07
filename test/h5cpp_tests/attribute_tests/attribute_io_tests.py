@@ -55,13 +55,32 @@ class AttributeIOTests(unittest.TestCase):
 
     def testBooleanScalar(self):
 
-        a = self.root.attributes.create("BooleanScalar", kEBool)
+        a = self.root.attributes.create("BooleanScalar", kUInt8)
         a.write(True)
         self.assertTrue(a.read())
+        a2 = self.root.attributes.create("BooleanScalar2", kUInt8)
+        a2.write(False)
+        self.assertTrue(not a2.read())
 
     def testBooleanArray(self):
 
-        a = self.root.attributes.create("BooleanArray", kEBool, (4,))
+        a = self.root.attributes.create("BooleanArray", kUInt8, (4,))
+        data = [True, False, False, True]
+        a.write(data)
+        npt.assert_array_equal(a.read(), numpy.array(data))
+
+    def testEBooleanScalar(self):
+
+        a = self.root.attributes.create("EBooleanScalar", kEBool)
+        a2 = self.root.attributes.create("EBooleanScalar2", kEBool)
+        a.write(True)
+        self.assertTrue(a.read())
+        a2.write(False)
+        self.assertTrue(not a2.read())
+
+    def testEBooleanArray(self):
+
+        a = self.root.attributes.create("EBooleanArray", kEBool, (4,))
         data = [True, False, False, True]
         a.write(data)
         npt.assert_array_equal(a.read(), numpy.array(data))
@@ -69,9 +88,13 @@ class AttributeIOTests(unittest.TestCase):
     def testIntegerScalar(self):
 
         a = self.root.attributes.create("IntegerScalar", kInt32)
+        a2 = self.root.attributes.create("IntegerScalar2", kInt32)
         a.write(42)
         r = a.read()
         self.assertEqual(r, 42)
+        a2.write(12)
+        r = a2.read()
+        self.assertEqual(r, 12)
 
     def testFloatScalar(self):
 
