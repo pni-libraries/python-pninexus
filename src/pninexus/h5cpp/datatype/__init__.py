@@ -38,6 +38,7 @@ from pninexus.h5cpp._datatype import kEBool
 
 from pninexus.h5cpp._datatype import is_bool
 
+
 class Factory(object):
     """Construct HDF5 datatypes from numpy types
 
