@@ -17,6 +17,7 @@ from pninexus.h5cpp._datatype import Datatype
 from pninexus.h5cpp._datatype import Float
 from pninexus.h5cpp._datatype import Integer
 from pninexus.h5cpp._datatype import String
+from pninexus.h5cpp._datatype import Enum
 
 #
 # Import predefined constant types
@@ -33,14 +34,16 @@ from pninexus.h5cpp._datatype import kFloat64
 from pninexus.h5cpp._datatype import kFloat32
 from pninexus.h5cpp._datatype import kFloat128
 from pninexus.h5cpp._datatype import kVariableString
+from pninexus.h5cpp._datatype import kEBool
 
+from pninexus.h5cpp._datatype import is_bool
 
 class Factory(object):
     """Construct HDF5 datatypes from numpy types
 
     """
 
-    type_map = {"bool": kUInt8,
+    type_map = {"bool": kEBool,
                 "int8": kInt8,
                 "uint8": kUInt8,
                 "int16": kInt16,
@@ -111,6 +114,8 @@ def to_numpy(hdf5_datatype):
         return "float64"
     elif hdf5_datatype == kFloat128:
         return "float128"
+    elif hdf5_datatype == kEBool:
+        return "bool"
     elif isinstance(hdf5_datatype, String):
         if hdf5_datatype.is_variable_length:
             return "object"
@@ -124,4 +129,4 @@ __all__ = [Class, Order, Sign, Norm, Pad, StringPad, Direction,
            CharacterEncoding, Datatype, Float, Integer, String,
            kUInt8, kInt8, kUInt16, kInt16, kUInt32, kInt32, kUInt64,
            kInt64, kFloat64, kFloat32, kFloat128, kVariableString,
-           Factory, kFactory, to_numpy]
+           Factory, kFactory, to_numpy, kEBool, is_bool]

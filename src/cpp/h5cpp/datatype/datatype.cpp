@@ -55,19 +55,32 @@ namespace hdf5
 	return type;
       }
     };
-    
-    bool is_bool(const Enum & etype){
-      int s = etype.number_of_values();
-      if(s != 2){
+
+    //!
+    //! @brief check if Enum is EBool
+    //!
+    //! @param DataType object
+    //! @return if Enum is EBool flag
+    //!
+    bool is_bool(const Datatype & dtype){
+      if(dtype.get_class() == Class::ENUM){
+	auto etype = datatype::Enum(dtype);
+	int s = etype.number_of_values();
+	if(s != 2){
+	  return false;
+	}
+	if(etype.name(0) != "FALSE"){
+	  return false;
+	}
+	if(etype.name(1) != "TRUE"){
+	  return false;
+	}
+	return true;
+      }
+      else{
 	return false;
       }
-      if(etype.name(0) != "FALSE"){
-	return false;
-      }
-      if(etype.name(1) != "TRUE"){
-	return false;
-      }
-      return true;
+
     }
     
   }
@@ -173,6 +186,11 @@ BOOST_PYTHON_MODULE(_datatype)
       .def("fixed",&String::fixed)
       .staticmethod("fixed");
 
+  class_<Enum, bases<Datatype>>("Enum")
+      .def(init<const Datatype&>())
+    ;
+    
+
   scope current;
 
   current.attr("kUInt8") = hdf5::datatype::create<uint8_t>();
@@ -187,4 +205,8 @@ BOOST_PYTHON_MODULE(_datatype)
   current.attr("kFloat32") = hdf5::datatype::create<float>();
   current.attr("kFloat128") = hdf5::datatype::create<long double>();
   current.attr("kVariableString") = hdf5::datatype::create<std::string>();
+  current.attr("kEBool") = hdf5::datatype::create<hdf5::datatype::EBool>();
+
+  //need some functions
+  def("is_bool",&is_bool);
 }
