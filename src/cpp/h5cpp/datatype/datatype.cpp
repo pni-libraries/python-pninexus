@@ -41,13 +41,13 @@ namespace hdf5
       FALSE = 0, //!< indicates a false value
       TRUE = 1   //!< indicates a true value
     };
-    
+
     template<>
     class TypeTrait<datatype::EBool> {
     public:
       using TypeClass = datatype::Enum;
       using Type = datatype::EBool;
-      
+
       static TypeClass create(const Type & = Type()) {
 	auto type = TypeClass::create(Type());
 	type.insert("FALSE", Type::FALSE);
@@ -80,9 +80,8 @@ namespace hdf5
       else{
 	return false;
       }
-
     }
-    
+
   }
 }
 
@@ -189,7 +188,7 @@ BOOST_PYTHON_MODULE(_datatype)
   class_<Enum, bases<Datatype>>("Enum")
       .def(init<const Datatype&>())
     ;
-    
+
 
   scope current;
 

@@ -19,6 +19,7 @@
 //
 // Created on: Feb 31, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include "array_factory.hpp"
