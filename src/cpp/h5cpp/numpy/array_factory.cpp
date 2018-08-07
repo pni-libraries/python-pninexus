@@ -19,6 +19,7 @@
 //
 // Created on: Feb 31, 2018
 //     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include "array_factory.hpp"
@@ -31,6 +32,8 @@ extern "C"{
 #include<Python.h>
 #include<numpy/arrayobject.h>
 }
+#include <h5cpp/datatype/datatype.hpp>
+#include <h5cpp/datatype/enum.hpp>
 
 namespace {
 
@@ -62,6 +65,23 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
       return NPY_STRING;
 #endif
     }
+  }
+  else if(datatype.get_class() == Class::ENUM)
+  {
+    auto etype = hdf5::datatype::Enum(datatype);
+
+    int s = etype.number_of_values();
+    if(s != 2){
+      return NPY_INT64;
+    }
+    if(etype.name(0) != "FALSE"){
+      return NPY_INT64;
+    }
+    if(etype.name(1) != "TRUE"){
+      return NPY_INT64;
+    }
+    return NPY_BOOL;
+
   }
   else if(datatype == create<bool>()) return NPY_BOOL;
   else

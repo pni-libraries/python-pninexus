@@ -25,11 +25,12 @@
 from __future__ import print_function
 import unittest
 from pninexus import h5cpp
-from pninexus.h5cpp.datatype import Float, String, Datatype, Integer
+from pninexus.h5cpp.datatype import Float, String, Datatype, Integer, Enum
 
 
 class PredefinedTypeTests(unittest.TestCase):
 
+    enum_types = (Datatype, Enum)
     float_types = (Datatype, Float)
     int_types = (Datatype, Integer)
     string_types = (Datatype, String)
@@ -136,3 +137,10 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype = h5cpp.datatype.kVariableString
         self.assertTrue(isinstance(dtype, self.string_types))
         self.assertTrue(dtype.is_variable_length)
+
+    def testEBool(self):
+
+        dtype = h5cpp.datatype.kEBool
+        self.assertTrue(isinstance(dtype, self.enum_types))
+        self.assertTrue(h5cpp._datatype.is_bool(dtype))
+        self.assertEqual(dtype.size, 1)

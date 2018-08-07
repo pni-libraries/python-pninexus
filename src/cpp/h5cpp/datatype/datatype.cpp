@@ -25,6 +25,65 @@
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
 #include <cstdint>
+#include <h5cpp/datatype/datatype.hpp>
+#include <h5cpp/datatype/enum.hpp>
+
+
+namespace hdf5
+{
+  namespace datatype
+  {
+    //!
+    //! \brief enumeration bool type
+    //!
+    enum EBool : int8_t
+    {
+      FALSE = 0, //!< indicates a false value
+      TRUE = 1   //!< indicates a true value
+    };
+
+    template<>
+    class TypeTrait<datatype::EBool> {
+    public:
+      using TypeClass = datatype::Enum;
+      using Type = datatype::EBool;
+
+      static TypeClass create(const Type & = Type()) {
+	auto type = TypeClass::create(Type());
+	type.insert("FALSE", Type::FALSE);
+	type.insert("TRUE", Type::TRUE);
+	return type;
+      }
+    };
+
+    //!
+    //! @brief check if Enum is EBool
+    //!
+    //! @param DataType object
+    //! @return if Enum is EBool flag
+    //!
+    bool is_bool(const Datatype & dtype){
+      if(dtype.get_class() == Class::ENUM){
+	auto etype = datatype::Enum(dtype);
+	int s = etype.number_of_values();
+	if(s != 2){
+	  return false;
+	}
+	if(etype.name(0) != "FALSE"){
+	  return false;
+	}
+	if(etype.name(1) != "TRUE"){
+	  return false;
+	}
+	return true;
+      }
+      else{
+	return false;
+      }
+    }
+
+  }
+}
 
 
 BOOST_PYTHON_MODULE(_datatype)
@@ -126,6 +185,11 @@ BOOST_PYTHON_MODULE(_datatype)
       .def("fixed",&String::fixed)
       .staticmethod("fixed");
 
+  class_<Enum, bases<Datatype>>("Enum")
+      .def(init<const Datatype&>())
+    ;
+
+
   scope current;
 
   current.attr("kUInt8") = hdf5::datatype::create<uint8_t>();
@@ -140,4 +204,8 @@ BOOST_PYTHON_MODULE(_datatype)
   current.attr("kFloat32") = hdf5::datatype::create<float>();
   current.attr("kFloat128") = hdf5::datatype::create<long double>();
   current.attr("kVariableString") = hdf5::datatype::create<std::string>();
+  current.attr("kEBool") = hdf5::datatype::create<hdf5::datatype::EBool>();
+
+  //need some functions
+  def("is_bool",&is_bool);
 }
