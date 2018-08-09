@@ -79,7 +79,7 @@ class DatasetAllIOTests(unittest.TestCase):
         dataset = Dataset(self.root, h5cpp.Path("EBoolScalar"),
                           h5cpp.datatype.kEBool, Scalar())
         dataset2 = Dataset(self.root, h5cpp.Path("EBoolScalar2"),
-                          h5cpp.datatype.kEBool, Scalar())
+                           h5cpp.datatype.kEBool, Scalar())
         dataset.write(True)
         self.assertTrue(dataset.read())
         dataset2.write(False)
