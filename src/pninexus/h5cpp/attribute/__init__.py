@@ -23,6 +23,8 @@ def attribute_write(self, data):
 
     if write_data.dtype.kind == 'U':
         write_data = write_data.astype("S")
+    elif write_data.dtype == 'bool':
+        write_data = write_data.astype("int8")
 
     try:
         self._write(write_data)
