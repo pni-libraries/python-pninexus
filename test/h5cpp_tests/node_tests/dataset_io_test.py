@@ -81,7 +81,6 @@ class DatasetAllIOTests(unittest.TestCase):
         dataset2 = Dataset(self.root, h5cpp.Path("EBoolScalar2"),
                           h5cpp.datatype.kEBool, Scalar())
         dataset.write(True)
-        read = dataset.read()
         self.assertTrue(dataset.read())
         dataset2.write(False)
         self.assertTrue(not dataset2.read())
