@@ -74,6 +74,26 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         self.assertEqual(read, 23.321)
 
+    def testWriteEBooleanScalar(self):
+
+        dataset = Dataset(self.root, h5cpp.Path("EBoolScalar"),
+                          h5cpp.datatype.kEBool, Scalar())
+        dataset2 = Dataset(self.root, h5cpp.Path("EBoolScalar2"),
+                           h5cpp.datatype.kEBool, Scalar())
+        dataset.write(True)
+        self.assertTrue(dataset.read())
+        dataset2.write(False)
+        self.assertTrue(not dataset2.read())
+
+    def testWriteEBoolArray(self):
+
+        data = [True, False, False, True]
+        dataset = Dataset(self.root, h5cpp.Path("EBoolArray"),
+                          h5cpp.datatype.kFloat64, Simple((4, )))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, numpy.array(data))
+
     def testWriteFixedLengthStringScalar(self):
 
         data = "hello world"

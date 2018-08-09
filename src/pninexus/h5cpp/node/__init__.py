@@ -264,9 +264,13 @@ def dataset_write(self, data, selection=None):
     #
     # if the data is a unicode numpy array we have to convert it to a
     # simple string array
+    # else if the data is bool numpy array we have to convert it to a
+    # int array
     #
     if data.dtype.kind == 'U':
         data = data.astype('S')
+    elif data.dtype == 'bool':
+        data = data.astype("int8")
 
     #
     # determine memory datatype and dataspace
