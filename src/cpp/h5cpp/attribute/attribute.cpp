@@ -36,8 +36,11 @@ extern "C"{
 #include "../errors.hpp"
 #include "../common/converters.hpp"
 #include "../common/io.hpp"
+#include "../datatype/ebool.hpp"
 #include "../numpy/numpy.hpp"
 #include <algorithm>
+#include <h5cpp/datatype/datatype.hpp>
+#include <h5cpp/datatype/enum.hpp>
 
 #if PY_MAJOR_VERSION >= 3
 int
@@ -109,7 +112,9 @@ void attribute_write(const hdf5::attribute::Attribute &self,
   if(io::has_variable_length_string_type(self) &&
       (mem_type.get_class() == hdf5::datatype::Class::STRING))
     mem_type = String::variable();
-
+  if((self.datatype().get_class() == hdf5::datatype::Class::ENUM) &&
+     is_bool(self.datatype()))
+    mem_type = hdf5::datatype::create<hdf5::datatype::EBool>();
   self.write(array_adapter,mem_type);
 }
 
