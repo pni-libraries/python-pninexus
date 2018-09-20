@@ -41,7 +41,7 @@ class CreationTest(unittest.TestCase):
 
         try:
             os.remove(self.filename)
-        except:
+        except Exception:
             pass
 
     # -----------------------------------------------------------------------

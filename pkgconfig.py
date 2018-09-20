@@ -8,7 +8,7 @@ try:
     def execute(l):
         return check_output(l)
 
-except:
+except Exception:
     from subprocess import Popen
     from subprocess import PIPE
 
@@ -34,11 +34,11 @@ def strip_string_list(inlist):
     return:
     new list with all strings stripped.
     """
-    l = []
+    lt = []
     for value in inlist:
-        l.append(value.strip())
+        lt.append(value.strip())
 
-    return l
+    return lt
 
 
 def remove_empty_strings(inlist):

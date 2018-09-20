@@ -8,7 +8,6 @@ services:
   - docker
 
 python:
-  - "2.7"
   - "3.5"
 
 env:
@@ -19,4 +18,4 @@ before_install:
   - if [ $TEST == "flake8" ]; then sudo pip install flake8; fi
 
 script:
-  - if [ $TEST == "flake8" ]; then ci/flake8.sh; fi
+  - if [ $TEST == "flake8" ]; then flake8; fi
