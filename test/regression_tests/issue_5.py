@@ -86,7 +86,7 @@ class Issue5Regression(unittest.TestCase):
         g = nodes[0]
         self.assertTrue(isinstance(g, h5cpp.node.Group))
         self.assertTrue(g.links.exists("data"))
-        l = g.links["data"]
-        self.assertEqual(str(l.path), "/scan_0001/data/data")
-        self.assertTrue(isinstance(l, h5cpp.node.Link))
-        self.assertEqual(l.type(), h5cpp.node.LinkType.EXTERNAL)
+        lk = g.links["data"]
+        self.assertEqual(str(lk.path), "/scan_0001/data/data")
+        self.assertTrue(isinstance(lk, h5cpp.node.Link))
+        self.assertEqual(lk.type(), h5cpp.node.LinkType.EXTERNAL)
