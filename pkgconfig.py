@@ -5,15 +5,15 @@ import sys
 try:
     from subprocess import check_output
 
-    def execute(l):
-        return check_output(l)
+    def execute(lt):
+        return check_output(lt)
 
 except Exception:
     from subprocess import Popen
     from subprocess import PIPE
 
-    def execute(l):
-        p = Popen(l, stdout=PIPE)
+    def execute(lt):
+        p = Popen(lt, stdout=PIPE)
         result = ""
 
         for x in p.stdout:
