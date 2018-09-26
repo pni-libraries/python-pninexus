@@ -8,7 +8,7 @@ try:
     def execute(lt):
         return check_output(lt)
 
-except:
+except Exception:
     from subprocess import Popen
     from subprocess import PIPE
 

@@ -346,7 +346,7 @@ def dataset_read(self, data=None, selection=None):
     if data.dtype.kind == 'S':
         try:
             data = data.astype('U')
-        except:
+        except Exception:
             print(data)
 
     return data
