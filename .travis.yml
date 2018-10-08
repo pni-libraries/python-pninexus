@@ -19,7 +19,7 @@ env:
   - OS_TYPE=ubuntu18.04 PYTHON=3 TEST="testsuit"
   - OS_TYPE=ubuntu18.04 PYTHON=2 TEST="testsuit"
   - OS_TYPE=ubuntu16.04 PYTHON=2 TEST="testsuit"
-#  - OS_TYPE=ubuntu16.04 PYTHON=3 TEST="testsuit"
+  - OS_TYPE=ubuntu16.04 PYTHON=3 TEST="testsuit"
 
 before_install:
   - if [ $TEST == "flake8" ]; then sudo apt-get update -qq ; fi
