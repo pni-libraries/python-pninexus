@@ -34,6 +34,7 @@ extern "C"{
 }
 #include <h5cpp/datatype/datatype.hpp>
 #include <h5cpp/datatype/enum.hpp>
+#include <h5cpp/datatype/ebool.hpp>
 
 namespace {
 
@@ -69,19 +70,12 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
   else if(datatype.get_class() == Class::ENUM)
   {
     auto etype = hdf5::datatype::Enum(datatype);
-
-    int s = etype.number_of_values();
-    if(s != 2){
+    if(hdf5::datatype::is_bool(etype)){
+      return NPY_BOOL;
+    }
+    else{
       return NPY_INT64;
     }
-    if(etype.name(0) != "FALSE"){
-      return NPY_INT64;
-    }
-    if(etype.name(1) != "TRUE"){
-      return NPY_INT64;
-    }
-    return NPY_BOOL;
-
   }
   else if(datatype == create<bool>()) return NPY_BOOL;
   else

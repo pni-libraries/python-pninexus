@@ -27,7 +27,7 @@
 #include <cstdint>
 #include <h5cpp/datatype/datatype.hpp>
 #include <h5cpp/datatype/enum.hpp>
-#include "ebool.hpp"
+#include <h5cpp/datatype/ebool.hpp>
 
 
 
