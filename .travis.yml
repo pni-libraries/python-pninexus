@@ -1,4 +1,6 @@
-group: deprecated-2017Q4
+# group: deprecated-2017Q4
+dist: trusty
+group: deprecated-2017Q2
 
 language: python
 
@@ -6,9 +8,6 @@ sudo: required
 
 services:
   - docker
-
-python:
-  - "3.5"
 
 env:
   - TEST="flake8"
