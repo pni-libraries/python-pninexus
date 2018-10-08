@@ -15,8 +15,8 @@ from build_tools import (CppExtensionFactory,
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
-version = "1.2.9"
-release = "1.2.9"
+version = "1.2.10"
+release = "1.2.10"
 
 
 def get_build_dir():
