@@ -1,4 +1,6 @@
 group: deprecated-2017Q4
+# dist: trusty
+# group: deprecated-2017Q2
 
 language: python
 
@@ -7,15 +9,32 @@ sudo: required
 services:
   - docker
 
-python:
-  - "3.5"
-
 env:
   - TEST="flake8"
+  - OS_TYPE=debian9 PYTHON=3 TEST="testsuit"
+  - OS_TYPE=debian9 PYTHON=2 TEST="testsuit"
+  - OS_TYPE=debian8 PYTHON=3 TEST="testsuit"
+  - OS_TYPE=debian8 PYTHON=2 TEST="testsuit"
+  - OS_TYPE=ubuntu18.04 PYTHON=3 TEST="testsuit"
+  - OS_TYPE=ubuntu18.04 PYTHON=2 TEST="testsuit"
+  - OS_TYPE=ubuntu16.04 PYTHON=2 TEST="testsuit"
+  - OS_TYPE=ubuntu16.04 PYTHON=3 TEST="testsuit"
 
 before_install:
   - if [ $TEST == "flake8" ]; then sudo apt-get update -qq ; fi
   - if [ $TEST == "flake8" ]; then sudo pip install flake8; fi
+  - if [ $TEST == "testsuit" ]; then chmod +x .travis/run.sh; fi
+  - if [ $TEST == "testsuit" ]; then chmod +x .travis/install.sh; fi
+
+before_script:
+  - if [ $TEST == "testsuit" ]; then docker build -t ndts .travis/${OS_TYPE}_py${PYTHON}; fi
+  - if [ $TEST == "testsuit" ]; then docker run  --name  ndts -d -it -v `pwd`:/home/tango  ndts; fi
+  - if [ $TEST == "testsuit" ]; then .travis/install.sh ${OS_TYPE} ${PYTHON}; fi
 
 script:
+  - if [ $TEST == "testsuit" ]; then .travis/run.sh ${PYTHON}; fi
   - if [ $TEST == "flake8" ]; then flake8; fi
+
+after-script:
+  - if [ $TEST == "testsuit" ]; then docker stop ndts; fi
+  - if [ $TEST == "testsuit" ]; then docker rm ndts; fi
