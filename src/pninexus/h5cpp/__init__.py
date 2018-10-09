@@ -1,6 +1,6 @@
 """
 :py:mod:`pninexus.io.h5cpp` is a thin wrapper around the *h5cpp* C++
-    library where every
+library where every
 namespace in the C++ library has a counterpart as a sub-package of
 :py:mod:`pninexus.io.h5cpp`.
 
