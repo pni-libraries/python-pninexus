@@ -169,9 +169,13 @@ Classes
    :rtype: boolean
 
 
+.. autoclass:: Enum
+
+   Type used for enumratation values.
+
 .. autoclass:: Float
 
-   Type used for flaoting point numbers.
+   Type used for floating point numbers.
 
 .. autoclass:: Integer
 
