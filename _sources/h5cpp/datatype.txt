@@ -160,11 +160,13 @@ Classes
 
    .. automethod:: has_class
 
-.. autofunction:: is_bool
+.. autofunction:: is_bool(enum)
 
    Returns :py:const:`True` if the enum datatype is a EBool type,
    :py:const:`False` otherwise.
 
+   :param enum: enum datatype
+   :type enum: :class:`pninexus.h5cpp.datatype.Enum`
    :rtype: boolean
 
 
