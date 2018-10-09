@@ -165,8 +165,7 @@ Classes
    Returns :py:const:`True` if the enum datatype is a EBool type,
    :py:const:`False` otherwise.
 
-   :param enum: enum datatype
-   :type enum: :class:`pninexus.h5cpp.datatype.Enum`
+   :param Enum enum: enum datatype
    :rtype: boolean
 
 
