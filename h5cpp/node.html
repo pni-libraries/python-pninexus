@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pninexus.h5cpp.node &#8212; pninexus 1.2.3 documentation</title>
+    <title>pninexus.h5cpp.node &#8212; pninexus 1.2.10 documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.3',
+        VERSION:     '1.2.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 1.2.3 documentation" href="../index.html" />
+    <link rel="top" title="pninexus 1.2.10 documentation" href="../index.html" />
     <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="next" title="File related functions" href="../nexus/files.html" />
     <link rel="prev" title="pninexus.h5cpp.property" href="properties.html" />
@@ -53,7 +53,7 @@
         <li class="right" >
           <a href="properties.html" title="pninexus.h5cpp.property"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -933,12 +933,12 @@ to determine the file and root group where to look for the node.</p>
 <dt id="pninexus.h5cpp.node.copy">
 <code class="descclassname">pninexus.h5cpp.node.</code><code class="descname">copy</code><span class="sig-paren">(</span><em>node</em>, <em>base</em>, <em>path=None</em>, <em>link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em>object_copy_list=&lt;pninexus.h5cpp._property.ObjectCopyList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy an object within the HDF5 tree</p>
-<p>Copies an existing object <cite>node</cite> to a new location. The new location is 
-determined by <cite>base</cite> and <cite>path</cite> argument. If <cite>path</cite> is not given a 
-copy of the original object will be created with the same name under 
-<cite>base</cite>. If <cite>path</cite> is given, it determines the new path and thus name 
+<p>Copies an existing object <cite>node</cite> to a new location. The new location is
+determined by <cite>base</cite> and <cite>path</cite> argument. If <cite>path</cite> is not given a
+copy of the original object will be created with the same name under
+<cite>base</cite>. If <cite>path</cite> is given, it determines the new path and thus name
 of the copied object relative to the <cite>base</cite> object.</p>
-<p>The behavior of the copy operation can be controlled by a link and 
+<p>The behavior of the copy operation can be controlled by a link and
 object copy property list which can be passed as optional arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -947,9 +947,10 @@ object copy property list which can be passed as optional arguments.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) &#8211; the object to copy</li>
 <li><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the base group for the new location</li>
-<li><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>pninexus.h5cpp.Path</em></a>) &#8211; optional HDF5 path determining the final 
+<li><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>pninexus.h5cpp.Path</em></a>) &#8211; optional HDF5 path determining the final
 location of the copied object</li>
-<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional link creation property list</li>
+<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional link creation
+property list</li>
 <li><strong>object_copy_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.ObjectCopyList" title="pninexus.h5cpp.property.ObjectCopyList"><em>ObjectCopyList</em></a>) &#8211; optional object copy property list</li>
 </ul>
 </td>
@@ -965,13 +966,13 @@ location of the copied object</li>
 <dt id="pninexus.h5cpp.node.move">
 <code class="descclassname">pninexus.h5cpp.node.</code><code class="descname">move</code><span class="sig-paren">(</span><em>node</em>, <em>base</em>, <em>path=None</em>, <em>link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em>link_access_list=&lt;pninexus.h5cpp._property.LinkAccessList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.move" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moving a node within the HDF5 tree</p>
-<p>Move an instance of <a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><code class="xref py py-class docutils literal"><span class="pre">Node</span></code></a> (dataset or group) to a new location. 
-The new location is determined by the <cite>base</cite> and <cite>path</cite> argument. 
-If <cite>path</cite> is not given <cite>node</cite> is moved below the <cite>base</cite> using the same 
-link name as it has under its original group. 
-If <cite>path</cite> is given the new location is determined by this path relative 
+<p>Move an instance of <a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><code class="xref py py-class docutils literal"><span class="pre">Node</span></code></a> (dataset or group) to a new location.
+The new location is determined by the <cite>base</cite> and <cite>path</cite> argument.
+If <cite>path</cite> is not given <cite>node</cite> is moved below the <cite>base</cite> using the same
+link name as it has under its original group.
+If <cite>path</cite> is given the new location is determined by this path relative
 to the <cite>base</cite> group.</p>
-<p>Technically this function does not move any data but, like on a filesystem, 
+<p>Technically this function does not move any data but, like on a filesystem,
 only links are altered.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -982,7 +983,8 @@ only links are altered.</p>
 <li><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the base group where to move the node</li>
 <li><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) &#8211; optional HDF5 path determining the new location of the
 node to be moved relative to the <cite>base</cite> group</li>
-<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional link creation property list</li>
+<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional link creation
+property list</li>
 <li><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) &#8211; optional link access property list</li>
 </ul>
 </td>
@@ -1002,12 +1004,12 @@ node to be moved relative to the <cite>base</cite> group</li>
 </ul>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">It is important that this function does not remove any data from the 
-file. It only removes the link to the given node. An object is 
-considered deleted if no link leading to this node exists. However, 
-the file size will not change. In order to remove all the data associated 
-with this node <cite>h5repack</cite> has to be used which will simply not copy
-nodes without links to the new file.</p>
+<p class="last">It is important that this function does not remove any data from the
+file. It only removes the link to the given node. An object is
+considered deleted if no link leading to this node exists. However,
+the file size will not change. In order to remove all the data
+associated with this node <cite>h5repack</cite> has to be used which will
+simply not copy nodes without links to the new file.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1035,13 +1037,13 @@ nodes without links to the new file.</p>
 <dt id="pninexus.h5cpp.node.link">
 <code class="descclassname">pninexus.h5cpp.node.</code><code class="descname">link</code><span class="sig-paren">(</span><em>target</em>, <em>link_base</em>, <em>link_path</em>, <em>target_file=None</em>, <em>link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em>link_access_list=&lt;pninexus.h5cpp._property.LinkAccessList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new link</p>
-<p>Create a new soft link to a node referenced by <cite>target</cite> under <cite>link_path</cite> 
-relative to <cite>link_base</cite>. If <cite>target_file</cite> is set an external link is 
+<p>Create a new soft link to a node referenced by <cite>target</cite> under <cite>link_path</cite>
+relative to <cite>link_base</cite>. If <cite>target_file</cite> is set an external link is
 provided an external link is created.</p>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
-<p class="last">The target object does not need to exist at the time the link is 
-created. Only when the new link should be dereferenced the target 
+<p class="last">The target object does not need to exist at the time the link is
+created. Only when the new link should be dereferenced the target
 object has to exist.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1052,8 +1054,10 @@ object has to exist.</p>
 <li><strong>target</strong> (<em>Node/Path</em>) &#8211; the target for the new link</li>
 <li><strong>link_base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the base for the new link</li>
 <li><strong>link_path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) &#8211; the path to the new link relative to the <cite>link_base</cite></li>
-<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional reference to a link creation property list</li>
-<li><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) &#8211; optional reference to a link access property list</li>
+<li><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) &#8211; optional reference to
+a link creation property list</li>
+<li><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) &#8211; optional reference to a link
+access property list</li>
 </ul>
 </td>
 </tr>
@@ -1091,7 +1095,7 @@ object has to exist.</p>
         <li class="right" >
           <a href="properties.html" title="pninexus.h5cpp.property"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>

@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Factory classes &#8212; pninexus 1.2.3 documentation</title>
+    <title>Factory classes &#8212; pninexus 1.2.10 documentation</title>
     
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.2.3',
+        VERSION:     '1.2.10',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 1.2.3 documentation" href="../index.html" />
+    <link rel="top" title="pninexus 1.2.10 documentation" href="../index.html" />
     <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="prev" title="File related functions" href="files.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -49,7 +49,7 @@
         <li class="right" >
           <a href="files.html" title="File related functions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -100,9 +100,12 @@
 <li><strong>parent</strong> (<a class="reference internal" href="../h5cpp/node.html#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the parent group for the new base class</li>
 <li><strong>name</strong> (<em>str</em>) &#8211; the name of the new base class</li>
 <li><strong>base_class</strong> (<em>str</em>) &#8211; the class the new group belongs to</li>
-<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to a link creation property list</li>
-<li><strong>gcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupCreationList" title="pninexus.h5cpp.property.GroupCreationList"><em>h5cpp.property.GroupCreationList</em></a>) &#8211; optional reference to a group creation property list</li>
-<li><strong>gapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupAccessList" title="pninexus.h5cpp.property.GroupAccessList"><em>h5cpp.property.GroupAccessList</em></a>) &#8211; optional reference to a group access property list</li>
+<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to
+a link creation property list</li>
+<li><strong>gcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupCreationList" title="pninexus.h5cpp.property.GroupCreationList"><em>h5cpp.property.GroupCreationList</em></a>) &#8211; optional reference to
+a group creation property list</li>
+<li><strong>gapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupAccessList" title="pninexus.h5cpp.property.GroupAccessList"><em>h5cpp.property.GroupAccessList</em></a>) &#8211; optional reference to
+a group access property list</li>
 </ul>
 </td>
 </tr>
@@ -129,7 +132,7 @@
 <em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>parent</em>, <em>name</em>, <em>dtype</em>, <em>shape=None</em>, <em>max_shape=None</em>, <em>chunk=None</em>, <em>units=None</em>, <em>lcpl=None</em>, <em>dcpl=None</em>, <em>dapl=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.FieldFactory.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>create a new nexus field</p>
 <p>Creates a nexus compliant field (dataset). The name of the field is checked
-against NeXus&#8217;s naming policy and an exception is thrown if this is not the 
+against NeXus&#8217;s naming policy and an exception is thrown if this is not the
 case. See the users manual about how to use this class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -141,9 +144,12 @@ case. See the users manual about how to use this class.</p>
 <li><strong>type</strong> (<em>numpy.dtye,str</em>) &#8211; numpy datatype for the field</li>
 <li><strong>shape</strong> (<em>tuple</em>) &#8211; the shape of the dataset</li>
 <li><strong>chunk</strong> (<em>tuple</em>) &#8211; the chunk size for the dataset</li>
-<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to a link creation property list</li>
-<li><strong>dcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetCreationList" title="pninexus.h5cpp.property.DatasetCreationList"><em>h5cpp.property.DatasetCreationList</em></a>) &#8211; optional reference to a dataset creation property list</li>
-<li><strong>dapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetAccessList" title="pninexus.h5cpp.property.DatasetAccessList"><em>h5cpp.property.DatasetAccessList</em></a>) &#8211; optional reference to a dataset access property list</li>
+<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to
+a link creation property list</li>
+<li><strong>dcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetCreationList" title="pninexus.h5cpp.property.DatasetCreationList"><em>h5cpp.property.DatasetCreationList</em></a>) &#8211; optional reference to
+a dataset creation property list</li>
+<li><strong>dapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetAccessList" title="pninexus.h5cpp.property.DatasetAccessList"><em>h5cpp.property.DatasetAccessList</em></a>) &#8211; optional reference to
+a dataset access property list</li>
 </ul>
 </td>
 </tr>
@@ -182,7 +188,7 @@ case. See the users manual about how to use this class.</p>
         <li class="right" >
           <a href="files.html" title="File related functions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>
