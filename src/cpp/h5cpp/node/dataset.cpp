@@ -46,13 +46,10 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
                   const hdf5::dataspace::Dataspace &memory_space,
                   const hdf5::dataspace::Dataspace &file_space)
 {
-  std::cout << "DR1" << std::endl;
   numpy::ArrayAdapter array_adapter(data);
 
-  std::cout << "DR2" << std::endl;
   self.read(array_adapter,memory_type,memory_space,file_space);
 
-  std::cout << "DR3" << std::endl;
   if(self.datatype().get_class() == hdf5::datatype::Class::STRING)
   {
     hdf5::datatype::String string_type = self.datatype();
@@ -66,7 +63,6 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
       data = boost::python::object(h);
     }
   }
-  std::cout << "DR4" << std::endl;
 
   return data;
 }
