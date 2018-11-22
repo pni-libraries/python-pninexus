@@ -160,17 +160,22 @@ Classes
 
    .. automethod:: has_class
 
-.. autofunction:: is_bool
+.. autofunction:: is_bool(enum)
 
    Returns :py:const:`True` if the enum datatype is a EBool type,
    :py:const:`False` otherwise.
 
+   :param Enum enum: enum datatype
    :rtype: boolean
 
 
+.. autoclass:: Enum
+
+   Type used for enumratation values.
+
 .. autoclass:: Float
 
-   Type used for flaoting point numbers.
+   Type used for floating point numbers.
 
 .. autoclass:: Integer
 

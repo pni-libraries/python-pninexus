@@ -300,10 +300,11 @@ def dataset_read(self, data=None, selection=None):
     memory_space = None
     memory_type = None
     file_space = self.dataspace
-
+    print("R1")
     if selection is not None:
         file_space.selection(dataspace.SelectionOperation.SET, selection)
 
+    print("R2")
     if data is not None:
         #
         # if data has been provided by the user we have to determine the
@@ -341,7 +342,10 @@ def dataset_read(self, data=None, selection=None):
         #
         data = numpy.empty(shape, dtype=datatype.to_numpy(memory_type))
 
+    print("R3 %s %s %s %s" % (type(data), type(memory_type), type(memory_space), type(file_space)))
+    print("R3 %s %s %s %s" % (type(data), dir(memory_type), memory_space.current_dimensions, file_space.current_dimensions))
     data = self._read(data, memory_type, memory_space, file_space)
+    print("R4")
 
     if data.dtype.kind == 'S':
         try:
@@ -349,6 +353,7 @@ def dataset_read(self, data=None, selection=None):
         except Exception:
             print(data)
 
+    print("R5")
     return data
 
 
