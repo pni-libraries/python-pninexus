@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.10
 
 MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 

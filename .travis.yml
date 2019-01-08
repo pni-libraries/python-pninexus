@@ -13,7 +13,6 @@ env:
   - TEST="flake8"
   - OS=ubuntu18.10 PY=3 TEST="testsuit"
   - OS=ubuntu18.10 PY=2 TEST="testsuit"
-  - OS=debian10 PY=2 TEST="testsuit"
   - OS=debian9 PY=3 TEST="testsuit"
   - OS=debian9 PY=2 TEST="testsuit"
   - OS=debian8 PY=3 TEST="testsuit"
@@ -23,6 +22,7 @@ env:
   - OS=ubuntu16.04 PY=2 TEST="testsuit"
   - OS=ubuntu16.04 PY=3 TEST="testsuit"
 #  - OS=debian10 PY=3 TEST="testsuit"
+#  - OS=debian10 PY=2 TEST="testsuit"
 
 before_install:
   - if [ $TEST == "flake8" ]; then sudo apt-get update -qq ; fi
