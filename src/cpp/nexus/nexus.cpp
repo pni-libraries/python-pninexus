@@ -43,14 +43,17 @@ using namespace boost::python;
 using namespace pni::io;
 
 #if PY_MAJOR_VERSION >= 3
-int
+static void * init_numpy()
+{
+    import_array();
+    return NULL;
+}
 #else 
-void
-#endif
-init_numpy()
+static void init_numpy()
 {
     import_array();
 }
+#endif
 
 
 
