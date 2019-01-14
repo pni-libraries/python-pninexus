@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 
-if [ $1 = "debian10" ]; then
-    echo "install boost-dev"
-    docker exec -it --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get -qq update; apt-get install -y libboost-python1.62-dev libboost1.62-dev'
-else
-    docker exec -it --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get -qq update; apt-get install -y libboost-python-dev libboost-dev'
+docker exec -it --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive; apt-get -qq update; apt-get install -y libboost-python-dev libboost-dev'
+if [ $? -ne "0" ]
+then
+    exit -1
 fi
 
 if [ $2 = "2" ]; then

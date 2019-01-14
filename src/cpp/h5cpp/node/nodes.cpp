@@ -36,14 +36,17 @@ extern "C"{
 
 
 #if PY_MAJOR_VERSION >= 3
-int
-#else
-void
-#endif
-init_numpy()
+static void * init_numpy()
+{
+    import_array();
+    return NULL;
+}
+#else 
+static void init_numpy()
 {
     import_array();
 }
+#endif
 
 hdf5::node::Link get_link_by_index(const hdf5::node::LinkView &self,size_t index)
 {
