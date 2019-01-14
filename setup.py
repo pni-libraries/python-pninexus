@@ -12,13 +12,6 @@ from build_tools import (CppExtensionFactory,
                          ConanBuildInfoBuilder,
                          BuildConfiguration)
 
-import distutils.sysconfig
-
-
-cfg_vars = distutils.sysconfig.get_config_vars()
-for key, value in cfg_vars.items():
-    if type(value) == str:
-        cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
@@ -175,6 +168,7 @@ class pni_install(install):
 # ----------------------------------------------------------------------------
 # setup for the pnicore package
 # ----------------------------------------------------------------------------
+
 setup(
     name="pninexus",
     author="Eugen Wintersberger",
