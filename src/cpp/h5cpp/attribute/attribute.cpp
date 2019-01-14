@@ -43,14 +43,17 @@ extern "C"{
 #include <h5cpp/datatype/enum.hpp>
 
 #if PY_MAJOR_VERSION >= 3
-int
-#else
-void
-#endif
-init_numpy()
+static void * init_numpy()
+{
+    import_array();
+    return NULL;
+}
+#else 
+static void init_numpy()
 {
     import_array();
 }
+#endif
 
 namespace {
 

@@ -43,14 +43,17 @@ using namespace boost::python;
 
 
 #if PY_MAJOR_VERSION >= 3
-int
+static void * init_numpy()
+{
+    import_array();
+    return NULL;
+}
 #else 
-void
-#endif
-init_numpy()
+static void init_numpy()
 {
     import_array();
 }
+#endif
 
 std::string path_to_string(const hdf5::Path &self)
 {
