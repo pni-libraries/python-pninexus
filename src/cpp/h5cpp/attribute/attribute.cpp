@@ -85,7 +85,7 @@ boost::python::object attribute_read(const hdf5::attribute::Attribute &self)
       if(self.dataspace().type()==hdf5::dataspace::Type::SIMPLE)
         dims = numpy::Dimensions(hdf5::dataspace::Simple(self.dataspace()).current_dimensions());
 
-      PyArray_Dims py_dims{dims.data(),dims.size()};
+      PyArray_Dims py_dims{dims.data(), static_cast<int>(dims.size())};
 
       array = object(handle<>(PyArray_Newshape(array_ptr,&py_dims,NPY_CORDER)));
     }
@@ -184,7 +184,7 @@ BOOST_PYTHON_MODULE(_attribute)
     doc_opts.enable_user_defined();
 
     Attribute (AttributeManager::*get_by_name)(const std::string &) const = &AttributeManager::operator[];
-    Attribute (AttributeManager::*get_by_index)(size_t) const = &AttributeManager::operator[];
+    // Attribute (AttributeManager::*get_by_index)(size_t) const = &AttributeManager::operator[];
     void (AttributeManager::*remove_by_name)(const std::string &) const = &AttributeManager::remove;
     void (AttributeManager::*remove_by_index)(size_t) const = &AttributeManager::remove;
 
