@@ -1,10 +1,6 @@
-group: deprecated-2017Q4
-# dist: trusty
-# group: deprecated-2017Q2
+dist: xenial
 
 language: python
-
-sudo: required
 
 services:
   - docker
