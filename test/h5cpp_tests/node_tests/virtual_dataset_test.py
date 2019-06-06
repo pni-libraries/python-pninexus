@@ -44,7 +44,7 @@ try:
     VDSAvailable = True
 except Exception:
     VDSAvailable = False
-    
+
 
 module_path = os.path.dirname(os.path.abspath(__file__))
 
