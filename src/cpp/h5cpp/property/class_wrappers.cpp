@@ -123,8 +123,17 @@ void create_class_wrappers()
   ChunkCacheParameters (DatasetAccessList::*get_chunk_cache_parameters)() const =  &DatasetAccessList::chunk_cache_parameters;
   void (DatasetAccessList::*set_chunk_cache_parameters)(const ChunkCacheParameters &) const = &DatasetAccessList::chunk_cache_parameters;
 
+#if H5_VERSION_GE(1, 10, 0)
+  VirtualDataView (DatasetAccessList::*get_virtual_view)() const =  &DatasetAccessList::virtual_view;
+  void (DatasetAccessList::*set_virtual_view)(VirtualDataView) const = &DatasetAccessList::virtual_view;
+#endif
+
   class_<DatasetAccessList,bases<LinkAccessList>>("DatasetAccessList")
       .add_property("chunk_cache_parameters",get_chunk_cache_parameters,set_chunk_cache_parameters)
+#if H5_VERSION_GE(1, 10, 0)
+      .add_property("virtual_view",get_virtual_view,set_virtual_view)
+#endif
+
       ;
 
   class_<DatatypeAccessList,bases<LinkAccessList>>("DatatypeAccessList")

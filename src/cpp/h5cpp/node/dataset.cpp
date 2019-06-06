@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 25, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 //
 
@@ -114,4 +116,21 @@ void create_dataset_wrapper()
       .def("refresh",&Dataset::refresh)
 #endif
       ;
+
+#if H5_VERSION_GE(1,10,0)
+  using hdf5::property::VirtualDataMaps;
+  
+  class_<VirtualDataset,bases<Dataset>>("VirtualDataset")
+    .def(init<Group,hdf5::Path,Datatype,Dataspace,VirtualDataMaps,
+	 LinkCreationList,DatasetCreationList,DatasetAccessList>(
+		   (arg("parent"), arg("path"), arg("type"), arg("space"), arg("vds_maps"),
+                    arg("lcpl")=LinkCreationList(),
+                    arg("dcpl")=DatasetCreationList(),
+                    arg("dapl")=DatasetAccessList()
+                    )
+                ))
+      .def(init<const hdf5::node::VirtualDataset&>())
+      ;
+  
+#endif  
 }

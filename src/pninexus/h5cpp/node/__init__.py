@@ -37,6 +37,12 @@ from pninexus.h5cpp._node import _link
 from pninexus.h5cpp._node import _move
 from pninexus.h5cpp._node import _remove
 
+try:
+    from pninexus.h5cpp._node import VirtualDataset
+    VDSAvailable = True
+except Exception:
+    VDSAvailable = False
+
 
 def copy(node, base, path=None, link_creation_list=property.LinkCreationList(),
          object_copy_list=property.ObjectCopyList()):
@@ -359,3 +365,6 @@ Dataset.read = dataset_read
 __all__ = [Type, LinkType, Node, GroupView, NodeView, LinkView, Group, Dataset,
            LinkTarget, Link, RecursiveNodeIterator, is_dataset, is_group,
            get_node, copy, move, remove, link, selection_to_shape]
+
+if VDSAvailable:
+    __all__.extend([VirtualDataset])

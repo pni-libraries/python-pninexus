@@ -50,7 +50,11 @@ void create_enumeration_wrappers()
   enum_<DatasetLayout>("DatasetLayout")
       .value("COMPACT",DatasetLayout::COMPACT)
       .value("CONTIGUOUS",DatasetLayout::CONTIGUOUS)
-      .value("CHUNKED",DatasetLayout::CHUNKED);
+      .value("CHUNKED",DatasetLayout::CHUNKED)
+#if H5_VERSION_GE(1,10,0)
+      .value("VIRTUAL",DatasetLayout::VIRTUAL)
+#endif
+    ;
 
   enum_<LibVersion>("LibVersion")
       .value("LATEST",LibVersion::LATEST)
@@ -62,5 +66,9 @@ void create_enumeration_wrappers()
       .value("STRONG", CloseDegree::STRONG)
       .value("DEFAULT", CloseDegree::DEFAULT);
 
-
+#if H5_VERSION_GE(1,10,0)
+  enum_<VirtualDataView>("VirtualDataView")
+      .value("FIRST_MISSING",VirtualDataView::FIRST_MISSING)
+      .value("LAST_AVAILABLE",VirtualDataView::LAST_AVAILABLE);
+#endif
 }

@@ -63,6 +63,9 @@ Enumerations
    
    .. autoattribute:: DatasetLayout.CHUNKED
       :annotation: use a chunked layout
+
+   .. autoattribute:: DatasetLayout.VIRTUAL
+      :annotation: use a virtual layout
    
    
 .. autoclass:: LibVersion

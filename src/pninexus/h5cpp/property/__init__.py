@@ -38,6 +38,14 @@ from pninexus.h5cpp._property import TypeCreationList
 from pninexus.h5cpp._property import AttributeCreationList
 from pninexus.h5cpp._property import LinkCreationList
 
+try:
+    from pninexus.h5cpp._property import VirtualDataView
+    from pninexus.h5cpp._property import VirtualDataMap
+    from pninexus.h5cpp._property import VirtualDataMaps
+    VDSAvailable = True
+except Exception:
+    VDSAvailable = False
+
 
 def CopyFlag_or(self, b):
     if isinstance(b, (CopyFlag, CopyFlags)):
@@ -57,4 +65,7 @@ __all__ = [CopyFlag, DatasetFillValueStatus, DatasetFillTime,
            ObjectCreationList, StringCreationList, DatasetAccessList,
            DatatypeAccessList, GroupAccessList, DatasetCreationList,
            GroupCreationList, TypeCreationList, AttributeCreationList,
-           LinkCreationList]
+           LinkCreationList, VDSAvailable]
+
+if VDSAvailable:
+    __all__.extend([VirtualDataView, VirtualDataMap, VirtualDataMaps])
