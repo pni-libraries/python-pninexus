@@ -6,3 +6,4 @@ from .h5py_compat_test import *
 from .copy_tests import *
 from .link_iteration_test import *
 from .node_iterator_test import *
+from .virtual_dataset_test import *

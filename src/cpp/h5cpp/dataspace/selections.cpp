@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 31, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//              Eugen Wintersberger <eugen.wintersberger@desy.de>
+//              Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include <boost/python.hpp>
@@ -116,6 +118,7 @@ void create_selections()
 
   class_<View>("View")
       .def(init<Dataspace,Hyperslab>((arg("space"),arg("selection"))))
+      .def(init<Dataspace>((arg("space"))))
       .add_property("size",&View::size);
 
 }
