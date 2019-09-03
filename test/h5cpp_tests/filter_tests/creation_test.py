@@ -18,12 +18,14 @@
 # ===========================================================================
 #
 # Created on: Jan 31, 2018
-#     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+#     Authors:
+#             Eugen Wintersberger <eugen.wintersberger@desy.de>
+#             Jan Kotanski <jan.kotanski@desy.de>
 #
 from __future__ import print_function
 import unittest
 import os
-from pninexus.h5cpp.filter import Deflate, Fletcher32, Shuffle
+from pninexus.h5cpp.filter import Deflate, Fletcher32, Shuffle, ExternalFilter
 import pninexus.h5cpp as hdf5
 
 
@@ -82,6 +84,28 @@ class FilterCreationTest(unittest.TestCase):
         filter = Deflate(level=9)
         filter(self.dcpl)
         hdf5.node.Dataset(self.root, hdf5.Path("Deflate"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+
+    def testExternalFilter(self):
+
+        filter = ExternalFilter(1, [1])
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+
+    def testExternalFilter2(self):
+
+        filter = ExternalFilter(32008, [0, 2])
+        self.assertEqual(filter.id, 32008)
+        self.assertEqual(filter.cd_values, [0, 2])
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter2"),
                           self.datatype,
                           self.dataspace,
                           self.lcpl,

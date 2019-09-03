@@ -18,11 +18,62 @@
 // ===========================================================================
 //
 // Created on: Jan 31, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+
+
+using namespace boost::python;
+using namespace hdf5::filter;
+
+
+class DLL_EXPORT ExternalFilter : public Filter
+{
+ public:
+  ExternalFilter(FilterID id, boost::python::list cd_values):
+    Filter(id)
+    {
+      for (boost::python::ssize_t i = 0, end = len(cd_values); i < end; ++i){
+	object o = cd_values[i];
+	extract<unsigned int> s(o);
+	if (s.check()){
+	  cd_values_.push_back(s());
+	}
+      }
+    }
+
+  ExternalFilter() = delete;
+  ~ExternalFilter(){}
+
+    virtual void operator()(const hdf5::property::DatasetCreationList &dcpl,
+                            Availability flag=Availability::MANDATORY) const
+    {
+      if(H5Pset_filter(static_cast<hid_t>(dcpl), id(), static_cast<hid_t>(flag),
+		       cd_values_.size(), cd_values_.data()) < 0)
+	{
+	  hdf5::error::Singleton::instance().throw_with_stack("Could not apply external filter!");
+	}
+    }
+
+    const boost::python::list cd_values() const noexcept
+    {
+      boost::python::list cdlist;
+      for (auto cd: cd_values_){
+	cdlist.append(cd);
+      }
+      return cdlist;
+    }
+
+ private:
+    std::vector<unsigned int> cd_values_;
+
+};
+
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 
 BOOST_PYTHON_MODULE(_filter)
@@ -49,4 +100,10 @@ BOOST_PYTHON_MODULE(_filter)
           ;
 
   class_<Shuffle,bases<Filter>>("Shuffle");
+
+  const boost::python::list(ExternalFilter::*cd_values)() const = &ExternalFilter::cd_values;
+  class_<ExternalFilter, bases<Filter>>("ExternalFilter",no_init)
+    .def(init<unsigned int, boost::python::list>((arg("id"), args("cd_values"))))
+    .add_property("cd_values", cd_values)
+          ;
 }
