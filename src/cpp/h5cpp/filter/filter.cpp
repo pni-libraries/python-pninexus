@@ -30,6 +30,9 @@
 using namespace boost::python;
 using namespace hdf5::filter;
 
+bool is_filter_available(FilterID id){
+  return H5Zfilter_avail(id);
+}
 
 class DLL_EXPORT ExternalFilter : public Filter
 {
@@ -106,4 +109,6 @@ BOOST_PYTHON_MODULE(_filter)
     .def(init<unsigned int, boost::python::list>((arg("id"), args("cd_values"))))
     .add_property("cd_values", cd_values)
           ;
+
+  def("is_filter_available", is_filter_available, args("id"));
 }
