@@ -101,10 +101,8 @@ BOOST_PYTHON_MODULE(_filter)
   class_<Shuffle,bases<Filter>>("Shuffle");
 
   const boost::python::list(ExternalFilterWrapper::*cd_values)() const = &ExternalFilterWrapper::cd_values;
-  class_<ExternalFilterWrapper,  boost::noncopyable>("ExternalFilter",no_init)
+  class_<ExternalFilterWrapper, bases<Filter>, boost::noncopyable>("ExternalFilter",no_init)
     .def(init<unsigned int, boost::python::list>((arg("id"), args("cd_values"))))
-    .def("__call__",&ExternalFilterWrapper::operator(),(args("dcpl"),args("availability")=Availability::MANDATORY))
-    .add_property("id",&Filter::id)
     .add_property("cd_values", cd_values)
     ;
 
