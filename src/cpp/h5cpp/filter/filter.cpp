@@ -30,14 +30,10 @@
 using namespace boost::python;
 using namespace hdf5::filter;
 
-bool is_filter_available(FilterID id){
-  return H5Zfilter_avail(id);
-}
-
-class DLL_EXPORT ExternalFilter : public Filter
+class DLL_EXPORT ExternalFilterWrapper : public Filter
 {
  public:
-  ExternalFilter(FilterID id, boost::python::list cd_values):
+  ExternalFilterWrapper(FilterID id, boost::python::list cd_values):
     Filter(id)
     {
       for (boost::python::ssize_t i = 0, end = len(cd_values); i < end; ++i){
@@ -49,8 +45,8 @@ class DLL_EXPORT ExternalFilter : public Filter
       }
     }
 
-  ExternalFilter() = delete;
-  ~ExternalFilter(){}
+  ExternalFilterWrapper() = delete;
+  ~ExternalFilterWrapper(){}
 
     virtual void operator()(const hdf5::property::DatasetCreationList &dcpl,
                             Availability flag=Availability::MANDATORY) const
@@ -104,11 +100,11 @@ BOOST_PYTHON_MODULE(_filter)
 
   class_<Shuffle,bases<Filter>>("Shuffle");
 
-  const boost::python::list(ExternalFilter::*cd_values)() const = &ExternalFilter::cd_values;
-  class_<ExternalFilter, bases<Filter>>("ExternalFilter",no_init)
+  const boost::python::list(ExternalFilterWrapper::*cd_values)() const = &ExternalFilterWrapper::cd_values;
+  class_<ExternalFilterWrapper, bases<Filter>, boost::noncopyable>("ExternalFilter",no_init)
     .def(init<unsigned int, boost::python::list>((arg("id"), args("cd_values"))))
     .add_property("cd_values", cd_values)
-          ;
+    ;
 
   def("is_filter_available", is_filter_available, args("id"));
 }
