@@ -42,6 +42,69 @@ void dataset_write(const hdf5::node::Dataset &self,
   self.write(array_adapter,memory_type,memory_space,file_space);
 }
 
+void dataset_write_chunk(const hdf5::node::Dataset &self,
+			 const boost::python::object &data,
+			 boost::python::list offset,
+			 std::uint32_t filter_mask = 0,
+			 const hdf5::property::DatasetTransferList &dtpl =
+			 hdf5::property::DatasetTransferList())
+{
+  numpy::ArrayAdapter array_adapter(data);
+  std::vector<long long unsigned int> voffset;
+
+  for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
+    boost::python::object o = offset[i];
+    boost::python::extract<long long unsigned int> s(o);
+    if (s.check()){
+      voffset.push_back(s());
+    }
+  }
+
+  self.write_chunk(array_adapter,voffset,filter_mask,dtpl);
+}
+
+#if H5_VERSION_GE(1,10,2)
+
+std::uint32_t dataset_read_chunk(const hdf5::node::Dataset &self,
+				 boost::python::object &data,
+				 boost::python::list offset,
+				 const hdf5::property::DatasetTransferList &dtpl =
+				 hdf5::property::DatasetTransferList())
+{
+  numpy::ArrayAdapter array_adapter(data);
+  std::vector<long long unsigned int> voffset;
+
+
+  for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
+    boost::python::object o = offset[i];
+    boost::python::extract<long long unsigned int> s(o);
+    if (s.check()){
+      voffset.push_back(s());
+    }
+  }
+
+  return self.read_chunk(array_adapter,voffset,dtpl);
+}
+
+long long unsigned int dataset_chunk_storage_size(const hdf5::node::Dataset &self,
+						  std::vector<long long unsigned int> offset
+{
+  std::vector<long long unsigned int> voffset;
+
+  for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
+    boost::python::object o = offset[i];
+    boost::python::extract<long long unsigned int> s(o);
+    if (s.check()){
+      voffset.push_back(s());
+    }
+  }
+
+  return self.chunk_storage_size(voffset);
+}
+
+  
+#endif
+
 boost::python::object dataset_read(const hdf5::node::Dataset &self,
                   boost::python::object &data,
                   const hdf5::datatype::Datatype &memory_type,
@@ -105,6 +168,11 @@ void create_dataset_wrapper()
       .def(init<const hdf5::node::Dataset&>())
       .def("close",&Dataset::close)
       .def("_write",dataset_write)
+      .def("write_chunk",dataset_write_chunk)
+#if H5_VERSION_GE(1,10,2)
+      .def("read_chunk",dataset_read_chunk)
+      .def("chunk__storage_size",dataset_chunk__storage_size)
+#endif    
       .def("_read",dataset_read)
       .add_property("creation_list",&Dataset::creation_list)
       .add_property("access_list",&Dataset::access_list)
@@ -119,7 +187,7 @@ void create_dataset_wrapper()
 
 #if H5_VERSION_GE(1,10,0)
   using hdf5::property::VirtualDataMaps;
-  
+
   class_<VirtualDataset,bases<Dataset>>("VirtualDataset")
     .def(init<Group,hdf5::Path,Datatype,Dataspace,VirtualDataMaps,
 	 LinkCreationList,DatasetCreationList,DatasetAccessList>(
@@ -131,6 +199,6 @@ void create_dataset_wrapper()
                 ))
       .def(init<const hdf5::node::VirtualDataset&>())
       ;
-  
-#endif  
+
+#endif
 }
