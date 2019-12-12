@@ -87,7 +87,7 @@ std::uint32_t dataset_read_chunk(const hdf5::node::Dataset &self,
 }
 
 long long unsigned int dataset_chunk_storage_size(const hdf5::node::Dataset &self,
-						  std::vector<long long unsigned int> offset
+						  boost::python::list offset)
 {
   std::vector<long long unsigned int> voffset;
 
@@ -153,6 +153,7 @@ void create_dataset_wrapper()
   using hdf5::property::LinkCreationList;
   using hdf5::property::DatasetCreationList;
   using hdf5::property::DatasetAccessList;
+  using hdf5::property::DatasetTransferList;
 
 
   void (Dataset::*set_full_extent)(const hdf5::Dimensions &) const = &Dataset::extent;
@@ -168,10 +169,19 @@ void create_dataset_wrapper()
       .def(init<const hdf5::node::Dataset&>())
       .def("close",&Dataset::close)
       .def("_write",dataset_write)
-      .def("write_chunk",dataset_write_chunk)
+      .def("write_chunk",
+	   dataset_write_chunk,
+	   (arg("data"),
+	    arg("offset"),
+	    arg("filter_mask")=0,
+	    arg("dtpl")=DatasetTransferList()))
 #if H5_VERSION_GE(1,10,2)
-      .def("read_chunk",dataset_read_chunk)
-      .def("chunk__storage_size",dataset_chunk__storage_size)
+      .def("read_chunk",
+	   dataset_read_chunk,
+	   (arg("data"),
+	    arg("offset"),
+	    arg("dtpl")=DatasetTransferList()))
+      .def("chunk_storage_size",dataset_chunk_storage_size)
 #endif    
       .def("_read",dataset_read)
       .add_property("creation_list",&Dataset::creation_list)
