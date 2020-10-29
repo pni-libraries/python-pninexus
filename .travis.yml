@@ -1,4 +1,4 @@
-dist: xenial
+dist: bionic
 language: python
 
 services:
@@ -6,8 +6,10 @@ services:
 
 env:
   - TEST="flake8"
+  - OS=debian11 PY=3 TEST="testsuit"
   - OS=debian10 PY=3 TEST="testsuit"
   - OS=debian10 PY=2 TEST="testsuit"
+  - OS=ubuntu20.10 PY=3 TEST="testsuit"
   - OS=ubuntu20.04 PY=3 TEST="testsuit"
   - OS=ubuntu19.10 PY=3 TEST="testsuit"
   - OS=ubuntu19.10 PY=2 TEST="testsuit"
