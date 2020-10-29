@@ -12,6 +12,7 @@ RUN useradd -ms /bin/bash tango
 RUN apt-get -qq install -y adduser
 RUN  /bin/bash -c 'sleep 10'
 
+ENV HDF5_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/hdf5/plugins
 ENV PKG_CONFIG_PATH=/home/tango/lib/pkgconfig
 USER tango
 WORKDIR /home/tango
