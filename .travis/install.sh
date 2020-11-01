@@ -12,17 +12,13 @@ if [ $2 = "2" ]; then
     # docker exec -it ndts python setup.py -q build
     # docker exec -it --user root ndts python setup.py -q build_sphinx
     docker exec -it --user root ndts chown -R tango:tango .
-    docker exec -it --user root ndts python setup.py build
     docker exec -it --user root ndts python setup.py install
-    docker exec -it --user root ndts python setup.py build_sphinx
 else
     echo "install python3-pni"
     # docker exec -it ndts python3 setup.py -q build
     # docker exec -it --user root ndts python3 setup.py -q build_sphinx
     docker exec -it --user root ndts chown -R tango:tango .
-    docker exec -it --user root ndts python3 setup.py build
     docker exec -it --user root ndts python3 setup.py install
-    docker exec -it --user root ndts python3 setup.py build_sphinx
 fi
 if [ $? -ne "0" ]
 then
