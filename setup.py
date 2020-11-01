@@ -74,8 +74,7 @@ nexus_config.add_include_directories(get_numpy_include_dirs())
 if sys.platform == "win32":
     pass
 else:
-    arguments = ['-std=c++11', '-Wall', '-Wextra', '-fdiagnostics-show-option',
-                 '-Wno-strict-prototypes']
+    arguments = ['-std=c++11', '-Wall', '-Wextra', '-fdiagnostics-show-option']
     nexus_config.add_compiler_arguments(arguments)
 
 # ----------------------------------------------------------------------------
