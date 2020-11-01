@@ -362,9 +362,10 @@ Dataset.write = dataset_write
 Dataset.read = dataset_read
 
 
-__all__ = [Type, LinkType, Node, GroupView, NodeView, LinkView, Group, Dataset,
-           LinkTarget, Link, RecursiveNodeIterator, is_dataset, is_group,
-           get_node, copy, move, remove, link, selection_to_shape]
+__all__ = ["Type", "LinkType", "Node", "GroupView", "NodeView", "LinkView",
+           "Group", "Dataset", "LinkTarget", "Link", "RecursiveNodeIterator",
+           "is_dataset", "is_group",
+           "get_node", "copy", "move", "remove", "link", "selection_to_shape"]
 
 if VDSAvailable:
-    __all__.extend([VirtualDataset])
+    __all__.extend(["VirtualDataset"])

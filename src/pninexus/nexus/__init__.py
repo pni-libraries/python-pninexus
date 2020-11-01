@@ -176,10 +176,11 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
 FieldFactory.create = staticmethod(field_factory_create)
 
 
-__all__ = [is_nexus_file, create_file, open_file, BaseClassFactory,
-           FieldFactory, NodePredicate, IsBaseClass, NodePredicate,
-           IsBaseClass, IsData, IsDetector, IsEntry, IsInstrument, IsSample,
-           IsSubentry, IsTransformation, search, create_from_file,
-           create_from_string, Path, has_file_section, has_attribute_section,
-           is_absolute, is_unique, split_path, split_last, join,
-           make_relative, match, get_path, get_objects]
+__all__ = ["is_nexus_file", "create_file", "open_file", "BaseClassFactory",
+           "FieldFactory", "NodePredicate", "IsBaseClass", "NodePredicate",
+           "IsBaseClass", "IsData", "IsDetector", "IsEntry", "IsInstrument",
+           "IsSample", "IsSubentry", "IsTransformation", "search",
+           "create_from_file", "create_from_string", "Path",
+           "has_file_section", "has_attribute_section",
+           "is_absolute", "is_unique", "split_path", "split_last", "join",
+           "make_relative", "match", "get_path", "get_objects"]

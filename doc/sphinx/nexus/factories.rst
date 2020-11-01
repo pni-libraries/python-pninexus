@@ -3,6 +3,7 @@ Factory classes
 ===============
 
 .. automodule:: pninexus.nexus
+   :noindex:
 
 .. autoclass:: BaseClassFactory
    :members:
@@ -11,6 +12,3 @@ Factory classes
 
 .. autoclass:: FieldFactory
    :members:
-
-   
-   

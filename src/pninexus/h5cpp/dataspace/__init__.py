@@ -11,5 +11,6 @@ from pninexus.h5cpp._dataspace import SelectionType
 from pninexus.h5cpp._dataspace import SelectionOperation
 from pninexus.h5cpp._dataspace import View
 
-__all__ = [Dataspace, Type, Simple, Scalar, UNLIMITED, SelectionManager,
-           Hyperslab, SelectionType, SelectionOperation, View]
+__all__ = ["Dataspace", "Type", "Simple", "Scalar", "UNLIMITED",
+           "SelectionManager",
+           "Hyperslab", "SelectionType", "SelectionOperation", "View"]
