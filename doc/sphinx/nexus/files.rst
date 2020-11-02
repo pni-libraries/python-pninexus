@@ -3,6 +3,7 @@ File related functions
 ======================
 
 .. automodule:: pninexus.nexus
+   :noindex:
 
 The :py:mod:`pninexus.nexus` package adds some useful wrapper functions 
 around the native HDF5 functions. 

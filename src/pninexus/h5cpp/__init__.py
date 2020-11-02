@@ -2,8 +2,7 @@
 :py:mod:`pninexus.io.h5cpp` is a thin wrapper around the *h5cpp* C++
 library where every
 namespace in the C++ library has a counterpart as a sub-package of
-:py:mod:`pninexus.io.h5cpp`.
-
+:py:mod:`pninexus.io.h5cpp`
 """
 
 
@@ -22,7 +21,7 @@ from pninexus.h5cpp._h5cpp import IterationIndex
 from pninexus.h5cpp._h5cpp import Path
 from pninexus.h5cpp._h5cpp import print_hdf5_errors
 
-__all__ = [IteratorConfig, IterationOrder, IterationIndex, Path,
-           print_hdf5_errors,
-           attribute, dataspace, datatype, file, filter, node,
-           property, _h5cpp]
+__all__ = ["IteratorConfig", "IterationOrder", "IterationIndex", "Path",
+           "print_hdf5_errors",
+           "attribute", "dataspace", "datatype", "file", "filter", "node",
+           "property", "_h5cpp"]

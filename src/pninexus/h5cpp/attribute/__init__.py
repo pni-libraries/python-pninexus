@@ -5,7 +5,7 @@ from pninexus.h5cpp import property
 from pninexus.h5cpp._attribute import AttributeManager
 from pninexus.h5cpp._attribute import Attribute
 
-__all__ = [property, AttributeManager, Attribute]
+__all__ = ["property", "AttributeManager", "Attribute"]
 
 
 def attribute__getitem__(self, index):

@@ -3,6 +3,7 @@
 ==================================
 
 .. automodule:: pninexus.h5cpp.attribute
+   :noindex:
 
 :py:class:`AttributeManager`
 ============================

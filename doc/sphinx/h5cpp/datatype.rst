@@ -3,6 +3,7 @@
 =================================
 
 .. automodule:: pninexus.h5cpp.datatype
+   :noindex:
 
 Enumerations
 ============
