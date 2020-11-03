@@ -2,27 +2,27 @@
 
 <!doctype html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Working with Nexus files &#8212; pninexus 1.2.16 documentation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Working with Nexus files &#8212; pninexus 1.2.15 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Addressing objects: the NeXus path" href="nexus_path.html" />
     <link rel="prev" title="Using the pninexus.nexus package" href="using_nexus.html" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <script src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -32,45 +32,20 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_path.html" title="Addressing objects: the NeXus path"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="using_nexus.html" title="Using the pninexus.nexus package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.15 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with Nexus files</a></li> 
       </ul>
-    </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="using_nexus.html"
-                        title="previous chapter">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="nexus_path.html"
-                        title="next chapter">Addressing objects: the NeXus path</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/nexus_files.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
@@ -83,10 +58,10 @@
 HDF5 file to become a standard compliant NeXus file it must have some
 special attributes attached to its root group. It would be possible
 to create a NeXus file with the functions provided by
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code> package. However, the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code>
-package provides a <code class="xref py py-func docutils literal notranslate"><span class="pre">create_file()</span></code> function.
+<a class="reference internal" href="h5cpp_files.html#module-pninexus.h5cpp.file" title="pninexus.h5cpp.file"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code></a> package. However, the <a class="reference internal" href="nexus_path.html#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code></a>
+package provides a <a class="reference internal" href="nexus/files.html#pninexus.nexus.create_file" title="pninexus.nexus.create_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_file()</span></code></a> function.
 Concerning its signature this function is nothing else than a simple
-wrapper around <code class="xref py py-func docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.create()</span></code> with the benefit
+wrapper around <a class="reference internal" href="h5cpp/file.html#pninexus.h5cpp.file.create" title="pninexus.h5cpp.file.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.create()</span></code></a> with the benefit
 that it creates all the required standard attributes on the root group
 of the file once it created it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
@@ -95,7 +70,7 @@ of the file once it created it.</p>
 <span class="n">nxfile</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;nexus_file.nxs&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Like its counterpart in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> this function will
+<p>Like its counterpart in the <a class="reference internal" href="h5cpp/h5cpp.html#module-pninexus.h5cpp" title="pninexus.h5cpp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code></a> this function will
 throw an exception if a file of the given name already exists and like
 its HDF5 counterpart this behavior can be controlled with HDF5 control
 flags</p>
@@ -106,8 +81,8 @@ flags</p>
 <span class="n">nxfile</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;nexus_file.nxs&quot;</span><span class="p">,</span><span class="n">AccessFlags</span><span class="o">.</span><span class="n">TRUNCATE</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The same is true for opening files for which the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code>
-package provides the <code class="xref py py-func docutils literal notranslate"><span class="pre">open_file()</span></code> function</p>
+<p>The same is true for opening files for which the <a class="reference internal" href="nexus_path.html#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code></a>
+package provides the <a class="reference internal" href="nexus/files.html#pninexus.nexus.open_file" title="pninexus.nexus.open_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">open_file()</span></code></a> function</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">nxfile</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s2">&quot;nexus_file.nxs&quot;</span><span class="p">)</span>
@@ -122,9 +97,9 @@ be used to change this default behavior</p>
 </pre></div>
 </div>
 <p>In all cases these functions return an instance of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.File</span></code>.</p>
+<a class="reference internal" href="h5cpp/file.html#pninexus.h5cpp.file.File" title="pninexus.h5cpp.file.File"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.File</span></code></a>.</p>
 <p>In order to check whether a file is a NeXus compliant HDF5 file the package
-provides the <code class="xref py py-func docutils literal notranslate"><span class="pre">is_nexus_file()</span></code> function</p>
+provides the <a class="reference internal" href="nexus/files.html#pninexus.nexus.is_nexus_file" title="pninexus.nexus.is_nexus_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_nexus_file()</span></code></a> function</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pninexus.nexus</span> <span class="kn">import</span> <span class="n">is_nexus_file</span>
 
@@ -135,22 +110,50 @@ provides the <code class="xref py py-func docutils literal notranslate"><span cl
 </div>
 <p>This function performs two tasks</p>
 <ol class="arabic simple">
-<li>it checks if the file is an HDF5 file</li>
-<li>it checks if the all attributes required by the standard are available at
-the root group of the file.</li>
+<li><p>it checks if the file is an HDF5 file</p></li>
+<li><p>it checks if the all attributes required by the standard are available at
+the root group of the file.</p></li>
 </ol>
 <div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">It should be mentioned that this function is rather strict. To be a valid
+<p class="admonition-title">Attention</p>
+<p>It should be mentioned that this function is rather strict. To be a valid
 NeXus file all required attributes must be available at the root group of
 the file. If this function fails you may want to fallback to
-<code class="xref py py-func docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.is_hdf5_file()</span></code> to check if the file is
+<a class="reference internal" href="h5cpp/file.html#pninexus.h5cpp.file.is_hdf5_file" title="pninexus.h5cpp.file.is_hdf5_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">pninexus.h5cpp.file.is_hdf5_file()</span></code></a> to check if the file is
 least an HDF5 file.</p>
 </div>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="using_nexus.html"
+                        title="previous chapter">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nexus_path.html"
+                        title="next chapter">Addressing objects: the NeXus path</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/nexus_files.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -162,19 +165,23 @@ least an HDF5 file.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="nexus_path.html" title="Addressing objects: the NeXus path"
              >next</a> |</li>
         <li class="right" >
           <a href="using_nexus.html" title="Using the pninexus.nexus package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.15 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Working with Nexus files</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
 </html>
