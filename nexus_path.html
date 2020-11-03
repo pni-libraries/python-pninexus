@@ -2,42 +2,29 @@
 
 <!doctype html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Addressing objects: the NeXus path &#8212; pninexus 1.2.10 documentation</title>
-    
+    <title>Addressing objects: the NeXus path &#8212; pninexus 1.2.16 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.2.10',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 1.2.10 documentation" href="index.html" />
-    <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
     <link rel="next" title="Working with groups" href="nexus_groups.html" />
     <link rel="prev" title="Working with Nexus files" href="nexus_files.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,22 +32,19 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="nexus_groups.html" title="Working with groups"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="nexus_files.html" title="Working with Nexus files"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Addressing objects: the NeXus path</a><ul>
 <li><a class="reference internal" href="#an-introduction">An introduction</a><ul>
@@ -82,18 +66,20 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/nexus_path.txt"
+      <li><a href="_sources/nexus_path.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -104,13 +90,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.nexus">
-<span id="addressing-objects-the-nexus-path"></span><h1>Addressing objects: the NeXus path<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="addressing-objects-the-nexus-path">
+<h1>Addressing objects: the NeXus path<a class="headerlink" href="#addressing-objects-the-nexus-path" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="an-introduction">
 <h2>An introduction<a class="headerlink" href="#an-introduction" title="Permalink to this headline">¶</a></h2>
 <p>One of the major contributions added by <em>libpniio</em> to the standard HDF5 library
-is its <em>Path</em> class which is provided by <a class="reference internal" href="#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.nexus</span></code></a> via the
-<code class="xref py py-class docutils literal"><span class="pre">Path</span></code>. The most obvious difference between a plain HDF5 path and a
+is its <em>Path</em> class which is provided by <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> via the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>. The most obvious difference between a plain HDF5 path and a
 NeXus path as introduced by <em>libpniio</em> is</p>
 <ol class="arabic simple">
 <li>a NeXus path can include the name of the file the object referenced by the
@@ -120,11 +106,11 @@ path</li>
 <p>However, the major difference between a NeXus path and an HDF5 path is the
 fact that a NeXus path can address object not only by their links name
 but also by type (base class). This feature allows, under certain circumstances,
-the construction of path&#8217;s which can address objects without knowing their
+the construction of path’s which can address objects without knowing their
 names and thus remain generic.</p>
-<p>The best way to understand thus path&#8217;s is by example. So lets start with
+<p>The best way to understand thus path’s is by example. So lets start with
 a simple one:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1/instrument/detector/transformation/phi
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1/instrument/detector/transformation/phi
 </pre></div>
 </div>
 <p>This looks pretty much like a common HDF5 path but with the name of the
@@ -132,14 +118,14 @@ file where to find the dataset prepended (separated from the rest of the path
 by <cite>:/</cite>). If we would like to address an attribute by a path we could do so
 with NeXus paths by appending the name of the attribute to the path
 of the object the attribute is attached to</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1/instrument/detector/transformation/phi@units
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1/instrument/detector/transformation/phi@units
 </pre></div>
 </div>
 <p>wher the attributes name is separated from its parent node path by a <cite>&#64;</cite>
 character. With the concept of base classes in place we can further determine
 the path of an object by adding the base classes the intermediate objects belong
 to:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1:NXentry/instrument:NXinstrument/ <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1:NXentry/instrument:NXinstrument/ <span class="se">\</span>
                 detector:NXdetector/transformation:NXtransformation/phi@units
 </pre></div>
 </div>
@@ -150,7 +136,7 @@ and of type <cite>NXinstrument</cite>. As the last element in the path is a data
 <p>If we now assume that, in the above example, each base class appears only
 once below its parent group we could even omit the names of the links
 which leaves us for this example with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>detector_1.nxs://:NXentry/:NXinstrument/:NXdetector/:NXtransformation/phi@units
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://:NXentry/:NXinstrument/:NXdetector/:NXtransformation/phi@units
 </pre></div>
 </div>
 <p>Being independent of any link name, such a path can be used on every file
@@ -161,7 +147,7 @@ that the paths no longer depends on the particular names given to the
 individual groups. It thus gives more freedom to the beamline scientist
 naming groups according to his needs and even change the naming over the coarse
 of time. As long as the overall structure is not altered this approach will
-still work. It is important to note that the leading <code class="docutils literal"><span class="pre">:</span></code> before the group
+still work. It is important to note that the leading <code class="docutils literal notranslate"><span class="pre">:</span></code> before the group
 types is requied to indicate the parser that the following string refers to a
 type rather than to a name.</p>
 <div class="section" id="the-anatomy-of-a-nexus-path">
@@ -170,18 +156,18 @@ type rather than to a name.</p>
 <ul class="simple">
 <li>the <em>file-section</em> determining the file within which a particular object is
 stored. The <em>file-section</em> preceds the entire path and is terminated by
-<code class="docutils literal"><span class="pre">://</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">://</span></code>.</li>
 <li>the <em>object-section</em> pointing to the object within the file</li>
 <li>and the <em>attribute-section</em> which refers to an attribute stored a the object
 referenced by the previous <em>object-section</em>. The <em>attribute section</em> consists
-of the name of the referenced attaribute and is preceded by the <code class="docutils literal"><span class="pre">&#64;</span></code> symbol.
+of the name of the referenced attaribute and is preceded by the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> symbol.
 The <em>attribute-section</em> follows immediately after the last element of the
 <em>object-section</em>.</li>
 </ul>
 <p>The <em>file-</em> as well as the <em>attribute-section</em> are optional while the
 <em>object-section</em> is the onmy mandatory path of a path.</p>
 <p>The major part of the path is the <em>object-section</em>. The elements of the object
-section are separated by a <code class="docutils literal"><span class="pre">/</span></code> like file- or directory-names on a unix
+section are separated by a <code class="docutils literal notranslate"><span class="pre">/</span></code> like file- or directory-names on a unix
 system. For groups an element can have the form <em>name:type</em> while for a field
 it is only the <em>name</em>. As we have seen in the examples above the name can be
 omitted group in which case the element reduces to <em>:type</em>.</p>
@@ -211,30 +197,30 @@ match as well as <cite>data</cite> and <cite>data</cite> would.</li>
 <h3>Using paths<a class="headerlink" href="#using-paths" title="Permalink to this headline">¶</a></h3>
 <p>All that theory sounds rather complicated. However, it is quite simple in
 practice.
-Nearly all objects in the NeXus API have a <code class="xref py py-attr docutils literal"><span class="pre">path</span></code> attribute
+Nearly all objects in the NeXus API have a <code class="xref py py-attr docutils literal notranslate"><span class="pre">path</span></code> attribute
 (read-only) which returns the absolute path of an object. It should be
 mentioned that this path does not include the file name. The latter one could
-be obtained via the, read-only, <code class="xref py py-attr docutils literal"><span class="pre">filename</span></code> attribute.</p>
+be obtained via the, read-only, <code class="xref py py-attr docutils literal notranslate"><span class="pre">filename</span></code> attribute.</p>
 <p>Functions and classes concerning NeXus paths are available from the
-<code class="xref py py-mod docutils literal"><span class="pre">pni.io.nx</span></code> package.
-A NeXus path is represented by an instance of <code class="xref py py-class docutils literal"><span class="pre">nxpath</span></code>.
-The <code class="xref py py-func docutils literal"><span class="pre">Path.from_string()</span></code> utiltiy function creates a new instance of a path</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">pni.io.nx</span></code> package.
+A NeXus path is represented by an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">nxpath</span></code>.
+The <code class="xref py py-func docutils literal notranslate"><span class="pre">Path.from_string()</span></code> utiltiy function creates a new instance of a path</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>An empyt instance can be obtained by usint the default constructor
-of <code class="xref py py-class docutils literal"><span class="pre">nxpath</span></code></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
+of <code class="xref py py-class docutils literal notranslate"><span class="pre">nxpath</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The <em>file-</em> and <em>attribute-section</em> of the path is accessible via the
-<code class="xref py py-attr docutils literal"><span class="pre">filename</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">attribute</span></code> attributes of a path instance
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">filename</span></code> and <code class="xref py py-attr docutils literal notranslate"><span class="pre">attribute</span></code> attributes of a path instance
 which are both read- and writeable</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;test.nxs://:NXentry/:NXinstrument/:NXsample/:NXtransformation/x@units&quot;</span><span class="p">)</span>
@@ -247,9 +233,9 @@ which are both read- and writeable</p>
 </pre></div>
 </div>
 <p>For the <em>object-section</em> a path acts like a stack whose first element is
-accessible via the <code class="xref py py-attr docutils literal"><span class="pre">front</span></code> and the last element vai the
-<code class="xref py py-attr docutils literal"><span class="pre">back</span></code> attribute. These attributes are only readable.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+accessible via the <code class="xref py py-attr docutils literal notranslate"><span class="pre">front</span></code> and the last element vai the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">back</span></code> attribute. These attributes are only readable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">path</span> <span class="o">=</span>  <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument&quot;</span><span class="p">)</span>
@@ -259,12 +245,12 @@ accessible via the <code class="xref py py-attr docutils literal"><span class="p
 </pre></div>
 </div>
 <p>The elements of the <em>object-section</em> are represented as Python dictionaries
-with keys <code class="docutils literal"><span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">base_class</span></code> where the former one is the name of the group
+with keys <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">base_class</span></code> where the former one is the name of the group
 or field and the latter one, in the case of a group, is the value of the
-<code class="docutils literal"><span class="pre">NX_class</span></code> attribute of the object. In the case of fields the <code class="docutils literal"><span class="pre">base_class</span></code>
+<code class="docutils literal notranslate"><span class="pre">NX_class</span></code> attribute of the object. In the case of fields the <code class="docutils literal notranslate"><span class="pre">base_class</span></code>
 entry is always an empty string.</p>
 <p>Appending and prepending elements to the <em>object-section</em></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
@@ -282,7 +268,7 @@ entry is always an empty string.</p>
 </pre></div>
 </div>
 <p>Using a path as a stack</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/mythen:NXdetector/data&quot;</span><span class="p">)</span>
@@ -304,7 +290,7 @@ entry is always an empty string.</p>
 </pre></div>
 </div>
 <p>One can iterate of the <em>object-section</em> of a path</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;:NXentry/:NXinstrument/:NXdetector/data&quot;</span><span class="p">)</span>
@@ -313,8 +299,8 @@ entry is always an empty string.</p>
     <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="s2">&quot;base_class&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>To check if two paths are matching use the <code class="xref py py-func docutils literal"><span class="pre">match()</span></code> function</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<p>To check if two paths are matching use the <code class="xref py py-func docutils literal notranslate"><span class="pre">match()</span></code> function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">nexus</span>
 
 <span class="n">det_path</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;/:NXentry/:NXinstrument/:NXdetector&quot;</span><span class="p">)</span>
@@ -341,22 +327,19 @@ entry is always an empty string.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="nexus_groups.html" title="Working with groups"
              >next</a> |</li>
         <li class="right" >
           <a href="nexus_files.html" title="Working with Nexus files"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
 </html>

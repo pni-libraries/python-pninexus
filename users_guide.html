@@ -2,41 +2,29 @@
 
 <!doctype html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Users Guide &#8212; pninexus 1.2.10 documentation</title>
-    
+    <title>Users Guide &#8212; pninexus 1.2.16 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.2.10',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 1.2.10 documentation" href="index.html" />
     <link rel="next" title="Using the pninexus.h5cpp package" href="using_h5cpp.html" />
     <link rel="prev" title="Installation" href="installation.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -44,20 +32,17 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="using_h5cpp.html" title="Using the pninexus.h5cpp package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Users Guide</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
@@ -73,22 +58,24 @@
                         title="previous chapter">Installation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="using_h5cpp.html"
-                        title="next chapter">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a></p>
+                        title="next chapter">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/users_guide.txt"
+      <li><a href="_sources/users_guide.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -105,19 +92,19 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The PNI Python package provides bindings to the PNI C++ libraries</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">libpnicore</span></code></li>
-<li><code class="docutils literal"><span class="pre">libpniio</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">libpnicore</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">libpniio</span></code></li>
 </ul>
 <p>The term binding might not be entirely correct as the PNI libraries are mainly
 C++ templates. One can consider this package as an implementation providing
 the functionality of the templates. In particular not all the features exposed
 by the C++ libraries are imported into Python as equivalent native Python
-solutions exist. For instance <code class="docutils literal"><span class="pre">libpnicore</span></code> provides templates for
-multidimensional arrays which are not required in Python as we have <code class="docutils literal"><span class="pre">numpy</span></code>
+solutions exist. For instance <code class="docutils literal notranslate"><span class="pre">libpnicore</span></code> provides templates for
+multidimensional arrays which are not required in Python as we have <code class="docutils literal notranslate"><span class="pre">numpy</span></code>
 arrays.</p>
-<p>From <code class="docutils literal"><span class="pre">libpnicore</span></code> only the exceptions are imported as they are used by
-<code class="docutils literal"><span class="pre">libpniio</span></code>. Most of the code accessed by this Python packages comes from
-<code class="docutils literal"><span class="pre">libpniio</span></code> and addresses the following problems</p>
+<p>From <code class="docutils literal notranslate"><span class="pre">libpnicore</span></code> only the exceptions are imported as they are used by
+<code class="docutils literal notranslate"><span class="pre">libpniio</span></code>. Most of the code accessed by this Python packages comes from
+<code class="docutils literal notranslate"><span class="pre">libpniio</span></code> and addresses the following problems</p>
 <ul class="simple">
 <li>reading legacy ASCII and binary (mainly image) files</li>
 <li>provide access to NeXus files</li>
@@ -132,23 +119,23 @@ arrays.</p>
 <div class="section" id="nexus-support">
 <h2>Nexus support<a class="headerlink" href="#nexus-support" title="Permalink to this headline">¶</a></h2>
 <p>NeXus is supported with the HDF5 file format as the physical storage format.
-<code class="xref py py-mod docutils literal"><span class="pre">pninexus</span></code> provides NeXus support via two packages</p>
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus</span></code> provides NeXus support via two packages</p>
 <ul class="simple">
-<li><a class="reference internal" href="h5cpp/h5cpp.html#module-pninexus.h5cpp" title="pninexus.h5cpp"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp</span></code></a> which is a low level wrapper around the <em>h5cpp</em>
+<li><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> which is a low level wrapper around the <em>h5cpp</em>
 C++ library for HDF5</li>
-<li>and <a class="reference internal" href="nexus_path.html#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.nexus</span></code></a> providing high level functions related to the
+<li>and <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> providing high level functions related to the
 NeXus file format.</li>
 </ul>
 <div class="admonition attention">
 <p class="first admonition-title">Attention</p>
 <p class="last">It is strongly encouraged to read the following two chapters in the correct
-order: start with the uses guide for the <a class="reference internal" href="h5cpp/h5cpp.html#module-pninexus.h5cpp" title="pninexus.h5cpp"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp</span></code></a> package
-and than read the chapter about <a class="reference internal" href="h5cpp/h5cpp.html#module-pninexus.h5cpp" title="pninexus.h5cpp"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.h5cpp</span></code></a>.</p>
+order: start with the uses guide for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package
+and than read the chapter about <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code>.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="using_h5cpp.html">Using the <code class="docutils literal"><span class="pre">pninexus.h5cpp</span></code> package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_nexus.html">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_h5cpp.html">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_nexus.html">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a></li>
 </ul>
 </div>
 </div>
@@ -167,20 +154,17 @@ and than read the chapter about <a class="reference internal" href="h5cpp/h5cpp.
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="using_h5cpp.html" title="Using the pninexus.h5cpp package"
              >next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
 </html>

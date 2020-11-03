@@ -2,42 +2,29 @@
 
 <!doctype html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Nexus and XML &#8212; pninexus 1.2.10 documentation</title>
-    
+    <title>Nexus and XML &#8212; pninexus 1.2.16 documentation</title>
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.2.10',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <script type="text/javascript" src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pninexus 1.2.10 documentation" href="index.html" />
-    <link rel="up" title="Using the pninexus.nexus package" href="using_nexus.html" />
     <link rel="next" title="API documentation" href="api_guide.html" />
     <link rel="prev" title="Working with links" href="nexus_links.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,22 +32,19 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="api_guide.html" title="API documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="nexus_links.html" title="Working with links"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Nexus and XML</a><ul>
 <li><a class="reference internal" href="#a-nexus-xml-primer">A NeXus XML primer</a><ul>
@@ -85,18 +69,20 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/nexus_xml.txt"
+      <li><a href="_sources/nexus_xml.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -114,12 +100,12 @@ as shown in the previous sections of this manual.
 However, the complexity of NeXus files can become rather painful when creating
 file. This is an issue which typically affects developers working on data
 acquisition software.
-The <code class="docutils literal"><span class="pre">python-pni</span></code> framework provides a means of generating skeleton NeXus
+The <code class="docutils literal notranslate"><span class="pre">python-pni</span></code> framework provides a means of generating skeleton NeXus
 files from XML. Even existing files can be extended by structures described by
 XML.</p>
 <div class="section" id="a-nexus-xml-primer">
 <h2>A NeXus XML primer<a class="headerlink" href="#a-nexus-xml-primer" title="Permalink to this headline">¶</a></h2>
-<p>The XML dialect used to create or extend files with <code class="docutils literal"><span class="pre">python-pni</span></code> is very
+<p>The XML dialect used to create or extend files with <code class="docutils literal notranslate"><span class="pre">python-pni</span></code> is very
 close to NXDL, the XML language used to define classes in the NeXus standard.
 However, NXDL is not powerful enough for creating HDF5 files as it lacks some
 tags (for instance tags for describing the chunk-shape of a field) and
@@ -129,7 +115,7 @@ floating point numbers).</p>
 <h3>Creating groups<a class="headerlink" href="#creating-groups" title="Permalink to this headline">¶</a></h3>
 <p>The <cite>group</cite> tag is used to create groups which can then embed other groups,
 fields, or attributes. Its usage is fairly simple</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;/group&gt;</span>
 </pre></div>
 </div>
@@ -138,7 +124,7 @@ and the <cite>type</cite> attribute the NeXus base class (this value will be sto
 <cite>NX_class</cite> attribute of the HDF5 group created).</p>
 <p>A typical application for groups would be the construction of a basic NeXus
 skeleton</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;instrument&quot;</span> <span class="na">type=</span><span class="s">&quot;NXinstrument&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;source&quot;</span> <span class="na">type=</span><span class="s">&quot;NXsource&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;detector&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdetector&quot;</span><span class="nt">/&gt;</span>
@@ -154,14 +140,14 @@ skeleton</p>
 <div class="section" id="creating-fields">
 <h3>Creating fields<a class="headerlink" href="#creating-fields" title="Permalink to this headline">¶</a></h3>
 <p>Fields are described by the <cite>field</cite> tag. For a simple scalar field use</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 <p>Like for the <cite>group</cite> tag the <cite>name</cite> attribute describes the name of the field
 to create and the <cite>type</cite> tag its data type. For the data type the standard
-<code class="xref py py-mod docutils literal"><span class="pre">numpy</span></code> type strings are used.</p>
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> type strings are used.</p>
 <p>For a multidimensional field we have to embed the <cite>dimensions</cite> tag in the field</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;1024&quot;</span><span class="nt">/&gt;</span>
@@ -179,7 +165,7 @@ already seen). By default the chunk shape matches the field shape with the
 first element set to 1. In the above example the chunk shape would be
 (1,1024,512).</p>
 <p>In order to explicitly set the chunk shape use the <cite>chunk</cite> tag</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
         <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;1024&quot;</span><span class="nt">/&gt;</span>
@@ -197,7 +183,7 @@ first element set to 1. In the above example the chunk shape would be
 underlying <cite>libpniio</cite>.</p>
 <p>Finally the <cite>field</cite> tag accepts an additional attribute <cite>units</cite> which stores
 the physical unit of the data stored in a field.</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;distance&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span> <span class="na">units=</span><span class="s">&quot;m&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;distance&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span> <span class="na">units=</span><span class="s">&quot;m&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 <p>The value will be stored in a string attribute <cite>units</cite> attached to the created
@@ -213,7 +199,7 @@ available.
 However, multidimensional attributes can be created just like fields by
 embedding an <cite>dimensions</cite> tag within the <cite>attribute</cite> tag.
 Here is a short example with an attribute attached to a field</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;chi&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span> <span class="na">units=</span><span class="s">&quot;mm&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;chi&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span> <span class="na">units=</span><span class="s">&quot;mm&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
@@ -230,10 +216,10 @@ Here is a short example with an attribute attached to a field</p>
 not only create a field or attribute but also to fill it with data. This is
 particularly true when the field or attribute should store static data which
 does not change during an experiment.</p>
-<p><code class="xref py py-mod docutils literal"><span class="pre">python-pni</span></code> supports this feature. Full support is provided for
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pni</span></code> supports this feature. Full support is provided for
 numeric types. In the above example the <cite>vector</cite> attribute could be filled with
 data with</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;value</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/dimensions&gt;</span>
@@ -244,10 +230,10 @@ data with</p>
 <p>to denote a rotation around the z-axis. For string types only scalar data is
 currently supported. For the previously defined <cite>transformation_type</cite> attribute
 we could set the data with</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">&gt;</span>rotation<span class="nt">&lt;/attribute&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">&gt;</span>rotation<span class="nt">&lt;/attribute&gt;</span>
 </pre></div>
 </div>
-<p>From the above examples it is clear that <code class="xref py py-mod docutils literal"><span class="pre">python-pni</span></code> does not follow
+<p>From the above examples it is clear that <code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pni</span></code> does not follow
 the standard NXDL convention for denoting data within a field or attribute tag.
 The reason for this is to make the resulting XML more readable.
 However, this comes at a price that strings are handled different from numeric
@@ -261,7 +247,7 @@ this limitation is not a serious problem.</p>
 <h3>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this headline">¶</a></h3>
 <p>Links can be created using the <cite>link</cite> tag. External as well as internal links
 are supported. An external link can be made like this</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;instrument&quot;</span> <span class="na">type=</span><span class="s">&quot;NXinstrument&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;detector&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdetector&quot;</span><span class="nt">&gt;</span>
             <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span> <span class="na">units=</span><span class="s">&quot;cps&quot;</span><span class="nt">&gt;</span>
@@ -284,7 +270,7 @@ class.</p>
 <p>The only thing we have to change for an external link is the target path.
 We can modify the above example for the case where the detector data is stored
 in a different file like this</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdata&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">target=</span><span class="s">&quot;detector_file.nxs://entry/instrument/detector/data&quot;</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/group&gt;</span>
@@ -296,8 +282,8 @@ in a different file like this</p>
 <div class="section" id="from-xml-to-nexus">
 <h2>From XML to NeXus<a class="headerlink" href="#from-xml-to-nexus" title="Permalink to this headline">¶</a></h2>
 <p>To create a NeXus file from XML is rather simple. Just use the
-<code class="xref py py-func docutils literal"><span class="pre">xml_to_nexus()</span></code> function provided by the package</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code> function provided by the package</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="kn">as</span> <span class="nn">nexus</span>
 
 <span class="n">xml_struct</span> <span class="o">=</span> \
 <span class="sd">&quot;&quot;&quot;</span>
@@ -312,23 +298,23 @@ in a different file like this</p>
 <span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The first argument to <code class="xref py py-func docutils literal"><span class="pre">xml_to_nexus()</span></code> is the XML string from which acts
+<p>The first argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code> is the XML string from which acts
 as a blue-print for the structure to create. The second argument is the parent
 object below which the structure should be created.</p>
 <p>In the above example no data would be written to the file. This is due to a
-missing third argument to <code class="xref py py-func docutils literal"><span class="pre">xml_to_nexus()</span></code>: the write predicate.
+missing third argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code>: the write predicate.
 One may does not want to write all the data from the XML to the file. It is
 therefore possible to pass a predicate function which decides whether or not
 the data for a particular offset should be written to disk.</p>
 <p>If all data should be written we can use something like the following</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The predicate function takes a single argument, the currently created NeXus
 object, and decides then whether or not data should be written by returning
-<code class="xref py py-const docutils literal"><span class="pre">True</span></code> or <code class="xref py py-const docutils literal"><span class="pre">False</span></code>.
+<code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.
 If only fields of size one should be written we can use the following approach</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_pred</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_pred</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">nexus</span><span class="o">.</span><span class="n">nxfield</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
 
 <span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">write_pred</span><span class="p">)</span>
@@ -350,22 +336,19 @@ If only fields of size one should be written we can use the following approach</
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="api_guide.html" title="API documentation"
              >next</a> |</li>
         <li class="right" >
           <a href="nexus_links.html" title="Working with links"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
 </html>

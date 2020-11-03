@@ -2,42 +2,29 @@
 
 <!doctype html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>File related functions &#8212; pninexus 1.2.10 documentation</title>
-    
+    <title>File related functions &#8212; pninexus 1.2.16 documentation</title>
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.2.10',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 1.2.10 documentation" href="../index.html" />
-    <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="next" title="Factory classes" href="factories.html" />
     <link rel="prev" title="pninexus.h5cpp.node" href="../h5cpp/node.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,15 +32,12 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="factories.html" title="Factory classes"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../h5cpp/node.html" title="pninexus.h5cpp.node"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -61,25 +45,27 @@
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="../h5cpp/node.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">pninexus.h5cpp.node</span></code></a></p>
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">pninexus.h5cpp.node</span></code></a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="factories.html"
                         title="next chapter">Factory classes</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/nexus/files.txt"
+      <li><a href="../_sources/nexus/files.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -90,69 +76,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.nexus">
-<span id="file-related-functions"></span><h1>File related functions<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="../nexus_path.html#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal"><span class="pre">pninexus.nexus</span></code></a> package adds some useful wrapper functions
+  <div class="section" id="file-related-functions">
+<h1>File related functions<a class="headerlink" href="#file-related-functions" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package adds some useful wrapper functions
 around the native HDF5 functions.</p>
-<dl class="function">
-<dt id="pninexus.nexus.create_file">
-<code class="descclassname">pninexus.nexus.</code><code class="descname">create_file</code><span class="sig-paren">(</span><em>path</em>, <em>flags=AccessFlags.EXCLUSIVE</em>, <em>fcpl=FileCreationList()</em>, <em>fapl=FileAccessList()</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.create_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>A thin wrapper function around <a class="reference internal" href="../h5cpp/file.html#pninexus.h5cpp.file.create" title="pninexus.h5cpp.file.create"><code class="xref py py-func docutils literal"><span class="pre">pninexus.h5cpp.file.create()</span></code></a> HDF5
-function. It not only creates the file but also creates the required
-attributes no the root group of the file. Using this function ensures
-that a file created with it will pass a test with <a class="reference internal" href="#pninexus.nexus.is_nexus_file" title="pninexus.nexus.is_nexus_file"><code class="xref py py-func docutils literal"><span class="pre">is_nexus_file()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<em>str</em>) &#8211; path to the file</li>
-<li><strong>flags</strong> (<a class="reference internal" href="../h5cpp/file.html#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags"><em>pninexus.h5cpp.file.AccessFlags</em></a>) &#8211; HDF5 flags used to open the file</li>
-<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.FileCreationList" title="pninexus.h5cpp.property.FileCreationList"><em>pninexus.h5cpp.property.FileCreationList</em></a>) &#8211; optional file creation list</li>
-<li><strong>lapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.FileAccessList" title="pninexus.h5cpp.property.FileAccessList"><em>pninexus.h5cpp.property.FileAccessList</em></a>) &#8211; optional file access list</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pninexus.nexus.open_file">
-<code class="descclassname">pninexus.nexus.</code><code class="descname">open_file</code><span class="sig-paren">(</span><em>path</em>, <em>flags=AccessFlags.READONLY</em>, <em>fapl=FileAccessList()</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.open_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>A thin wrapper function around <a class="reference internal" href="../h5cpp/file.html#pninexus.h5cpp.file.open" title="pninexus.h5cpp.file.open"><code class="xref py py-func docutils literal"><span class="pre">pninexus.h5cpp.file.open()</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<em>str</em>) &#8211; path to the file</li>
-<li><strong>flags</strong> (<a class="reference internal" href="../h5cpp/file.html#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags"><em>pninexus.h5cpp.file.AccessFlags</em></a>) &#8211; access flags used to open the file</li>
-<li><strong>lapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.FileAccessList" title="pninexus.h5cpp.property.FileAccessList"><em>pninexus.h5cpp.property.FileAccessList</em></a>) &#8211; optional file access property list</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pninexus.nexus.is_nexus_file">
-<code class="descclassname">pninexus.nexus.</code><code class="descname">is_nexus_file</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.is_nexus_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if the file referenced by <cite>path</cite> is a NeXus file. This function
-is more restrictive than <a class="reference internal" href="../h5cpp/file.html#pninexus.h5cpp.file.is_hdf5_file" title="pninexus.h5cpp.file.is_hdf5_file"><code class="xref py py-func docutils literal"><span class="pre">pninexus.h5cpp.file.is_hdf5_file()</span></code></a>.
-It not only checks whether or not the file is an HDF5 file but also
-whether all required attributes are set at the root group of the HDF5 file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) &#8211; path to the file on the file system</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </div>
 
 
@@ -168,21 +95,18 @@ whether all required attributes are set at the root group of the HDF5 file.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="factories.html" title="Factory classes"
              >next</a> |</li>
         <li class="right" >
           <a href="../h5cpp/node.html" title="pninexus.h5cpp.node"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
 </html>

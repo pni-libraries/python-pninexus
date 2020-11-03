@@ -2,41 +2,28 @@
 
 <!doctype html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Factory classes &#8212; pninexus 1.2.10 documentation</title>
-    
+    <title>Factory classes &#8212; pninexus 1.2.16 documentation</title>
     <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.2.10',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <script type="text/javascript" src="../_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="pninexus 1.2.10 documentation" href="../index.html" />
-    <link rel="up" title="API documentation" href="../api_guide.html" />
     <link rel="prev" title="File related functions" href="files.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!--[if lt IE 9]>
     <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
-  </head>
-  <body role="document">
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -44,12 +31,9 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="files.html" title="File related functions"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>
@@ -61,18 +45,20 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/nexus/factories.txt"
+      <li><a href="../_sources/nexus/factories.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -83,91 +69,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.nexus">
-<span id="factory-classes"></span><h1>Factory classes<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="pninexus.nexus.BaseClassFactory">
-<em class="property">class </em><code class="descclassname">pninexus.nexus.</code><code class="descname">BaseClassFactory</code><a class="headerlink" href="#pninexus.nexus.BaseClassFactory" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="staticmethod">
-<dt id="pninexus.nexus.BaseClassFactory.create">
-<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>parent</em>, <em>name</em>, <em>base_class</em>, <em>lcpl=None</em>, <em>gcpl=None</em>, <em>gapl=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.BaseClassFactory.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>create a new base class</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference internal" href="../h5cpp/node.html#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the parent group for the new base class</li>
-<li><strong>name</strong> (<em>str</em>) &#8211; the name of the new base class</li>
-<li><strong>base_class</strong> (<em>str</em>) &#8211; the class the new group belongs to</li>
-<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to
-a link creation property list</li>
-<li><strong>gcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupCreationList" title="pninexus.h5cpp.property.GroupCreationList"><em>h5cpp.property.GroupCreationList</em></a>) &#8211; optional reference to
-a group creation property list</li>
-<li><strong>gapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.GroupAccessList" title="pninexus.h5cpp.property.GroupAccessList"><em>h5cpp.property.GroupAccessList</em></a>) &#8211; optional reference to
-a group access property list</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Retrun:</th><td class="field-body"><p class="first">new group instance properly setup as a NeXus base class</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>RuntimeError</strong> &#8211; in case of a failure</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pninexus.nexus.FieldFactory">
-<em class="property">class </em><code class="descclassname">pninexus.nexus.</code><code class="descname">FieldFactory</code><a class="headerlink" href="#pninexus.nexus.FieldFactory" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="staticmethod">
-<dt id="pninexus.nexus.FieldFactory.create">
-<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>parent</em>, <em>name</em>, <em>dtype</em>, <em>shape=None</em>, <em>max_shape=None</em>, <em>chunk=None</em>, <em>units=None</em>, <em>lcpl=None</em>, <em>dcpl=None</em>, <em>dapl=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.nexus.FieldFactory.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>create a new nexus field</p>
-<p>Creates a nexus compliant field (dataset). The name of the field is checked
-against NeXus&#8217;s naming policy and an exception is thrown if this is not the
-case. See the users manual about how to use this class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>parent</strong> (<a class="reference internal" href="../h5cpp/node.html#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) &#8211; the parent group</li>
-<li><strong>name</strong> (<em>str</em>) &#8211; the name of the field</li>
-<li><strong>type</strong> (<em>numpy.dtye,str</em>) &#8211; numpy datatype for the field</li>
-<li><strong>shape</strong> (<em>tuple</em>) &#8211; the shape of the dataset</li>
-<li><strong>chunk</strong> (<em>tuple</em>) &#8211; the chunk size for the dataset</li>
-<li><strong>lcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>h5cpp.property.LinkCreationList</em></a>) &#8211; optional reference to
-a link creation property list</li>
-<li><strong>dcpl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetCreationList" title="pninexus.h5cpp.property.DatasetCreationList"><em>h5cpp.property.DatasetCreationList</em></a>) &#8211; optional reference to
-a dataset creation property list</li>
-<li><strong>dapl</strong> (<a class="reference internal" href="../h5cpp/properties.html#pninexus.h5cpp.property.DatasetAccessList" title="pninexus.h5cpp.property.DatasetAccessList"><em>h5cpp.property.DatasetAccessList</em></a>) &#8211; optional reference to
-a dataset access property list</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">new dataset instance</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><strong>RuntimeError</strong> &#8211; in case of a failure</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="factory-classes">
+<h1>Factory classes<a class="headerlink" href="#factory-classes" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -183,18 +86,15 @@ a dataset access property list</li>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="files.html" title="File related functions"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.10 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.2.16 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
     </div>
   </body>
 </html>
