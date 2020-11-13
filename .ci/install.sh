@@ -7,7 +7,7 @@ then
     exit -1
 fi
 
-if [ $2 = "2" ]; then
+if [ "$1" = "2" ]; then
     echo "install python-pni"
     # docker exec -it ndts python setup.py -q build
     # docker exec -it --user root ndts python setup.py -q build_sphinx
