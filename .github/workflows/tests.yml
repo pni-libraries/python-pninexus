@@ -31,9 +31,9 @@ jobs:
       - name: Build the docker
         env:
           OS: ${{ matrix.os }}
-        run: docker build -t ndts .travis/${OS}_py3; fi
+        run: docker build -t ndts .travis/${OS}_py3
       - name: Run the docker
-        run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts; fi
+        run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts
       - name: install python-pninexus
         run: .ci/install.sh 3
       - name: run tests
@@ -56,9 +56,9 @@ jobs:
       - name: Build the docker
         env:
           OS: ${{ matrix.os }}
-        run: docker build -t ndts .travis/${OS}_py2; fi
+        run: docker build -t ndts .travis/${OS}_py2
       - name: Run the docker
-        run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts; fi
+        run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts
       - name: install python-pninexus
         run: .ci/install.sh 2
       - name: run tests
