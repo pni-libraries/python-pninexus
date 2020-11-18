@@ -126,8 +126,9 @@ def to_numpy(hdf5_datatype):
         raise ValueError("Unsupported HDF5 datatype!")
 
 
-__all__ = [Class, Order, Sign, Norm, Pad, StringPad, Direction,
-           CharacterEncoding, Datatype, Float, Integer, String,
-           kUInt8, kInt8, kUInt16, kInt16, kUInt32, kInt32, kUInt64,
-           kInt64, kFloat64, kFloat32, kFloat128, kVariableString,
-           Factory, kFactory, to_numpy, kEBool, is_bool, Enum]
+__all__ = ["Class", "Order", "Sign", "Norm", "Pad", "StringPad", "Direction",
+           "CharacterEncoding", "Datatype", "Float", "Integer", "String",
+           "kUInt8", "kInt8", "kUInt16", "kInt16", "kUInt32", "kInt32",
+           "kUInt64", "kInt64", "kFloat64", "kFloat32", "kFloat128",
+           "kVariableString",
+           "Factory", "kFactory", "to_numpy", "kEBool", "is_bool", "Enum"]
