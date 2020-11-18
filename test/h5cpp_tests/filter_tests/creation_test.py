@@ -107,19 +107,46 @@ class FilterCreationTest(unittest.TestCase):
         self.assertEqual(filter.cd_values, [0, 2])
         if(is_filter_available(32008)):
             filter(self.dcpl)
+            hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter2"),
+                              self.datatype,
+                              self.dataspace,
+                              self.lcpl,
+                              self.dcpl)
         else:
             error = False
             try:
                 filter(self.dcpl)
             except RuntimeError:
                 error = True
-            self.assertTrue(error)
+            if not error:
+                print("filter with 32008 id  created")
+            # for newer versions of hdf5 you can constuct the object
+            #       on nonexisting filter
+            # self.assertTrue(error)
 
-            hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter2"),
+    def testNonExistingExternalFilter(self):
+
+        filter = ExternalFilter(31999, [0, 2])
+        self.assertEqual(filter.id, 31999)
+        self.assertEqual(filter.cd_values, [0, 2])
+        if(is_filter_available(31999)):
+            filter(self.dcpl)
+            hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter3"),
                               self.datatype,
                               self.dataspace,
                               self.lcpl,
                               self.dcpl)
+        else:
+            error = False
+            try:
+                filter(self.dcpl)
+            except RuntimeError:
+                error = True
+            if not error:
+                print("filter with 31999 id  created")
+            # for newer versions of hdf5 you can constuct the object
+            #       on nonexisting filter
+            # self.assertTrue(error)
 
     def testAll(self):
 

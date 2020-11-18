@@ -9,7 +9,7 @@ Beneath HDF5s IO model there are two fundamental concepts
 * *datatypes* 
 * and *dataspaces*. 
 
-We will deal with the latter one in :ref:`hdf5-dataspace-and-selection` and focus
+We will deal with the latter one in :ref:`hdf5-dataspaces-and-selections` and focus
 in this section on datatypes. 
 
 Datatypes describe the smallest unit of data written to an HDF5 file. This 

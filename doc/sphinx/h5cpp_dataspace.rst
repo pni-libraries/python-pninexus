@@ -1,5 +1,5 @@
 
-.. _hdf5-dataspace-and-selections: 
+.. _hdf5-dataspaces-and-selections: 
 
 ==============================
 HDF5 dataspaces and selections

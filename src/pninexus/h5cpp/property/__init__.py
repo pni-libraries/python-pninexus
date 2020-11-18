@@ -57,15 +57,15 @@ def CopyFlag_or(self, b):
 CopyFlag.__or__ = CopyFlag_or
 
 
-__all__ = [CopyFlag, DatasetFillValueStatus, DatasetFillTime,
-           DatasetAllocTime, DatasetLayout, LibVersion, CopyFlag,
-           CopyFlags, ChunkCacheParameters, CreationOrder, List,
-           DatasetTransferList, FileAccessList, FileCreationList,
-           FileMountList, LinkAccessList, ObjectCopyList, CloseDegree,
-           ObjectCreationList, StringCreationList, DatasetAccessList,
-           DatatypeAccessList, GroupAccessList, DatasetCreationList,
-           GroupCreationList, TypeCreationList, AttributeCreationList,
-           LinkCreationList, VDSAvailable]
+__all__ = ["CopyFlag", "DatasetFillValueStatus", "DatasetFillTime",
+           "DatasetAllocTime", "DatasetLayout", "LibVersion", "CopyFlag",
+           "CopyFlags", "ChunkCacheParameters", "CreationOrder", "List",
+           "DatasetTransferList", "FileAccessList", "FileCreationList",
+           "FileMountList", "LinkAccessList", "ObjectCopyList", "CloseDegree",
+           "ObjectCreationList", "StringCreationList", "DatasetAccessList",
+           "DatatypeAccessList", "GroupAccessList", "DatasetCreationList",
+           "GroupCreationList", "TypeCreationList", "AttributeCreationList",
+           "LinkCreationList", "VDSAvailable"]
 
 if VDSAvailable:
-    __all__.extend([VirtualDataView, VirtualDataMap, VirtualDataMaps])
+    __all__.extend(["VirtualDataView", "VirtualDataMap", "VirtualDataMaps"])
