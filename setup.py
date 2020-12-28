@@ -58,6 +58,9 @@ else:
     nexus_config.add_link_library(
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
+    nexus_config.add_link_library(
+        "boost_numpy{major}{minor}".format(major=sys.version_info.major,
+                                           minor=sys.version_info.minor))
     nexus_config.add_include_directory('/usr/include/hdf5/serial')
 
 

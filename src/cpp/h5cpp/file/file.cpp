@@ -18,11 +18,15 @@
 // ===========================================================================
 //
 // Created on: Feb 17, 2012
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//            Eugen Wintersberger <eugen.wintersberger@desy.de>
+//            Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include "../common/io.hpp"
+#include "../common/converters.hpp"
 
 using namespace boost::python;
 
@@ -41,6 +45,12 @@ hdf5::file::File open_file(const boost::filesystem::path &file_path,
                            const hdf5::property::FileAccessList &fapl)
 {
   return hdf5::file::open(file_path,flags,fapl);
+}
+
+hdf5::file::File from_buffer_(boost::python::object &data)
+{
+  numpy::ArrayAdapter array_adapter(data);
+  return hdf5::file::from_buffer(array_adapter);
 }
 
 BOOST_PYTHON_MODULE(_file)
@@ -89,5 +99,6 @@ BOOST_PYTHON_MODULE(_file)
                              arg("fapl")=hdf5::property::FileAccessList()));
   def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY,
                          arg("fapl")=hdf5::property::FileAccessList()));
+  def("from_buffer",&from_buffer_,(arg("data")));
 }
 
