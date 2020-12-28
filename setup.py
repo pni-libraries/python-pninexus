@@ -115,7 +115,8 @@ h5cpp_attribute_ext = nexus_extension_factory.create(
 
 h5cpp_file_ext = nexus_extension_factory.create(
     module_name='pninexus.h5cpp._file',
-    source_files=['src/cpp/h5cpp/file/file.cpp'])
+    source_files=['src/cpp/h5cpp/file/file.cpp'] +
+    h5cpp_common_sources)
 
 h5cpp_dataspace_ext = nexus_extension_factory.create(
     module_name='pninexus.h5cpp._dataspace',

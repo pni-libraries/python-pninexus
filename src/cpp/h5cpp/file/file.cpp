@@ -22,11 +22,18 @@
 //            Eugen Wintersberger <eugen.wintersberger@desy.de>
 //            Jan Kotanski <jan.kotanski@desy.de>
 //
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+#define PY_ARRAY_UNIQUE_SYMBOL PNI_CORE_USYMBOL
+extern "C"{
+#include<Python.h>
+#include<numpy/arrayobject.h>
+}
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
-#include "../common/io.hpp"
 #include "../common/converters.hpp"
+#include "../common/io.hpp"
+#include "../numpy/numpy.hpp"
 
 using namespace boost::python;
 
@@ -47,11 +54,20 @@ hdf5::file::File open_file(const boost::filesystem::path &file_path,
   return hdf5::file::open(file_path,flags,fapl);
 }
 
-hdf5::file::File from_buffer_(boost::python::object &data)
+hdf5::file::File from_buffer_(boost::python::object &data,
+			      hdf5::file::ImageFlagsBase flags)
 {
   numpy::ArrayAdapter array_adapter(data);
-  return hdf5::file::from_buffer(array_adapter);
+  return hdf5::file::from_buffer(array_adapter, flags);
 }
+
+size_t file_to_buffer(const hdf5::file::File &self,
+		 boost::python::object &data)
+{
+  numpy::ArrayAdapter array_adapter(data);
+  return self.to_buffer(array_adapter);
+}
+
 
 BOOST_PYTHON_MODULE(_file)
 {
@@ -78,6 +94,12 @@ BOOST_PYTHON_MODULE(_file)
 #endif
             .value("READONLY",AccessFlags::READONLY);
 
+  enum_<ImageFlags>("ImageFlags","The image flags used to open the image file")
+            .value("READONLY",ImageFlags::READONLY)
+            .value("READWRITE",ImageFlags::READWRITE)
+            .value("DONT_COPY",ImageFlags::DONT_COPY)
+            .value("DONT_RELEASE",ImageFlags::DONT_RELEASE)
+            .value("ALL",ImageFlags::ALL);
 
   //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
   class_<File>("File")
@@ -90,6 +112,7 @@ BOOST_PYTHON_MODULE(_file)
             .def("flush",&File::flush,(arg("scope")=Scope::GLOBAL))
             .def("close",&File::close)
             .def("root",&File::root,root_overloads())
+            .def("to_buffer",file_to_buffer,(arg("data")))
             ;
 
   //need some functions
@@ -99,6 +122,6 @@ BOOST_PYTHON_MODULE(_file)
                              arg("fapl")=hdf5::property::FileAccessList()));
   def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY,
                          arg("fapl")=hdf5::property::FileAccessList()));
-  def("from_buffer",&from_buffer_,(arg("data")));
+  def("from_buffer",&from_buffer_,(arg("data"),arg("flags")=ImageFlags::READONLY));
 }
 
