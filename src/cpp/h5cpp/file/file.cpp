@@ -35,6 +35,21 @@ extern "C"{
 #include "../common/io.hpp"
 #include "../numpy/numpy.hpp"
 
+#if PY_MAJOR_VERSION >= 3
+static void * init_numpy()
+{
+    import_array();
+    return NULL;
+}
+#else
+static void init_numpy()
+{
+    import_array();
+}
+#endif
+
+
+
 using namespace boost::python;
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(root_overloads,root,0,0);
@@ -73,6 +88,7 @@ BOOST_PYTHON_MODULE(_file)
 {
   using namespace hdf5::file;
 
+  init_numpy();
   //
   // setting up the documentation options
   //
@@ -109,6 +125,7 @@ BOOST_PYTHON_MODULE(_file)
             .add_property("is_valid",&File::is_valid)
             .add_property("path",&File::path)
             .add_property("size",&File::size)
+            .add_property("buffer_size",&File::buffer_size)
             .def("flush",&File::flush,(arg("scope")=Scope::GLOBAL))
             .def("close",&File::close)
             .def("root",&File::root,root_overloads())
@@ -124,4 +141,3 @@ BOOST_PYTHON_MODULE(_file)
                          arg("fapl")=hdf5::property::FileAccessList()));
   def("from_buffer",&from_buffer_,(arg("data"),arg("flags")=ImageFlags::READONLY));
 }
-
