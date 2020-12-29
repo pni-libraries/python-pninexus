@@ -59,6 +59,10 @@ else:
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
     nexus_config.add_include_directory('/usr/include/hdf5/serial')
+    # # uncomment when h5cpp compiled with --as-needed
+    # nexus_config.add_link_library('hdf5_hl')
+    # nexus_config.add_library_directory(
+    #       '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
 
 
 #
@@ -176,8 +180,8 @@ setup(
     description="Python wrapper for the PNI libraries",
     long_description="This package provides wrappers for the PNI C++ " +
     "libraries libpnicore and libpniio.",
-    maintainer="Eugen Wintersberger",
-    maintainer_email="eugen.wintersberger@desy.de",
+    maintainer="Eugen Wintersberger, Jan Kotanski",
+    maintainer_email="jan.kotanski@desy.de",
     license="GPLv2",
     version=release,
     requires=["numpy"],
@@ -203,7 +207,7 @@ setup(
               'pninexus.h5cpp.node',
               'pninexus.h5cpp.property',
               'pninexus.nexus'],
-    url="https://github.com/pninexus-libraries/python-pninexus",
+    url="https://github.com/pni-libraries/python-pninexus",
     test_suite="test",
     test_loader="unittest:TestLoader",
     cmdclass={"install": pni_install},
