@@ -45,6 +45,38 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.make_signed(True)
         self.assertEqual(dtype.is_signed(), True)
 
+        self.assertEqual(dtype.precision, 8)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 8
+        self.assertEqual(dtype.precision, 8)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
+
     def testInt8(self):
 
         dtype = h5cpp.datatype.kInt8
@@ -53,6 +85,38 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype.make_signed(False)
         self.assertEqual(dtype.is_signed(), False)
+
+        self.assertEqual(dtype.precision, 8)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 8
+        self.assertEqual(dtype.precision, 8)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
 
     def testUInt16(self):
 
@@ -64,6 +128,38 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.make_signed(True)
         self.assertEqual(dtype.is_signed(), True)
 
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 12
+        self.assertEqual(dtype.precision, 12)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
+
     def testInt16(self):
 
         dtype = h5cpp.datatype.kInt16
@@ -73,6 +169,38 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype.make_signed(False)
         self.assertEqual(dtype.is_signed(), False)
+
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 12
+        self.assertEqual(dtype.precision, 12)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
 
     def testUInt32(self):
 
@@ -84,6 +212,38 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.make_signed(True)
         self.assertEqual(dtype.is_signed(), True)
 
+        self.assertEqual(dtype.precision, 32)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 32
+        self.assertEqual(dtype.precision, 32)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
+
     def testInt32(self):
 
         dtype = h5cpp.datatype.kInt32
@@ -93,6 +253,38 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype.make_signed(False)
         self.assertEqual(dtype.is_signed(), False)
+
+        self.assertEqual(dtype.precision, 32)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 32
+        self.assertEqual(dtype.precision, 32)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
 
     def testUInt64(self):
 
@@ -104,6 +296,38 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.make_signed(True)
         self.assertEqual(dtype.is_signed(), True)
 
+        self.assertEqual(dtype.precision, 64)
+        dtype.precision = 32
+        self.assertEqual(dtype.precision, 32)
+        dtype.precision = 64
+        self.assertEqual(dtype.precision, 64)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
+
     def testInt64(self):
 
         dtype = h5cpp.datatype.kInt64
@@ -113,6 +337,38 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype.make_signed(False)
         self.assertEqual(dtype.is_signed(), False)
+
+        self.assertEqual(dtype.precision, 64)
+        dtype.precision = 32
+        self.assertEqual(dtype.precision, 32)
+        dtype.precision = 64
+        self.assertEqual(dtype.precision, 64)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.make_pad(h5cpp.datatype.Pad.ONE,
+                       h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad()
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.make_pad(h5cpp.datatype.Pad.ZERO,
+                       h5cpp.datatype.Pad.ZERO)
 
     def testFloat32(self):
 

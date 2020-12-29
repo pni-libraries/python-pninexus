@@ -30,6 +30,15 @@
 #include <h5cpp/datatype/ebool.hpp>
 
 
+const boost::python::list integer_pad(const hdf5::datatype::Integer &self)
+{
+  std::vector<hdf5::datatype::Pad> pad_ = self.pad();
+  boost::python::list padlist;
+  for (auto pd: pad_){
+      padlist.append(pd);
+  }
+  return padlist;
+}
 
 BOOST_PYTHON_MODULE(_datatype)
 {
@@ -60,7 +69,9 @@ BOOST_PYTHON_MODULE(_datatype)
 
   enum_<Order>("Order")
       .value("LE",Order::LE)
-      .value("BE",Order::BE);
+      .value("BE",Order::BE)
+      .value("VAX",Order::VAX)
+      .value("NONE",Order::NONE);
 
   enum_<Sign>("Sign")
       .value("TWOS_COMPLEMENT",Sign::TWOS_COMPLEMENT)
@@ -102,10 +113,23 @@ BOOST_PYTHON_MODULE(_datatype)
       ;
 
 
+  size_t (Integer::*get_precision)() const = &Integer::precision;
+  void (Integer::*set_precision)(size_t) const = &Integer::precision;
+  size_t (Integer::*get_offset)() const = &Integer::offset;
+  void (Integer::*set_offset)(size_t) const = &Integer::offset;
+  Order (Integer::*get_order)() const = &Integer::order;
+  void (Integer::*set_order)(Order) const = &Integer::order;
+  //  const std::vector<Pad> (Integer::*get_pad)() const = &Integer::pad;
+  void (Integer::*set_pad)(Pad,Pad) const = &Integer::pad;
   class_<Integer,bases<Datatype>>("Integer")
       .def(init<const Datatype&>())
       .def("make_signed", &Integer::make_signed)
       .def("is_signed", &Integer::is_signed)
+      .add_property("precision",get_precision,set_precision)
+      .add_property("offset",get_offset,set_offset)
+      .add_property("order",get_order,set_order)
+      .def("pad", integer_pad)
+      .def("make_pad", set_pad)
       ;
 
   class_<Float,bases<Datatype>>("Float")
