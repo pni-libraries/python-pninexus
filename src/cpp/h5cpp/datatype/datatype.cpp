@@ -30,6 +30,83 @@
 #include <h5cpp/datatype/ebool.hpp>
 
 
+const boost::python::tuple integer_get_pad(const hdf5::datatype::Integer &self)
+{
+  std::vector<hdf5::datatype::Pad> pad_ = self.pad();
+  if(pad_.size() != 2)
+    throw std::runtime_error("Object is not a two element list");
+  return boost::python::make_tuple(pad_[0],pad_[1]);
+}
+
+void integer_set_pad(const hdf5::datatype::Integer &self, const boost::python::object pad)
+{
+  hdf5::datatype::Pad lp = hdf5::datatype::Pad::ZERO;
+  hdf5::datatype::Pad mp = hdf5::datatype::Pad::ZERO;
+  if(boost::python::len(pad) != 2)
+    throw std::runtime_error("Object is not a two element list");
+  boost::python::object lo = pad[0];
+  boost::python::extract<hdf5::datatype::Pad> ls(lo);
+  if (ls.check())
+    lp = ls();
+  boost::python::object mo = pad[1];
+  boost::python::extract<hdf5::datatype::Pad> ms(mo);
+  if (ms.check())
+    mp = ms();
+  self.pad(lp,mp);
+
+}
+
+const boost::python::tuple float_get_pad(const hdf5::datatype::Float &self)
+{
+  std::vector<hdf5::datatype::Pad> pad_ = self.pad();
+  if(pad_.size() != 2)
+    throw std::runtime_error("Object is not a two element list");
+  return boost::python::make_tuple(pad_[0],pad_[1]);
+}
+
+void float_set_pad(const hdf5::datatype::Float &self, const boost::python::object pad)
+{
+  hdf5::datatype::Pad lp = hdf5::datatype::Pad::ZERO;
+  hdf5::datatype::Pad mp = hdf5::datatype::Pad::ZERO;
+  if(boost::python::len(pad) != 2)
+    throw std::runtime_error("Object is not a two element list");
+  boost::python::object lo = pad[0];
+  boost::python::extract<hdf5::datatype::Pad> ls(lo);
+  if (ls.check())
+    lp = ls();
+  boost::python::object mo = pad[1];
+  boost::python::extract<hdf5::datatype::Pad> ms(mo);
+  if (ms.check())
+    mp = ms();
+  self.pad(lp,mp);
+}
+
+const boost::python::tuple float_get_fields(const hdf5::datatype::Float &self)
+{
+  std::vector<size_t> fields_ = self.fields();
+  if(fields_.size() != 5)
+    throw std::runtime_error("Object is not a five element list");
+  return boost::python::make_tuple(fields_[0],fields_[1],fields_[2],
+				   fields_[3],fields_[4]);
+}
+
+
+void float_set_fields(const hdf5::datatype::Float &self, const boost::python::object fields)
+{
+  if(boost::python::len(fields) != 5)
+    throw std::runtime_error("Object is not a five element list");
+  std::vector<size_t> fields_;
+  for (boost::python::ssize_t i = 0, end = boost::python::len(fields); i < end; ++i){
+    boost::python::object o = fields[i];
+    boost::python::extract<size_t> s(o);
+    if (s.check()){
+      fields_.push_back(s());
+    }
+  }
+  if(fields_.size() != 5)
+    throw std::runtime_error("Object is not a five element list");
+  self.fields(fields_[0],fields_[1],fields_[2],fields_[3],fields_[4]);
+}
 
 BOOST_PYTHON_MODULE(_datatype)
 {
@@ -60,7 +137,9 @@ BOOST_PYTHON_MODULE(_datatype)
 
   enum_<Order>("Order")
       .value("LE",Order::LE)
-      .value("BE",Order::BE);
+      .value("BE",Order::BE)
+      .value("VAX",Order::VAX)
+      .value("NONE",Order::NONE);
 
   enum_<Sign>("Sign")
       .value("TWOS_COMPLEMENT",Sign::TWOS_COMPLEMENT)
@@ -102,14 +181,44 @@ BOOST_PYTHON_MODULE(_datatype)
       ;
 
 
+  size_t (Integer::*integer_get_precision)() const = &Integer::precision;
+  void (Integer::*integer_set_precision)(size_t) const = &Integer::precision;
+  size_t (Integer::*integer_get_offset)() const = &Integer::offset;
+  void (Integer::*integer_set_offset)(size_t) const = &Integer::offset;
+  Order (Integer::*integer_get_order)() const = &Integer::order;
+  void (Integer::*integer_set_order)(Order) const = &Integer::order;
   class_<Integer,bases<Datatype>>("Integer")
       .def(init<const Datatype&>())
       .def("make_signed", &Integer::make_signed)
       .def("is_signed", &Integer::is_signed)
+      .add_property("precision",integer_get_precision,integer_set_precision)
+      .add_property("offset",integer_get_offset,integer_set_offset)
+      .add_property("order",integer_get_order,integer_set_order)
+      .add_property("pad", integer_get_pad, integer_set_pad)
       ;
 
+  size_t (Float::*float_get_precision)() const = &Float::precision;
+  void (Float::*float_set_precision)(size_t) const = &Float::precision;
+  size_t (Float::*float_get_offset)() const = &Float::offset;
+  void (Float::*float_set_offset)(size_t) const = &Float::offset;
+  Order (Float::*float_get_order)() const = &Float::order;
+  void (Float::*float_set_order)(Order) const = &Float::order;
+  size_t (Float::*float_get_ebias)() const = &Float::ebias;
+  void (Float::*float_set_ebias)(size_t) const = &Float::ebias;
+  Norm (Float::*float_get_norm)() const = &Float::norm;
+  void (Float::*float_set_norm)(Norm) const = &Float::norm;
+  Pad (Float::*float_get_inpad)() const = &Float::inpad;
+  void (Float::*float_set_inpad)(Pad) const = &Float::inpad;
   class_<Float,bases<Datatype>>("Float")
       .def(init<const Datatype&>())
+      .add_property("precision",float_get_precision,float_set_precision)
+      .add_property("offset",float_get_offset,float_set_offset)
+      .add_property("order",float_get_order,float_set_order)
+      .add_property("pad", float_get_pad, float_set_pad)
+      .add_property("fields", float_get_fields, float_set_fields)
+      .add_property("ebias",float_get_ebias,float_set_ebias)
+      .add_property("norm",float_get_norm,float_set_norm)
+      .add_property("inpad",float_get_inpad,float_set_inpad)
       ;
 
 
