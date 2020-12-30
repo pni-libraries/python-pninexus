@@ -408,6 +408,7 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.pad = [h5cpp.datatype.Pad.ZERO,
                      h5cpp.datatype.Pad.ZERO]
 
+        self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ZERO)
         dtype.inpad = h5cpp.datatype.Pad.ONE
         self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ONE)
@@ -424,6 +425,19 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = h5cpp.datatype.Norm.NONE
         self.assertEqual(dtype.norm, h5cpp.datatype.Norm.NONE)
         dtype.norm = norm
+
+        ebias = dtype.ebias
+        sz = dtype.size
+        
+        self.assertEqual(dtype.size, 4)
+        self.assertEqual(dtype.ebias, 127)
+        self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
+                                        4 * sz * sz * sz - 1])
+        dtype.ebias = 63
+        self.assertEqual(dtype.ebias, 63)
+        dtype.ebias = 31
+        self.assertEqual(dtype.ebias, 31)
+        dtype.ebias = ebias
 
     def testFloat64(self):
 
@@ -480,6 +494,17 @@ class PredefinedTypeTests(unittest.TestCase):
         self.assertEqual(dtype.norm, h5cpp.datatype.Norm.NONE)
         dtype.norm = norm
 
+        ebias = dtype.ebias
+        sz = dtype.size
+        self.assertEqual(dtype.ebias, 63)
+        self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
+                                        4 * sz * sz * sz - 1])
+        dtype.ebias = 63
+        self.assertEqual(dtype.ebias, 63)
+        dtype.ebias = 31
+        self.assertEqual(dtype.ebias, 31)
+        dtype.ebias = ebias
+
     def testFloat128(self):
 
         dtype = h5cpp.datatype.kFloat128
@@ -535,6 +560,17 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = h5cpp.datatype.Norm.NONE
         self.assertEqual(dtype.norm, h5cpp.datatype.Norm.NONE)
         dtype.norm = norm
+
+        ebias = dtype.ebias
+        sz = dtype.size
+        self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
+                                        4 * sz * sz * sz - 1])
+        dtype.ebias = 63
+        self.assertEqual(dtype.ebias, 63)
+        dtype.ebias = 31
+        self.assertEqual(dtype.ebias, 31)
+        dtype.ebias = ebias
+
 
     def testVariableString(self):
 
