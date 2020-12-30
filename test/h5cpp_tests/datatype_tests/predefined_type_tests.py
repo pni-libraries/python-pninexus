@@ -408,7 +408,6 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.pad = [h5cpp.datatype.Pad.ZERO,
                      h5cpp.datatype.Pad.ZERO]
 
-        self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ZERO)
         dtype.inpad = h5cpp.datatype.Pad.ONE
         self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ONE)
@@ -427,8 +426,9 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
+
+        dtype.size = 4
         sz = dtype.size
-        
         self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.ebias, 127)
         self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
@@ -438,6 +438,16 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.ebias = 31
         self.assertEqual(dtype.ebias, 31)
         dtype.ebias = ebias
+
+        fields = dtype.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (15, 10, 5, 0, 5)
+        fields2 = (14, 9, 5, 0, 9)
+        dtype.fields = fields1
+        self.assertEqual(dtype.fields, fields1)
+        dtype.fields = fields2
+        self.assertEqual(dtype.fields, fields2)
+        dtype.fields = fields
 
     def testFloat64(self):
 
@@ -495,8 +505,8 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
+        dtype.size = 8
         sz = dtype.size
-        self.assertEqual(dtype.ebias, 63)
         self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
                                         4 * sz * sz * sz - 1])
         dtype.ebias = 63
@@ -504,6 +514,16 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.ebias = 31
         self.assertEqual(dtype.ebias, 31)
         dtype.ebias = ebias
+
+        fields = dtype.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (15, 10, 5, 0, 5)
+        fields2 = (14, 9, 5, 0, 9)
+        dtype.fields = fields1
+        self.assertEqual(dtype.fields, fields1)
+        dtype.fields = fields2
+        self.assertEqual(dtype.fields, fields2)
+        dtype.fields = fields
 
     def testFloat128(self):
 
@@ -571,6 +591,15 @@ class PredefinedTypeTests(unittest.TestCase):
         self.assertEqual(dtype.ebias, 31)
         dtype.ebias = ebias
 
+        fields = dtype.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (15, 10, 5, 0, 5)
+        fields2 = (14, 9, 5, 0, 9)
+        dtype.fields = fields1
+        self.assertEqual(dtype.fields, fields1)
+        dtype.fields = fields2
+        self.assertEqual(dtype.fields, fields2)
+        dtype.fields = fields
 
     def testVariableString(self):
 
