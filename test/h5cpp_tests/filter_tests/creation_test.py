@@ -69,6 +69,9 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
 
     def testShuffle(self):
 
@@ -79,6 +82,9 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
 
     def testDeflate(self):
 
@@ -89,6 +95,9 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
 
     def testExternalFilter(self):
 
@@ -99,6 +108,9 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
 
     def testExternalFilter2(self):
 
@@ -116,6 +128,7 @@ class FilterCreationTest(unittest.TestCase):
             error = False
             try:
                 filter(self.dcpl)
+                self.assertEqual(self.dcpl.nfilters, 1)
             except RuntimeError:
                 error = True
             if not error:
@@ -164,3 +177,4 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 3)

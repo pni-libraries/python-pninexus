@@ -158,6 +158,7 @@ void create_class_wrappers()
       .add_property("fill_value_status",&DatasetCreationList::fill_value_status)
       .add_property("fill_time",get_dataset_fill_time,set_dataset_fill_time)
       .add_property("allocation_time",get_dataset_allocation_time,set_dataset_allocation_time)
+      .add_property("nfilters",&DatasetCreationList::nfilters)
       ;
 
 
