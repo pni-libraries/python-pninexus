@@ -87,6 +87,8 @@ BOOST_PYTHON_MODULE(_filter)
   class_<Filter,boost::noncopyable>("Filter",no_init)
       .add_property("id",&Filter::id)
       .def("__call__",&Filter::operator(),(args("dcpl"),args("availability")=Availability::MANDATORY))
+      .def("is_encoding_enabled", &Filter::is_encoding_enabled)
+      .def("is_decoding_enabled", &Filter::is_decoding_enabled)
           ;
 
   class_<Fletcher32,bases<Filter>>("Fletcher32");
