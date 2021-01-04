@@ -33,7 +33,8 @@ using namespace hdf5::filter;
 class DLL_EXPORT ExternalFilterWrapper : public Filter
 {
  public:
-  ExternalFilterWrapper(FilterID id, boost::python::list cd_values):
+  ExternalFilterWrapper(FilterID id, boost::python::list cd_values,
+			const std::string &name=std::string()):
     Filter(id)
     {
       for (boost::python::ssize_t i = 0, end = len(cd_values); i < end; ++i){
@@ -43,9 +44,15 @@ class DLL_EXPORT ExternalFilterWrapper : public Filter
 	  cd_values_.push_back(s());
 	}
       }
+      name_ = name;
+    }
+  ExternalFilterWrapper():
+    Filter(0),
+    cd_values_(0, 0),
+    name_("")
+    {
     }
 
-  ExternalFilterWrapper() = delete;
   ~ExternalFilterWrapper(){}
 
     virtual void operator()(const hdf5::property::DatasetCreationList &dcpl,
@@ -67,10 +74,71 @@ class DLL_EXPORT ExternalFilterWrapper : public Filter
       return cdlist;
     }
 
+    const std::string name() const noexcept
+    {
+      return name_;
+    }
+
  private:
     std::vector<unsigned int> cd_values_;
+    std::string name_;
+
 
 };
+
+DLL_EXPORT boost::python::list externalfilters_fill(boost::python::list &efilters,
+						    const hdf5::property::DatasetCreationList &dcpl,
+						    size_t max_cd_number=16,
+						    size_t max_name_size=257){
+
+  boost::python::list flags;
+  size_t nfilters = dcpl.nfilters();
+  unsigned int flag;
+  size_t cd_number = max_cd_number;
+  std::vector<char> fname(max_name_size);
+
+  for(unsigned int nf=0; nf != nfilters; nf++){
+    std::vector<unsigned int> cd_values(max_cd_number);
+    int filter_id = H5Pget_filter(static_cast<hid_t>(dcpl),
+				  nf,
+				  &flag,
+				  &cd_number,
+				  cd_values.data(),
+				  fname.size(),
+				  fname.data(),
+				  NULL);
+
+    if(filter_id < 0){
+      std::stringstream ss;
+      ss << "Failure to read a parameters of filter ("
+	 << nf << ") from " << dcpl.get_class();
+      hdf5::error::Singleton::instance().throw_with_stack(ss.str());
+    }
+    if(cd_number > max_cd_number){
+      std::stringstream ss;
+      ss<<"Too many filter parameters in " << dcpl.get_class();
+      hdf5::error::Singleton::instance().throw_with_stack(ss.str());
+    }
+    cd_values.resize(cd_number);
+    if(static_cast<int>(static_cast<Availability>(flag)) != flag){
+      std::stringstream ss;
+      ss<<"Wrong filter flag value in " << dcpl.get_class();
+      hdf5::error::Singleton::instance().throw_with_stack(ss.str());
+    }
+
+    boost::python::list cdlist;
+    for (auto cd: cd_values)
+      cdlist.append(cd);
+
+
+    Availability fflag = static_cast<Availability>(flag);
+    fname[max_name_size - 1] = '\0';
+    std::string name(fname.data());
+    efilters.append(ExternalFilterWrapper(filter_id, cdlist, name));
+    flags.append(fflag);
+  }
+  return flags;
+}
 
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
@@ -103,10 +171,14 @@ BOOST_PYTHON_MODULE(_filter)
   class_<Shuffle,bases<Filter>>("Shuffle");
 
   const boost::python::list(ExternalFilterWrapper::*cd_values)() const = &ExternalFilterWrapper::cd_values;
-  class_<ExternalFilterWrapper, bases<Filter>, boost::noncopyable>("ExternalFilter",no_init)
-    .def(init<unsigned int, boost::python::list>((arg("id"), args("cd_values"))))
+  const std::string(ExternalFilterWrapper::*name)() const = &ExternalFilterWrapper::name;
+  class_<ExternalFilterWrapper, bases<Filter>>("ExternalFilter")
+    .def(init<unsigned int, boost::python::list, std::string>((arg("id"), args("cd_values"), args("name")=std::string())))
     .add_property("cd_values", cd_values)
+    .add_property("name", name)
     ;
+  def("_externalfilters_fill",externalfilters_fill,
+    (arg("efilters"), arg("dcpl"),arg("max_cd_number")=16,arg("max_name_size")=257));
 
   def("is_filter_available", is_filter_available, args("id"));
 }
