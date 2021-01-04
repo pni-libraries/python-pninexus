@@ -379,7 +379,7 @@ def dataset_filters(self):
     """
 
     efilters = ExternalFilters()
-    efilters.fill(self.creation_list())
+    efilters.fill(self.creation_list)
     return efilters
 
 

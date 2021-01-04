@@ -287,6 +287,11 @@ class DatasetDirectChunkTests(unittest.TestCase):
                 npt.assert_array_equal(read_value, sframe)
             else:
                 npt.assert_array_equal(read_value, tframe)
+        filters = data4.filters()
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(filters[0].cd_values, [2])
+        self.assertEqual(filters[0].id, 1)
+        self.assertEqual(filters[0].name, "deflate")
 
 
 if not HDF5GE102:
