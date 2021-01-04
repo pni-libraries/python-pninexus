@@ -3,6 +3,7 @@ from pninexus.h5cpp._h5cpp import Path
 from pninexus.h5cpp import property
 from pninexus.h5cpp import dataspace
 from pninexus.h5cpp import datatype
+from pninexus.h5cpp.filter import ExternalFilters
 import numpy
 # from collections import OrderedDict
 
@@ -302,6 +303,15 @@ def dataset_write(self, data, selection=None):
 
 
 def dataset_read(self, data=None, selection=None):
+    """ read data from a dataset
+
+    Reads `data` from a dataset
+
+    :param object data: Python object with data to read
+    :param pninexus.h5cpp.dataspace.Selection selection: an optional selection
+    :returns: read data
+    :raises RuntimeError: in case of a failure
+    """
 
     memory_space = None
     memory_type = None
@@ -358,8 +368,24 @@ def dataset_read(self, data=None, selection=None):
     return data
 
 
+def dataset_filters(self):
+    """ read filters from a dataset
+
+    Reads filters from a dataset
+
+    :returns: a list of filters
+
+    :raises RuntimeError: in case of a failure
+    """
+
+    efilters = ExternalFilters()
+    efilters.fill(self.creation_list())
+    return efilters
+
+
 Dataset.write = dataset_write
 Dataset.read = dataset_read
+Dataset.filters = dataset_filters
 
 
 __all__ = ["Type", "LinkType", "Node", "GroupView", "NodeView", "LinkView",
