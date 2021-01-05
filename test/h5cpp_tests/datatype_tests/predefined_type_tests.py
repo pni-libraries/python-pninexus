@@ -618,7 +618,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype = h5cpp.datatype.kFloat16
         self.assertTrue(isinstance(dtype, self.float_types))
-        
+
         self.assertEqual(dtype.size, 2)
         self.assertEqual(dtype.ebias, 15)
 
@@ -673,7 +673,6 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
-        sz = dtype.size
         self.assertEqual(dtype.ebias, 15)
         dtype.ebias = 63
         self.assertEqual(dtype.ebias, 63)
