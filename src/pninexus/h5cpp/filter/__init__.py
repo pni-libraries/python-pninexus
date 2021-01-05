@@ -2,6 +2,10 @@ from pninexus.h5cpp._filter import Filter
 from pninexus.h5cpp._filter import Deflate
 from pninexus.h5cpp._filter import Shuffle
 from pninexus.h5cpp._filter import Fletcher32
+from pninexus.h5cpp._filter import NBit
+from pninexus.h5cpp._filter import SZip
+from pninexus.h5cpp._filter import ScaleOffset
+from pninexus.h5cpp._filter import SOScaleType
 from pninexus.h5cpp._filter import ExternalFilter
 from pninexus.h5cpp._filter import Availability
 from pninexus.h5cpp._filter import is_filter_available
@@ -26,6 +30,6 @@ class ExternalFilters(list):
         return _externalfilters_fill(self, dcpl, max_cd_number, max_name_size)
 
 
-__all__ = ["Filter", "Deflate", "Shuffle", "Fletcher32",
-           "ExternalFilter", "ExternalFilters", "Availability",
-           "is_filter_available"]
+__all__ = ["Filter", "Deflate", "Shuffle", "Fletcher32", "NBit", "SZip",
+           "ExternalFilter", "ExternalFilters", "Availability", "ScaleOffset",
+           "SOScaleType", "is_filter_available"]

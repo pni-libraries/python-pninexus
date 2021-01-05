@@ -151,6 +151,11 @@ BOOST_PYTHON_MODULE(_filter)
   enum_<Availability>("Availability")
       .value("MANDATORY",Availability::MANDATORY)
       .value("OPTIONAL",Availability::OPTIONAL);
+  
+  enum_<SOScaleType>("SOScaleType")
+      .value("FLOAT_DSCALE",SOScaleType::FLOAT_DSCALE)
+      .value("FLOAT_ESCALE",SOScaleType::FLOAT_ESCALE)
+      .value("INT",SOScaleType::INT);
 
   class_<Filter,boost::noncopyable>("Filter",no_init)
       .add_property("id",&Filter::id)
@@ -161,12 +166,38 @@ BOOST_PYTHON_MODULE(_filter)
 
   class_<Fletcher32,bases<Filter>>("Fletcher32");
 
+  class_<NBit,bases<Filter>>("NBit");
+
   void (Deflate::*set_level)(unsigned int) = &Deflate::level;
   unsigned int(Deflate::*get_level)() const = &Deflate::level;
   class_<Deflate,bases<Filter>>("Deflate")
       .def(init<unsigned int>((arg("level")=0)))
       .add_property("level",get_level,set_level)
           ;
+  
+  void (SZip::*set_options_mask)(unsigned int) = &SZip::options_mask;
+  unsigned int(SZip::*get_options_mask)() const = &SZip::options_mask;
+  void (SZip::*set_pixels_per_block)(unsigned int) = &SZip::pixels_per_block;
+  unsigned int(SZip::*get_pixels_per_block)() const = &SZip::pixels_per_block;
+  class_<SZip,bases<Filter>>("SZip")
+    .def(init<unsigned int,unsigned int>((arg("options_mask")=32,
+					  arg("pixels_per_block")=0)))
+    .add_property("options_mask",get_options_mask,set_options_mask)
+    .add_property("pixels_per_block",get_pixels_per_block,set_pixels_per_block)
+    .def_readonly("EC_OPTION_MASK", &SZip::EC_OPTION_MASK)
+    .def_readonly("NN_OPTION_MASK", &SZip::NN_OPTION_MASK)
+    ;
+
+  void (ScaleOffset::*set_scale_type)(SOScaleType) = &ScaleOffset::scale_type;
+  SOScaleType(ScaleOffset::*get_scale_type)() const = &ScaleOffset::scale_type;
+  void (ScaleOffset::*set_scale_factor)(int) = &ScaleOffset::scale_factor;
+  int(ScaleOffset::*get_scale_factor)() const = &ScaleOffset::scale_factor;
+  class_<ScaleOffset,bases<Filter>>("ScaleOffset")
+    .def(init<SOScaleType,int>((arg("scale_type")=SOScaleType::FLOAT_DSCALE,
+					  arg("scale_factor")=1)))
+    .add_property("scale_type",get_scale_type,set_scale_type)
+    .add_property("scale_factor",get_scale_factor,set_scale_factor)
+    ;
 
   class_<Shuffle,bases<Filter>>("Shuffle");
 
