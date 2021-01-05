@@ -27,6 +27,7 @@ import unittest
 import os
 from pninexus.h5cpp.filter import (
     Deflate, Fletcher32, Shuffle, ExternalFilter, ExternalFilters,
+    NBit, SZip, ScaleOffset, SOScaleType,
     is_filter_available, Availability)
 import pninexus.h5cpp as hdf5
 
@@ -86,6 +87,75 @@ class FilterCreationTest(unittest.TestCase):
         self.assertEqual(self.dcpl.nfilters, 1)
         self.assertTrue(filter.is_encoding_enabled())
         self.assertTrue(filter.is_decoding_enabled())
+
+    def testNBit(self):
+
+        filter = NBit()
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("NBit"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 5)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [])
+        self.assertEqual(filters[0].id, 5)
+        self.assertEqual(filters[0].name, "nbit")
+
+    def testSZip(self):
+
+        filter = SZip(SZip.EC_OPTION_MASK, 16)
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("SZip"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 4)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [133, 16])
+        self.assertEqual(filters[0].id, 4)
+        self.assertEqual(filters[0].name, "szip")
+
+    def testScaleOffset(self):
+
+        filter = ScaleOffset(SOScaleType.INT, 2)
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("ScaleOffset"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 6)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [SOScaleType.INT, 2])
+        self.assertEqual(filters[0].id, 6)
+        self.assertEqual(filters[0].name, "scaleoffset")
 
     def testDeflate(self):
 
