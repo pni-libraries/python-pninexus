@@ -613,3 +613,80 @@ class PredefinedTypeTests(unittest.TestCase):
         self.assertTrue(isinstance(dtype, self.enum_types))
         self.assertTrue(h5cpp._datatype.is_bool(dtype))
         self.assertEqual(dtype.size, 1)
+
+    def testFloat16(self):
+
+        dtype = h5cpp.datatype.kFloat16
+        self.assertTrue(isinstance(dtype, self.float_types))
+        
+        self.assertEqual(dtype.size, 2)
+        self.assertEqual(dtype.ebias, 15)
+
+        prec = dtype.precision
+        self.assertTrue(dtype.precision in [16])
+        dtype.precision = 80
+        self.assertEqual(dtype.precision, 80)
+        dtype.precision = prec
+        self.assertEqual(dtype.precision, prec)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.pad = [h5cpp.datatype.Pad.ONE,
+                     h5cpp.datatype.Pad.BACKGROUND]
+        lp, mp = dtype.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.pad = (h5cpp.datatype.Pad.ZERO,
+                     h5cpp.datatype.Pad.ZERO)
+
+        self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ZERO)
+        dtype.inpad = h5cpp.datatype.Pad.ONE
+        self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ONE)
+        dtype.inpad = h5cpp.datatype.Pad.BACKGROUND
+        self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.inpad = h5cpp.datatype.Pad.ZERO
+        self.assertEqual(dtype.inpad, h5cpp.datatype.Pad.ZERO)
+
+        norm = dtype.norm
+        self.assertTrue(dtype.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        dtype.norm = h5cpp.datatype.Norm.MSBSET
+        self.assertEqual(dtype.norm, h5cpp.datatype.Norm.MSBSET)
+        dtype.norm = h5cpp.datatype.Norm.NONE
+        self.assertEqual(dtype.norm, h5cpp.datatype.Norm.NONE)
+        dtype.norm = norm
+
+        ebias = dtype.ebias
+        sz = dtype.size
+        self.assertEqual(dtype.ebias, 15)
+        dtype.ebias = 63
+        self.assertEqual(dtype.ebias, 63)
+        dtype.ebias = 31
+        self.assertEqual(dtype.ebias, 31)
+        dtype.ebias = ebias
+
+        fields = dtype.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (15, 10, 5, 0, 5)
+        fields2 = (14, 9, 5, 0, 9)
+        dtype.fields = fields1
+        self.assertEqual(dtype.fields, fields1)
+        dtype.fields = fields2
+        self.assertEqual(dtype.fields, fields2)
+        dtype.fields = fields
