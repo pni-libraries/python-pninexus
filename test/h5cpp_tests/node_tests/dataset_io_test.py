@@ -144,6 +144,16 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         npt.assert_array_equal(read, data)
 
+    def testWriteFloat16Array(self):
+
+        data = numpy.array(
+            [[1, 2, 3, 4], [5, 6, 7, 8]], dtype="float16")
+        dataset = Dataset(self.root, h5cpp.Path("Float16Array"),
+                          h5cpp.datatype.kFloat16, Simple((2, 4)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
     def testWriteFixedLengthStringArray(self):
 
         data = numpy.array(

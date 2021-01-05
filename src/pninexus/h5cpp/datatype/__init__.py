@@ -30,8 +30,9 @@ from pninexus.h5cpp._datatype import kUInt32
 from pninexus.h5cpp._datatype import kInt32
 from pninexus.h5cpp._datatype import kUInt64
 from pninexus.h5cpp._datatype import kInt64
-from pninexus.h5cpp._datatype import kFloat64
+from pninexus.h5cpp._datatype import kFloat16
 from pninexus.h5cpp._datatype import kFloat32
+from pninexus.h5cpp._datatype import kFloat64
 from pninexus.h5cpp._datatype import kFloat128
 from pninexus.h5cpp._datatype import kVariableString
 from pninexus.h5cpp._datatype import kEBool
@@ -53,6 +54,7 @@ class Factory(object):
                 "uint32": kUInt32,
                 "int64": kInt64,
                 "uint64": kUInt64,
+                "float16": kFloat16,
                 "float32": kFloat32,
                 "float64": kFloat64,
                 "float128": kFloat128}
@@ -109,6 +111,8 @@ def to_numpy(hdf5_datatype):
         return "int64"
     elif hdf5_datatype == kUInt64:
         return "uint64"
+    elif hdf5_datatype == kFloat16:
+        return "float16"
     elif hdf5_datatype == kFloat32:
         return "float32"
     elif hdf5_datatype == kFloat64:
@@ -129,6 +133,7 @@ def to_numpy(hdf5_datatype):
 __all__ = ["Class", "Order", "Sign", "Norm", "Pad", "StringPad", "Direction",
            "CharacterEncoding", "Datatype", "Float", "Integer", "String",
            "kUInt8", "kInt8", "kUInt16", "kInt16", "kUInt32", "kInt32",
-           "kUInt64", "kInt64", "kFloat64", "kFloat32", "kFloat128",
+           "kUInt64", "kInt64",
+           "kFloat16", "kFloat32", "kFloat64", "kFloat128",
            "kVariableString",
            "Factory", "kFactory", "to_numpy", "kEBool", "is_bool", "Enum"]
