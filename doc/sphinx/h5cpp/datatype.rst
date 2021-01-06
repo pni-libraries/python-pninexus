@@ -10,7 +10,7 @@ Enumerations
 
 .. autosummary::
 
-   Class
+   pninexus.h5cpp.datatype.Class
    Order
    Sign
    Norm
@@ -18,6 +18,9 @@ Enumerations
    StringPad
    Direction
    CharacterEncoding
+
+:py:class:`Class`
+=================
 
 .. autoclass:: Class
 
@@ -47,6 +50,9 @@ Enumerations
       :annotation: = a variable length datat type
    .. autoattribute:: ARRAY
       :annotation: = an array datatype
+
+:py:class:`Order`
+=================
 
 .. autoclass:: Order
 
