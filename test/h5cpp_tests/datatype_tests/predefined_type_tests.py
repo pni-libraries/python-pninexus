@@ -689,3 +689,247 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.fields = fields2
         self.assertEqual(dtype.fields, fields2)
         dtype.fields = fields
+
+    def testComplex32(self):
+
+        dtype = h5cpp.datatype.kComplex32
+        self.assertTrue(isinstance(dtype, self.float_types))
+        self.assertEqual(dtype.size, 4)
+        self.assertEqual(dtype.number_of_fields, 2)
+        self.assertEqual(dtype.field_name(0), "real")
+        self.assertEqual(dtype.field_name(1), "imag")
+        self.assertEqual(dtype.field_index("real"), 0)
+        self.assertEqual(dtype.field_index("imag"), 1)
+        self.assertEqual(dtype.field_offset("real"), 0)
+        self.assertEqual(dtype.field_offset(0), 0)
+        self.assertEqual(dtype.field_offset("imag"), 2)
+        self.assertEqual(dtype.field_offset(1), 2)
+        self.assertEqual(dtype.field_class("real"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class("imag"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(0),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(1),
+                         h5cpp._datatype.Class.FLOAT)
+
+        real = dtype[0]
+        imag = dtype[1]
+
+        self.assertEqual(real.precision, 16)
+        self.assertEqual(imag.precision, 16)
+        self.assertEqual(real.offset, 0)
+        self.assertEqual(imag.offset, 0)
+        self.assertTrue(real.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+        self.assertTrue(imag.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+
+        lp, mp = real.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        lp, mp = imag.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(real.inpad, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(imag.inpad, h5cpp.datatype.Pad.ZERO)
+
+        self.assertTrue(real.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertTrue(imag.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertEqual(real.ebias, 15)
+        self.assertEqual(imag.ebias, 15)
+        self.assertEqual(real.size, 2)
+        self.assertEqual(imag.size, 2)
+
+        fields = real.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (15, 10, 5, 0, 10)
+        self.assertEqual(fields, fields1)
+        fields = imag.fields
+        self.assertEqual(len(fields), 5)
+        self.assertEqual(fields, fields1)
+
+    def testComplex64(self):
+
+        dtype = h5cpp.datatype.kComplex64
+        self.assertTrue(isinstance(dtype, self.float_types))
+        self.assertEqual(dtype.size, 8)
+        self.assertEqual(dtype.number_of_fields, 2)
+        self.assertEqual(dtype.field_name(0), "real")
+        self.assertEqual(dtype.field_name(1), "imag")
+        self.assertEqual(dtype.field_index("real"), 0)
+        self.assertEqual(dtype.field_index("imag"), 1)
+        self.assertEqual(dtype.field_offset("real"), 0)
+        self.assertEqual(dtype.field_offset(0), 0)
+        self.assertEqual(dtype.field_offset("imag"), 4)
+        self.assertEqual(dtype.field_offset(1), 4)
+        self.assertEqual(dtype.field_class("real"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class("imag"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(0),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(1),
+                         h5cpp._datatype.Class.FLOAT)
+
+        real = dtype[0]
+        imag = dtype[1]
+
+        self.assertEqual(real.precision, 32)
+        self.assertEqual(imag.precision, 32)
+        self.assertEqual(real.offset, 0)
+        self.assertEqual(imag.offset, 0)
+        self.assertTrue(real.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+        self.assertTrue(imag.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+
+        lp, mp = real.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        lp, mp = imag.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(real.inpad, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(imag.inpad, h5cpp.datatype.Pad.ZERO)
+
+        self.assertTrue(real.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertTrue(imag.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertEqual(real.ebias, 127)
+        self.assertEqual(imag.ebias, 127)
+        self.assertEqual(real.size, 4)
+        self.assertEqual(imag.size, 4)
+
+        fields = real.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (31, 23, 8, 0, 23)
+        self.assertEqual(fields, fields1)
+        fields = imag.fields
+        self.assertEqual(len(fields), 5)
+        self.assertEqual(fields, fields1)
+
+    def testComplex128(self):
+
+        dtype = h5cpp.datatype.kComplex128
+        self.assertTrue(isinstance(dtype, self.float_types))
+        self.assertEqual(dtype.size, 16)
+        self.assertEqual(dtype.number_of_fields, 2)
+        self.assertEqual(dtype.field_name(0), "real")
+        self.assertEqual(dtype.field_name(1), "imag")
+        self.assertEqual(dtype.field_index("real"), 0)
+        self.assertEqual(dtype.field_index("imag"), 1)
+        self.assertEqual(dtype.field_offset("real"), 0)
+        self.assertEqual(dtype.field_offset(0), 0)
+        self.assertEqual(dtype.field_offset("imag"), 8)
+        self.assertEqual(dtype.field_offset(1), 8)
+        self.assertEqual(dtype.field_class("real"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class("imag"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(0),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(1),
+                         h5cpp._datatype.Class.FLOAT)
+
+        real = dtype[0]
+        imag = dtype[1]
+
+        self.assertEqual(real.precision, 64)
+        self.assertEqual(imag.precision, 64)
+        self.assertEqual(real.offset, 0)
+        self.assertEqual(imag.offset, 0)
+        self.assertTrue(real.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+        self.assertTrue(imag.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+
+        lp, mp = real.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        lp, mp = imag.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(real.inpad, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(imag.inpad, h5cpp.datatype.Pad.ZERO)
+
+        self.assertTrue(real.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertTrue(imag.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertEqual(real.ebias, 1023)
+        self.assertEqual(imag.ebias, 1023)
+        self.assertEqual(real.size, 8)
+        self.assertEqual(imag.size, 8)
+
+        fields = real.fields
+        self.assertEqual(len(fields), 5)
+        fields1 = (63, 52, 11, 0, 52)
+        self.assertEqual(fields, fields1)
+        fields = imag.fields
+        self.assertEqual(len(fields), 5)
+        self.assertEqual(fields, fields1)
+
+    def testComplex256(self):
+
+        dtype = h5cpp.datatype.kComplex256
+        self.assertTrue(isinstance(dtype, self.float_types))
+        self.assertEqual(dtype.size, 32)
+        self.assertEqual(dtype.number_of_fields, 2)
+        self.assertEqual(dtype.field_name(0), "real")
+        self.assertEqual(dtype.field_name(1), "imag")
+        self.assertEqual(dtype.field_index("real"), 0)
+        self.assertEqual(dtype.field_index("imag"), 1)
+        self.assertEqual(dtype.field_offset("real"), 0)
+        self.assertEqual(dtype.field_offset(0), 0)
+        self.assertEqual(dtype.field_offset("imag"), 16)
+        self.assertEqual(dtype.field_offset(1), 16)
+        self.assertEqual(dtype.field_class("real"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class("imag"),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(0),
+                         h5cpp._datatype.Class.FLOAT)
+        self.assertEqual(dtype.field_class(1),
+                         h5cpp._datatype.Class.FLOAT)
+
+        real = dtype[0]
+        imag = dtype[1]
+
+        self.assertTrue(real.precision in [80, 128])
+        self.assertTrue(imag.precision in [80, 128])
+        self.assertEqual(real.offset, 0)
+        self.assertEqual(imag.offset, 0)
+        self.assertTrue(real.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+        self.assertTrue(imag.order in [h5cpp.datatype.Order.LE,
+                                       h5cpp.datatype.Order.BE])
+
+        lp, mp = real.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        lp, mp = imag.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(real.inpad, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(imag.inpad, h5cpp.datatype.Pad.ZERO)
+
+        self.assertTrue(real.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        self.assertTrue(imag.norm in [
+            h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
+        # self.assertEqual(real.ebias, 16383)
+        # self.assertEqual(imag.ebias, 16383)
+        self.assertEqual(real.size, 16)
+        self.assertEqual(imag.size, 16)
+
+        fields = real.fields
+        self.assertEqual(len(fields), 5)
+        # fields1 = (79, 64, 15, 0, 64)
+        # self.assertEqual(fields, fields1)
+        fields = imag.fields
+        # self.assertEqual(len(fields), 5)
+        # self.assertEqual(fields, fields1)

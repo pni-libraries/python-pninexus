@@ -149,6 +149,29 @@ def to_numpy(hdf5_datatype):
         raise ValueError("Unsupported HDF5 datatype!")
 
 
+def compound_getitem(self, key):
+    """ get comound item datatype
+
+    :param key: field index or field name
+    :type key: `obj`:int: or `obj`:str:
+    :returns: datatype
+    :raises RuntimeError: in case of a failure
+    """
+    dt = self._getitem(key)
+    if dt.type == Class.FLOAT:
+        return Float(dt)
+    if dt.type == Class.INTEGER:
+        return Integer(dt)
+    if dt.type == Class.STRING:
+        return String(dt)
+    if dt.type == Class.ENUM:
+        return Enum(dt)
+    return dt
+
+
+Compound.__getitem__ = compound_getitem
+
+
 __all__ = ["Class", "Order", "Sign", "Norm", "Pad", "StringPad", "Direction",
            "CharacterEncoding", "Datatype", "Float", "Integer", "String",
            "Compound",
