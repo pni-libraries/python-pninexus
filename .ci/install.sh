@@ -8,16 +8,20 @@ then
 fi
 
 if [ "$1" = "2" ]; then
+    echo "build python-pni"
+    docker exec --user root ndts chown -R tango:tango .
+    docker exec --user root ndts python setup.py build
+    echo "build python3-pni docs"
+    docker exec  --user root ndts python setup.py  build_sphinx
     echo "install python-pni"
-    docker exec  --user root ndts chown -R tango:tango .
-    docker exec -it ndts python setup.py build
-    docker exec -it --user root ndts python setup.py  build_sphinx
     docker exec  --user root ndts python setup.py install
 else
-    echo "install python3-pni"
+    echo "build python3-pni"
     docker exec  --user root ndts chown -R tango:tango .
-    docker exec -it ndts python3 setup.py build
-    docker exec -it --user root ndts python3 setup.py  build_sphinx
+    docker exec  --user root  ndts python3 setup.py build
+    echo "build python3-pni docs"
+    docker exec  --user root ndts python3 setup.py  build_sphinx
+    echo "install python3-pni"
     docker exec  --user root ndts python3 setup.py install
 fi
 if [ $? -ne "0" ]
