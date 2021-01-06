@@ -154,6 +154,50 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         npt.assert_array_equal(read, data)
 
+    def testWriteComplex32Array(self):
+
+        data = numpy.array(
+            [[1 + 1j, 2 - 1j, 3 + 2j, 4 - 2j],
+             [5 + 3j, 6 - 3j, 7 + 4j, 8 - 4j]], dtype="complex64")
+        dataset = Dataset(self.root, h5cpp.Path("Complex32Array"),
+                          h5cpp.datatype.kComplex64, Simple((2, 4)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
+    def testWriteComplex64Array(self):
+
+        data = numpy.array(
+            [[1 + 1j, 2 - 1j, 3 + 2j, 4 - 2j],
+             [5 + 3j, 6 - 3j, 7 + 4j, 8 - 4j]], dtype="complex64")
+        dataset = Dataset(self.root, h5cpp.Path("Complex64Array"),
+                          h5cpp.datatype.kComplex64, Simple((2, 4)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
+    def testWriteComplex128Array(self):
+
+        data = numpy.array(
+            [[1 + 1j, 2 - 1j, 3 + 2j, 4 - 2j],
+             [5 + 3j, 6 - 3j, 7 + 4j, 8 - 4j]], dtype="complex64")
+        dataset = Dataset(self.root, h5cpp.Path("Complex128Array"),
+                          h5cpp.datatype.kComplex64, Simple((2, 4)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
+    def testWriteComplex256Array(self):
+
+        data = numpy.array(
+            [[1 + 1j, 2 - 1j, 3 + 2j, 4 - 2j],
+             [5 + 3j, 6 - 3j, 7 + 4j, 8 - 4j]], dtype="complex64")
+        dataset = Dataset(self.root, h5cpp.Path("Complex256Array"),
+                          h5cpp.datatype.kComplex64, Simple((2, 4)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
     def testWriteFixedLengthStringArray(self):
 
         data = numpy.array(
