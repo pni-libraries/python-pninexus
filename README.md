@@ -1,13 +1,15 @@
 # Python PNI 
 
-Python wrapper for the *libpniio* and *libpnicore* C++ libraries. The wrapper
-supports Python 2.X and 3.X.
+Python wrapper for the [*h5cpp*](https://github.com/ess-dmsc/h5cpp), [*libpniio**](https://github.com/pni-libraries/libpniio) and [*libpnicore*](https://github.com/pni-libraries/libpnicore) C++ libraries.
+The wrapper supports Python 2.X and 3.X.
 
 ## Installation
 
 ### Required packages
 
-* *libpniio* and *libpnicore* version >= 1.0.0
+* *h5cpp*  >= 0.4.0
+* *libpniio* >= 1.2.10
+* *libpniio* >= 1.1.1
 * python setuptools
 * numpy
 * c++ compiler

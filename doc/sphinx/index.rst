@@ -17,16 +17,8 @@ Contents:
     
 
 
-Welcome to the documentation of `libpnicore`. Currently, this package is only
-of limitted usage for Python developers. It currently 
-
- - two conversion functions for `boost::python` for `numpy` scalars and
-   boolean values
-    
- - Python wrappers for the exception types used by `libpnicore`
-
- - and a couple of templates which can be used for the development of other
-   python packages. 
+Welcome to the documentation of `python-pninexus`. This package is a wrapper
+for `libh5cpp`, `libpniio` and `libpnicore`.
 
 
 Indices and tables
