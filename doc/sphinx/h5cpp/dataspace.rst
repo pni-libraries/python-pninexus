@@ -145,7 +145,7 @@
       Read only attribute returning the type of the dataspace. 
       
       :return: dataspace type
-      :rtype: Type
+      :rtype: pninexus.h5cpp.dataspace.Type
 
 
 :py:class:`Simple`

@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+import glob
 
 html_theme = 'bizstyle'
 
@@ -20,7 +21,13 @@ html_theme = 'bizstyle'
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0,os.path.abspath('.'))
-sys.path.insert(1,os.path.abspath('../../src'))
+
+bls = glob.glob("../../build/lib*")
+if bls:
+    for bl in bls:
+        sys.path.insert(1,os.path.abspath(bl))
+else:
+    sys.path.insert(1,os.path.abspath('../../src'))
 
 # -- General configuration -----------------------------------------------------
 
