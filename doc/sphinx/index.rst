@@ -18,8 +18,11 @@ Contents:
 
 
 Welcome to the documentation of `python-pninexus`. This package is a wrapper
-for `libh5cpp`, `libpniio` and `libpnicore`.
+for libh5cpp_, libpniio_ and libpnicore_.
 
+.. _libh5cpp: https://github.com/ess-dmsc/h5cpp
+.. _libpniio: https://github.com/pni-libraries/libpniio
+.. _libpnicore: https://github.com/pni-libraries/libpnicore
 
 Indices and tables
 ==================
