@@ -5,8 +5,9 @@ The installation uses the common distutils procedure. For a successful build the
 following additional libraries are required
 
 .) hdf5
-.) libpniutils
-.) libpninx
+.) libh5cpp
+.) libpnicore
+.) libpniio
 .) boost-python
 
 If everything is installed in default locations a simple 
