@@ -15,8 +15,8 @@ from build_tools import (CppExtensionFactory,
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
-version = "1.2.16"
-release = "1.2.16"
+version = "1.3.0"
+release = "1.3.0"
 
 
 def get_build_dir():
@@ -177,7 +177,7 @@ setup(
     name="pninexus",
     author="Eugen Wintersberger",
     author_email="eugen.wintersberger@desy.de",
-    description="Python wrapper for the PNI libraries",
+    description="Python wrapper for the H5CPP and PNI libraries",
     long_description="This package provides wrappers for the PNI C++ " +
     "libraries libpnicore and libpniio.",
     maintainer="Eugen Wintersberger, Jan Kotanski",
@@ -208,9 +208,25 @@ setup(
               'pninexus.h5cpp.property',
               'pninexus.nexus'],
     url="https://github.com/pni-libraries/python-pninexus",
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+    ],
     test_suite="test",
     test_loader="unittest:TestLoader",
     cmdclass={"install": pni_install},
+    keywords='h5cpp hdf5 python photon science detector',
     command_options={
         'build_sphinx': {
             'project': ('setup.py', name),

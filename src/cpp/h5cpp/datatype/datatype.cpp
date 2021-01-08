@@ -108,6 +108,17 @@ void float_set_fields(const hdf5::datatype::Float &self, const boost::python::ob
   self.fields(fields_[0],fields_[1],fields_[2],fields_[3],fields_[4]);
 }
 
+hdf5::datatype::Datatype compound_name_getitem(const hdf5::datatype::Compound &self, const std::string &name)
+{
+  return self[name];
+}
+
+hdf5::datatype::Datatype compound_index_getitem(const hdf5::datatype::Compound &self, size_t index)
+{
+  return self[index];
+}
+
+
 BOOST_PYTHON_MODULE(_datatype)
 {
   using namespace boost::python;
@@ -221,6 +232,24 @@ BOOST_PYTHON_MODULE(_datatype)
       .add_property("inpad",float_get_inpad,float_set_inpad)
       ;
 
+  size_t (Compound::*compound_name_field_offset)(const std::string&) const = &Compound::field_offset;
+  size_t (Compound::*compound_index_field_offset)(size_t) const = &Compound::field_offset;
+  Class (Compound::*compound_name_field_class)(const std::string&) const = &Compound::field_class;
+  Class (Compound::*compound_index_field_class)(size_t) const = &Compound::field_class;
+  class_<Compound,bases<Datatype>>("Compound")
+    .def(init<const Datatype&>())
+    .add_property("number_of_fields",&Compound::number_of_fields)
+    .def("field_name", &Compound::field_name)
+    .def("field_index",&Compound::field_index)
+    .def("field_offset",compound_name_field_offset)
+    .def("field_offset",compound_index_field_offset)
+    .def("field_class",compound_name_field_class)
+    .def("field_class",compound_index_field_class)
+    .def("_getitem", compound_name_getitem)
+    .def("_getitem", compound_index_getitem)
+    .def("pack",&Compound::pack)
+    .def("insert",&Compound::insert)
+    ;
 
   void (String::*string_set_size)(size_t) const = &String::size;
   size_t (String::*string_get_size)() const = &String::size;
@@ -254,9 +283,14 @@ BOOST_PYTHON_MODULE(_datatype)
   current.attr("kInt32")  = hdf5::datatype::create<int32_t>();
   current.attr("kUInt64") = hdf5::datatype::create<uint64_t>();
   current.attr("kInt64")  = hdf5::datatype::create<int64_t>();
-  current.attr("kFloat64") = hdf5::datatype::create<double>();
+  current.attr("kFloat16") = hdf5::datatype::create<hdf5::datatype::float16_t>();
   current.attr("kFloat32") = hdf5::datatype::create<float>();
+  current.attr("kFloat64") = hdf5::datatype::create<double>();
   current.attr("kFloat128") = hdf5::datatype::create<long double>();
+  current.attr("kComplex32") = hdf5::datatype::create<std::complex<hdf5::datatype::float16_t>>();
+  current.attr("kComplex64") = hdf5::datatype::create<std::complex<float>>();
+  current.attr("kComplex128") = hdf5::datatype::create<std::complex<double>>();
+  current.attr("kComplex256") = hdf5::datatype::create<std::complex<long double>>();
   current.attr("kVariableString") = hdf5::datatype::create<std::string>();
   current.attr("kEBool") = hdf5::datatype::create<hdf5::datatype::EBool>();
 

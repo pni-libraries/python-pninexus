@@ -16,6 +16,7 @@ from pninexus.h5cpp._datatype import CharacterEncoding
 from pninexus.h5cpp._datatype import Datatype
 from pninexus.h5cpp._datatype import Float
 from pninexus.h5cpp._datatype import Integer
+from pninexus.h5cpp._datatype import Compound
 from pninexus.h5cpp._datatype import String
 from pninexus.h5cpp._datatype import Enum
 
@@ -30,9 +31,14 @@ from pninexus.h5cpp._datatype import kUInt32
 from pninexus.h5cpp._datatype import kInt32
 from pninexus.h5cpp._datatype import kUInt64
 from pninexus.h5cpp._datatype import kInt64
-from pninexus.h5cpp._datatype import kFloat64
+from pninexus.h5cpp._datatype import kFloat16
 from pninexus.h5cpp._datatype import kFloat32
+from pninexus.h5cpp._datatype import kFloat64
 from pninexus.h5cpp._datatype import kFloat128
+from pninexus.h5cpp._datatype import kComplex32
+from pninexus.h5cpp._datatype import kComplex64
+from pninexus.h5cpp._datatype import kComplex128
+from pninexus.h5cpp._datatype import kComplex256
 from pninexus.h5cpp._datatype import kVariableString
 from pninexus.h5cpp._datatype import kEBool
 
@@ -44,18 +50,25 @@ class Factory(object):
 
     """
 
-    type_map = {"bool": kEBool,
-                "int8": kInt8,
-                "uint8": kUInt8,
-                "int16": kInt16,
-                "uint16": kUInt16,
-                "int32": kInt32,
-                "uint32": kUInt32,
-                "int64": kInt64,
-                "uint64": kUInt64,
-                "float32": kFloat32,
-                "float64": kFloat64,
-                "float128": kFloat128}
+    type_map = {
+        "bool": kEBool,
+        "int8": kInt8,
+        "uint8": kUInt8,
+        "int16": kInt16,
+        "uint16": kUInt16,
+        "int32": kInt32,
+        "uint32": kUInt32,
+        "int64": kInt64,
+        "uint64": kUInt64,
+        "float16": kFloat16,
+        "float32": kFloat32,
+        "float64": kFloat64,
+        "float128": kFloat128,
+        "complex32": kComplex32,
+        "complex64": kComplex64,
+        "complex128": kComplex128,
+        "complex256": kComplex256,
+    }
 
     def create(self, dtype):
         """Create HDF5 type from numpy type
@@ -109,12 +122,22 @@ def to_numpy(hdf5_datatype):
         return "int64"
     elif hdf5_datatype == kUInt64:
         return "uint64"
+    elif hdf5_datatype == kFloat16:
+        return "float16"
     elif hdf5_datatype == kFloat32:
         return "float32"
     elif hdf5_datatype == kFloat64:
         return "float64"
     elif hdf5_datatype == kFloat128:
         return "float128"
+    elif hdf5_datatype == kComplex32:
+        return "complex32"
+    elif hdf5_datatype == kComplex64:
+        return "complex64"
+    elif hdf5_datatype == kComplex128:
+        return "complex128"
+    elif hdf5_datatype == kComplex256:
+        return "complex256"
     elif hdf5_datatype == kEBool:
         return "bool"
     elif isinstance(hdf5_datatype, String):
@@ -126,9 +149,35 @@ def to_numpy(hdf5_datatype):
         raise ValueError("Unsupported HDF5 datatype!")
 
 
+def compound_getitem(self, key):
+    """ get comound item datatype
+
+    :param key: field index or field name
+    :type key: `obj`:int: or `obj`:str:
+    :returns: datatype
+    :raises RuntimeError: in case of a failure
+    """
+    dt = self._getitem(key)
+    if dt.type == Class.FLOAT:
+        return Float(dt)
+    if dt.type == Class.INTEGER:
+        return Integer(dt)
+    if dt.type == Class.STRING:
+        return String(dt)
+    if dt.type == Class.ENUM:
+        return Enum(dt)
+    return dt
+
+
+Compound.__getitem__ = compound_getitem
+
+
 __all__ = ["Class", "Order", "Sign", "Norm", "Pad", "StringPad", "Direction",
            "CharacterEncoding", "Datatype", "Float", "Integer", "String",
+           "Compound",
            "kUInt8", "kInt8", "kUInt16", "kInt16", "kUInt32", "kInt32",
-           "kUInt64", "kInt64", "kFloat64", "kFloat32", "kFloat128",
+           "kUInt64", "kInt64",
+           "kFloat16", "kFloat32", "kFloat64", "kFloat128",
+           "kComplex32", "kComplex64", "kComplex128", "kComplex256",
            "kVariableString",
            "Factory", "kFactory", "to_numpy", "kEBool", "is_bool", "Enum"]

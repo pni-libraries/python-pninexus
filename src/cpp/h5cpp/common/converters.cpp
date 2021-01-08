@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Jan 31, 2018
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 
 #include "converters.hpp"
@@ -33,6 +35,8 @@ boost::python::object convert_datatype(const hdf5::datatype::Datatype &datatype)
       return boost::python::object(Integer(datatype));
     case Class::FLOAT:
       return boost::python::object(Float(datatype));
+    case Class::COMPOUND:
+      return boost::python::object(Compound(datatype));
     case Class::STRING:
       return boost::python::object(String(datatype));
     default:

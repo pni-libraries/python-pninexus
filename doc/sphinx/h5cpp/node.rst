@@ -227,6 +227,7 @@ Classes
       :raises RuntimeError: in case of a failure
 
    .. automethod:: read
+      :noindex:
 
       Reading data from a dataset. If called with no argument this method
       reads all data from the dataset and returns it as an instance of

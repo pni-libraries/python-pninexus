@@ -18,7 +18,9 @@
 // ===========================================================================
 //
 // Created on: Oct 8, 2015
-//     Author: Eugen Wintersberger <eugen.wintersberger@desy.de>
+//     Authors:
+//             Eugen Wintersberger <eugen.wintersberger@desy.de>
+//             Jan Kotanski <jan.kotanski@desy.de>
 //
 #pragma once
 
@@ -73,8 +75,13 @@ template<> class TypeTrait<numpy::ArrayAdapter>
         case NPY_INT64: return hdf5::datatype::create<std::int64_t>();
         case NPY_UINT64: return hdf5::datatype::create<std::uint64_t>();
         case NPY_FLOAT: return hdf5::datatype::create<float>();
+        case NPY_FLOAT16: return hdf5::datatype::create<float16_t>();
         case NPY_DOUBLE: return hdf5::datatype::create<double>();
         case NPY_LONGDOUBLE: return hdf5::datatype::create<long double>();
+	// case NPY_COMPLEX32: return hdf5::datatype::create<std::complex<float16_t>>();
+        case NPY_COMPLEX64: return hdf5::datatype::create<std::complex<float>>();
+        case NPY_COMPLEX128: return hdf5::datatype::create<std::complex<double>>();
+        case NPY_COMPLEX256: return hdf5::datatype::create<std::complex<long double>>();
         case NPY_BOOL: return hdf5::datatype::create<bool>();
 #if PY_MAJOR_VERSION >= 3
         case NPY_UNICODE:

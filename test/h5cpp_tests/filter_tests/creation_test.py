@@ -26,7 +26,9 @@ from __future__ import print_function
 import unittest
 import os
 from pninexus.h5cpp.filter import (
-    Deflate, Fletcher32, Shuffle, ExternalFilter, is_filter_available)
+    Deflate, Fletcher32, Shuffle, ExternalFilter, ExternalFilters,
+    NBit, SZip, ScaleOffset, SOScaleType,
+    is_filter_available, Availability)
 import pninexus.h5cpp as hdf5
 
 
@@ -69,6 +71,9 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
 
     def testShuffle(self):
 
@@ -79,6 +84,78 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+
+    def testNBit(self):
+
+        filter = NBit()
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("NBit"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 5)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [])
+        self.assertEqual(filters[0].id, 5)
+        self.assertEqual(filters[0].name, "nbit")
+
+    def testSZip(self):
+
+        filter = SZip(SZip.EC_OPTION_MASK, 16)
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("SZip"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 4)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [133, 16])
+        self.assertEqual(filters[0].id, 4)
+        self.assertEqual(filters[0].name, "szip")
+
+    def testScaleOffset(self):
+
+        filter = ScaleOffset(SOScaleType.INT, 2)
+        filter(self.dcpl)
+        hdf5.node.Dataset(self.root, hdf5.Path("ScaleOffset"),
+                          self.datatype,
+                          self.dataspace,
+                          self.lcpl,
+                          self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.id, 6)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [SOScaleType.INT, 2])
+        self.assertEqual(filters[0].id, 6)
+        self.assertEqual(filters[0].name, "scaleoffset")
 
     def testDeflate(self):
 
@@ -89,16 +166,44 @@ class FilterCreationTest(unittest.TestCase):
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(filters[0].cd_values, [9])
+        self.assertEqual(filters[0].id, 1)
+        self.assertEqual(filters[0].name, "deflate")
 
     def testExternalFilter(self):
 
-        filter = ExternalFilter(1, [1])
+        filter = ExternalFilter(1, [1], "mydeflate")
         filter(self.dcpl)
         hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter"),
                           self.datatype,
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 1)
+        self.assertTrue(filter.is_encoding_enabled())
+        self.assertTrue(filter.is_decoding_enabled())
+        self.assertEqual(filter.name, "mydeflate")
+
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(len(flags), 1)
+        self.assertEqual(flags[0], Availability.MANDATORY)
+        self.assertEqual(len(filters), 1)
+        self.assertEqual(filters[0].cd_values, [1])
+        self.assertEqual(filters[0].id, 1)
+        self.assertEqual(filters[0].name, "deflate")
 
     def testExternalFilter2(self):
 
@@ -112,10 +217,22 @@ class FilterCreationTest(unittest.TestCase):
                               self.dataspace,
                               self.lcpl,
                               self.dcpl)
+            filters = ExternalFilters()
+            self.assertEqual(len(filters), 0)
+            flags = filters.fill(self.dcpl)
+            self.assertEqual(len(filters), 1)
+            self.assertEqual(len(flags), 1)
+            self.assertEqual(flags[0], Availability.MANDATORY)
+            self.assertEqual(filters[0].cd_values, [0, 2])
+            self.assertEqual(filters[0].id, 32008)
+            self.assertEqual(
+                filters[0].name,
+                "bitshuffle; see https://github.com/kiyo-masui/bitshuffle")
         else:
             error = False
             try:
                 filter(self.dcpl)
+                self.assertEqual(self.dcpl.nfilters, 1)
             except RuntimeError:
                 error = True
             if not error:
@@ -150,17 +267,40 @@ class FilterCreationTest(unittest.TestCase):
 
     def testAll(self):
 
+        # deflate = ExternalFilter(1, [5], "deflate")
         deflate = Deflate()
         deflate.level = 5
+        self.assertEqual(deflate.level, 5)
         shuffle = Shuffle()
         fletcher = Fletcher32()
 
+        deflate(self.dcpl)
         fletcher(self.dcpl)
         shuffle(self.dcpl)
-        deflate(self.dcpl)
 
         hdf5.node.Dataset(self.root, hdf5.Path("AllFilters"),
                           self.datatype,
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
+        self.assertEqual(self.dcpl.nfilters, 3)
+        filters = ExternalFilters()
+        self.assertEqual(len(filters), 0)
+        flags = filters.fill(self.dcpl)
+        self.assertEqual(len(filters), 3)
+        self.assertEqual(len(flags), 3)
+
+        self.assertEqual(flags[0], Availability.OPTIONAL)
+        self.assertEqual(filters[0].cd_values, [5])
+        self.assertEqual(filters[0].id, 1)
+        self.assertEqual(filters[0].name, "deflate")
+
+        self.assertEqual(flags[1], Availability.MANDATORY)
+        self.assertEqual(filters[1].cd_values, [])
+        self.assertEqual(filters[1].id, 3)
+        self.assertEqual(filters[1].name, "fletcher32")
+
+        self.assertEqual(flags[2], Availability.OPTIONAL)
+        self.assertEqual(filters[2].cd_values, [])
+        self.assertEqual(filters[2].id, 2)
+        self.assertEqual(filters[2].name, "shuffle")
