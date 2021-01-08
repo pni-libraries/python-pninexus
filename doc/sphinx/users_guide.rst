@@ -6,6 +6,7 @@ Introduction
 
 The PNI Python package provides bindings to the PNI C++ libraries
 
+* ``libh5cpp``
 * ``libpnicore``
 * ``libpniio``
 
@@ -19,10 +20,10 @@ arrays.
 
 From ``libpnicore`` only the exceptions are imported as they are used by 
 ``libpniio``. Most of the code accessed by this Python packages comes from
-``libpniio`` and addresses the following problems
+``libh5cpp`` and ``libpniio`` and addresses the following problems
 
 * reading legacy ASCII and binary (mainly image) files
-* provide access to NeXus files
+* provide access to NeXus/HDF5 files
 
 
 The top level node of the package
