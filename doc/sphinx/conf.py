@@ -19,13 +19,13 @@ html_theme = 'bizstyle'
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+# sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0,os.path.abspath('.'))
 
 bls = glob.glob("../../build/lib*")
 if bls:
-    for bl in bls:
-        sys.path.insert(1,os.path.abspath(bl))
+    for it, bl in enumerate(bls):
+        sys.path.insert(it + 1,os.path.abspath(bl))
 else:
     sys.path.insert(1,os.path.abspath('../../src'))
 
@@ -36,11 +36,14 @@ else:
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 
-              'sphinx.ext.todo', 
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.todo',
               'sphinx.ext.coverage',
               'sphinx.ext.autosummary',
               'sphinx.ext.mathjax']
+env_math_ext = os.getenv("PNINEXUS_MATH_EXT")
+if env_math_ext is not None:
+    extensions[-1] = env_math_ext
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
