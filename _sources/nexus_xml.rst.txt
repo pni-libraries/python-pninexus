@@ -6,14 +6,14 @@ as shown in the previous sections of this manual.
 However, the complexity of NeXus files can become rather painful when creating
 file. This is an issue which typically affects developers working on data
 acquisition software. 
-The ``python-pni`` framework provides a means of generating skeleton NeXus
+The ``python-pninexus`` framework provides a means of generating skeleton NeXus
 files from XML. Even existing files can be extended by structures described by
 XML. 
 
 A NeXus XML primer 
 ------------------
 
-The XML dialect used to create or extend files with ``python-pni`` is very
+The XML dialect used to create or extend files with ``python-pninexus`` is very
 close to NXDL, the XML language used to define classes in the NeXus standard. 
 However, NXDL is not powerful enough for creating HDF5 files as it lacks some
 tags (for instance tags for describing the chunk-shape of a field) and 
@@ -148,7 +148,7 @@ not only create a field or attribute but also to fill it with data. This is
 particularly true when the field or attribute should store static data which
 does not change during an experiment. 
 
-:py:mod:`python-pni` supports this feature. Full support is provided for 
+:py:mod:`python-pninexus` supports this feature. Full support is provided for 
 numeric types. In the above example the `vector` attribute could be filled with
 data with
 
@@ -169,7 +169,7 @@ we could set the data with
 
     <attribute name="transformation_type" type="string">rotation</attribute> 
 
-From the above examples it is clear that :py:mod:`python-pni` does not follow
+From the above examples it is clear that :py:mod:`python-pninexus` does not follow
 the standard NXDL convention for denoting data within a field or attribute tag. 
 The reason for this is to make the resulting XML more readable. 
 However, this comes at a price that strings are handled different from numeric

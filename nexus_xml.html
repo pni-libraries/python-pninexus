@@ -103,12 +103,12 @@ as shown in the previous sections of this manual.
 However, the complexity of NeXus files can become rather painful when creating
 file. This is an issue which typically affects developers working on data
 acquisition software.
-The <code class="docutils literal notranslate"><span class="pre">python-pni</span></code> framework provides a means of generating skeleton NeXus
+The <code class="docutils literal notranslate"><span class="pre">python-pninexus</span></code> framework provides a means of generating skeleton NeXus
 files from XML. Even existing files can be extended by structures described by
 XML.</p>
 <div class="section" id="a-nexus-xml-primer">
 <h2>A NeXus XML primer<a class="headerlink" href="#a-nexus-xml-primer" title="Permalink to this headline">¶</a></h2>
-<p>The XML dialect used to create or extend files with <code class="docutils literal notranslate"><span class="pre">python-pni</span></code> is very
+<p>The XML dialect used to create or extend files with <code class="docutils literal notranslate"><span class="pre">python-pninexus</span></code> is very
 close to NXDL, the XML language used to define classes in the NeXus standard.
 However, NXDL is not powerful enough for creating HDF5 files as it lacks some
 tags (for instance tags for describing the chunk-shape of a field) and
@@ -219,7 +219,7 @@ Here is a short example with an attribute attached to a field</p>
 not only create a field or attribute but also to fill it with data. This is
 particularly true when the field or attribute should store static data which
 does not change during an experiment.</p>
-<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pni</span></code> supports this feature. Full support is provided for
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pninexus</span></code> supports this feature. Full support is provided for
 numeric types. In the above example the <cite>vector</cite> attribute could be filled with
 data with</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
@@ -236,7 +236,7 @@ we could set the data with</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">&gt;</span>rotation<span class="nt">&lt;/attribute&gt;</span>
 </pre></div>
 </div>
-<p>From the above examples it is clear that <code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pni</span></code> does not follow
+<p>From the above examples it is clear that <code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pninexus</span></code> does not follow
 the standard NXDL convention for denoting data within a field or attribute tag.
 The reason for this is to make the resulting XML more readable.
 However, this comes at a price that strings are handled different from numeric
