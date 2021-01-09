@@ -9,7 +9,7 @@ The wrapper supports Python 2.X and 3.X.
 
 * *h5cpp*  >= 0.4.0
 * *libpniio* >= 1.2.10
-* *libpniio* >= 1.1.1
+* *libpnicore* >= 1.1.1
 * python setuptools
 * numpy
 * c++ compiler
