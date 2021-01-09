@@ -1,4 +1,4 @@
-# Python PNI
+# Python PNI/NeXus
 
 Python wrapper for the [h5cpp](https://github.com/ess-dmsc/h5cpp), [libpniio](https://github.com/pni-libraries/libpniio) and [libpnicore](https://github.com/pni-libraries/libpnicore) C++ libraries.
 The wrapper supports Python 2.X and 3.X.
@@ -9,7 +9,7 @@ The wrapper supports Python 2.X and 3.X.
 
 * *h5cpp*  >= 0.4.0
 * *libpniio* >= 1.2.10
-* *libpniio* >= 1.1.1
+* *libpnicore* >= 1.1.1
 * python setuptools
 * numpy
 * c++ compiler
@@ -93,4 +93,4 @@ or
 
 for python3.
 
-More information can be found at [online documentation](https://pni-libraries.github.io/python-pni/index.html).
+More information can be found at [online documentation](https://pni-libraries.github.io/python-pninexus/index.html).
