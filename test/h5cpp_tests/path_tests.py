@@ -44,18 +44,18 @@ class H5cppPathTests(unittest.TestCase):
         pass
 
     def test_default_contruction(self):
-        
+
         p = h5cpp.Path()
         self.assertEqual(p.size, 0)
         self.assertFalse(p.absolute)
-        
+
     def test_contruction_from_string(self):
-        
+
         p = h5cpp.Path("/hello/world/data")
         self.assertEqual(p.size, 3)
         self.assertTrue(p.absolute)
         self.assertFalse(p.is_root())
-        
+
         p = h5cpp.Path("hello/world/data")
         self.assertEqual(p.size, 3)
         self.assertFalse(p.absolute)
@@ -64,12 +64,12 @@ class H5cppPathTests(unittest.TestCase):
         p.absolute = True
         self.assertTrue(p.absolute)
         self.assertEqual("/hello/world/data", str(p))
-        
+
         p = h5cpp.Path("hello/world/instrument/data")
         self.assertEqual(p.size, 4)
         self.assertFalse(p.absolute)
         self.assertFalse(p.is_root())
-        
+
         p = h5cpp.Path(".")
         self.assertEqual(p.size, 0)
         self.assertFalse(p.absolute)
@@ -79,4 +79,3 @@ class H5cppPathTests(unittest.TestCase):
         self.assertEqual(p.size, 0)
         self.assertTrue(p.absolute)
         self.assertTrue(p.is_root())
-
