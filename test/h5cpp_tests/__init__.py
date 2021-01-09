@@ -8,4 +8,5 @@ from .attribute_tests import *
 from .node_tests import *
 from .filter_tests import *
 from .dataspace_tests import *
+from .path_tests import *
 # from .group_construction import *
