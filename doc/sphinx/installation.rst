@@ -100,4 +100,4 @@ or
 
    $ apt-get install python3-pninexus
 
-to install the the PNI/NeXus package for python or python3 respectively.
+to install the the PNI/NeXus package for python or python3, respectively.
