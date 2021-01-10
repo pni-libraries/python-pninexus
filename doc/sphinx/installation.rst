@@ -95,6 +95,7 @@ to update your package list and
    $ apt-get install python-pninexus
 
 or
+
 .. code-block:: bash
 
    $ apt-get install python3-pninexus
