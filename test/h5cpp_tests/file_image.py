@@ -26,6 +26,7 @@ import unittest
 import os
 
 from pninexus.h5cpp.file import File
+from pninexus.h5cpp.file import ImageFlags
 from pninexus.h5cpp.datatype import kVariableString
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.file import create, from_buffer
@@ -120,7 +121,7 @@ class ImageTest(unittest.TestCase):
         r1.close()
         f1.close()
 
-        f2 = from_buffer(obuffer)
+        f2 = from_buffer(obuffer, ImageFlags.READWRITE)
         r2 = f2.root()
         a2 = r2.attributes["HDF5_version"]
         self.assertTrue(a2.read(), hdf5_version)
