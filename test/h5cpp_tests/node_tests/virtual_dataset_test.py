@@ -85,6 +85,7 @@ if VDSAvailable:
             self.datamodule1 = numpy.array([1] * kmodulesize)
             self.datamodule2 = numpy.array([2] * kmodulesize)
             self.datamodule3 = numpy.array([3] * kmodulesize)
+            self.datamodule8 = numpy.array([8] * kmodulesize)
             self.createSource(self.vds1name, self.datamodule1)
             self.createSource(self.vds2name, self.datamodule2)
             self.createSource(self.vds3name, self.datamodule3)
@@ -151,6 +152,82 @@ if VDSAvailable:
             mod3 = dataset.read(selection=selection)
             npt.assert_array_equal(mod3, self.datamodule3)
             npt.assert_array_equal(allmod[2, :], self.datamodule3)
+
+        def testGap(self):
+
+            self.file = h5cpp.file.open(self.filename, AccessFlags.READWRITE)
+            self.root = self.file.root()
+            dataspace = Simple((5, kmodulesize))
+
+            vdsmap = VirtualDataMaps()
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(0, 0), block=(1, kmodulesize))),
+                self.vds1name,
+                h5cpp.Path("/module_data"),
+                View(Simple(tuple([kmodulesize])))))
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(2, 0), block=(1, kmodulesize))),
+                self.vds2name,
+                h5cpp.Path("/module_data"),
+                View(Simple(tuple([kmodulesize])))))
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(4, 0), block=(1, kmodulesize))),
+                self.vds3name,
+                h5cpp.Path("/module_data"),
+                View(Simple(tuple([kmodulesize])))))
+
+            dcpl = DatasetCreationList()
+            self.assertEqual(
+                dcpl.fill_value_status,
+                h5cpp.property.DatasetFillValueStatus.DEFAULT)
+            dcpl.set_fill_value(8, kInt32)
+            self.assertEqual(dcpl.fill_value(kInt32), 8)
+            self.assertEqual(
+                dcpl.fill_value_status,
+                h5cpp.property.DatasetFillValueStatus.USER_DEFINED)
+            dataset = VirtualDataset(
+                self.root,
+                h5cpp.Path("gap"), kInt32, dataspace, vdsmap, dcpl=dcpl)
+
+            #
+            # read data back
+            #
+            self.assertEqual(dataset.dataspace.size, 150)
+
+            selection = Hyperslab(offset=(0, 0), block=(5, kmodulesize))
+            selection.offset(0, 0)
+            allmod = dataset.read(selection=selection)
+            self.assertEqual(allmod.shape, (5, kmodulesize))
+
+            selection = Hyperslab(offset=(0, 0), block=(1, kmodulesize))
+            selection.offset((0, 0))
+            mod1 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod1, self.datamodule1)
+            npt.assert_array_equal(
+                allmod[0, :], self.datamodule1)
+
+            selection.offset((1, 0))
+            mod8 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod8, self.datamodule8)
+            npt.assert_array_equal(allmod[1, :],
+                                   self.datamodule8)
+            selection.offset((2, 0))
+            mod2 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod2, self.datamodule2)
+            npt.assert_array_equal(allmod[2, :],
+                                   self.datamodule2)
+            selection.offset((3, 0))
+            mod8 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod8, self.datamodule8)
+            npt.assert_array_equal(allmod[3, :],
+                                   self.datamodule8)
+            selection.offset((4, 0))
+            mod3 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod3, self.datamodule3)
+            npt.assert_array_equal(allmod[4, :], self.datamodule3)
 
         def testInterleaving(self):
 
