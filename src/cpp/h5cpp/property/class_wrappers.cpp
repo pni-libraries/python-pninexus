@@ -56,6 +56,94 @@ void set_time_tracking(hdf5::property::ObjectCreationList &list,bool value)
 
 }
 
+boost::python::object get_fill_value(const hdf5::property::DatasetCreationList &list,
+				     const hdf5::datatype::Datatype &datatype)
+{
+
+  if (datatype == hdf5::datatype::create<uint8_t>())
+    return boost::python::object(list.fill_value<uint8_t>());
+  else if(datatype == hdf5::datatype::create<int8_t>())
+    return  boost::python::object(list.fill_value<int8_t>());
+  else if(datatype == hdf5::datatype::create<uint16_t>())
+    return boost::python::object(list.fill_value<uint16_t>());
+  else if(datatype == hdf5::datatype::create<int16_t>())
+    return boost::python::object(list.fill_value<int16_t>());
+  else if(datatype == hdf5::datatype::create<uint32_t>())
+    return boost::python::object(list.fill_value<uint32_t>());
+  else if(datatype == hdf5::datatype::create<int32_t>())
+    return boost::python::object(list.fill_value<int32_t>());
+  else if(datatype == hdf5::datatype::create<uint64_t>())
+    return boost::python::object(list.fill_value<uint64_t>());
+  else if(datatype == hdf5::datatype::create<int64_t>())
+    return boost::python::object(list.fill_value<int64_t>());
+  else if(datatype == hdf5::datatype::create<hdf5::datatype::float16_t>())
+    return boost::python::object(list.fill_value<hdf5::datatype::float16_t>());
+  else if(datatype == hdf5::datatype::create<float>())
+    return boost::python::object(list.fill_value<float>());
+  else if(datatype == hdf5::datatype::create<double>())
+    return boost::python::object(list.fill_value<double>());
+  else if(datatype == hdf5::datatype::create<long double>())
+    return boost::python::object(list.fill_value<long double>());
+  else if(datatype == hdf5::datatype::create<std::complex<hdf5::datatype::float16_t>>())
+    return boost::python::object(list.fill_value<std::complex<hdf5::datatype::float16_t>>());
+  else if(datatype == hdf5::datatype::create<std::complex<float>>())
+    return boost::python::object(list.fill_value<std::complex<float>>());
+  else if(datatype == hdf5::datatype::create<std::complex<double>>())
+    return boost::python::object(list.fill_value<std::complex<double>>());
+  else if(datatype == hdf5::datatype::create<std::complex<long double>>())
+    return boost::python::object(list.fill_value<std::complex<long double>>());
+  return boost::python::object(list.fill_value<int>());
+}
+
+template <typename T>
+void fill_value_(hdf5::property::DatasetCreationList &list,
+		 boost::python::object value)
+{
+    boost::python::extract<T> bv(value);
+    if (bv.check())
+      list.fill_value(bv());
+}
+
+void set_fill_value(hdf5::property::DatasetCreationList &list,
+		    boost::python::object value,
+		    const hdf5::datatype::Datatype &datatype) {
+  if (datatype == hdf5::datatype::create<uint8_t>())
+    fill_value_<uint8_t>(list, value);
+  else if(datatype == hdf5::datatype::create<int8_t>())
+    fill_value_<int8_t>(list, value);
+  else if(datatype == hdf5::datatype::create<uint16_t>())
+    fill_value_<uint16_t>(list, value);
+  else if(datatype == hdf5::datatype::create<int16_t>())
+    fill_value_<int16_t>(list, value);
+  else if(datatype == hdf5::datatype::create<uint32_t>())
+    fill_value_<uint32_t>(list, value);
+  else if(datatype == hdf5::datatype::create<int32_t>())
+    fill_value_<int32_t>(list, value);
+  else if(datatype == hdf5::datatype::create<uint64_t>())
+    fill_value_<uint64_t>(list, value);
+  else if(datatype == hdf5::datatype::create<int64_t>())
+    fill_value_<int64_t>(list, value);
+  else if(datatype == hdf5::datatype::create<hdf5::datatype::float16_t>())
+    fill_value_<hdf5::datatype::float16_t>(list, value);
+  else if(datatype == hdf5::datatype::create<float>())
+    fill_value_<float>(list, value);
+  else if(datatype == hdf5::datatype::create<double>())
+    fill_value_<double>(list, value);
+  else if(datatype == hdf5::datatype::create<long double>())
+    fill_value_<long double>(list, value);
+  else if(datatype == hdf5::datatype::create<std::complex<hdf5::datatype::float16_t>>())
+    fill_value_<std::complex<hdf5::datatype::float16_t>>(list, value);
+  else if(datatype == hdf5::datatype::create<std::complex<float>>())
+    fill_value_<std::complex<float>>(list, value);
+  else if(datatype == hdf5::datatype::create<std::complex<double>>())
+    fill_value_<std::complex<double>>(list, value);
+  else if(datatype == hdf5::datatype::create<std::complex<long double>>())
+    fill_value_<std::complex<long double>>(list, value);
+
+  fill_value_<long double>(list, value);
+}
+
+
 void create_class_wrappers()
 {
   using namespace boost::python;
@@ -159,6 +247,8 @@ void create_class_wrappers()
       .add_property("fill_time",get_dataset_fill_time,set_dataset_fill_time)
       .add_property("allocation_time",get_dataset_allocation_time,set_dataset_allocation_time)
       .add_property("nfilters",&DatasetCreationList::nfilters)
+      .def("fill_value",get_fill_value)
+      .def("set_fill_value",set_fill_value)
       ;
 
 
