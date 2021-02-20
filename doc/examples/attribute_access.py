@@ -19,5 +19,5 @@ for attr in r.attributes:
     print(attr.name)
 
 #access directly via name 
-print(r.attributes["NeXus_version"].name)
+print(r.attributes["HDF5_Version"].name)
 
