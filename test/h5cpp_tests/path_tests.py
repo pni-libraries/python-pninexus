@@ -43,6 +43,17 @@ class H5cppPathTests(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_hdf5_version(self):
+
+        hdf5ver = h5cpp.current_library_version()
+        mj, mn, pa =  hdf5ver.split(".")
+        imj = int(mj)
+        imn = int(mn)
+        ipa = int(pa)
+        self.assertTrue(imj > 0)
+        self.assertTrue(imn > -1)
+        self.assertTrue(ipa > -1)
+
     def test_default_contruction(self):
 
         p = h5cpp.Path()

@@ -65,6 +65,13 @@ void print_hdf5_errors(bool value)
   hdf5::error::Singleton::instance().auto_print(value);
 }
 
+std::string current_library_version()
+{
+
+  hdf5::Version ver = hdf5::current_library_version();
+  return hdf5::Version::to_string(ver);
+}
+
 
 //=================implementation of the python extension======================
 BOOST_PYTHON_MODULE(_h5cpp)
@@ -128,6 +135,7 @@ BOOST_PYTHON_MODULE(_h5cpp)
       ;
 
   def("print_hdf5_errors",print_hdf5_errors);
+  def("current_library_version",current_library_version);
 
   exception_registration();
 }

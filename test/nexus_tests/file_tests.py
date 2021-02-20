@@ -70,7 +70,6 @@ class CreatFileTest(unittest.TestCase):
         self.assertTrue(root.attributes.exists("file_time"))
         self.assertTrue(root.attributes.exists("file_update_time"))
         self.assertTrue(root.attributes.exists("file_name"))
-        self.assertTrue(root.attributes.exists("NeXus_version"))
 
         self.assertEqual(root.attributes["NX_class"].read(), "NXroot")
 

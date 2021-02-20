@@ -62,7 +62,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.4"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableString)
         a1.write(hdf5_version)
         a1.close()
         r1.close()
@@ -71,7 +71,7 @@ class ImageTest(unittest.TestCase):
         ibuffer = np.fromfile(self.filename, dtype='uint8')
         f2 = from_buffer(ibuffer)
         r2 = f2.root()
-        a2 = r2.attributes["HDF5_version"]
+        a2 = r2.attributes["HDF5_Version"]
         self.assertTrue(a2.read(), hdf5_version)
         a2.close()
         r2.close()
@@ -84,7 +84,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.3"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableString)
         a1.write(hdf5_version)
         size = f1.buffer_size
         obuffer = np.zeros(shape=[size], dtype='uint8')
@@ -97,7 +97,7 @@ class ImageTest(unittest.TestCase):
 
         f2 = h5open(self.filename2)
         r2 = f2.root()
-        a2 = r2.attributes["HDF5_version"]
+        a2 = r2.attributes["HDF5_Version"]
         self.assertTrue(a2.read(), hdf5_version)
         a2.close()
         r2.close()
@@ -110,7 +110,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.2"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableString)
         a1.write(hdf5_version)
 
         size = f1.buffer_size
@@ -123,7 +123,7 @@ class ImageTest(unittest.TestCase):
 
         f2 = from_buffer(obuffer, ImageFlags.READWRITE)
         r2 = f2.root()
-        a2 = r2.attributes["HDF5_version"]
+        a2 = r2.attributes["HDF5_Version"]
         self.assertTrue(a2.read(), hdf5_version)
         a2.close()
         r2.close()
