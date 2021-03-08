@@ -96,4 +96,4 @@ for python3.
 More information can be found at [online documentation](https://pni-libraries.github.io/python-pninexus/index.html).
 
 Changes for a specific version of libpnicore can be found
-at [CHANGELOG](https://github.com/pni-libraries/libpnicore/blob/develop/CHANGELOG.md).
+at [CHANGELOG](https://github.com/pni-libraries/python-pninexus/blob/develop/CHANGELOG.md).
