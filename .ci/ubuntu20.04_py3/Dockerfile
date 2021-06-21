@@ -12,7 +12,6 @@ RUN apt-get -qq install -y hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4
 RUN useradd -ms /bin/bash tango
 
 ENV PKG_CONFIG_PATH=/home/tango/lib/pkgconfig
-# ENV HDF5_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/hdf5/plugins
 USER tango
 WORKDIR /home/tango
 
