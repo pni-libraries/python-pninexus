@@ -20,8 +20,9 @@ from pninexus.h5cpp._h5cpp import IterationOrder
 from pninexus.h5cpp._h5cpp import IterationIndex
 from pninexus.h5cpp._h5cpp import Path
 from pninexus.h5cpp._h5cpp import print_hdf5_errors
+from pninexus.h5cpp._h5cpp import current_library_version
 
 __all__ = ["IteratorConfig", "IterationOrder", "IterationIndex", "Path",
-           "print_hdf5_errors",
+           "print_hdf5_errors", "current_library_version",
            "attribute", "dataspace", "datatype", "file", "filter", "node",
            "property", "_h5cpp"]
