@@ -229,6 +229,7 @@ class FilterCreationTest(unittest.TestCase):
                 filters[0].name,
                 "bitshuffle; see https://github.com/kiyo-masui/bitshuffle")
         else:
+            raise Exception("NO bit")
             error = False
             try:
                 filter(self.dcpl)
