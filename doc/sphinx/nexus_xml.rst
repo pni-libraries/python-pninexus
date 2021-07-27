@@ -104,7 +104,7 @@ In order to explicitly set the chunk shape use the `chunk` tag
     </field>
 
 The `chunk` tag is currently not implemented due to limitations of the
-underlying `libpniio`. 
+underlying `libpninexus`. 
 
 Finally the `field` tag accepts an additional attribute `units` which stores
 the physical unit of the data stored in a field. 

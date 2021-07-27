@@ -7,10 +7,10 @@ Addressing objects: the NeXus path
 An introduction
 ===============
 
-One of the major contributions added by *libpniio* to the standard HDF5 library
+One of the major contributions added by *libpninexus* to the standard HDF5 library
 is its *Path* class which is provided by :py:mod:`pninexus.nexus` via the 
 :py:class:`Path`. The most obvious difference between a plain HDF5 path and a
-NeXus path as introduced by *libpniio* is 
+NeXus path as introduced by *libpninexus* is 
 
 1. a NeXus path can include the name of the file the object referenced by the
    path 

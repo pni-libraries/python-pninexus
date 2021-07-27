@@ -23,10 +23,10 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/nexus.hpp>
 
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 void create_predicate_wrappers()
 {

@@ -4,23 +4,21 @@ Users Guide
 Introduction
 ------------
 
-The PNI Python package provides bindings to the PNI C++ libraries
+The PNI Python package provides bindings to the h5cpp and PNI C++ libraries
 
 * ``libh5cpp``
-* ``libpnicore``
-* ``libpniio``
+* ``libpninexus``
 
 The term binding might not be entirely correct as the PNI libraries are mainly
 C++ templates. One can consider this package as an implementation providing 
 the functionality of the templates. In particular not all the features exposed
 by the C++ libraries are imported into Python as equivalent native Python 
-solutions exist. For instance ``libpnicore`` provides templates for
+solutions exist. For instance ``libpninexus`` provides templates for
 multidimensional arrays which are not required in Python as we have ``numpy``
 arrays. 
 
-From ``libpnicore`` only the exceptions are imported as they are used by 
-``libpniio``. Most of the code accessed by this Python packages comes from
-``libh5cpp`` and ``libpniio`` and addresses the following problems
+The code accessed by this Python packages comes from
+``libh5cpp`` and ``libpninexus`` and addresses the following problems
 
 * reading legacy ASCII and binary (mainly image) files
 * provide access to NeXus/HDF5 files
