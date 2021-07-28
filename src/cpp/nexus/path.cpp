@@ -22,11 +22,11 @@
 //
 
 #include <boost/python.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/nexus.hpp>
 #include "element_dict_converter.hpp"
 
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 void create_path_wrappers()
 {

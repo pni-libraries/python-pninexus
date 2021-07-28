@@ -25,7 +25,7 @@
 
 In many cases testing only makes sense if the data used for testing varies with
 each run. For this purpose this module provides a random number data generator
-for all data types supported by pniio.
+for all data types supported by pninexus.
 
 """
 
@@ -35,7 +35,7 @@ import numpy.random as random
 import sys
 
 
-# these are the typecodes supported by pniii
+# these are the typecodes supported by pninexus
 _typecodes = ["uint8", "int8", "uint16", "int16", "uint32", "int32", "uint64",
               "int64", "float32", "float64", "float128", "complex32",
               "complex64", "complex128", "bool"]
@@ -242,7 +242,7 @@ def random_generator_factory(typecode):
     Returns:
         data_generator: an instance of class data_generator
     Raises:
-        TypeError: if the type code is not  supported by pniio
+        TypeError: if the type code is not  supported by pninexus
     """
     tdesc = _type_desc[typecode]
 

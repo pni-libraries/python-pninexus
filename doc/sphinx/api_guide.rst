@@ -7,7 +7,7 @@ The package consists of two major subpackages
 
 * the :py:mod:`pninexus.h5cpp` which is a thin wrapper around the *h5cpp* library
 * and :py:mod:`pninexus.nexus` which wraps classes and functions from the
-  :cpp:any:`pni::io::nexus` namespace of *libpniio*.
+  :cpp:any:`pni::nexus` namespace of *libpninexus*.
 
 The ``pninexus.h5cpp`` package
 ==============================

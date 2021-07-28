@@ -23,8 +23,8 @@
 #pragma once
 
 #include <boost/python.hpp>
-#include <pni/core/types.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/types.hpp>
+#include <pni/nexus.hpp>
 
 //----------------------------------------------------------------------------
 //!
@@ -56,7 +56,7 @@ struct nxpath_element_to_dict_converter
     //! \param e instance of nxpath::element_type
     //! \return Python dictionary object
     //!
-    static PyObject *convert(const pni::io::nexus::Path::Element &e);
+    static PyObject *convert(const pni::nexus::Path::Element &e);
 
 };
 
@@ -68,7 +68,7 @@ struct nxpath_element_to_dict_converter
 //!
 struct dict_to_nxpath_element_converter
 {
-    typedef pni::io::nexus::Path::Element element_type;
+    typedef pni::nexus::Path::Element element_type;
     typedef boost::python::converter::rvalue_from_python_stage1_data     rvalue_type;
     typedef boost::python::converter::rvalue_from_python_storage<element_type> storage_type;
     //!

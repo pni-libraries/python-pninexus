@@ -27,8 +27,6 @@
 #include "../numpy/numpy.hpp"
 
 
-namespace io {
-
 //!
 //! @brief returns true if an IO object has a variable length string type
 //!
@@ -174,7 +172,7 @@ boost::python::object read(const IoType &instance,const hdf5::dataspace::Selecti
 //    std::for_each(buffer.begin(),buffer.end(),
 //                  [&l](const std::string &s) { l.append(s);});
 //
-//    return numpy::ArrayFactory::create(l,pni::core::type_id_t::STRING,output_dims);
+//    return numpy::ArrayFactory::create(l,pni::type_id_t::STRING,output_dims);
   }
   else
   {
@@ -183,9 +181,3 @@ boost::python::object read(const IoType &instance,const hdf5::dataspace::Selecti
     return array;
   }
 }
-
-
-
-
-
-} // namespace io

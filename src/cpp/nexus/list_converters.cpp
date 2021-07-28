@@ -25,7 +25,7 @@
 #include "list_converters.hpp"
 
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 GroupListToTuple::GroupListToTuple()
 {

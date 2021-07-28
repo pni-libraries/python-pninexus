@@ -32,7 +32,7 @@ extern "C"{
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
 #include <h5cpp/hdf5.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/nexus.hpp>
 
 #include "wrappers.hpp"
 #include "list_converters.hpp"
@@ -40,7 +40,7 @@ extern "C"{
 
 //import here the namespace for the nxh5 module
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 #if PY_MAJOR_VERSION >= 3
 static void * init_numpy()
@@ -72,12 +72,12 @@ BOOST_PYTHON_MODULE(_nexus)
   //
   //
   //
-  def("is_nexus_file",&pni::io::nexus::is_nexus_file);
+  def("is_nexus_file",&pni::nexus::is_nexus_file);
 
   hdf5::file::File (*create_file_flag)(const boost::filesystem::path &,
                                        hdf5::file::AccessFlagsBase,
                                        const hdf5::property::FileCreationList &,
-                                       const hdf5::property::FileAccessList &) = &pni::io::nexus::create_file;
+                                       const hdf5::property::FileAccessList &) = &pni::nexus::create_file;
   def("create_file",create_file_flag,(arg("path"),
                                       arg("flags")=hdf5::file::AccessFlags::EXCLUSIVE,
                                       arg("fcpl")=hdf5::property::FileCreationList(),
@@ -85,7 +85,7 @@ BOOST_PYTHON_MODULE(_nexus)
 
   hdf5::file::File (*open_file_flag)(const boost::filesystem::path &,
                                      hdf5::file::AccessFlagsBase,
-                                     const hdf5::property::FileAccessList &) = &pni::io::nexus::open_file;
+                                     const hdf5::property::FileAccessList &) = &pni::nexus::open_file;
   def("open_file",open_file_flag,(arg("path"),
                                   arg("flags")=hdf5::file::AccessFlags::READONLY,
                                   arg("fapl")=hdf5::property::FileAccessList()));
