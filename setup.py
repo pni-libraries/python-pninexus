@@ -15,8 +15,8 @@ from build_tools import (CppExtensionFactory,
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
-version = "1.3.4"
-release = "1.3.4"
+version = "2.0.0"
+release = "2.0.0"
 
 
 def get_build_dir():
@@ -52,8 +52,7 @@ if os.path.exists("conanbuildinfo.txt"):
         print(lib)
 else:
     nexus_config = BuildConfiguration()
-    nexus_config.add_link_library('pnicore')
-    nexus_config.add_link_library('pniio')
+    nexus_config.add_link_library('pninexus')
     nexus_config.add_link_library('h5cpp')
     nexus_config.add_link_library(
         "boost_python{major}{minor}".format(major=sys.version_info.major,
@@ -179,7 +178,7 @@ setup(
     author_email="eugen.wintersberger@desy.de",
     description="Python wrapper for the H5CPP and PNI libraries",
     long_description="This package provides wrappers for the PNI C++ " +
-    "libraries libpnicore and libpniio.",
+    "libraries libpninexus and libh5cpp.",
     maintainer="Eugen Wintersberger, Jan Kotanski",
     maintainer_email="jan.kotanski@desy.de",
     license="GPLv2",

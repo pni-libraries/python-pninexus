@@ -23,7 +23,7 @@
 #pragma once
 
 #include <boost/python.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/nexus.hpp>
 
 //!
 //! @brief convert a nexus GroupList to a tuple
@@ -31,7 +31,7 @@
 struct GroupListToTuple
 {
     GroupListToTuple();
-    static PyObject *convert(const pni::io::nexus::GroupList &group_list);
+    static PyObject *convert(const pni::nexus::GroupList &group_list);
 };
 
 //!
@@ -40,7 +40,7 @@ struct GroupListToTuple
 struct DatasetListToTuple
 {
     DatasetListToTuple();
-    static PyObject *convert(const pni::io::nexus::DatasetList &dataset_list);
+    static PyObject *convert(const pni::nexus::DatasetList &dataset_list);
 };
 
 //!
@@ -49,7 +49,7 @@ struct DatasetListToTuple
 struct NodeListToTuple
 {
     NodeListToTuple();
-    static PyObject *convert(const pni::io::nexus::NodeList &node_list);
+    static PyObject *convert(const pni::nexus::NodeList &node_list);
 };
 
 //!
@@ -58,7 +58,7 @@ struct NodeListToTuple
 struct AttributeListToTuple
 {
     AttributeListToTuple();
-    static PyObject *convert(const pni::io::nexus::AttributeList &attribute_list);
+    static PyObject *convert(const pni::nexus::AttributeList &attribute_list);
 };
 
 //!
@@ -67,5 +67,5 @@ struct AttributeListToTuple
 struct PathObjectListToTuple
 {
     PathObjectListToTuple();
-    static PyObject *convert(const pni::io::nexus::PathObjectList &pathobject_list);
+    static PyObject *convert(const pni::nexus::PathObjectList &pathobject_list);
 };

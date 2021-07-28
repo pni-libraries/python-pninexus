@@ -6,8 +6,7 @@ following additional libraries are required
 
 .) hdf5
 .) libh5cpp
-.) libpnicore
-.) libpniio
+.) libpninexus
 .) boost-python
 
 If everything is installed in default locations a simple 

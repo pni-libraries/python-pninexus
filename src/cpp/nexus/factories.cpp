@@ -23,10 +23,10 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
-#include <pni/io/nexus.hpp>
+#include <pni/nexus.hpp>
 
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 namespace {
 
@@ -74,7 +74,7 @@ void create_factory_wrappers()
       .staticmethod("create_")
       ;
 
-  class_<pni::io::nexus::FieldFactory>("FieldFactory")
+  class_<pni::nexus::FieldFactory>("FieldFactory")
       .def("create_",create_without_chunk,
            (arg("parent"),arg("path"),arg("type"),arg("space"),
             arg("lcpl") = hdf5::property::LinkCreationList(),

@@ -26,17 +26,17 @@
 extern "C"{
 #include<Python.h>
 }
-#include <pni/core/error.hpp>
+#include <pni/error.hpp>
 #include <boost/python.hpp>
-#include <pni/io/exceptions.hpp>
+#include <pni/exceptions.hpp>
 
 #include "errors.hpp"
 
 using namespace boost::python;
 
 //import here the namespace for the nxh5 module
-using namespace pni::io;
-using namespace pni::core;
+using namespace pni;
+using namespace pni;
 
 static object PyExc_LinkError;
 static object PyExc_ObjectError;

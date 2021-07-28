@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 2.0.0 - 2021-07-28
+- use libpninexus 2.0.0 c++ libraries ([#143](https://github.com/pni-libraries/python-pninexus/pull/143))
+
 ## 1.3.4 - 2021-02-20
 - HDF5_version to HDF5_Version attribute changed ([#132](https://github.com/pni-libraries/python-pninexus/pull/132))
 - NeXus_version attribute removed ([#132](https://github.com/pni-libraries/python-pninexus/pull/132))

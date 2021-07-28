@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# libpnicore Python bindings documentation build configuration file, created by
+# libpninexus Python bindings documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul 28 15:12:05 2015.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -58,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'libpnicore Python bindings'
+project = u'libpninexus Python bindings'
 copyright = u'2015, DESY'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -181,7 +181,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'libpnicorePythonbindingsdoc'
+htmlhelp_basename = 'libpninexusPythonbindingsdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -230,7 +230,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'libpnicorepythonbindings', u'libpnicore Python bindings Documentation',
+    ('index', 'libpninexuspythonbindings', u'libpninexus Python bindings Documentation',
      [u'Eugen Wintersberger'], 1)
 ]
 
@@ -244,8 +244,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'libpnicorePythonbindings', u'libpnicore Python bindings Documentation',
-   u'Eugen Wintersberger', 'libpnicorePythonbindings', 'One line description of project.',
+  ('index', 'libpninexusPythonbindings', u'libpninexus Python bindings Documentation',
+   u'Eugen Wintersberger', 'libpninexusPythonbindings', 'One line description of project.',
    'Miscellaneous'),
 ]
 

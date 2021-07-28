@@ -27,9 +27,9 @@ extern "C"{
 
 #include "element_dict_converter.hpp"
 
-using namespace pni::core;
+using namespace pni;
 using namespace boost::python;
-using namespace pni::io;
+using namespace pni;
 
 //converter namespace
 namespace convns = boost::python::converter; 
