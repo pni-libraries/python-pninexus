@@ -12,9 +12,7 @@ For the build of the package the following dependencies must be satisfied
 +==============+================+
 | libh5cpp     | >=0.4.0        |
 +--------------+----------------+
-| libpnicore   | >=1.1.0        |
-+--------------+----------------+
-| libpniio     | >=1.2.0        |
+| libpninexus  | >=2.0.0        |
 +--------------+----------------+
 | libboost     | >=1.60.0       |
 +--------------+----------------+
