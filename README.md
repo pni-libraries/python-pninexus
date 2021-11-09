@@ -37,7 +37,7 @@ To build the documentation use
     $ python setup.py build_sphinx
 ```
 
-The resulting documentation can be found below `buil/sphinx/html` in the root
+The resulting documentation can be found below `build/sphinx/html` in the root
 directory of the source distribution.
 
 Finally, the package can be tested using
@@ -51,21 +51,22 @@ For Python3 just replace python with python3 in the above instructions.
 
 ### Debian and Ubuntu packages
 
-Debian `buster`, `stretch` and `bullseye` or Ubuntu  `groovy` `focal`, `bionic` packages can be found in the HDRI repository.
+Debian  `bullseye`, `buster`, `stretch` or Ubuntu  `impish`, `focal`, `bionic` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
 ```
     $ sudo su
-    $ wget -q -O - http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
+    $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+    $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 ```
 
 and then download the corresponding source list, e.g.
-for `buster`
+for `bullseye`
 
 ```
     $ cd /etc/apt/sources.list.d
-    $ wget http://repos.pni-hdri.de/buster-pni-hdri.list
+    $ wget http://repos.pni-hdri.de/bullseye-pni-hdri.list
 ```
 
 or `focal`

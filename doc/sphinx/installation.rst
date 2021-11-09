@@ -60,17 +60,18 @@ keyring
 
 .. code-block:: bash
 
-   $ curl http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
-
+   $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+   $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
+1
 
 The return value of this command line should be `OK`.
 In a next step you have to add new package sources to your system. For this
 purpose go to :file:`/etc/apt/sources.list.d` and download the sources file.
-For Debian (Buster) use
+For Debian (Bullseye) use
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/buster-pni-hdri.list
+   $ wget http://repos.pni-hdri.de/bullseye-hdri.list
 
 and for Ubuntu (Focal)
 
@@ -78,7 +79,7 @@ and for Ubuntu (Focal)
 
    $ wget http://repos.pni-hdri.de/focal-pni-hdri.list
 
-Similarly, proceed for Bullseye, Buster, Stretch, Groovy, Focal or Bionic.
+Similarly, proceed for Bullseye, Buster, Stretch, Impish, Focal or Bionic.
 Once you have downloaded the file use
 
 .. code-block:: bash
