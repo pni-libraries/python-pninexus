@@ -30,7 +30,7 @@
 
 namespace hdf5  {
 namespace dataspace {
-    
+
 template<> class TypeTrait<numpy::ArrayAdapter>
 {
   public:
@@ -51,8 +51,13 @@ template<> class TypeTrait<numpy::ArrayAdapter>
       return array.data();
     }
 
+    const static Dataspace & get(const numpy::ArrayAdapter &, hdf5::dataspace::DataspacePool &) {
+      const static Dataspace & cref_ = Dataspace();
+      return cref_;
+    }
+
 };
-    
+
 } // namespace dataspace
 
 namespace datatype {
@@ -97,6 +102,13 @@ template<> class TypeTrait<numpy::ArrayAdapter>
           throw std::runtime_error("Datatype not supported by HDF5!");
       }
     }
+
+    const static Datatype & get(const numpy::ArrayAdapter &) {
+      const static Datatype & cref_ = Datatype();
+      return cref_;
+    }
+
+
 };
 
 } // namespace datatype

@@ -56,7 +56,7 @@ class DLL_EXPORT ExternalFilterWrapper : public Filter
   ~ExternalFilterWrapper(){}
 
     virtual void operator()(const hdf5::property::DatasetCreationList &dcpl,
-                            Availability flag=Availability::MANDATORY) const
+                            Availability flag=Availability::mandatory) const
     {
       if(H5Pset_filter(static_cast<hid_t>(dcpl), id(), static_cast<hid_t>(flag),
 		       cd_values_.size(), cd_values_.data()) < 0)
@@ -149,8 +149,8 @@ BOOST_PYTHON_MODULE(_filter)
   using namespace hdf5::filter;
 
   enum_<Availability>("Availability")
-      .value("MANDATORY",Availability::MANDATORY)
-      .value("OPTIONAL",Availability::OPTIONAL);
+      .value("MANDATORY",Availability::mandatory)
+      .value("OPTIONAL",Availability::optional);
   
   enum_<SOScaleType>("SOScaleType")
       .value("FLOAT_DSCALE",SOScaleType::FLOAT_DSCALE)
@@ -159,7 +159,7 @@ BOOST_PYTHON_MODULE(_filter)
 
   class_<Filter,boost::noncopyable>("Filter",no_init)
       .add_property("id",&Filter::id)
-      .def("__call__",&Filter::operator(),(args("dcpl"),args("availability")=Availability::MANDATORY))
+      .def("__call__",&Filter::operator(),(args("dcpl"),args("availability")=Availability::mandatory))
       .def("is_encoding_enabled", &Filter::is_encoding_enabled)
       .def("is_decoding_enabled", &Filter::is_decoding_enabled)
           ;
