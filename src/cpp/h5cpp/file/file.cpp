@@ -97,25 +97,25 @@ BOOST_PYTHON_MODULE(_file)
   doc_opts.enable_user_defined();
 
   enum_<Scope>("Scope","The scope of a file")
-            .value("LOCAL",Scope::LOCAL)
-            .value("GLOBAL",Scope::GLOBAL);
+            .value("LOCAL",Scope::Local)
+            .value("GLOBAL",Scope::Global);
 
   enum_<AccessFlags>("AccessFlags","The access flags used to open the file")
-            .value("TRUNCATE",AccessFlags::TRUNCATE)
-            .value("EXCLUSIVE",AccessFlags::EXCLUSIVE)
-            .value("READWRITE",AccessFlags::READWRITE)
+            .value("TRUNCATE",AccessFlags::Truncate)
+            .value("EXCLUSIVE",AccessFlags::Exclusive)
+            .value("READWRITE",AccessFlags::ReadWrite)
 #if H5_VERSION_GE(1,10,0)
-            .value("SWMRREAD",AccessFlags::SWMR_READ)
-            .value("SWMRWRITE",AccessFlags::SWMR_WRITE)
+            .value("SWMRREAD",AccessFlags::SWMRRead)
+            .value("SWMRWRITE",AccessFlags::SWMRWrite)
 #endif
-            .value("READONLY",AccessFlags::READONLY);
+            .value("READONLY",AccessFlags::ReadOnly);
 
   enum_<ImageFlags>("ImageFlags","The image flags used to open the image file")
-            .value("READONLY",ImageFlags::READONLY)
-            .value("READWRITE",ImageFlags::READWRITE)
-            .value("DONT_COPY",ImageFlags::DONT_COPY)
-            .value("DONT_RELEASE",ImageFlags::DONT_RELEASE)
-            .value("ALL",ImageFlags::ALL);
+            .value("READONLY",ImageFlags::ReadOnly)
+            .value("READWRITE",ImageFlags::ReadWrite)
+            .value("DONT_COPY",ImageFlags::DontCopy)
+            .value("DONT_RELEASE",ImageFlags::DontRelease)
+            .value("ALL",ImageFlags::All);
 
   //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
   class_<File>("File")
@@ -126,7 +126,7 @@ BOOST_PYTHON_MODULE(_file)
             .add_property("path",&File::path)
             .add_property("size",&File::size)
             .add_property("buffer_size",&File::buffer_size)
-            .def("flush",&File::flush,(arg("scope")=Scope::GLOBAL))
+            .def("flush",&File::flush,(arg("scope")=Scope::Global))
             .def("close",&File::close)
             .def("root",&File::root,root_overloads())
             .def("to_buffer",file_to_buffer,(arg("data")))
@@ -134,10 +134,10 @@ BOOST_PYTHON_MODULE(_file)
 
   //need some functions
   def("is_hdf5_file",&is_hdf5_file);
-  def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::EXCLUSIVE,
+  def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::Exclusive,
                              arg("fcpl")=hdf5::property::FileCreationList(),
                              arg("fapl")=hdf5::property::FileAccessList()));
-  def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::READONLY,
+  def("open",&open_file,(arg("file"),arg("flags")=AccessFlags::ReadOnly,
                          arg("fapl")=hdf5::property::FileAccessList()));
-  def("from_buffer",&from_buffer_,(arg("data"),arg("flags")=ImageFlags::READONLY));
+  def("from_buffer",&from_buffer_,(arg("data"),arg("flags")=ImageFlags::ReadOnly));
 }

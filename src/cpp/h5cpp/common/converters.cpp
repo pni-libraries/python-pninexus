@@ -31,13 +31,13 @@ boost::python::object convert_datatype(const hdf5::datatype::Datatype &datatype)
 
   switch(datatype.get_class())
   {
-    case Class::INTEGER:
+    case Class::Integer:
       return boost::python::object(Integer(datatype));
-    case Class::FLOAT:
+    case Class::Float:
       return boost::python::object(Float(datatype));
-    case Class::COMPOUND:
+    case Class::Compound:
       return boost::python::object(Compound(datatype));
-    case Class::STRING:
+    case Class::String:
       return boost::python::object(String(datatype));
     default:
       return boost::python::object(datatype);
@@ -50,9 +50,9 @@ boost::python::object convert_dataspace(const hdf5::dataspace::Dataspace &datasp
 
   switch(dataspace.type())
   {
-    case Type::SCALAR:
+    case Type::Scalar:
       return boost::python::object(Scalar(dataspace));
-    case Type::SIMPLE:
+    case Type::Simple:
       return boost::python::object(Simple(dataspace));
     default:
       return boost::python::object(dataspace);

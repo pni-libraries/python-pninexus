@@ -32,43 +32,43 @@ void create_enumeration_wrappers()
   using namespace hdf5::property;
 
   enum_<DatasetFillValueStatus>("DatasetFillValueStatus","status of the fill value setup for a dataset")
-      .value("UNDEFINED",DatasetFillValueStatus::UNDEFINED)
-      .value("DEFAULT",DatasetFillValueStatus::DEFAULT)
-      .value("USER_DEFINED",DatasetFillValueStatus::USER_DEFINED);
+      .value("UNDEFINED",DatasetFillValueStatus::Undefined)
+      .value("DEFAULT",DatasetFillValueStatus::Default)
+      .value("USER_DEFINED",DatasetFillValueStatus::UserDefined);
 
   enum_<DatasetFillTime>("DatasetFillTime")
-      .value("IFSET",DatasetFillTime::IFSET)
-      .value("ALLOC",DatasetFillTime::ALLOC)
-      .value("NEVER",DatasetFillTime::NEVER);
+      .value("IFSET",DatasetFillTime::IfSet)
+      .value("ALLOC",DatasetFillTime::Alloc)
+      .value("NEVER",DatasetFillTime::Never);
 
   enum_<DatasetAllocTime>("DatasetAllocTime")
-      .value("DEFAULT",DatasetAllocTime::DEFAULT)
-      .value("EARLY",DatasetAllocTime::EARLY)
-      .value("INCR",DatasetAllocTime::INCR)
-      .value("LATE",DatasetAllocTime::LATE);
+      .value("DEFAULT",DatasetAllocTime::Default)
+      .value("EARLY",DatasetAllocTime::Early)
+      .value("INCR",DatasetAllocTime::Incr)
+      .value("LATE",DatasetAllocTime::Late);
 
   enum_<DatasetLayout>("DatasetLayout")
-      .value("COMPACT",DatasetLayout::COMPACT)
-      .value("CONTIGUOUS",DatasetLayout::CONTIGUOUS)
-      .value("CHUNKED",DatasetLayout::CHUNKED)
+      .value("COMPACT",DatasetLayout::Compact)
+      .value("CONTIGUOUS",DatasetLayout::Contiguous)
+      .value("CHUNKED",DatasetLayout::Chunked)
 #if H5_VERSION_GE(1,10,0)
-      .value("VIRTUAL",DatasetLayout::VIRTUAL)
+      .value("VIRTUAL",DatasetLayout::Virtual)
 #endif
     ;
 
   enum_<LibVersion>("LibVersion")
-      .value("LATEST",LibVersion::LATEST)
-      .value("EARLIEST",LibVersion::EARLIEST);
+      .value("LATEST",LibVersion::Latest)
+      .value("EARLIEST",LibVersion::Earliest);
 
   enum_<CloseDegree>("CloseDegree")
-      .value("WEAK", CloseDegree::WEAK)
-      .value("SEMI", CloseDegree::SEMI)
-      .value("STRONG", CloseDegree::STRONG)
-      .value("DEFAULT", CloseDegree::DEFAULT);
+      .value("WEAK", CloseDegree::Weak)
+      .value("SEMI", CloseDegree::Semi)
+      .value("STRONG", CloseDegree::Strong)
+      .value("DEFAULT", CloseDegree::Default);
 
 #if H5_VERSION_GE(1,10,0)
   enum_<VirtualDataView>("VirtualDataView")
-      .value("FIRST_MISSING",VirtualDataView::FIRST_MISSING)
-      .value("LAST_AVAILABLE",VirtualDataView::LAST_AVAILABLE);
+      .value("FIRST_MISSING",VirtualDataView::FirstMissing)
+      .value("LAST_AVAILABLE",VirtualDataView::LastAvailable);
 #endif
 }

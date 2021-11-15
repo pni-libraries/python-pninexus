@@ -94,13 +94,13 @@ BOOST_PYTHON_MODULE(_h5cpp)
   PythonToDimensions();
 
   enum_<hdf5::IterationOrder>("IterationOrder")
-      .value("INCREASING",hdf5::IterationOrder::INCREASING)
-      .value("DECREASING",hdf5::IterationOrder::DECREASING)
-      .value("NATIVE",hdf5::IterationOrder::NATIVE);
+      .value("INCREASING",hdf5::IterationOrder::Increasing)
+      .value("DECREASING",hdf5::IterationOrder::Decreasing)
+      .value("NATIVE",hdf5::IterationOrder::Native);
 
   enum_<hdf5::IterationIndex>("IterationIndex")
-      .value("NAME",hdf5::IterationIndex::NAME)
-      .value("CREATION_ORDER",hdf5::IterationIndex::CREATION_ORDER);
+      .value("NAME",hdf5::IterationIndex::Name)
+      .value("CREATION_ORDER",hdf5::IterationIndex::CreationOrder);
 
 
   hdf5::IterationOrder (hdf5::IteratorConfig::*get_iteration_order)() const =  &hdf5::IteratorConfig::order;

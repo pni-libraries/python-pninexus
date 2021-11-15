@@ -95,7 +95,7 @@ template<> class TypeTrait<numpy::ArrayAdapter>
         case NPY_STRING:
         {
           String type = String::fixed(array.itemsize());
-          type.padding(StringPad::NULLPAD);
+          type.padding(StringPad::NullPad);
           return type;
         }
         default:

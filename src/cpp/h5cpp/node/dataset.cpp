@@ -115,7 +115,7 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
 
   self.read(array_adapter,memory_type,memory_space,file_space);
 
-  if(self.datatype().get_class() == hdf5::datatype::Class::STRING)
+  if(self.datatype().get_class() == hdf5::datatype::Class::String)
   {
     hdf5::datatype::String string_type = self.datatype();
     if(!string_type.is_variable_length())

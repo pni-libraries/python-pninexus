@@ -40,8 +40,8 @@ BOOST_PYTHON_MODULE(_dataspace)
   doc_opts.enable_user_defined();
 
   enum_<Type>("Type")
-      .value("SCALAR",hdf5::dataspace::Type::SCALAR)
-      .value("SIMPLE",hdf5::dataspace::Type::SIMPLE)
+      .value("SCALAR",hdf5::dataspace::Type::Scalar)
+      .value("SIMPLE",hdf5::dataspace::Type::Simple)
       ;
 
   class_<SelectionManager,boost::noncopyable>("SelectionManager",no_init)

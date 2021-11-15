@@ -63,9 +63,9 @@ hdf5::node::Link get_link_by_name(const hdf5::node::LinkView &self,const std::st
 
 boost::python::object object_from_node(const hdf5::node::Node &node)
 {
-  if(node.type()==hdf5::node::Type::DATASET)
+  if(node.type()==hdf5::node::Type::Dataset)
     return boost::python::object(hdf5::node::Dataset(node));
-  else if(node.type()==hdf5::node::Type::GROUP)
+  else if(node.type()==hdf5::node::Type::Group)
     return boost::python::object(hdf5::node::Group(node));
   else
     return boost::python::object(node);
@@ -203,17 +203,17 @@ BOOST_PYTHON_MODULE(_node)
   // ========================================================================
 
   enum_<Type>("Type")
-      .value("UNKOWN",Type::UNKNOWN)
-      .value("GROUP",Type::GROUP)
-      .value("DATASET",Type::DATASET)
-      .value("DATATYPE",Type::DATATYPE)
+      .value("UNKOWN",Type::Unknown)
+      .value("GROUP",Type::Group)
+      .value("DATASET",Type::Dataset)
+      .value("DATATYPE",Type::Datatype)
       ;
 
   enum_<LinkType>("LinkType")
-      .value("HARD",LinkType::HARD)
-      .value("SOFT",LinkType::SOFT)
-      .value("EXTERNAL",LinkType::EXTERNAL)
-      .value("ERROR",LinkType::ERROR)
+      .value("HARD",LinkType::Hard)
+      .value("SOFT",LinkType::Soft)
+      .value("EXTERNAL",LinkType::External)
+      .value("ERROR",LinkType::Error)
       ;
 
   // ========================================================================

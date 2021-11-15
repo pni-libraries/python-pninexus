@@ -57,7 +57,7 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
   else if(datatype == create<std::complex<float>>())    return NPY_COMPLEX64;
   else if(datatype == create<std::complex<double>>())   return NPY_COMPLEX128;
   else if(datatype == create<std::complex<long double>>()) return NPY_COMPLEX256;
-  else if(datatype.get_class() == Class::STRING)
+  else if(datatype.get_class() == Class::String)
   {
     String string_type = datatype;
     if(string_type.is_variable_length())
@@ -72,7 +72,7 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
 #endif
     }
   }
-  else if(datatype.get_class() == Class::ENUM)
+  else if(datatype.get_class() == Class::Enum)
   {
     auto etype = hdf5::datatype::Enum(datatype);
     if(hdf5::datatype::is_bool(etype)){
@@ -92,7 +92,7 @@ int get_element_size(const hdf5::datatype::Datatype &datatype)
 {
   int element_size = 0;
 
-  if(datatype.get_class() == hdf5::datatype::Class::STRING)
+  if(datatype.get_class() == hdf5::datatype::Class::String)
   {
     hdf5::datatype::String string_type(datatype);
     if(!string_type.is_variable_length())
@@ -135,7 +135,7 @@ ArrayFactory::create(const hdf5::datatype::Datatype &datatype,
                      const hdf5::dataspace::Dataspace &dataspace)
 {
   Dimensions dims{1};
-  if(dataspace.type() == hdf5::dataspace::Type::SIMPLE)
+  if(dataspace.type() == hdf5::dataspace::Type::Simple)
     dims = Dimensions(hdf5::dataspace::Simple(dataspace).current_dimensions());
 
 

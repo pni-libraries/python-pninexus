@@ -110,9 +110,9 @@ PyObject *NodeListToTuple::convert(const nexus::NodeList &node_list)
     size_t index = 0;
     for(auto node: node_list)
     {
-      if(node.type()==hdf5::node::Type::DATASET)
+      if(node.type()==hdf5::node::Type::Dataset)
         l.insert(index++,hdf5::node::Dataset(node));
-      else if(node.type()==hdf5::node::Type::GROUP)
+      else if(node.type()==hdf5::node::Type::Group)
         l.insert(index++,hdf5::node::Group(node));
     }
 

@@ -30,12 +30,12 @@ void create_copyflag_wrapper()
   using namespace hdf5::property;
 
   enum_<CopyFlag>("CopyFlag")
-      .value("SHALLOW_HIERARCHY",CopyFlag::SHALLOW_HIERARCHY)
-      .value("EXPAND_SOFT_LINKS",CopyFlag::EXPAND_SOFT_LINKS)
-      .value("EXPAND_EXTERNAL_LINKS",CopyFlag::EXPAND_EXTERNAL_LINKS)
-      .value("EXPAND_REFERENCES",CopyFlag::EXPAND_REFERENCES)
-      .value("WITHOUT_ATTRIBUTES",CopyFlag::WITHOUT_ATTRIBUTES)
-      .value("MERGE_COMMITTED_TYPES",CopyFlag::MERGE_COMMITTED_TYPES)
+      .value("SHALLOW_HIERARCHY",CopyFlag::ShallowHierarchy)
+      .value("EXPAND_SOFT_LINKS",CopyFlag::ExpandSoftLinks)
+      .value("EXPAND_EXTERNAL_LINKS",CopyFlag::ExpandExternalLinks)
+      .value("EXPAND_REFERENCES",CopyFlag::ExpandReferences)
+      .value("WITHOUT_ATTRIBUTES",CopyFlag::WithoutAttributes)
+      .value("MERGE_COMMITTED_TYPES",CopyFlag::MergeCommittedTypes)
       ;
 
 
