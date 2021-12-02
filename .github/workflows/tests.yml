@@ -44,15 +44,12 @@ jobs:
         if: github.ref == 'refs/heads/develop' &&  matrix.os == 'debian11'
         run: |
              docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
-             docker  exec ndts /bin/bash -c "git fetch && rm -rf cmake && git checkout gh-pages && git pull"
+             docker  exec ndts /bin/bash -c "git fetch && git checkout gh-pages && git pull"
              docker  exec ndts /bin/bash -c "mkdir -p ./latest && shopt -u dotglob && rm -rf ./latest/*"
              docker  exec ndts /bin/bash -c "mv -f build/doc/build/html/* ./latest/"
              docker  exec ndts /bin/bash -c "mv -f build/doc/api/html ./latest/api/doxygen"
              docker  exec ndts /bin/bash -c "mv -f build/doc/index.html ./"
              docker  exec ndts /bin/bash -c "mv -f build/doc/_config.yml ./"
-             docker  exec ndts /bin/bash -c "find ./ -type d -name \"CMakeFiles\" -prune -exec rm -rf {} \\; "
-             docker  exec ndts /bin/bash -c "find ./ -name \"Makefile\" -exec rm -rf {} \\; "
-             docker  exec ndts /bin/bash -c "find ./ -name \"*.cmake\" -exec rm -rf {} \\; "
              docker  exec ndts /bin/bash -c "rm -rf ./latest/_sources"
              docker  exec ndts /bin/bash -c "rm -rf build"
 
@@ -67,13 +64,15 @@ jobs:
         run: |
              echo Version: ${{ steps.extract_docver.outputs.docver }}
              docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
-             docker  exec ndts /bin/bash -c "git fetch && rm -rf cmake && git checkout gh-pages && git pull"
+             docker  exec ndts /bin/bash -c "git fetch && git checkout gh-pages-test && git pull"
+             docker  exec ndts /bin/bash -c "ls -ltr"
              docker  exec ndts /bin/bash -c "mkdir -p ./${{ steps.extract_docver.outputs.docver }}"
              docker  exec ndts /bin/bash -c "shopt -u dotglob && rm -rf ./${{ steps.extract_docver.outputs.docver }}/* "
              docker  exec ndts /bin/bash -c "mv -f build/sphinx/html/* ./${{ steps.extract_docver.outputs.docver }}/"
              # docker  exec ndts /bin/bash -c "mv -f build/devel ./${{ steps.extract_docver.outputs.docver }}/api/doxygen"
              docker  exec ndts /bin/bash -c "rm -rf ./${{ steps.extract_docver.outputs.docver }}/_sources"
              docker  exec ndts /bin/bash -c "rm -rf build"
+             docker  exec ndts /bin/bash -c "ls -ltr"
 
       - name: Deploy documentation
         if: (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/docs_'))  &&  matrix.os == 'debian11'
