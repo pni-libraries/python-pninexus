@@ -9,7 +9,7 @@ if [ "$1" = "2" ]; then
     docker exec  --user root ndts python setup.py install
     if [ "$?" != "0" ]; then exit 255; fi
     echo "build python3-pninexus docs"
-    docker exec  --user root ndts python setup.py  build_sphinx
+    docker exec ndts python setup.py  build_sphinx
 else
     echo "install python3-pninexus"
     docker exec  --user root ndts chown -R tango:tango .
@@ -18,6 +18,6 @@ else
     docker exec  --user root ndts python3 setup.py install
     if [ "$?" != "0" ]; then exit 255; fi
     echo "build python3-pninexus docs"
-    docker exec  --user root ndts python3 setup.py  build_sphinx
+    docker exec ndts python3 setup.py  build_sphinx
 fi
 if [ "$?" != "0" ]; then exit 255; fi
