@@ -43,10 +43,12 @@ jobs:
       - name: Append documentation for the latest release version
         if: github.ref == 'refs/heads/develop' &&  matrix.os == 'debian11'
         run: |
+             docker  exec ndts /bin/bash -c "cp doc/index.html doc/_config.yml build"
              docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
              docker  exec ndts /bin/bash -c "git fetch && git checkout gh-pages && git pull"
              docker  exec ndts /bin/bash -c "mkdir -p ./latest && shopt -u dotglob && rm -rf ./latest/*"
              docker  exec ndts /bin/bash -c "mv -f build/sphinx/html/* ./latest/"
+             docker  exec ndts /bin/bash -c "mv -f build/index.html build/_config.yml ."
              # docker  exec ndts /bin/bash -c "mv -f build/devel ./latest/api/doxygen"
              docker  exec ndts /bin/bash -c "rm -rf ./latest/_sources"
              docker  exec ndts /bin/bash -c "rm -rf build build_tools *.h5 src test"
