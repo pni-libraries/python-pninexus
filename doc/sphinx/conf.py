@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# libpnicore Python bindings documentation build configuration file, created by
+# libpniio Python bindings documentation build configuration file, created by
 # sphinx-quickstart on Tue Jul 28 15:12:05 2015.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -58,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'libpnicore Python bindings'
+project = u'libpniio Python bindings'
 copyright = u'2015, DESY'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -148,7 +148,19 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'localtoc.html',
+        'relations.html',
+        'searchbox.html',
+        # located at _templates/
+        'versions.html',
+    ]
+}
+
+html_context = {
+    "docs_versions" : ["v2.0.0", "v1.3.4"]
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -181,7 +193,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'libpnicorePythonbindingsdoc'
+htmlhelp_basename = 'libpniioPythonbindingsdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -230,7 +242,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'libpnicorepythonbindings', u'libpnicore Python bindings Documentation',
+    ('index', 'libpniiopythonbindings', u'libpniio Python bindings Documentation',
      [u'Eugen Wintersberger'], 1)
 ]
 
@@ -244,8 +256,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'libpnicorePythonbindings', u'libpnicore Python bindings Documentation',
-   u'Eugen Wintersberger', 'libpnicorePythonbindings', 'One line description of project.',
+  ('index', 'libpniioPythonbindings', u'libpniio Python bindings Documentation',
+   u'Eugen Wintersberger', 'libpniioPythonbindings', 'One line description of project.',
    'Miscellaneous'),
 ]
 
