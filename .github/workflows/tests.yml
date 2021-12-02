@@ -20,48 +20,75 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [debian11, debian10, ubuntu21.04, ubuntu20.04]
+        os: [debian11]
+        # os: [debian11, debian10, ubuntu21.10, ubuntu20.04]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+
       - name: Update bash files
         run: |
           chmod +x .ci/run.sh
           chmod +x .ci/install.sh
+
       - name: Build the docker
         env:
           OS: ${{ matrix.os }}
         run: docker build -t ndts .ci/${OS}_py3
+
       - name: Run the docker
         run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts
+
       - name: install python-pninexus
         run: .ci/install.sh 3
+
       - name: run tests
         run: .ci/run.sh 3
-      - name: Stop the docker
-        run: docker container stop ndts
 
-  python2_tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [debian10]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - name: Update bash files
+      - name: Append documentation for the latest release version
+        if: github.ref == 'refs/heads/develop' &&  matrix.os == 'debian11'
         run: |
-          chmod +x .ci/run.sh
-          chmod +x .ci/install.sh
-      - name: Build the docker
+             docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
+             docker  exec ndts /bin/bash -c "git fetch && rm -rf cmake && git checkout gh-pages && git pull"
+             docker  exec ndts /bin/bash -c "mkdir -p ./latest && shopt -u dotglob && rm -rf ./latest/*"
+             docker  exec ndts /bin/bash -c "mv -f build/doc/build/html/* ./latest/"
+             docker  exec ndts /bin/bash -c "mv -f build/doc/api/html ./latest/api/doxygen"
+             docker  exec ndts /bin/bash -c "mv -f build/doc/index.html ./"
+             docker  exec ndts /bin/bash -c "mv -f build/doc/_config.yml ./"
+             docker  exec ndts /bin/bash -c "find ./ -type d -name \"CMakeFiles\" -prune -exec rm -rf {} \\; "
+             docker  exec ndts /bin/bash -c "find ./ -name \"Makefile\" -exec rm -rf {} \\; "
+             docker  exec ndts /bin/bash -c "find ./ -name \"*.cmake\" -exec rm -rf {} \\; "
+             docker  exec ndts /bin/bash -c "rm -rf ./latest/_sources"
+             docker  exec ndts /bin/bash -c "rm -rf build"
+
+      - name: Extract the code version from the branch name
+        if: startsWith(github.ref, 'refs/heads/docs_') && matrix.os == 'debian11'
+        shell: bash
+        run: echo "##[set-output name=docver;]$(echo ${GITHUB_REF#refs/heads/docs_})"
+        id: extract_docver
+
+      - name: Append documentation for the extracted release version
+        if: startsWith(github.ref, 'refs/heads/docs_') && matrix.buildtype == 'Release' && matrix.os == 'debian11'
+        run: |
+             echo Version: ${{ steps.extract_docver.outputs.docver }}
+             docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
+             docker  exec ndts /bin/bash -c "git fetch && rm -rf cmake && git checkout gh-pages && git pull"
+             docker  exec ndts /bin/bash -c "mkdir -p ./${{ steps.extract_docver.outputs.docver }}"
+             docker  exec ndts /bin/bash -c "shopt -u dotglob && rm -rf ./${{ steps.extract_docver.outputs.docver }}/* "
+             docker  exec ndts /bin/bash -c "mv -f build/sphinx/html/* ./${{ steps.extract_docver.outputs.docver }}/"
+             # docker  exec ndts /bin/bash -c "mv -f build/devel ./${{ steps.extract_docver.outputs.docver }}/api/doxygen"
+             docker  exec ndts /bin/bash -c "rm -rf ./${{ steps.extract_docver.outputs.docver }}/_sources"
+             docker  exec ndts /bin/bash -c "rm -rf build"
+
+      - name: Deploy documentation
+        if: (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/docs_'))  &&  matrix.os == 'debian11'
+        uses: s0/git-publish-subdir-action@develop
         env:
-          OS: ${{ matrix.os }}
-        run: docker build -t ndts .ci/${OS}_py2
-      - name: Run the docker
-        run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts
-      - name: install python-pninexus
-        run: .ci/install.sh 2
-      - name: run tests
-        run: .ci/run.sh 2
+          REPO: self
+          BRANCH: gh-pages-test
+          FOLDER: .
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ({sha}) {msg}"
+
       - name: Stop the docker
         run: docker container stop ndts
