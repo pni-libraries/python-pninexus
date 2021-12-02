@@ -159,7 +159,7 @@ html_sidebars = {
 }
 
 html_context = {
-    "docs_versions" : ["v2.0.0"]
+    "docs_versions" : ["v2.0.0", "v1.3.4"]
 }
 
 # Additional templates that should be rendered to pages, maps page names to
