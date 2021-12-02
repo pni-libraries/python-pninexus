@@ -68,7 +68,7 @@ jobs:
         id: extract_docver
 
       - name: Append documentation for the extracted release version
-        if: startsWith(github.ref, 'refs/heads/docs_') && matrix.buildtype == 'Release' && matrix.os == 'debian11'
+        if: startsWith(github.ref, 'refs/heads/docs_') &&  matrix.os == 'debian11'
         run: |
              echo Version: ${{ steps.extract_docver.outputs.docver }}
              docker  exec ndts /bin/bash -c "git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'"
