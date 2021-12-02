@@ -1,0 +1,221 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HDF5 dataspaces and selections &#8212; pninexus 1.3.4 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="HDF5 datasets" href="h5cpp_dataset.html" />
+    <link rel="prev" title="HDF5 datatypes" href="h5cpp_datatypes.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_dataset.html" title="HDF5 datasets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">HDF5 dataspaces and selections</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pninexus.h5cpp.dataspace">
+<span id="id1"></span><span id="hdf5-dataspaces-and-selections"></span><h1>HDF5 dataspaces and selections<a class="headerlink" href="#module-pninexus.h5cpp.dataspace" title="Permalink to this headline">¶</a></h1>
+<p>While datatype declare what is stored the dataspace defines how it is stored.
+At the current state of the HDF5 library there are only two storage schemes
+available</p>
+<ul class="simple">
+<li><p><em>scalar</em> which means that only a single value of a particular datatype is
+stored</p></li>
+<li><p><em>simple</em> which is a simple n-dimensional regular array of data elements of a
+given type.</p></li>
+</ul>
+<p>Simple and scalar dataspaces are represented by the <a class="reference internal" href="h5cpp/dataspace.html#pninexus.h5cpp.dataspace.Scalar" title="pninexus.h5cpp.dataspace.Scalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalar</span></code></a> and
+<a class="reference internal" href="h5cpp/dataspace.html#pninexus.h5cpp.dataspace.Simple" title="pninexus.h5cpp.dataspace.Simple"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simple</span></code></a> classes in the <a class="reference internal" href="#module-pninexus.h5cpp.dataspace" title="pninexus.h5cpp.dataspace"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.dataspace</span></code></a> package.
+Dataspaces are required when creating attributes and datasets (we will
+discuss this in more detail in <a class="reference internal" href="h5cpp_attributes.html#working-with-attributes"><span class="std std-ref">HDF5 attributes</span></a> and <a class="reference internal" href="h5cpp_dataset.html#hdf5-datasets"><span class="std std-ref">HDF5 datasets</span></a>).</p>
+<p>Scalar dataspaces are simple to create</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.dataspace</span> <span class="kn">import</span> <span class="n">Scalar</span>
+
+<span class="n">dataspace</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>as its constructor does not require any additional arguments. For simple
+dataspaces a bit more effort has to be made.
+There are three different configurations for a simple dataspace</p>
+<ul class="simple">
+<li><p>a fixed size dataspace whose size (and thus the size of the dataset
+constructed with it) cannot be changed once it has been created</p></li>
+<li><p>an extensible dataspace of finite size</p></li>
+<li><p>and an extensible dataspace of infinite size.</p></li>
+</ul>
+<p>The first case is fairly simple</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.dataspace</span> <span class="kn">import</span> <span class="n">Simple</span>
+
+<span class="n">dataspace</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which will create a 2-dimensional dataspace with 12 elemnts along the first
+and 3 elements along the second dimension. To cover the second sitatuation
+we have to pass a second argument with the maximum number of elements along
+each dimension</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataspace</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">24</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The newly created dataspace has 12 elements along the first and 3 along the
+second dimension. However, it would be possible to extend it up to 24 and 6
+dimensions along the two dimensions (we will see later in <a class="reference internal" href="h5cpp_dataset.html#hdf5-datasets"><span class="std std-ref">HDF5 datasets</span></a>
+how this is done practically).</p>
+<p>The last case finally where we can extend a dataset indefinitely along one
+or more of its dimensions requires a special constant <code class="xref py py-const docutils literal notranslate"><span class="pre">UNLIMITED</span></code> from
+the <code class="xref py py-mod docutils literal notranslate"><span class="pre">dataspace</span></code> package</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.dataspace</span> <span class="kn">import</span> <span class="n">Simple</span><span class="p">,</span> <span class="n">UNLIMITED</span>
+
+<span class="n">dataspace</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="n">UNLIMITED</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This code snippet shows a typical use case for such a dataspace. We start
+with no elements along the first dimension but with the option to extend the
+dataspace indefinitely along this first dimension. As a result we are able
+to extend a dataset using such a dataspace indefinitely along this dimension
+and thus append data as it drops in. This has the nice advantage that we do
+not have to know the number of recorded data points in advance.</p>
+<div class="section" id="selections">
+<h2>Selections<a class="headerlink" href="#selections" title="Permalink to this headline">¶</a></h2>
+<p>A topic closely related to dataspaces are selections which is related to
+HDF5s partial IO feature. In many cases the data stored to disk is far
+larger than the memory available on the machine the data should be analyzed.
+Or, not the entire data is required but only a relatively small part of it.
+HDF5 allows to apply selections on a dataspace and subsequently read only the
+selected data from a dataset.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Another missconception about HDF5 is that a selection is applied to a dataset.
+This is wrong. The selection is applied to a dataspace which is then used to
+describe the data stored on disk.</p>
+</div>
+<p>HDF5 supports two kinds of selections</p>
+<ul class="simple">
+<li><p><em>point selections</em> where an arbitrary set of data elements can be selected</p></li>
+<li><p>and <em>hyperslab selections</em> where a regular pattern of data elements is
+selected.</p></li>
+</ul>
+<p>Currently only the <em>hyperslab selection</em> is implemented in <em>h5cpp</em> and thus
+in this Python wrapper. The class in charge is <code class="xref py py-class docutils literal notranslate"><span class="pre">Hyperslab</span></code>.</p>
+<p>A Hyperslab has 4 parameters</p>
+<ul class="simple">
+<li><p>an <em>offset</em> determining the start of the selection in the dataspace</p></li>
+<li><p>a <em>block</em> array which determines how many elements are selected in each
+individual block</p></li>
+<li><p>a <em>stride</em> giving the distance between the blocks</p></li>
+<li><p>and a <em>count</em> value which determines how many blocks to read.</p></li>
+</ul>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HDF5 dataspaces and selections</a><ul>
+<li><a class="reference internal" href="#selections">Selections</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="h5cpp_datatypes.html"
+                        title="previous chapter">HDF5 datatypes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="h5cpp_dataset.html"
+                        title="next chapter">HDF5 datasets</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_dataset.html" title="HDF5 datasets"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">HDF5 dataspaces and selections</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

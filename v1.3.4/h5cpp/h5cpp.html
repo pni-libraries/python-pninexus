@@ -1,0 +1,328 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pninexus.h5cpp &#8212; pninexus 1.3.4 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pninexus.h5cpp.attribute" href="attributes.html" />
+    <link rel="prev" title="API documentation" href="../api_guide.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="attributes.html" title="pninexus.h5cpp.attribute"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../api_guide.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pninexus.h5cpp">
+<span id="pninexus-h5cpp"></span><h1><a class="reference internal" href="#module-pninexus.h5cpp" title="pninexus.h5cpp"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code></a><a class="headerlink" href="#module-pninexus.h5cpp" title="Permalink to this headline">¶</a></h1>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.io.h5cpp</span></code> is a thin wrapper around the <em>h5cpp</em> C++
+library where every
+namespace in the C++ library has a counterpart as a sub-package of
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.io.h5cpp</span></code></p>
+<dl class="py class">
+<dt id="pninexus.h5cpp.Path">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.</code><code class="sig-name descname">Path</code><a class="headerlink" href="#pninexus.h5cpp.Path" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents an HDF5 path. A path in HDF5 is a list of link
+names which should be followed starting from a particular node to access
+another node. A path is <em>absolute</em> if the first node should be the root
+group of a particular file. In its string representation a absolute path
+can be identified by a leading <code class="docutils literal notranslate"><span class="pre">`/</span></code>.</p>
+<p>There are two passiblities how to construct a path:</p>
+<ul>
+<li><p>either use the default constructor</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>or construct from a string representation</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sensors/temperature/data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.Path.absolute">
+<code class="sig-name descname">absolute</code><a class="headerlink" href="#pninexus.h5cpp.Path.absolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-write property either set a path to absolute or to check whether a
+path is absolute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/run_001/sensors/temperature&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="c1">#output: /run_0001/sensors/temperature</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">)</span> <span class="c1">#this should print True</span>
+
+<span class="n">path</span><span class="o">.</span><span class="n">absolute</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="c1">#output: run_0001/sensors/temperature</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.Path.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#pninexus.h5cpp.Path.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the last element of a path (basically
+the name of the last link in the chain)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.Path.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#pninexus.h5cpp.Path.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning a path except for the last last element</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">h5cpp</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/run_0001/sensors/temperature&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+<span class="c1">#output: /run_0001/sensors</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.Path.size">
+<code class="sig-name descname">size</code><a class="headerlink" href="#pninexus.h5cpp.Path.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the number of elements (link names) in
+this path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.Path.append">
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.Path.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a an additional name to the end of the path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – the link name to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.Path.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.Path.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Paths can be concatenated using the + operator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/run_0001&quot;</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sensors/temperature/data&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p1</span><span class="o">+</span><span class="n">p2</span><span class="p">)</span>
+<span class="c1">#output: /run_0001/sensors/temperature/data</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.Path.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.Path.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+<p>Paths can be checked for equality. Two paths are considered equal if
+they store the same link names in the same order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.IteratorConfig">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.</code><code class="sig-name descname">IteratorConfig</code><a class="headerlink" href="#pninexus.h5cpp.IteratorConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class providing configuration information for link, node and attribute
+iteration.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IteratorConfig.index">
+<code class="sig-name descname">index</code><a class="headerlink" href="#pninexus.h5cpp.IteratorConfig.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-write property to set and retrieve the index to use for the
+iteration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<a class="reference internal" href="#pninexus.h5cpp.IterationIndex" title="pninexus.h5cpp.IterationIndex"><em>IterationIndex</em></a>) – index to use for iteration</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pninexus.h5cpp.IterationIndex" title="pninexus.h5cpp.IterationIndex">IterationIndex</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IteratorConfig.order">
+<code class="sig-name descname">order</code><a class="headerlink" href="#pninexus.h5cpp.IteratorConfig.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-write property to set and retrieve the iteration order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>order</strong> (<a class="reference internal" href="#pninexus.h5cpp.IterationOrder" title="pninexus.h5cpp.IterationOrder"><em>IterationOrder</em></a>) – order value</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pninexus.h5cpp.IterationOrder" title="pninexus.h5cpp.IterationOrder">IterationOrder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IteratorConfig.link_access_list">
+<code class="sig-name descname">link_access_list</code><a class="headerlink" href="#pninexus.h5cpp.IteratorConfig.link_access_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-write attribute to set and retrieve the link access property list
+which should be used for iteration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>h5cpp.property.LinkAccessList</em></a>) – link access property list</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.property.LinkAccessList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.IterationOrder">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.</code><code class="sig-name descname">IterationOrder</code><a class="headerlink" href="#pninexus.h5cpp.IterationOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration type determining in which order a particular iteration index
+should be traversed.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IterationOrder.NATIVE">
+<code class="sig-name descname">NATIVE</code><em class="property"> platform and/or library depending native order</em><a class="headerlink" href="#pninexus.h5cpp.IterationOrder.NATIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IterationOrder.DECREASING">
+<code class="sig-name descname">DECREASING</code><em class="property"> traverse the index in decreasing order</em><a class="headerlink" href="#pninexus.h5cpp.IterationOrder.DECREASING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IterationOrder.INCREASING">
+<code class="sig-name descname">INCREASING</code><em class="property"> traverse the index in increasing order</em><a class="headerlink" href="#pninexus.h5cpp.IterationOrder.INCREASING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.IterationIndex">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.</code><code class="sig-name descname">IterationIndex</code><a class="headerlink" href="#pninexus.h5cpp.IterationIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration type determining which index to use for iteration over the
+node tree.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IterationIndex.NAME">
+<code class="sig-name descname">NAME</code><em class="property"> use the link name of a node as an iteration index</em><a class="headerlink" href="#pninexus.h5cpp.IterationIndex.NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.IterationIndex.CREATION_ORDER">
+<code class="sig-name descname">CREATION_ORDER</code><em class="property"> use the order of creation as a node index</em><a class="headerlink" href="#pninexus.h5cpp.IterationIndex.CREATION_ORDER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../api_guide.html"
+                        title="previous chapter">API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="attributes.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute</span></code></a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="../index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="../index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="../index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="attributes.html" title="pninexus.h5cpp.attribute"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../api_guide.html" title="API documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

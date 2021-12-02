@@ -1,0 +1,316 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pninexus.h5cpp.attribute &#8212; pninexus 1.3.4 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pninexus.h5cpp.dataspace" href="dataspace.html" />
+    <link rel="prev" title="pninexus.h5cpp" href="h5cpp.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dataspace.html" title="pninexus.h5cpp.dataspace"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp.html" title="pninexus.h5cpp"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pninexus-h5cpp-attribute">
+<h1><a class="reference internal" href="../h5cpp_attributes.html#module-pninexus.h5cpp.attribute" title="pninexus.h5cpp.attribute"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute</span></code></a><a class="headerlink" href="#pninexus-h5cpp-attribute" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="attributemanager">
+<h2><a class="reference internal" href="#pninexus.h5cpp.attribute.AttributeManager" title="pninexus.h5cpp.attribute.AttributeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeManager</span></code></a><a class="headerlink" href="#attributemanager" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pninexus.h5cpp.attribute.AttributeManager">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.attribute.</code><code class="sig-name descname">AttributeManager</code><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Every instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code> has an instance of <a class="reference internal" href="#pninexus.h5cpp.attribute.AttributeManager" title="pninexus.h5cpp.attribute.AttributeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeManager</span></code></a>
+attached to it which provides access to the attributes attached to the
+particular node.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.size">
+<code class="sig-name descname">size</code><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the number of attributs of a node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>number of attributes</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new attribute on the node to which the manager instance is
+attached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of the new attribute</p></li>
+<li><p><strong>type</strong> (<em>pni.io.h5cpp.datatype.Datatype</em>) – a datatype instance</p></li>
+<li><p><strong>space</strong> (<em>pni.io.h5cpp.dataspace.Dataspace</em>) – the dataspace for the attribute</p></li>
+<li><p><strong>pni.io.h5cpp.property.AttributeCreationList</strong> – an optional attribute creation property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new instance of <a class="reference internal" href="#pninexus.h5cpp.attribute.Attribute" title="pninexus.h5cpp.attribute.Attribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pni.io.h5cpp.attribute.Attribute</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of an error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an attribute from a node. Raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">RuntimeError</span></code> if the
+node does not exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>object</em>) – the index of the node to remove. This can either be
+a numerical index or the name of the attribute.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The attribute manager supports the <cite>__len__</cite> protocol so one can use the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">len()</span></code> function to determine the number of attributes attached
+to a node.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of attributes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attributes</span><span class="p">)))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes the name of an attribute as its sole argument and returns <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>
+if an attribute of that name exists, otherwise it returns <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – the name of an attribute</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the attribute exists, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.AttributeManager.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.AttributeManager.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads data from an attribute and allows slicing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;tensor&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>A numpy array is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>slice</em>) – the selection for the data to read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array with the data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="attribute">
+<h2><a class="reference internal" href="#pninexus.h5cpp.attribute.Attribute" title="pninexus.h5cpp.attribute.Attribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code></a><a class="headerlink" href="#attribute" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pninexus.h5cpp.attribute.Attribute">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.attribute.</code><code class="sig-name descname">Attribute</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attribtues</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Attributes can be obtained with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.Attribute.dataspace">
+<code class="sig-name descname">dataspace</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.dataspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the dataspace for the attribute</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.Attribute.datatype">
+<code class="sig-name descname">datatype</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the HDF5 datatype of the attribute</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.Attribute.name">
+<code class="sig-name descname">name</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the name of the attribute as an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.Attribute.is_valid">
+<code class="sig-name descname">is_valid</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the attribute is a valid
+HDF5 object, and <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.attribute.Attribute.parent_link">
+<code class="sig-name descname">parent_link</code><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.parent_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning a link to the parent node of the attribute
+as an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">pni.io.h5cpp.node.Link</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.Attribute.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>closes the current attribute</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.Attribute.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads attribute data and returns it as an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.attribute.Attribute.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.attribute.Attribute.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an instance of a Python object and writes it to the attribute.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute</span></code></a><ul>
+<li><a class="reference internal" href="#attributemanager"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttributeManager</span></code></a></li>
+<li><a class="reference internal" href="#attribute"><code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="h5cpp.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dataspace.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.dataspace</span></code></a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="../index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="../index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="../index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dataspace.html" title="pninexus.h5cpp.dataspace"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="h5cpp.html" title="pninexus.h5cpp"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 1.3.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
