@@ -19,7 +19,6 @@ version = "2.0.0"
 # release = "2.0.0"
 release = "2.0"
 
-
 if release.count(".") == 1:
     docs_release = '(latest)'
 else:

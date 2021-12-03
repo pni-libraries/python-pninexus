@@ -21,3 +21,6 @@ else
     docker exec ndts python3 setup.py  build_sphinx
 fi
 if [ "$?" != "0" ]; then exit 255; fi
+
+docker exec  --user root ndts rm -rf src/pninexus.egg-info
+if [ "$?" != "0" ]; then exit 255; fi
