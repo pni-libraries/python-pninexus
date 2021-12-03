@@ -120,7 +120,7 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
     hdf5::datatype::String string_type = self.datatype();
     if(!string_type.is_variable_length())
     {
-      std::cout<<"Saving fixed length string array!"<<std::endl;
+      // std::cout<<"Saving fixed length string array!"<<std::endl;
       PyObject *ptr = reinterpret_cast<PyObject*>(static_cast<PyArrayObject*>(array_adapter));
       Py_XINCREF(ptr);
 
