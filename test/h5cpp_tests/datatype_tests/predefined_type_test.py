@@ -37,52 +37,13 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testUInt8(self):
 
-        dtype = h5cpp.datatype.kUInt8
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kUInt8)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 1)
         self.assertEqual(dtype.is_signed(), False)
 
         dtype.make_signed(True)
         self.assertEqual(dtype.is_signed(), True)
-
-        self.assertEqual(dtype.precision, 8)
-        dtype.precision = 16
-        self.assertEqual(dtype.precision, 16)
-        dtype.precision = 8
-        self.assertEqual(dtype.precision, 8)
-
-        self.assertEqual(dtype.offset, 0)
-        dtype.offset = 2
-        self.assertEqual(dtype.offset, 2)
-        dtype.offset = 0
-        self.assertEqual(dtype.offset, 0)
-
-        order = dtype.order
-        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
-                                        h5cpp.datatype.Order.BE])
-        dtype.order = h5cpp.datatype.Order.BE
-        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
-        dtype.order = h5cpp.datatype.Order.LE
-        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
-        dtype.order = order
-
-        lp, mp = dtype.pad
-        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
-        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
-        dtype.pad = (h5cpp.datatype.Pad.ONE,
-                     h5cpp.datatype.Pad.BACKGROUND)
-        lp, mp = dtype.pad
-        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
-        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
-        dtype.pad = [h5cpp.datatype.Pad.ZERO,
-                     h5cpp.datatype.Pad.ZERO]
-
-    def testInt8(self):
-
-        dtype = h5cpp.datatype.kInt8
-        self.assertTrue(isinstance(dtype, self.int_types))
-        self.assertEqual(dtype.is_signed(), True)
-
         dtype.make_signed(False)
         self.assertEqual(dtype.is_signed(), False)
 
@@ -118,9 +79,52 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.pad = [h5cpp.datatype.Pad.ZERO,
                      h5cpp.datatype.Pad.ZERO]
 
+    def testInt8(self):
+
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kInt8)
+        self.assertTrue(isinstance(dtype, self.int_types))
+        self.assertEqual(dtype.is_signed(), True)
+
+        dtype.make_signed(False)
+        self.assertEqual(dtype.is_signed(), False)
+        dtype.make_signed(True)
+        self.assertEqual(dtype.is_signed(), True)
+
+        self.assertEqual(dtype.precision, 8)
+        dtype.precision = 16
+        self.assertEqual(dtype.precision, 16)
+        dtype.precision = 8
+        self.assertEqual(dtype.precision, 8)
+
+        self.assertEqual(dtype.offset, 0)
+        dtype.offset = 2
+        self.assertEqual(dtype.offset, 2)
+        dtype.offset = 0
+        self.assertEqual(dtype.offset, 0)
+
+        order = dtype.order
+        self.assertTrue(dtype.order in [h5cpp.datatype.Order.LE,
+                                        h5cpp.datatype.Order.BE])
+        dtype.order = h5cpp.datatype.Order.BE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.BE)
+        dtype.order = h5cpp.datatype.Order.LE
+        self.assertEqual(dtype.order, h5cpp.datatype.Order.LE)
+        dtype.order = order
+
+        lp, mp = dtype.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ZERO)
+        self.assertEqual(mp, h5cpp.datatype.Pad.ZERO)
+        dtype.pad = (h5cpp.datatype.Pad.ONE,
+                     h5cpp.datatype.Pad.BACKGROUND)
+        lp, mp = dtype.pad
+        self.assertEqual(lp, h5cpp.datatype.Pad.ONE)
+        self.assertEqual(mp, h5cpp.datatype.Pad.BACKGROUND)
+        dtype.pad = [h5cpp.datatype.Pad.ZERO,
+                     h5cpp.datatype.Pad.ZERO]
+
     def testUInt16(self):
 
-        dtype = h5cpp.datatype.kUInt16
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kUInt16)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 2)
         self.assertEqual(dtype.is_signed(), False)
@@ -162,7 +166,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testInt16(self):
 
-        dtype = h5cpp.datatype.kInt16
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kInt16)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 2)
         self.assertEqual(dtype.is_signed(), True)
@@ -204,7 +208,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testUInt32(self):
 
-        dtype = h5cpp.datatype.kUInt32
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kUInt32)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.is_signed(), False)
@@ -246,7 +250,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testInt32(self):
 
-        dtype = h5cpp.datatype.kInt32
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kInt32)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.is_signed(), True)
@@ -288,7 +292,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testUInt64(self):
 
-        dtype = h5cpp.datatype.kUInt64
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kUInt64)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 8)
         self.assertEqual(dtype.is_signed(), False)
@@ -330,7 +334,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testInt64(self):
 
-        dtype = h5cpp.datatype.kInt64
+        dtype = h5cpp.datatype.Integer(h5cpp.datatype.kInt64)
         self.assertTrue(isinstance(dtype, self.int_types))
         self.assertEqual(dtype.size, 8)
         self.assertEqual(dtype.is_signed(), True)
@@ -372,7 +376,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testFloat32(self):
 
-        dtype = h5cpp.datatype.kFloat32
+        dtype = h5cpp.datatype.Float(h5cpp.datatype.kFloat32)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 4)
 
@@ -451,7 +455,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testFloat64(self):
 
-        dtype = h5cpp.datatype.kFloat64
+        dtype = h5cpp.datatype.Float(h5cpp.datatype.kFloat64)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 8)
 
@@ -527,7 +531,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testFloat128(self):
 
-        dtype = h5cpp.datatype.kFloat128
+        dtype = h5cpp.datatype.Float(h5cpp.datatype.kFloat128)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertTrue(dtype.size in [8, 12, 16])
 
@@ -603,20 +607,20 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testVariableString(self):
 
-        dtype = h5cpp.datatype.kVariableString
+        dtype = h5cpp.datatype.String(h5cpp.datatype.kVariableString)
         self.assertTrue(isinstance(dtype, self.string_types))
         self.assertTrue(dtype.is_variable_length)
 
     def testEBool(self):
 
-        dtype = h5cpp.datatype.kEBool
+        dtype = h5cpp.datatype.Enum(h5cpp.datatype.kEBool)
         self.assertTrue(isinstance(dtype, self.enum_types))
         self.assertTrue(h5cpp._datatype.is_bool(dtype))
         self.assertEqual(dtype.size, 1)
 
     def testFloat16(self):
 
-        dtype = h5cpp.datatype.kFloat16
+        dtype = h5cpp.datatype.Float(h5cpp.datatype.kFloat16)
         self.assertTrue(isinstance(dtype, self.float_types))
 
         self.assertEqual(dtype.size, 2)
@@ -692,7 +696,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testComplex32(self):
 
-        dtype = h5cpp.datatype.kComplex32
+        dtype = h5cpp.datatype.Compound(h5cpp.datatype.kComplex32)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 4)
         self.assertEqual(dtype.number_of_fields, 2)
@@ -753,7 +757,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testComplex64(self):
 
-        dtype = h5cpp.datatype.kComplex64
+        dtype = h5cpp.datatype.Compound(h5cpp.datatype.kComplex64)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 8)
         self.assertEqual(dtype.number_of_fields, 2)
@@ -814,7 +818,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testComplex128(self):
 
-        dtype = h5cpp.datatype.kComplex128
+        dtype = h5cpp.datatype.Compound(h5cpp.datatype.kComplex128)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 16)
         self.assertEqual(dtype.number_of_fields, 2)
@@ -875,7 +879,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
     def testComplex256(self):
 
-        dtype = h5cpp.datatype.kComplex256
+        dtype = h5cpp.datatype.Compound(h5cpp.datatype.kComplex256)
         self.assertTrue(isinstance(dtype, self.float_types))
         self.assertEqual(dtype.size, 32)
         self.assertEqual(dtype.number_of_fields, 2)

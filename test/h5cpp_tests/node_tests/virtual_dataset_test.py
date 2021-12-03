@@ -268,10 +268,10 @@ if VDSAvailable:
             self.assertEqual(dataset.dataspace.size, 90)
 
             allmod = dataset.read()
-            
+
             refdata = numpy.array([1, 2, 3])
             for offset in range(0, kmodulesize * 3, 3):
                 selection = Hyperslab(offset=(0,), block=(3,))
                 mod1 = dataset.read(selection=selection)
                 npt.assert_array_equal(mod1, refdata)
-                npt.assert_array_equal(mod1, allmod[offset: (offset+3)])
+                npt.assert_array_equal(mod1, allmod[offset: (offset + 3)])
