@@ -52,7 +52,7 @@ kmodulesize = 30
 
 if VDSAvailable:
 
-    class DatasetPartialIOTests(unittest.TestCase):
+    class VDSDatasetPartialIOTests(unittest.TestCase):
 
         filename = os.path.join(module_path, "VirtualDatasetTests.h5")
         filename2 = os.path.join(module_path, "VirtualDatasetTests_inter.h5")
@@ -62,7 +62,7 @@ if VDSAvailable:
 
         @classmethod
         def setUpClass(cls):
-            super(DatasetPartialIOTests, cls).setUpClass()
+            super(VDSDatasetPartialIOTests, cls).setUpClass()
 
             h5cpp.file.create(cls.filename, AccessFlags.TRUNCATE)
             h5cpp.file.create(cls.filename2, AccessFlags.TRUNCATE)
