@@ -9,7 +9,4 @@ else
     docker exec --user root ndts python3 setup.py test
     # docker exec -it ndts python3 setup.py test
 fi
-if [ $? -ne "0" ]
-then
-    exit -1
-fi
+if [ "$?" != "0" ]; then exit 255; fi

@@ -62,7 +62,6 @@ keyring
 
    $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
    $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
-1
 
 The return value of this command line should be `OK`.
 In a next step you have to add new package sources to your system. For this
