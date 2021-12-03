@@ -52,7 +52,7 @@ kmodulesize = 30
 
 if VDSAvailable:
 
-    class DatasetPartialIOTests(unittest.TestCase):
+    class VDSDatasetPartialIOTests(unittest.TestCase):
 
         filename = os.path.join(module_path, "VirtualDatasetTests.h5")
         filename2 = os.path.join(module_path, "VirtualDatasetTests_inter.h5")
@@ -62,7 +62,7 @@ if VDSAvailable:
 
         @classmethod
         def setUpClass(cls):
-            super(DatasetPartialIOTests, cls).setUpClass()
+            super(VDSDatasetPartialIOTests, cls).setUpClass()
 
             h5cpp.file.create(cls.filename, AccessFlags.TRUNCATE)
             h5cpp.file.create(cls.filename2, AccessFlags.TRUNCATE)
@@ -268,9 +268,10 @@ if VDSAvailable:
             self.assertEqual(dataset.dataspace.size, 90)
 
             allmod = dataset.read()
-            print(allmod)
+
             refdata = numpy.array([1, 2, 3])
             for offset in range(0, kmodulesize * 3, 3):
                 selection = Hyperslab(offset=(0,), block=(3,))
                 mod1 = dataset.read(selection=selection)
                 npt.assert_array_equal(mod1, refdata)
+                npt.assert_array_equal(mod1, allmod[offset: (offset + 3)])

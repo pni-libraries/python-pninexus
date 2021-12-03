@@ -16,7 +16,13 @@ from build_tools import (CppExtensionFactory,
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
 version = "2.0.0"
-release = "2.0.0"
+# release = "2.0.0"
+release = "2.0"
+
+if release.count(".") == 1:
+    docs_release = '(latest)'
+else:
+    docs_release = release
 
 
 def get_build_dir():
@@ -233,7 +239,7 @@ setup(
         'build_sphinx': {
             'project': ('setup.py', name),
             'version': ('setup.py', version),
-            'release': ('setup.py', release)
+            'release': ('setup.py', docs_release)
         }
     }
 )

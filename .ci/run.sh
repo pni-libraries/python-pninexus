@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
 if [ "$1" = "2" ]; then
-    echo "run python-pninexus"
-    docker exec --user root ndts python setup.py test
-    # docker exec -it ndts python setup.py test
+    echo "run python-pninexus tests"
+    # docker exec ndts python setup.py test
+    docker exec ndts python -m pytest test
 else
-    echo "run python3-pninexus"
-    docker exec --user root ndts python3 setup.py test
-    # docker exec -it ndts python3 setup.py test
+    echo "run python3-pninexus tests"
+    docker exec ndts python3 -m pytest test
 fi
-if [ $? -ne "0" ]
-then
-    exit -1
-fi
+if [ "$?" != "0" ]; then exit 255; fi
