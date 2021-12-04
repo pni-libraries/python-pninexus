@@ -185,7 +185,7 @@ BOOST_PYTHON_MODULE(_filter)
     .add_property("options_mask",get_options_mask,set_options_mask)
     .add_property("pixels_per_block",get_pixels_per_block,set_pixels_per_block)
     .def_readonly("EC_OPTION_MASK", &SZip::ec_option_mask)
-    .def_readonly("NN_OPTION_MASK", &SZip::NN_option_mask)
+    .def_readonly("NN_OPTION_MASK", &SZip::nn_option_mask)
     ;
 
   void (ScaleOffset::*set_scale_type)(SOScaleType) = &ScaleOffset::scale_type;
