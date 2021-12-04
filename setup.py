@@ -66,20 +66,25 @@ else:
                                             minor=sys.version_info.minor))
     nexus_config.add_include_directory('/usr/include/hdf5/serial')
 
-    # uncomment when h5cpp locally installed
-    nexus_config.add_include_directory("/opt/h5cpp/include")
-    nexus_config.add_library_directory("/opt/h5cpp/lib")
-    nexus_config.add_linker_argument("-Wl,-rpath,/opt/h5cpp/lib")
+    h5cpp_path = os.environ.get('H5CPP_LOCAL_PATH')
+    if h5cpp_path:
+        # uncomment when h5cpp locally installed
+        nexus_config.add_include_directory("%s/include" % h5cpp_path)
+        nexus_config.add_library_directory("%s/lib" % h5cpp_path)
+        nexus_config.add_linker_argument("-Wl,-rpath,/%s/lib" % h5cpp_path)
 
-    # uncomment when libpnineuxs locally installed
-    nexus_config.add_include_directory("/opt/libpninexus/include")
-    nexus_config.add_library_directory("/opt/libpninexus/lib")
-    nexus_config.add_linker_argument("-Wl,-rpath,/opt/libpninexus/lib")
+        # uncomment when h5cpp compiled with --as-needed
+        nexus_config.add_link_library('hdf5_hl')
+        nexus_config.add_library_directory(
+            '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
 
-    # uncomment when h5cpp compiled with --as-needed
-    nexus_config.add_link_library('hdf5_hl')
-    nexus_config.add_library_directory(
-        '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
+    pninexus_path = os.environ.get('PNINEXUS_LOCAL_PATH')
+    if pninexus_path:
+        # uncomment when libpnineuxs locally installed
+        nexus_config.add_include_directory("%s/include" % pninexus_path)
+        nexus_config.add_library_directory("%s/lib" % pninexus_path)
+        nexus_config.add_linker_argument("-Wl,-rpath,%s/lib" % pninexus_path)
+
 
 #
 # adding include directories from numpy

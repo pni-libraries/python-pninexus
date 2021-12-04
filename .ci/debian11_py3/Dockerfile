@@ -25,6 +25,7 @@ RUN cd /h5cpp-src/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/h5cpp -DCMAKE_BUILD
 ENV CPLUS_INCLUDE_PATH=/opt/h5cpp/include
 ENV LD_LIBRARY_PATH=/opt/h5cpp/lib
 ENV H5CPP=/opt/h5cpp/lib/cmake/h5cpp-0.5
+ENV H5CPP_LOCAL_PATH=/opt/h5cpp
 
 # install latest linpninexus
 RUN mkdir -p /opt/libpninexus
@@ -34,6 +35,7 @@ RUN cd /libpninexus-src/libpninexus && git submodule init && git pull --recurse-
 RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
 ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libpninexus/lib
+ENV PNINEXUS_LOCAL_PATH=/opt/libpninexus
 
 ENV PKG_CONFIG_PATH=/home/tango/lib/pkgconfig
 USER tango
