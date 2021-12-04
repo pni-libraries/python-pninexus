@@ -79,8 +79,7 @@ else:
     # uncomment when h5cpp compiled with --as-needed
     nexus_config.add_link_library('hdf5_hl')
     nexus_config.add_library_directory(
-          '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
-
+        '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
 
 #
 # adding include directories from numpy
