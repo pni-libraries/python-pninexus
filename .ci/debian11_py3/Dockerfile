@@ -28,7 +28,7 @@ ENV H5CPP=/opt/h5cpp/lib/cmake/h5cpp-0.5
 
 # install latest linpninexus
 RUN mkdir -p /opt/libpninexus
-RUN mkdir -p /libh5cpp-src
+RUN mkdir -p /libpninexus-src
 RUN cd /libpninexus-src && git clone https://github.com/pni-libraries/libpninexus && mkdir build
 RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
 ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
