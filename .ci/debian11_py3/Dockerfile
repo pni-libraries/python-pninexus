@@ -26,6 +26,7 @@ ENV CPLUS_INCLUDE_PATH=/opt/h5cpp/include
 ENV LD_LIBRARY_PATH=/opt/h5cpp/lib
 ENV H5CPP=/opt/h5cpp/lib/cmake/h5cpp-0.5
 ENV H5CPP_LOCAL_PATH=/opt/h5cpp
+ENV HDF5_HL_LOCAL_PATH=/usr/lib/x86_64-linux-gnu/hdf5/serial/
 
 # install latest linpninexus
 RUN mkdir -p /opt/libpninexus
