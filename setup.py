@@ -58,9 +58,17 @@ if os.path.exists("conanbuildinfo.txt"):
         print(lib)
 else:
     nexus_config = BuildConfiguration()
-    # nexus_config.add_include_directory("'../../h5cpptest/include")
-    # nexus_config.add_library_directory("'../../h5cpptest/lib")
-    # nexus_config.add_linker_argument("-Wl,-rpath,../../h5cpptest/lib")
+
+    # uncomment when h5cpp locally installed
+    nexus_config.add_include_directory("'/opt/h5cpp/include")
+    nexus_config.add_library_directory("'/opt/h5cpp/lib")
+    nexus_config.add_linker_argument("-Wl,-rpath,/opt/h5cpp/lib")
+
+    # uncomment when libpnineuxs locally installed
+    nexus_config.add_include_directory("'/opt/libpninexus/include")
+    nexus_config.add_library_directory("'/opt/libpninexus/lib")
+    nexus_config.add_linker_argument("-Wl,-rpath,/opt/libpninexus/lib")
+
     nexus_config.add_link_library('pninexus')
     nexus_config.add_link_library('h5cpp')
     nexus_config.add_link_library(
