@@ -59,6 +59,13 @@ if os.path.exists("conanbuildinfo.txt"):
 else:
     nexus_config = BuildConfiguration()
 
+    nexus_config.add_link_library('pninexus')
+    nexus_config.add_link_library('h5cpp')
+    nexus_config.add_link_library(
+        "boost_python{major}{minor}".format(major=sys.version_info.major,
+                                            minor=sys.version_info.minor))
+    nexus_config.add_include_directory('/usr/include/hdf5/serial')
+
     # uncomment when h5cpp locally installed
     nexus_config.add_include_directory("/opt/h5cpp/include")
     nexus_config.add_library_directory("/opt/h5cpp/lib")
@@ -69,16 +76,10 @@ else:
     nexus_config.add_library_directory("/opt/libpninexus/lib")
     nexus_config.add_linker_argument("-Wl,-rpath,/opt/libpninexus/lib")
 
-    nexus_config.add_link_library('pninexus')
-    nexus_config.add_link_library('h5cpp')
-    nexus_config.add_link_library(
-        "boost_python{major}{minor}".format(major=sys.version_info.major,
-                                            minor=sys.version_info.minor))
-    nexus_config.add_include_directory('/usr/include/hdf5/serial')
-    # # uncomment when h5cpp compiled with --as-needed
-    # nexus_config.add_link_library('hdf5_hl')
-    # nexus_config.add_library_directory(
-    #       '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
+    # uncomment when h5cpp compiled with --as-needed
+    nexus_config.add_link_library('hdf5_hl')
+    nexus_config.add_library_directory(
+          '/usr/lib/x86_64-linux-gnu/hdf5/serial/')
 
 
 #
