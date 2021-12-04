@@ -24,7 +24,7 @@
 #include <h5cpp/hdf5.hpp>
 #include "wrappers.hpp"
 
-static const hsize_t UNLIMITED = H5S_UNLIMITED;
+static const hsize_t unlimited = H5S_UNLIMITED;
 
 
 BOOST_PYTHON_MODULE(_dataspace)
@@ -75,7 +75,7 @@ BOOST_PYTHON_MODULE(_dataspace)
       ;
 
   scope current;
-  current.attr("UNLIMITED") = UNLIMITED;
+  current.attr("UNLIMITED") = unlimited;
 
   create_selections();
 }
