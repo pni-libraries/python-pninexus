@@ -56,7 +56,7 @@ class DLL_EXPORT ExternalFilterWrapper : public Filter
   ~ExternalFilterWrapper(){}
 
     virtual void operator()(const hdf5::property::DatasetCreationList &dcpl,
-                            Availability flag=Availability::MANDATORY) const
+                            Availability flag=Availability::Mandatory) const
     {
       if(H5Pset_filter(static_cast<hid_t>(dcpl), id(), static_cast<hid_t>(flag),
 		       cd_values_.size(), cd_values_.data()) < 0)
@@ -149,17 +149,17 @@ BOOST_PYTHON_MODULE(_filter)
   using namespace hdf5::filter;
 
   enum_<Availability>("Availability")
-      .value("MANDATORY",Availability::MANDATORY)
-      .value("OPTIONAL",Availability::OPTIONAL);
+      .value("MANDATORY",Availability::Mandatory)
+      .value("OPTIONAL",Availability::Optional);
   
   enum_<SOScaleType>("SOScaleType")
-      .value("FLOAT_DSCALE",SOScaleType::FLOAT_DSCALE)
-      .value("FLOAT_ESCALE",SOScaleType::FLOAT_ESCALE)
-      .value("INT",SOScaleType::INT);
+      .value("FLOAT_DSCALE",SOScaleType::FloatDScale)
+      .value("FLOAT_ESCALE",SOScaleType::FloatEScale)
+      .value("INT",SOScaleType::Int);
 
   class_<Filter,boost::noncopyable>("Filter",no_init)
       .add_property("id",&Filter::id)
-      .def("__call__",&Filter::operator(),(args("dcpl"),args("availability")=Availability::MANDATORY))
+      .def("__call__",&Filter::operator(),(args("dcpl"),args("availability")=Availability::Mandatory))
       .def("is_encoding_enabled", &Filter::is_encoding_enabled)
       .def("is_decoding_enabled", &Filter::is_decoding_enabled)
           ;
@@ -184,8 +184,8 @@ BOOST_PYTHON_MODULE(_filter)
 					  arg("pixels_per_block")=0)))
     .add_property("options_mask",get_options_mask,set_options_mask)
     .add_property("pixels_per_block",get_pixels_per_block,set_pixels_per_block)
-    .def_readonly("EC_OPTION_MASK", &SZip::EC_OPTION_MASK)
-    .def_readonly("NN_OPTION_MASK", &SZip::NN_OPTION_MASK)
+    .def_readonly("EC_OPTION_MASK", &SZip::ec_option_mask)
+    .def_readonly("NN_OPTION_MASK", &SZip::nn_option_mask)
     ;
 
   void (ScaleOffset::*set_scale_type)(SOScaleType) = &ScaleOffset::scale_type;
@@ -193,7 +193,7 @@ BOOST_PYTHON_MODULE(_filter)
   void (ScaleOffset::*set_scale_factor)(int) = &ScaleOffset::scale_factor;
   int(ScaleOffset::*get_scale_factor)() const = &ScaleOffset::scale_factor;
   class_<ScaleOffset,bases<Filter>>("ScaleOffset")
-    .def(init<SOScaleType,int>((arg("scale_type")=SOScaleType::FLOAT_DSCALE,
+    .def(init<SOScaleType,int>((arg("scale_type")=SOScaleType::FloatDScale,
 					  arg("scale_factor")=1)))
     .add_property("scale_type",get_scale_type,set_scale_type)
     .add_property("scale_factor",get_scale_factor,set_scale_factor)

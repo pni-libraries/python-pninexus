@@ -66,7 +66,7 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
                                const dataspace::Dataspace &memory_space)
    {
      numpy::Dimensions dims{1};
-     if(memory_space.type()==dataspace::Type::SIMPLE)
+     if(memory_space.type()==dataspace::Type::Simple)
        dims = numpy::Dimensions(dataspace::Simple(memory_space).current_dimensions());
 
      numpy::ArrayAdapter adapter(reinterpret_cast<PyArrayObject*>(numpy::ArrayFactory::create_ptr(memory_type,dims)));

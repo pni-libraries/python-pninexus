@@ -64,20 +64,20 @@ void create_selections()
   using namespace hdf5::dataspace;
 
   enum_<SelectionType>("SelectionType")
-      .value("NONE",SelectionType::NONE)
-      .value("POINTS",SelectionType::POINTS)
-      .value("HYPERSLAB",SelectionType::HYPERSLAB)
-      .value("ALL",SelectionType::ALL);
+      .value("NONE",SelectionType::None)
+      .value("POINTS",SelectionType::Points)
+      .value("HYPERSLAB",SelectionType::Hyperslab)
+      .value("ALL",SelectionType::All);
 
   enum_<SelectionOperation>("SelectionOperation")
-      .value("SET",SelectionOperation::SET)
-      .value("OR",SelectionOperation::OR)
-      .value("AND",SelectionOperation::AND)
-      .value("XOR",SelectionOperation::XOR)
-      .value("NOTB",SelectionOperation::NOTB)
-      .value("NOTA",SelectionOperation::NOTA)
-      .value("APPEND",SelectionOperation::APPEND)
-      .value("PREPEND",SelectionOperation::PREPEND)
+      .value("SET",SelectionOperation::Set)
+      .value("OR",SelectionOperation::Or)
+      .value("AND",SelectionOperation::And)
+      .value("XOR",SelectionOperation::XOr)
+      .value("NOTB",SelectionOperation::NotB)
+      .value("NOTA",SelectionOperation::NotA)
+      .value("APPEND",SelectionOperation::Append)
+      .value("PREPEND",SelectionOperation::Prepend)
       ;
 
 
