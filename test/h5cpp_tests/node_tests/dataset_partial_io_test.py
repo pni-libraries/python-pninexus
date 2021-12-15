@@ -28,7 +28,7 @@ from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.node import Dataset
 from pninexus.h5cpp.dataspace import Simple
 # from pninexus.h5cpp.dataspace import Scalar
-from pninexus.h5cpp.dataspace import Hyperslab
+from pninexus.h5cpp.dataspace import Hyperslab, SelectionType
 from pninexus.h5cpp.datatype import kInt32
 from pninexus.h5cpp.datatype import String
 from pninexus.h5cpp.property import LinkCreationList
@@ -113,6 +113,12 @@ class DatasetPartialIOTests(unittest.TestCase):
         # write data
         #
         selection = Hyperslab(offset=(0, 0), block=(1, 5))
+
+        self.assertEqual(selection.rank, 2)
+        self.assertEqual(selection.size, 5)
+        self.assertEqual(selection.dimensions(), (1, 5))
+        self.assertEqual(selection.type, SelectionType.HYPERSLAB)
+
         dataset.write(data_base, selection=selection)
         selection.offset(0, 1)
         dataset.write(2 * data_base, selection=selection)
@@ -140,6 +146,12 @@ class DatasetPartialIOTests(unittest.TestCase):
 
         value = 0
         selection = Hyperslab(offset=(0, 0), block=(1, 1))
+
+        self.assertEqual(selection.rank, 2)
+        self.assertEqual(selection.size, 1)
+        self.assertEqual(selection.dimensions(), (1, 1))
+        self.assertEqual(selection.type, SelectionType.HYPERSLAB)
+
         for i in range(3):
             selection.offset(0, i)
             for j in range(5):
