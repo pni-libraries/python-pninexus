@@ -28,6 +28,11 @@
 
 namespace {
 
+hdf5::Dimensions get_dimensions()
+{
+  return self.dimensions();
+}
+
 hdf5::Dimensions get_offset(const hdf5::dataspace::Hyperslab &self)
 {
   return self.offset();
@@ -102,6 +107,9 @@ void create_selections()
            ((arg("offset"),arg("count"),arg("stride")))
            )
       .add_property("rank",&Hyperslab::rank)
+      .add_property("size",&Hyperslab::size)
+      .add_property("type",&Hyperslab::type)
+      .def("dimensions",get_dimensions)
       .def("offset",get_offset)
       .def("offset",set_entire_offset)
       .def("offset",set_individual_offset)
