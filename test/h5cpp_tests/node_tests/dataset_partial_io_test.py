@@ -147,7 +147,7 @@ class DatasetPartialIOTests(unittest.TestCase):
         value = 0
         selection = Hyperslab(offset=(0, 0), block=(1, 1))
 
-        self.assertEqual(selection.rank, 1)
+        self.assertEqual(selection.rank, 2)
         self.assertEqual(selection.size, 1)
         self.assertEqual(selection.dimensions(), (1, 1))
         self.assertEqual(selection.type, SelectionType.HYPERSLAB)
