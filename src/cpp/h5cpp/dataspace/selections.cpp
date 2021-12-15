@@ -28,7 +28,7 @@
 
 namespace {
 
-hdf5::Dimensions get_dimensions()
+hdf5::Dimensions get_dimensions(const hdf5::dataspace::Hyperslab &self)
 {
   return self.dimensions();
 }
