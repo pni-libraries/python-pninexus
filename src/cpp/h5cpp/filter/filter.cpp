@@ -152,10 +152,17 @@ BOOST_PYTHON_MODULE(_filter)
       .value("MANDATORY",Availability::Mandatory)
       .value("OPTIONAL",Availability::Optional);
   
-  enum_<SOScaleType>("SOScaleType")
-      .value("FLOAT_DSCALE",SOScaleType::FloatDScale)
-      .value("FLOAT_ESCALE",SOScaleType::FloatEScale)
-      .value("INT",SOScaleType::Int);
+  enum_<ScaleOffset::ScaleType>("SOScaleType")
+      .value("FLOAT_DSCALE",ScaleOffset::ScaleType::FloatDScale)
+      .value("FLOAT_ESCALE",ScaleOffset::ScaleType::FloatEScale)
+      .value("INT",ScaleOffset::ScaleType::Int);
+
+  enum_<SZip::OptionMask>("SZipOptionMask")
+    .value("NONE", SZip::OptionMask::None)
+    .value("ALLOW_K13", SZip::OptionMask::AllowK13)
+    .value("CHIP", SZip::OptionMask::Chip)
+    .value("ENTROPY_CODING", SZip::OptionMask::EntropyCoding)
+    .value("NEAREST_NEIGHBOR", SZip::OptionMask::NearestNeighbor);
 
   class_<Filter,boost::noncopyable>("Filter",no_init)
       .add_property("id",&Filter::id)
@@ -175,25 +182,23 @@ BOOST_PYTHON_MODULE(_filter)
       .add_property("level",get_level,set_level)
           ;
   
-  void (SZip::*set_options_mask)(unsigned int) = &SZip::options_mask;
-  unsigned int(SZip::*get_options_mask)() const = &SZip::options_mask;
+  void (SZip::*set_option_mask)(unsigned int) = &SZip::option_mask;
+  unsigned int(SZip::*get_option_mask)() const = &SZip::option_mask;
   void (SZip::*set_pixels_per_block)(unsigned int) = &SZip::pixels_per_block;
   unsigned int(SZip::*get_pixels_per_block)() const = &SZip::pixels_per_block;
   class_<SZip,bases<Filter>>("SZip")
-    .def(init<unsigned int,unsigned int>((arg("options_mask")=32,
+    .def(init<unsigned int,unsigned int>((arg("option_mask")=32,
 					  arg("pixels_per_block")=0)))
-    .add_property("options_mask",get_options_mask,set_options_mask)
+    .add_property("option_mask",get_option_mask,set_option_mask)
     .add_property("pixels_per_block",get_pixels_per_block,set_pixels_per_block)
-    .def_readonly("EC_OPTION_MASK", &SZip::ec_option_mask)
-    .def_readonly("NN_OPTION_MASK", &SZip::nn_option_mask)
     ;
 
-  void (ScaleOffset::*set_scale_type)(SOScaleType) = &ScaleOffset::scale_type;
-  SOScaleType(ScaleOffset::*get_scale_type)() const = &ScaleOffset::scale_type;
+  void (ScaleOffset::*set_scale_type)(ScaleOffset::ScaleType) = &ScaleOffset::scale_type;
+  ScaleOffset::ScaleType(ScaleOffset::*get_scale_type)() const = &ScaleOffset::scale_type;
   void (ScaleOffset::*set_scale_factor)(int) = &ScaleOffset::scale_factor;
   int(ScaleOffset::*get_scale_factor)() const = &ScaleOffset::scale_factor;
   class_<ScaleOffset,bases<Filter>>("ScaleOffset")
-    .def(init<SOScaleType,int>((arg("scale_type")=SOScaleType::FloatDScale,
+    .def(init<ScaleOffset::ScaleType,int>((arg("scale_type")=ScaleOffset::ScaleType::FloatDScale,
 					  arg("scale_factor")=1)))
     .add_property("scale_type",get_scale_type,set_scale_type)
     .add_property("scale_factor",get_scale_factor,set_scale_factor)
