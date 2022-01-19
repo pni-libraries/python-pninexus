@@ -27,7 +27,7 @@ import unittest
 import os
 from pninexus.h5cpp.filter import (
     Deflate, Fletcher32, Shuffle, ExternalFilter, ExternalFilters,
-    NBit, SZip, ScaleOffset, SOScaleType,
+    NBit, SZip, ScaleOffset, SOScaleType, SZipOptionMask,
     is_filter_available, Availability)
 import pninexus.h5cpp as hdf5
 
@@ -113,7 +113,7 @@ class FilterCreationTest(unittest.TestCase):
 
     def testSZip(self):
 
-        filter = SZip(SZip.EC_OPTION_MASK, 16)
+        filter = SZip(SZipOptionMask.ENTROPY_CODING, 16)
         filter(self.dcpl)
         hdf5.node.Dataset(self.root, hdf5.Path("SZip"),
                           self.datatype,
