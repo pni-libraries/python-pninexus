@@ -7,8 +7,8 @@ The wrapper supports Python 2.X and 3.X.
 
 ### Required packages
 
-* *h5cpp*  >= 0.4.0
-* *libpninexus* >= 2.0.0
+* *h5cpp*  >= 1.0.0
+* *libpninexus* >= 3.0.0
 * python setuptools
 * numpy
 * c++ compiler

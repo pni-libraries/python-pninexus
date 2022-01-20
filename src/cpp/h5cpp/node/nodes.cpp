@@ -31,6 +31,7 @@ extern "C"{
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "../errors.hpp"
 #include "wrappers.hpp"
 

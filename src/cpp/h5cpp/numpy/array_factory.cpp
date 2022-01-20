@@ -34,7 +34,7 @@ extern "C"{
 }
 #include <h5cpp/datatype/datatype.hpp>
 #include <h5cpp/datatype/enum.hpp>
-#include <h5cpp/datatype/ebool.hpp>
+#include <h5cpp/contrib/nexus/ebool.hpp>
 
 namespace {
 
