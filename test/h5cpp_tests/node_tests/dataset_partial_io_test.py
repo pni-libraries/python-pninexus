@@ -140,7 +140,7 @@ class DatasetPartialIOTests(unittest.TestCase):
 
     def testWriteReadMultiPoints(self):
 
-        dataspace = Simple((3, 5))
+        dataspace = Simple((5, 3))
         dataset = Dataset(
             self.root, h5cpp.Path("WriteReadMultiPoints"), kInt32, dataspace)
 
