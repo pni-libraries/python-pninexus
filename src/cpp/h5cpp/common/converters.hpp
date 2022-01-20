@@ -24,6 +24,7 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 boost::python::object convert_datatype(const hdf5::datatype::Datatype &datatype);
 

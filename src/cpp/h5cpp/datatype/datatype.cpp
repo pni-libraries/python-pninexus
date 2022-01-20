@@ -27,7 +27,8 @@
 #include <cstdint>
 #include <h5cpp/datatype/datatype.hpp>
 #include <h5cpp/datatype/enum.hpp>
-#include <h5cpp/datatype/ebool.hpp>
+#include <h5cpp/contrib/nexus/ebool.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 
 const boost::python::tuple integer_get_pad(const hdf5::datatype::Integer &self)

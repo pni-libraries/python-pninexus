@@ -32,6 +32,7 @@ extern "C"{
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 
 //import here the namespace for the nxh5 module

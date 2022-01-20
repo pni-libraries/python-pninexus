@@ -31,9 +31,10 @@ extern "C"{
 
 //#include "hdf5_numpy.hpp"
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include <boost/python.hpp>
 #include <pni/nexus.hpp>
-#include <h5cpp/datatype/ebool.hpp>
+#include <h5cpp/contrib/nexus/ebool.hpp>
 #include "../errors.hpp"
 #include "../common/converters.hpp"
 #include "../common/io.hpp"

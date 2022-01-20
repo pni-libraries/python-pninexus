@@ -22,6 +22,7 @@
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "wrappers.hpp"
 
 static const hsize_t unlimited = H5S_UNLIMITED;
