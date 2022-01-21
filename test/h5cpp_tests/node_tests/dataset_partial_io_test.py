@@ -28,7 +28,7 @@ from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.node import Dataset
 from pninexus.h5cpp.dataspace import Simple
 # from pninexus.h5cpp.dataspace import Scalar
-from pninexus.h5cpp.dataspace import Hyperslab, SelectionType
+from pninexus.h5cpp.dataspace import Hyperslab, SelectionType, Points
 from pninexus.h5cpp.datatype import kInt32
 from pninexus.h5cpp.datatype import String
 from pninexus.h5cpp.property import LinkCreationList
@@ -138,11 +138,32 @@ class DatasetPartialIOTests(unittest.TestCase):
         npt.assert_array_equal(
             dataset.read(selection=selection), 3 * data_base)
 
-    def testWriteReadPoints(self):
+    def testWriteReadMultiPoints(self):
+
+        dataspace = Simple((5, 3))
+        dataset = Dataset(
+            self.root, h5cpp.Path("WriteReadMultiPoints"), kInt32, dataspace)
+
+        data_base = numpy.ones((3), dtype="int32")
+
+        for i in range(3):
+            selection = Points([[i, 0], [i + 2, 2], [i + 2, 1]])
+            self.assertEqual(selection.rank, 2)
+            self.assertEqual(selection.size, 3)
+            self.assertEqual(selection.dimensions(), (2, 3))
+            self.assertEqual(selection.type, SelectionType.POINTS)
+            dataset.write(data_base * (i + 1), selection=selection)
+
+        for i in range(3):
+            selection = Points([[i, 0], [i + 2, 2], [i + 2, 1]])
+            npt.assert_array_equal(
+                dataset.read(selection=selection), data_base * (i + 1))
+
+    def testWriteReadHyperPoints(self):
 
         dataspace = Simple((3, 5))
         dataset = Dataset(
-            self.root, h5cpp.Path("WriteReadPoints"), kInt32, dataspace)
+            self.root, h5cpp.Path("WriteReadHyperPoints"), kInt32, dataspace)
 
         value = 0
         selection = Hyperslab(offset=(0, 0), block=(1, 1))
@@ -156,6 +177,25 @@ class DatasetPartialIOTests(unittest.TestCase):
             selection.offset(0, i)
             for j in range(5):
                 selection.offset(1, j)
+                dataset.write(data=value, selection=selection)
+                self.assertEqual(
+                    dataset.read(selection=selection)[0], value)
+                value += 1
+
+    def testWriteReadPoints(self):
+
+        dataspace = Simple((3, 5))
+        dataset = Dataset(
+            self.root, h5cpp.Path("WriteReadPoints"), kInt32, dataspace)
+
+        value = 0
+        for i in range(3):
+            for j in range(5):
+                selection = Points([[i, j]])
+                self.assertEqual(selection.rank, 2)
+                self.assertEqual(selection.size, 1)
+                self.assertEqual(selection.dimensions(), (1, 1))
+                self.assertEqual(selection.type, SelectionType.POINTS)
                 dataset.write(data=value, selection=selection)
                 self.assertEqual(
                     dataset.read(selection=selection)[0], value)
