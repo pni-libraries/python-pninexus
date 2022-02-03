@@ -19,7 +19,7 @@ RUN useradd -ms /bin/bash tango
 RUN mkdir -p /opt/h5cpp
 RUN mkdir -p /h5cpp-src
 RUN cd /h5cpp-src && git clone https://github.com/ess-dmsc/h5cpp && mkdir build
-RUN cd /h5cpp-src/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/h5cpp -DCMAKE_BUILD_TYPE=Release -DCONAN=DISABLE -DDISABLE_TESTS=True  ../h5cpp && make install -j4
+RUN cd /h5cpp-src/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/h5cpp -DCMAKE_BUILD_TYPE=Release  -DH5CPP_CONAN=DISABLE -DH5CPP_DISABLE_TESTS=True  ../h5cpp && make install -j4
 ENV CPLUS_INCLUDE_PATH=/opt/h5cpp/include
 ENV LD_LIBRARY_PATH=/opt/h5cpp/lib
 ENV H5CPP=/opt/h5cpp/lib/cmake/h5cpp-0.5
@@ -31,7 +31,7 @@ RUN mkdir -p /opt/libpninexus
 RUN mkdir -p /libpninexus-src
 RUN cd /libpninexus-src && git clone https://github.com/pni-libraries/libpninexus && mkdir build
 RUN cd /libpninexus-src/libpninexus && git submodule init && git pull --recurse-submodules
-RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
+RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release  -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
 ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libpninexus/lib
 ENV PNINEXUS_LOCAL_PATH=/opt/libpninexus
