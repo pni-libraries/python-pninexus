@@ -1,5 +1,7 @@
 # Python bindings for PNI/NeXus and h5cpp
 
+![github workflow](https://github.com/pni-libraries/python-pninexus/actions/workflows/tests.yml/badge.svg) [![docs](https://img.shields.io/badge/Documentation-webpages-ADD8E6.svg)](https://pni-libraries.github.io/python-pninexus/index.html)
+
 Python wrapper for the [h5cpp](https://github.com/ess-dmsc/h5cpp)  and [libpninexus](https://github.com/pni-libraries/libpninexus) C++ libraries.
 The wrapper supports Python 2.X and 3.X.
 
