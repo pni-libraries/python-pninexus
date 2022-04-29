@@ -53,7 +53,7 @@ For Python3 just replace python with python3 in the above instructions.
 
 ### Debian and Ubuntu packages
 
-Debian  `bullseye`, `buster`, `stretch` or Ubuntu  `impish`, `focal`, `bionic` packages can be found in the HDRI repository.
+Debian  `bullseye`, `buster`, `stretch` or Ubuntu  `jammy`, `focal`, `bionic` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
