@@ -71,11 +71,11 @@ for `bullseye`
     $ wget http://repos.pni-hdri.de/bullseye-pni-hdri.list
 ```
 
-or `focal`
+or `jammy`
 
 ```
     $ cd /etc/apt/sources.list.d
-    $ wget http://repos.pni-hdri.de/focal-pni-hdri.list
+    $ wget http://repos.pni-hdri.de/jammy-pni-hdri.list
 ```
 respectively.
 
