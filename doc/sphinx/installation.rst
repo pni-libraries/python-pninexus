@@ -10,9 +10,9 @@ For the build of the package the following dependencies must be satisfied
 +--------------+----------------+
 | package      | version        |
 +==============+================+
-| libh5cpp     | >=0.4.0        |
+| libh5cpp     | >=0.5.0        |
 +--------------+----------------+
-| libpninexus  | >=2.0.0        |
+| libpninexus  | >=3.0.0        |
 +--------------+----------------+
 | libboost     | >=1.60.0       |
 +--------------+----------------+

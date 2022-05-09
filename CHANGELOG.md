@@ -1,5 +1,15 @@
 # ChangeLog
 
+## 3.0.0 - 2021-05-09
+- add documetation versioning ([#148](https://github.com/pni-libraries/python-pninexus/pull/148))
+- switch tests to pytest ([#149](https://github.com/pni-libraries/python-pninexus/pull/149))
+- add size, type and dimensions to Hyperslab ([#154](https://github.com/pni-libraries/python-pninexus/pull/154))
+- update enums for SZip and ScaleOffset updated ([#157](https://github.com/pni-libraries/python-pninexus/pull/157))
+- add PointsWrapper ([#160](https://github.com/pni-libraries/python-pninexus/pull/160))
+- add H5CPP_ prefix ([#162](https://github.com/pni-libraries/python-pninexus/pull/162))
+- use libpninexus 3.0.0 and libph5cpp 0.5.0 c++ libraries ([#166](https://github.com/pni-libraries/python-pninexus/pull/166))
+
+
 ## 2.0.0 - 2021-07-28
 - use libpninexus 2.0.0 c++ libraries ([#143](https://github.com/pni-libraries/python-pninexus/pull/143))
 
