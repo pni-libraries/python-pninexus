@@ -1,0 +1,343 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pninexus.h5cpp.file &#8212; pninexus 3.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pninexus.h5cpp.property" href="properties.html" />
+    <link rel="prev" title="pninexus.h5cpp.datatype" href="datatype.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="properties.html" title="pninexus.h5cpp.property"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="datatype.html" title="pninexus.h5cpp.datatype"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 3.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pninexus-h5cpp-file">
+<h1><a class="reference internal" href="../h5cpp_files.html#module-pninexus.h5cpp.file" title="pninexus.h5cpp.file"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code></a><a class="headerlink" href="#pninexus-h5cpp-file" title="Permalink to this headline">¶</a></h1>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AccessFlags</span></code></a></p></td>
+<td><p>The access flags used to open the file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.Scope" title="pninexus.h5cpp.file.Scope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Scope</span></code></a></p></td>
+<td><p>The scope of a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.File" title="pninexus.h5cpp.file.File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">File</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.create" title="pninexus.h5cpp.file.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.open" title="pninexus.h5cpp.file.open"><code class="xref py py-obj docutils literal notranslate"><span class="pre">open</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pninexus.h5cpp.file.is_hdf5_file" title="pninexus.h5cpp.file.is_hdf5_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_hdf5_file</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="pninexus.h5cpp.file.AccessFlags">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">AccessFlags</code><a class="headerlink" href="#pninexus.h5cpp.file.AccessFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>The access flags used to open the file</p>
+<p>Enumeration type determining the constraits applied to a file when creating
+or opening it.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.AccessFlags.TRUNCATE">
+<code class="sig-name descname">TRUNCATE</code><em class="property"> = truncate a file during creation if a file of same name already exists</em><a class="headerlink" href="#pninexus.h5cpp.file.AccessFlags.TRUNCATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.AccessFlags.EXCLUSIVE">
+<code class="sig-name descname">EXCLUSIVE</code><em class="property"> = raise exception during creation if a file of same name already exists</em><a class="headerlink" href="#pninexus.h5cpp.file.AccessFlags.EXCLUSIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.AccessFlags.READWRITE">
+<code class="sig-name descname">READWRITE</code><em class="property"> = open a file in read-write mode</em><a class="headerlink" href="#pninexus.h5cpp.file.AccessFlags.READWRITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.AccessFlags.READONLY">
+<code class="sig-name descname">READONLY</code><em class="property"> = open a file in read-only mode</em><a class="headerlink" href="#pninexus.h5cpp.file.AccessFlags.READONLY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.file.Scope">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">Scope</code><a class="headerlink" href="#pninexus.h5cpp.file.Scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scope of a file</p>
+<p>Enumeration type determining the scope to use when flushing a file</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.Scope.LOCAL">
+<code class="sig-name descname">LOCAL</code><em class="property"> = local scope</em><a class="headerlink" href="#pninexus.h5cpp.file.Scope.LOCAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.Scope.GLOBAL">
+<code class="sig-name descname">GLOBAL</code><em class="property"> = global scope</em><a class="headerlink" href="#pninexus.h5cpp.file.Scope.GLOBAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.file.File">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">File</code><a class="headerlink" href="#pninexus.h5cpp.file.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing an HDF5 file.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.File.intent">
+<code class="sig-name descname">intent</code><a class="headerlink" href="#pninexus.h5cpp.file.File.intent" title="Permalink to this definition">¶</a></dt>
+<dd><p>read-only property returning the intent used when opening the file.
+This would typically be read-write or read-only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>file access flags</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags">AccessFlags</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.File.is_valid">
+<code class="sig-name descname">is_valid</code><a class="headerlink" href="#pninexus.h5cpp.file.File.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the file is a valid
+HDF5 object, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.File.path">
+<code class="sig-name descname">path</code><a class="headerlink" href="#pninexus.h5cpp.file.File.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the path to the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.file.File.size">
+<code class="sig-name descname">size</code><a class="headerlink" href="#pninexus.h5cpp.file.File.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the size of the file in bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.file.File.flush">
+<code class="sig-name descname">flush</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scope</span><span class="o">=</span><span class="default_value">Scope.GLOBAL</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.File.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes all buffers to the OS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scope</strong> (<a class="reference internal" href="#pninexus.h5cpp.file.Scope" title="pninexus.h5cpp.file.Scope"><em>Scope</em></a>) – the scope of the flush operation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.file.File.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.File.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file. After calling this function <a class="reference internal" href="#pninexus.h5cpp.file.File.is_valid" title="pninexus.h5cpp.file.File.is_valid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_valid</span></code></a> should
+be <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.file.File.root">
+<code class="sig-name descname">root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.File.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an instance of the root group of the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>root group</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pni.io.h5cpp.node.Group</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.file.create">
+<code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">flags</span><span class="o">=</span><span class="default_value">AccessFlags.EXCLUSIVE</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new HDf5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – the path to the new file</p></li>
+<li><p><strong>flags</strong> (<a class="reference internal" href="#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags"><em>AccessFlags</em></a>) – access flags to use for the file creation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new file object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.file.File" title="pninexus.h5cpp.file.File"><code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.file.open">
+<code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">flags</span><span class="o">=</span><span class="default_value">AccessFlags.READONLY</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open an existing HDF5 file. By default the file will be opened in read-only
+mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to the file to open</p></li>
+<li><p><strong>flags</strong> (<a class="reference internal" href="#pninexus.h5cpp.file.AccessFlags" title="pninexus.h5cpp.file.AccessFlags"><em>AccessFlags</em></a>) – the flags to use for opening the file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new file object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.file.File" title="pninexus.h5cpp.file.File"><code class="xref py py-class docutils literal notranslate"><span class="pre">File</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.file.is_hdf5_file">
+<code class="sig-prename descclassname">pninexus.h5cpp.file.</code><code class="sig-name descname">is_hdf5_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.file.is_hdf5_file" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – the path to the file to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the file is an HDF5 file, <code class="xref py py-const docutils literal notranslate"><span class="pre">Flase</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="datatype.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.datatype</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="properties.html"
+                        title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.property</span></code></a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="../index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="../index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="../index/../../v3.0.0/index.html">v3.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="properties.html" title="pninexus.h5cpp.property"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="datatype.html" title="pninexus.h5cpp.datatype"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 3.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>

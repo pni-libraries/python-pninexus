@@ -1,0 +1,1049 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pninexus.h5cpp.node &#8212; pninexus 3.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File related functions" href="../nexus/files.html" />
+    <link rel="prev" title="pninexus.h5cpp.property" href="properties.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../nexus/files.html" title="File related functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="properties.html" title="pninexus.h5cpp.property"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 3.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" accesskey="U">API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.node</span></code></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pninexus-h5cpp-node">
+<h1><a class="reference internal" href="../h5cpp_groups.html#module-pninexus.h5cpp.node" title="pninexus.h5cpp.node"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.node</span></code></a><a class="headerlink" href="#pninexus-h5cpp-node" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="enumerations">
+<h2>Enumerations<a class="headerlink" href="#enumerations" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.Type">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">Type</code><a class="headerlink" href="#pninexus.h5cpp.node.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration identifying the type of node.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Type.DATASET">
+<code class="sig-name descname">DATASET</code><em class="property"> the node is a dataset</em><a class="headerlink" href="#pninexus.h5cpp.node.Type.DATASET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Type.GROUP">
+<code class="sig-name descname">GROUP</code><em class="property"> the node is a group</em><a class="headerlink" href="#pninexus.h5cpp.node.Type.GROUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Type.DATATYPE">
+<code class="sig-name descname">DATATYPE</code><em class="property"> the node is a committed datatype</em><a class="headerlink" href="#pninexus.h5cpp.node.Type.DATATYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.LinkType">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">LinkType</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enumeration determining the type of a particular link.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkType.ERROR">
+<code class="sig-name descname">ERROR</code><em class="property"> invalid link</em><a class="headerlink" href="#pninexus.h5cpp.node.LinkType.ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkType.HARD">
+<code class="sig-name descname">HARD</code><em class="property"> a hard link</em><a class="headerlink" href="#pninexus.h5cpp.node.LinkType.HARD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkType.EXTERNAL">
+<code class="sig-name descname">EXTERNAL</code><em class="property"> an external link to a node in a different file</em><a class="headerlink" href="#pninexus.h5cpp.node.LinkType.EXTERNAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkType.SOFT">
+<code class="sig-name descname">SOFT</code><em class="property"> soft (symbolic) link to a node within the same file</em><a class="headerlink" href="#pninexus.h5cpp.node.LinkType.SOFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Node</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pninexus.h5cpp.node.Dataset" title="pninexus.h5cpp.node.Dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.Node">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">Node</code><a class="headerlink" href="#pninexus.h5cpp.node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all node types.</p>
+<p>hello world this is some stupid text</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Node.attributes">
+<code class="sig-name descname">attributes</code><a class="headerlink" href="#pninexus.h5cpp.node.Node.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property providing access to the
+<a class="reference internal" href="attributes.html#pninexus.h5cpp.attribute.AttributeManager" title="pninexus.h5cpp.attribute.AttributeManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.attribute.AttributeManager</span></code></a> instance associated
+with the node</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Node.is_valid">
+<code class="sig-name descname">is_valid</code><a class="headerlink" href="#pninexus.h5cpp.node.Node.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning true if the node is a valid HDF5 object.
+False otherweise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if node is valid object, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Node.link">
+<code class="sig-name descname">link</code><a class="headerlink" href="#pninexus.h5cpp.node.Node.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only attribute providing access to <a class="reference internal" href="#pninexus.h5cpp.node.Link" title="pninexus.h5cpp.node.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a> used to
+access this node in the first place.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Node.type">
+<code class="sig-name descname">type</code><a class="headerlink" href="#pninexus.h5cpp.node.Node.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only attribute returning the <a class="reference internal" href="#pninexus.h5cpp.node.Type" title="pninexus.h5cpp.node.Type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a> of the particular node.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.Group">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">Group</code><a class="headerlink" href="#pninexus.h5cpp.node.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>HDF5 group class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the parent group below which to construct the new group</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the name for the new group</p></li>
+<li><p><strong>lcpl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>pninexus.h5cpp.property.LinkCreationList</em></a>) – optional link creation property list</p></li>
+<li><p><strong>gcpl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.GroupCreationList" title="pninexus.h5cpp.property.GroupCreationList"><em>pninexus.h5cpp.property.GroupCreationList</em></a>) – optional group creation property list</p></li>
+<li><p><strong>gapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.GroupAccessList" title="pninexus.h5cpp.property.GroupAccessList"><em>pninexus.h5cpp.property.GroupAccessList</em></a>) – optional group access property list</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Group.links">
+<code class="sig-name descname">links</code><a class="headerlink" href="#pninexus.h5cpp.node.Group.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the link view instance associated with this
+group instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.LinkView" title="pninexus.h5cpp.node.LinkView"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinkView</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Group.nodes">
+<code class="sig-name descname">nodes</code><a class="headerlink" href="#pninexus.h5cpp.node.Group.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the node view instance associated with this
+group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.NodeView" title="pninexus.h5cpp.node.NodeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeView</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Group.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Group.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the group. After a call to this method the <code class="xref py py-attr docutils literal notranslate"><span class="pre">is_valid</span></code>
+property returns <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">group</span><span class="o">.</span><span class="n">is_valid</span>   <span class="c1">#returns True</span>
+
+<span class="n">group</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">group</span><span class="o">.</span><span class="n">is_valid</span>   <span class="c1">#returns False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.Dataset">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">Dataset</code><a class="headerlink" href="#pninexus.h5cpp.node.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datasets are the primary data storing nodes in HDF5.</p>
+<p>The constructor for a dataset takes the following arguments:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the parent group for the new dataset</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – the name for the new dataset</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="datatype.html#pninexus.h5cpp.datatype.Datatype" title="pninexus.h5cpp.datatype.Datatype"><em>pninexus.h5cpp.datatype.Datatype</em></a>) – the datatype for the new dataset</p></li>
+<li><p><strong>space</strong> (<a class="reference internal" href="dataspace.html#pninexus.h5cpp.dataspace.Dataspace" title="pninexus.h5cpp.dataspace.Dataspace"><em>pninexus.h5cpp.dataspace.Dataspace</em></a>) – the dataspace for the dataset</p></li>
+<li><p><strong>lcpl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>pninexus.h5cpp.property.LinkCreationList</em></a>) – an optional link creation property list</p></li>
+<li><p><strong>dcpl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.DatasetCreationList" title="pninexus.h5cpp.property.DatasetCreationList"><em>pninexus.h5cpp.property.DatasetCreationList</em></a>) – an optional dataset creation property list</p></li>
+<li><p><strong>dapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.DatasetAccessList" title="pninexus.h5cpp.property.DatasetAccessList"><em>pninexus.h5cpp.property.DatasetAccessList</em></a>) – an optional dataset access property list</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Dataset.access_list">
+<code class="sig-name descname">access_list</code><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.access_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only attribute returning the access property list used when opening
+the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="properties.html#pninexus.h5cpp.property.DatasetAccessList" title="pninexus.h5cpp.property.DatasetAccessList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.property.DatasetAccessList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Dataset.creation_list">
+<code class="sig-name descname">creation_list</code><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.creation_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only attribute returning the creation property list used during
+dataset creation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="properties.html#pninexus.h5cpp.property.DatasetCreationList" title="pninexus.h5cpp.property.DatasetCreationList"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.property.DatasetCreationList</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Dataset.dataspace">
+<code class="sig-name descname">dataspace</code><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.dataspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only attribute returning the associated with this dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="dataspace.html#pninexus.h5cpp.dataspace.Dataspace" title="pninexus.h5cpp.dataspace.Dataspace"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.dataspace.Dataspace</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Dataset.datatype">
+<code class="sig-name descname">datatype</code><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only attribute returning the datatype associated with the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="datatype.html#pninexus.h5cpp.datatype.Datatype" title="pninexus.h5cpp.datatype.Datatype"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.datatype.Datatype</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the dataset. After calling this function <code class="xref py py-attr docutils literal notranslate"><span class="pre">is_valid</span></code>
+should return <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.refresh">
+<code class="sig-name descname">refresh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>When built with HDF5 &gt; 1.10 this method can be used in SWMR mode to
+obtain updates to the dataset from the writer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.extent">
+<code class="sig-name descname">extent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">new_shape</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.extent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the extent (number of elements along each dimension) for a dataset.
+<cite>new_shape</cite> is a tuple or list with the new number of elements.
+In order for this method to succeed</p>
+<ul class="simple">
+<li><p>the number of dimensions (or <em>rank</em>) must remain the same</p></li>
+<li><p>the dataset must be constructed with a chunked storage layout</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_shape</strong> (<em>tuple</em>) – new number of elements</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">extent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dim_index</span></em>, <em class="sig-param"><span class="n">dim_delta</span></em><span class="sig-paren">)</span></dt>
+<dd><p>Change the number of elements of a dataset along a particular dimensions
+by a delta.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus.h5cpp.dataspace</span> <span class="kn">import</span> <span class="n">Simple</span><span class="p">,</span><span class="n">UNLIMITED</span>
+<span class="kn">from</span> <span class="nn">pninexus.h5cpp.node</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">current_space</span> <span class="o">=</span> <span class="n">Simple</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="n">UNLIMITED</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="o">...</span><span class="p">,</span><span class="n">current_space</span><span class="p">)</span>
+
+<span class="c1">#do something with the dataset here</span>
+
+
+<span class="n">dataset</span><span class="o">.</span><span class="n">extent</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">current_space</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dataspace</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">current_space</span><span class="o">.</span><span class="n">current_dimensions</span><span class="p">)</span>
+<span class="c1">#output (15,10)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dim_index</strong> (<em>int</em>) – index of the dimension for which to reset the extent</p></li>
+<li><p><strong>dim_delta</strong> (<em>int</em>) – change in number of dimensions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">selection</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span></dt>
+<dd><p>write data to a dataset</p>
+<p>Writes <cite>data</cite> to a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>object</em>) – Python object with data to write</p></li>
+<li><p><strong>selection</strong> (<em>pninexus.h5cpp.dataspace.Selection</em>) – an optional selection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+<p>Write data to the dataset. The <cite>data</cite> argument is a reference to the
+Python object storing the data to write. Internally this object will be
+converted to a numpy array which is then written to disk. If <cite>data</cite>
+is already an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> this conversion
+is omitted.</p>
+<p>In addition to the data an optinal reference to an HDF5 selection
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.dataspace.Selection</span></code> can be passed to the
+method determining where in the dataset the data will be written.
+If no selection is passed the data will be assumed to fit into the entire
+dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>write</strong> (<em>object</em>) – reference to the object to write</p></li>
+<li><p><strong>selection</strong> (<em>pninexus.h5cpp.dataspace.Selection</em>) – optional selection for the dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">selection</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span></dt>
+<dd><p>read data from a dataset</p>
+<p>Reads <cite>data</cite> from a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>object</em>) – Python object with data to read</p></li>
+<li><p><strong>selection</strong> (<em>pninexus.h5cpp.dataspace.Selection</em>) – an optional selection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>read data</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+<p>Reading data from a dataset. If called with no argument this method
+reads all data from the dataset and returns it as an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>. With the <cite>selection</cite> parameter an HDF5
+selection can be passed to determine what data from the dataset to read.</p>
+<p>The optional <cite>data</cite> argument must be a reference to an instance of a
+numpy array (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>). If <cite>data</cite> is not
+<code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> the method tries to read the data <em>inplace</em> to this
+numpy array thus avoiding memory additional memory allocation.
+In order for this to succeed the numpy array has to satisfy the following
+criteria</p>
+<ul class="simple">
+<li><p>the datatype of the datatype must be convertible to the type of the
+numpy array</p></li>
+<li><p>the number of elements of the numpy array must match those of the
+dataset or the selection if provided.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>) – optional data reference for inplace reading</p></li>
+<li><p><strong>pninexus.h5cpp.dataspace.Selection</strong> – selection determining what to read</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – in case of a failure</p></li>
+<li><p><strong>TypeError</strong> – if <cite>data</cite> is not an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.filters">
+<code class="sig-name descname">filters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>read filters from a dataset</p>
+<p>Reads filters from a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of filters</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">selection</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>read data from a dataset</p>
+<p>Reads <cite>data</cite> from a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>object</em>) – Python object with data to read</p></li>
+<li><p><strong>selection</strong> (<em>pninexus.h5cpp.dataspace.Selection</em>) – an optional selection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>read data</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Dataset.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">selection</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Dataset.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>write data to a dataset</p>
+<p>Writes <cite>data</cite> to a dataset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>object</em>) – Python object with data to write</p></li>
+<li><p><strong>selection</strong> (<em>pninexus.h5cpp.dataspace.Selection</em>) – an optional selection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.LinkView">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">LinkView</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterable interface to the links directly attached to a group. The link view
+for a group can be accessed via the <code class="xref py py-attr docutils literal notranslate"><span class="pre">links</span></code> attribute of a
+<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a> instance.</p>
+<p>Iteration over the links  immediately attached to a group:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Recursive iteration over all links available below a group and its
+sub-groups</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">recursive</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkView.recursive">
+<code class="sig-name descname">recursive</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkView.recursive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning a recursive link iterator</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.LinkView.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">link_name</span></em>, <em class="sig-param"><span class="n">lapl</span><span class="o">=</span><span class="default_value">pninexus.h5cpp.property.LinkAccessList()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.LinkView.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if a link of name <cite>link_name</cite> exists below
+the associated group, otherwise <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>link_name</strong> (<em>str</em>) – name of the link to check for</p></li>
+<li><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>pninexus.h5cpp.property.LinkAccessList</em></a>) – optional link access property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if link exists, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.NodeView">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">NodeView</code><a class="headerlink" href="#pninexus.h5cpp.node.NodeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterable interface to the nodes below an instance of <a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a>.
+The instance of <a class="reference internal" href="#pninexus.h5cpp.node.NodeView" title="pninexus.h5cpp.node.NodeView"><code class="xref py py-class docutils literal notranslate"><span class="pre">NodeView</span></code></a> associated with a particular group
+can be accessed via the <code class="xref py py-attr docutils literal notranslate"><span class="pre">nodes</span></code> property of the latter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>like for links there is also a recursive iterator available which returns
+also the children of all sub-groups of a group.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">recursive</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.NodeView.recursive">
+<code class="sig-name descname">recursive</code><a class="headerlink" href="#pninexus.h5cpp.node.NodeView.recursive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning a recursive node iterator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.NodeView.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_name</span></em>, <em class="sig-param"><span class="n">lapl</span><span class="o">=</span><span class="default_value">pninexus.h5cpp.property.LinkAccessList()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.NodeView.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if a node of name <cite>node_name</cite> exists below a group.
+Otherwise <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> is returned.
+This check involves two steps under the hood</p>
+<ol class="arabic simple">
+<li><p>check if a link of name <cite>node_name</cite> exists</p></li>
+<li><p>check if the link can be resolved</p></li>
+</ol>
+<p>only if both checks succeed <code class="xref py py-mod docutils literal notranslate"><span class="pre">True</span></code> is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node_name</strong> (<em>str</em>) – the name of the node to check for</p></li>
+<li><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>pninexus.h5cpp.property.LinkAccessList</em></a>) – optional link access property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the node exists, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.NodeView.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.NodeView.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows access to the <em>immediate</em> child nodes of a group.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – name of the child node’s link</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>group or dataset instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.Dataset" title="pninexus.h5cpp.node.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> or <a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.Link">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">Link</code><a class="headerlink" href="#pninexus.h5cpp.node.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing a link. You cannot construct an instance of
+<a class="reference internal" href="#pninexus.h5cpp.node.Link" title="pninexus.h5cpp.node.Link"><code class="xref py py-class docutils literal notranslate"><span class="pre">Link</span></code></a> from within Python, but you can obtain them from several
+methods and properties of the node classes.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.exists">
+<code class="sig-name descname">exists</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the link exists,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.file">
+<code class="sig-name descname">file</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Read-only attribute returning the path to the file within which the link
+exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.is_resolvable">
+<code class="sig-name descname">is_resolvable</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.is_resolvable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only attribute returning <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the link can be
+resolved, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.node">
+<code class="sig-name descname">node</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only property returning the node referenced by this link. This will
+only work if the link itself is resolvable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">link</span> <span class="o">=</span> <span class="o">....</span>
+
+<span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">is_resolvable</span><span class="p">:</span>
+   <span class="n">node</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">node</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group">Group</a>, <a class="reference internal" href="#pninexus.h5cpp.node.Dataset" title="pninexus.h5cpp.node.Dataset">Dataset</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – if the link cannot be resolved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.parent">
+<code class="sig-name descname">parent</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the parent group of the link</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group">Group</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.Link.path">
+<code class="sig-name descname">path</code><a class="headerlink" href="#pninexus.h5cpp.node.Link.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the path for the link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.Path</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Link.type">
+<code class="sig-name descname">type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lapl</span><span class="o">=</span><span class="default_value">pninexus.h5cpp.property.LinkAccessList()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Link.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>pninexus.h5cpp.property.LinkAccessList</em></a>) – optional link access proerty list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>link type enumeration</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.LinkType" title="pninexus.h5cpp.node.LinkType">LinkType</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pninexus.h5cpp.node.Link.target">
+<code class="sig-name descname">target</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lapl</span><span class="o">=</span><span class="default_value">pninexus.h5cpp.property.LinkAccessList()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.Link.target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the link target</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>pninexus.h5cpp.property.LinkAccessList</em></a>) – optional link access property list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the target of the link</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.LinkTarget" title="pninexus.h5cpp.node.LinkTarget">LinkTarget</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pninexus.h5cpp.node.LinkTarget">
+<em class="property">class </em><code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">LinkTarget</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkTarget" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pninexus.h5cpp.node.LinkTarget" title="pninexus.h5cpp.node.LinkTarget"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinkTarget</span></code></a> describes the target for a link. It could be used
+to access this target without dereferencing the link. It is thus useful
+in the case of links which cannot be dereferenced. Using the target
+one could check whether the file or the object in it are missing or both.</p>
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkTarget.file_path">
+<code class="sig-name descname">file_path</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkTarget.file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property with the path to the file where the link target is
+expected to reside in. In the case of soft links this is empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pninexus.h5cpp.node.LinkTarget.object_path">
+<code class="sig-name descname">object_path</code><a class="headerlink" href="#pninexus.h5cpp.node.LinkTarget.object_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only property returning the node path to the target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><code class="xref py py-class docutils literal notranslate"><span class="pre">pninexus.h5cpp.Path</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="node-related-functions">
+<h2>Node related functions<a class="headerlink" href="#node-related-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.is_dataset">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">is_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.is_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the node instance represents a dataset,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) – reference to a node to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if <cite>node</cite> is a dataset, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.is_group">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">is_group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.is_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if the <cite>Node</cite> instance represents a group,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) – reference to the node to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> if <cite>node</cite> is a group, <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.get_node">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">get_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">lapl</span><span class="o">=</span><span class="default_value">pninexus.h5cpp.property.LinkAccessList()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a determined by <cite>base</cite> and <cite>path</cite>. If <cite>path</cite> is relative it is
+considered relative to <cite>base</cite>. If <cite>path</cite> is absolute <cite>base</cite> is only used
+to determine the file and root group where to look for the node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the base group from which to start the search</p></li>
+<li><p><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) – absolute or relative path to the node to obtain</p></li>
+<li><p><strong>lapl</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>pninexus.h5cpp.property.LinkAccessList</em></a>) – optional link access property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new node instance (dataset or group)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">Group</span></code></a> or <a class="reference internal" href="#pninexus.h5cpp.node.Dataset" title="pninexus.h5cpp.node.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of a failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.copy">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">base</em>, <em class="sig-param">path=None</em>, <em class="sig-param">link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em class="sig-param">object_copy_list=&lt;pninexus.h5cpp._property.ObjectCopyList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy an object within the HDF5 tree</p>
+<p>Copies an existing object <cite>node</cite> to a new location. The new location is
+determined by <cite>base</cite> and <cite>path</cite> argument. If <cite>path</cite> is not given a
+copy of the original object will be created with the same name under
+<cite>base</cite>. If <cite>path</cite> is given, it determines the new path and thus name
+of the copied object relative to the <cite>base</cite> object.</p>
+<p>The behavior of the copy operation can be controlled by a link and
+object copy property list which can be passed as optional arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) – the object to copy</p></li>
+<li><p><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the base group for the new location</p></li>
+<li><p><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>pninexus.h5cpp.Path</em></a>) – optional HDF5 path determining the final
+location of the copied object</p></li>
+<li><p><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) – optional link creation
+property list</p></li>
+<li><p><strong>object_copy_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.ObjectCopyList" title="pninexus.h5cpp.property.ObjectCopyList"><em>ObjectCopyList</em></a>) – optional object copy property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – in case of errors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.move">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">move</code><span class="sig-paren">(</span><em class="sig-param">node</em>, <em class="sig-param">base</em>, <em class="sig-param">path=None</em>, <em class="sig-param">link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em class="sig-param">link_access_list=&lt;pninexus.h5cpp._property.LinkAccessList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moving a node within the HDF5 tree</p>
+<p>Move an instance of <a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a> (dataset or group) to a new location.
+The new location is determined by the <cite>base</cite> and <cite>path</cite> argument.
+If <cite>path</cite> is not given <cite>node</cite> is moved below the <cite>base</cite> using the same
+link name as it has under its original group.
+If <cite>path</cite> is given the new location is determined by this path relative
+to the <cite>base</cite> group.</p>
+<p>Technically this function does not move any data but, like on a filesystem,
+only links are altered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) – the node (dataset or group) to move</p></li>
+<li><p><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the base group where to move the node</p></li>
+<li><p><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) – optional HDF5 path determining the new location of the
+node to be moved relative to the <cite>base</cite> group</p></li>
+<li><p><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) – optional link creation
+property list</p></li>
+<li><p><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) – optional link access property list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.remove">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">node=None</em>, <em class="sig-param">base=None</em>, <em class="sig-param">path=None</em>, <em class="sig-param">link_access_list=&lt;pninexus.h5cpp._property.LinkAccessList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a node from the HDF5 node tree</p>
+<p>This function can be used in two modes:</p>
+<ul class="simple">
+<li><p>either the node to remove is referenced directly by <cite>node</cite></p></li>
+<li><p>or by <cite>base</cite> and <cite>path</cite>.</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>It is important that this function does not remove any data from the
+file. It only removes the link to the given node. An object is
+considered deleted if no link leading to this node exists. However,
+the file size will not change. In order to remove all the data
+associated with this node <cite>h5repack</cite> has to be used which will
+simply not copy nodes without links to the new file.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Node" title="pninexus.h5cpp.node.Node"><em>Node</em></a>) – the node to remove</p></li>
+<li><p><strong>base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – base group from which to search</p></li>
+<li><p><strong>path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) – HDF5 path to the object to remove</p></li>
+<li><p><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) – optional link access property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – if any of the arguments is not of appropriate type</p></li>
+<li><p><strong>RuntimeError</strong> – in case of any other error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pninexus.h5cpp.node.link">
+<code class="sig-prename descclassname">pninexus.h5cpp.node.</code><code class="sig-name descname">link</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">link_base</em>, <em class="sig-param">link_path</em>, <em class="sig-param">target_file=None</em>, <em class="sig-param">link_creation_list=&lt;pninexus.h5cpp._property.LinkCreationList object&gt;</em>, <em class="sig-param">link_access_list=&lt;pninexus.h5cpp._property.LinkAccessList object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#pninexus.h5cpp.node.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new link</p>
+<p>Create a new soft link to a node referenced by <cite>target</cite> under <cite>link_path</cite>
+relative to <cite>link_base</cite>. If <cite>target_file</cite> is set an external link is
+provided an external link is created.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The target object does not need to exist at the time the link is
+created. Only when the new link should be dereferenced the target
+object has to exist.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> (<em>Node/Path</em>) – the target for the new link</p></li>
+<li><p><strong>link_base</strong> (<a class="reference internal" href="#pninexus.h5cpp.node.Group" title="pninexus.h5cpp.node.Group"><em>Group</em></a>) – the base for the new link</p></li>
+<li><p><strong>link_path</strong> (<a class="reference internal" href="h5cpp.html#pninexus.h5cpp.Path" title="pninexus.h5cpp.Path"><em>Path</em></a>) – the path to the new link relative to the <cite>link_base</cite></p></li>
+<li><p><strong>link_creation_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkCreationList" title="pninexus.h5cpp.property.LinkCreationList"><em>LinkCreationList</em></a>) – optional reference to
+a link creation property list</p></li>
+<li><p><strong>link_access_list</strong> (<a class="reference internal" href="properties.html#pninexus.h5cpp.property.LinkAccessList" title="pninexus.h5cpp.property.LinkAccessList"><em>LinkAccessList</em></a>) – optional reference to a link
+access property list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – if any of the arguments does not match the required type</p></li>
+<li><p><strong>RuntimError</strong> – in the case of any other error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.node</span></code></a><ul>
+<li><a class="reference internal" href="#enumerations">Enumerations</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#node-related-functions">Node related functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="properties.html"
+                        title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.property</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../nexus/files.html"
+                        title="next chapter">File related functions</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="../index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="../index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="../index/../../v3.0.0/index.html">v3.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="../index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../nexus/files.html" title="File related functions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="properties.html" title="pninexus.h5cpp.property"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pninexus 3.0.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../api_guide.html" >API documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.node</span></code></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
