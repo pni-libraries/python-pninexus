@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Installation &#8212; pninexus 2.0.0 documentation</title>
+    <title>Installation &#8212; pninexus 3.0.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
     
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to PNI/NeXus and h5cpp python bindings’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.0.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>  
@@ -66,10 +66,10 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>libh5cpp</p></td>
-<td><p>&gt;=0.4.0</p></td>
+<td><p>&gt;=0.5.0</p></td>
 </tr>
 <tr class="row-odd"><td><p>libpninexus</p></td>
-<td><p>&gt;=2.0.0</p></td>
+<td><p>&gt;=3.0.0</p></td>
 </tr>
 <tr class="row-even"><td><p>libboost</p></td>
 <td><p>&gt;=1.60.0</p></td>
@@ -112,21 +112,22 @@ package sources you need to login as <cite>root</cite> user. Use <strong class="
 <strong class="command">sudo su</strong> on Debian and Ubuntu respectively.
 The first task is to add the GPG key of the HDRI repository to your local
 keyring</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl http://repos.pni-hdri.de/debian_repo.pub.gpg <span class="p">|</span> apt-key add -
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  <span class="p">|</span> gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+$ chmod <span class="m">644</span> /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 </pre></div>
 </div>
 <p>The return value of this command line should be <cite>OK</cite>.
 In a next step you have to add new package sources to your system. For this
 purpose go to <code class="file docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d</span></code> and download the sources file.
-For Debian (Buster) use</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget http://repos.pni-hdri.de/buster-pni-hdri.list
+For Debian (Bullseye) use</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget http://repos.pni-hdri.de/bullseye-hdri.list
 </pre></div>
 </div>
 <p>and for Ubuntu (Focal)</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget http://repos.pni-hdri.de/focal-pni-hdri.list
 </pre></div>
 </div>
-<p>Similarly, proceed for Bullseye, Buster, Stretch, Groovy, Focal or Bionic.
+<p>Similarly, proceed for Bullseye, Buster, Stretch, Impish, Focal or Bionic.
 Once you have downloaded the file use</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ apt-get update
 </pre></div>
@@ -182,6 +183,7 @@ Once you have downloaded the file use</p>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.0.0/index.html">v3.0.0</a></li>
       <li><a class="reference external" href="index/../../v2.0.0/index.html">v2.0.0</a></li>
       <li><a class="reference external" href="index/../../v1.3.4/index.html">v1.3.4</a></li>
       
@@ -207,7 +209,7 @@ Once you have downloaded the file use</p>
         <li class="right" >
           <a href="index.html" title="Welcome to PNI/NeXus and h5cpp python bindings’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 2.0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.0.0 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>
