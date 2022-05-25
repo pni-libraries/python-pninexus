@@ -1,8 +1,10 @@
 recursive-include src *.hpp *.cpp
-# recursive-include pni/test *.hpp *.cpp
 include doc/sphinx/*
 include doc/sphinx/_templates/*
 include build_tools/*.py
+include test/*.py
+include test/*/*.py
+include test/*/*/*.py
 include pkgconfig.py
 graft build/sphinx/html 
 # recursive-include doc/c++api/c++api *
