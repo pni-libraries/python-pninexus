@@ -1,0 +1,366 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus and XML &#8212; pninexus 3.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API documentation" href="api_guide.html" />
+    <link rel="prev" title="Working with links" href="nexus_links.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api_guide.html" title="API documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nexus_links.html" title="Working with links"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Nexus and XML</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="nexus-and-xml">
+<h1>Nexus and XML<a class="headerlink" href="#nexus-and-xml" title="Permalink to this headline">¶</a></h1>
+<p>Though NeXus files can be rather complicated, accessing data can be quite easy
+as shown in the previous sections of this manual.
+However, the complexity of NeXus files can become rather painful when creating
+file. This is an issue which typically affects developers working on data
+acquisition software.
+The <code class="docutils literal notranslate"><span class="pre">python-pninexus</span></code> framework provides a means of generating skeleton NeXus
+files from XML. Even existing files can be extended by structures described by
+XML.</p>
+<div class="section" id="a-nexus-xml-primer">
+<h2>A NeXus XML primer<a class="headerlink" href="#a-nexus-xml-primer" title="Permalink to this headline">¶</a></h2>
+<p>The XML dialect used to create or extend files with <code class="docutils literal notranslate"><span class="pre">python-pninexus</span></code> is very
+close to NXDL, the XML language used to define classes in the NeXus standard.
+However, NXDL is not powerful enough for creating HDF5 files as it lacks some
+tags (for instance tags for describing the chunk-shape of a field) and
+the types are not specific enough (<cite>NX_FLOAT</cite> would be valid for 32 and 64 Bit
+floating point numbers).</p>
+<div class="section" id="creating-groups">
+<h3>Creating groups<a class="headerlink" href="#creating-groups" title="Permalink to this headline">¶</a></h3>
+<p>The <cite>group</cite> tag is used to create groups which can then embed other groups,
+fields, or attributes. Its usage is fairly simple</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/group&gt;</span>
+</pre></div>
+</div>
+<p>The <cite>name</cite> attribute of the tag describes the name of the group to create
+and the <cite>type</cite> attribute the NeXus base class (this value will be stored in the
+<cite>NX_class</cite> attribute of the HDF5 group created).</p>
+<p>A typical application for groups would be the construction of a basic NeXus
+skeleton</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;scan_1&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;instrument&quot;</span> <span class="na">type=</span><span class="s">&quot;NXinstrument&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;source&quot;</span> <span class="na">type=</span><span class="s">&quot;NXsource&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;detector&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdetector&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;sample&quot;</span> <span class="na">type=</span><span class="s">&quot;NXsample&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdata&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;control&quot;</span> <span class="na">type=</span><span class="s">&quot;NXmonitor&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/group&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-fields">
+<h3>Creating fields<a class="headerlink" href="#creating-fields" title="Permalink to this headline">¶</a></h3>
+<p>Fields are described by the <cite>field</cite> tag. For a simple scalar field use</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>Like for the <cite>group</cite> tag the <cite>name</cite> attribute describes the name of the field
+to create and the <cite>type</cite> tag its data type. For the data type the standard
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">numpy</span></code> type strings are used.</p>
+<p>For a multidimensional field we have to embed the <cite>dimensions</cite> tag in the field</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;1024&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;3&quot;</span> <span class="na">value=</span><span class="s">&quot;512&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/dimensions&gt;</span>
+<span class="nt">&lt;/field&gt;</span>
+</pre></div>
+</div>
+<p>The attribute <cite>rank</cite> of the <cite>dimensions</cite> tag stores the number of dimensions
+the resulting field should have. The attributes of the <cite>dim</cite> tag for every
+dimension should be rather self-explaining. There are however two things to
+note here: the dimension index starts with 1 (unlike in C with 0) and
+dimensions with 0 elements are allowed (one can later grow the field as we have
+already seen). By default the chunk shape matches the field shape with the
+first element set to 1. In the above example the chunk shape would be
+(1,1024,512).</p>
+<p>In order to explicitly set the chunk shape use the <cite>chunk</cite> tag</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;1024&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;3&quot;</span> <span class="na">value=</span><span class="s">&quot;512&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/dimensions&gt;</span>
+    <span class="nt">&lt;chunk</span> <span class="na">rank=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;512&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;3&quot;</span> <span class="na">value=</span><span class="s">&quot;512&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/chunk&gt;</span>
+<span class="nt">&lt;/field&gt;</span>
+</pre></div>
+</div>
+<p>The <cite>chunk</cite> tag is currently not implemented due to limitations of the
+underlying <cite>libpninexus</cite>.</p>
+<p>Finally the <cite>field</cite> tag accepts an additional attribute <cite>units</cite> which stores
+the physical unit of the data stored in a field.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;distance&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span> <span class="na">units=</span><span class="s">&quot;m&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>The value will be stored in a string attribute <cite>units</cite> attached to the created
+HDF5 field.</p>
+</div>
+<div class="section" id="dealing-with-attributes">
+<h3>Dealing with attributes<a class="headerlink" href="#dealing-with-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Attributes are quite similar to fields but created with the <cite>attribute</cite> tag.
+An attribute tag can appear within a <cite>field</cite> or <cite>group</cite> tag. Unlike the <cite>field</cite>
+tag the <cite>attribute</cite> tag does not have a <cite>units</cite> attribute.
+The chunk shape cannot be set and no compression for attribute data is
+available.
+However, multidimensional attributes can be created just like fields by
+embedding an <cite>dimensions</cite> tag within the <cite>attribute</cite> tag.
+Here is a short example with an attribute attached to a field</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;chi&quot;</span> <span class="na">type=</span><span class="s">&quot;float64&quot;</span> <span class="na">units=</span><span class="s">&quot;mm&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/dimensions&gt;</span>
+    <span class="nt">&lt;/attribute&gt;</span>
+<span class="nt">&lt;/field&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-data-from-xml">
+<h3>Writing data from XML<a class="headerlink" href="#writing-data-from-xml" title="Permalink to this headline">¶</a></h3>
+<p>The last example already shows a problem: it many cases it would be feasible to
+not only create a field or attribute but also to fill it with data. This is
+particularly true when the field or attribute should store static data which
+does not change during an experiment.</p>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pninexus</span></code> supports this feature. Full support is provided for
+numeric types. In the above example the <cite>vector</cite> attribute could be filled with
+data with</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;vector&quot;</span> <span class="na">type=</span><span class="s">&quot;float32&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;value</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/dimensions&gt;</span>
+    0.0 0.0 1.0
+<span class="nt">&lt;/attribute&gt;</span>
+</pre></div>
+</div>
+<p>to denote a rotation around the z-axis. For string types only scalar data is
+currently supported. For the previously defined <cite>transformation_type</cite> attribute
+we could set the data with</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;attribute</span> <span class="na">name=</span><span class="s">&quot;transformation_type&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span><span class="nt">&gt;</span>rotation<span class="nt">&lt;/attribute&gt;</span>
+</pre></div>
+</div>
+<p>From the above examples it is clear that <code class="xref py py-mod docutils literal notranslate"><span class="pre">python-pninexus</span></code> does not follow
+the standard NXDL convention for denoting data within a field or attribute tag.
+The reason for this is to make the resulting XML more readable.
+However, this comes at a price that strings are handled different from numeric
+values. The reason for this possibly unexpected behavior is that numeric values
+can easily be parsed and thus can be written as a block of whitespace delimited
+values. For obvious reasons this is not true for strings as
+whitespace-characters can be part of the string. However, for most applications
+this limitation is not a serious problem.</p>
+</div>
+<div class="section" id="creating-links">
+<h3>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this headline">¶</a></h3>
+<p>Links can be created using the <cite>link</cite> tag. External as well as internal links
+are supported. An external link can be made like this</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;instrument&quot;</span> <span class="na">type=</span><span class="s">&quot;NXinstrument&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;detector&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdetector&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;field</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;uint32&quot;</span> <span class="na">units=</span><span class="s">&quot;cps&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;dimensions</span> <span class="na">rank=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;1&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;dim</span> <span class="na">index=</span><span class="s">&quot;2&quot;</span> <span class="na">value=</span><span class="s">&quot;1024&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;/dimensions&gt;</span>
+            <span class="nt">&lt;/field&gt;</span>
+        <span class="nt">&lt;/group&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdata&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">target=</span><span class="s">&quot;/entry/instrument/detector/data&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/group&gt;</span>
+</pre></div>
+</div>
+<p>The link below the <cite>NXdata</cite> group refers to the <cite>data</cite> field in the detector
+class.</p>
+<p>The only thing we have to change for an external link is the target path.
+We can modify the above example for the case where the detector data is stored
+in a different file like this</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;entry&quot;</span> <span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;group</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">type=</span><span class="s">&quot;NXdata&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;data&quot;</span> <span class="na">target=</span><span class="s">&quot;detector_file.nxs://entry/instrument/detector/data&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+<span class="nt">&lt;/group&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="from-xml-to-nexus">
+<h2>From XML to NeXus<a class="headerlink" href="#from-xml-to-nexus" title="Permalink to this headline">¶</a></h2>
+<p>To create a NeXus file from XML is rather simple. Just use the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code> function provided by the package</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="k">as</span> <span class="nn">nexus</span>
+
+<span class="n">xml_struct</span> <span class="o">=</span> \
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&lt;group name=&quot;entry&quot; type=&quot;NXentry&quot;&gt;</span>
+<span class="sd">        ......</span>
+<span class="sd">&lt;/group&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">nexus</span><span class="o">.</span><span class="n">create_file</span><span class="p">(</span><span class="s2">&quot;test.nxs&quot;</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+
+<span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code> is the XML string from which acts
+as a blue-print for the structure to create. The second argument is the parent
+object below which the structure should be created.</p>
+<p>In the above example no data would be written to the file. This is due to a
+missing third argument to <code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code>: the write predicate.
+One may does not want to write all the data from the XML to the file. It is
+therefore possible to pass a predicate function which decides whether or not
+the data for a particular offset should be written to disk.</p>
+<p>If all data should be written we can use something like the following</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">:</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The predicate function takes a single argument, the currently created NeXus
+object, and decides then whether or not data should be written by returning
+<code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>.
+If only fields of size one should be written we can use the following approach</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">write_pred</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span><span class="n">nexus</span><span class="o">.</span><span class="n">nxfield</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
+
+<span class="n">nexus</span><span class="o">.</span><span class="n">xml_to_nexus</span><span class="p">(</span><span class="n">xml_struct</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">write_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Nexus and XML</a><ul>
+<li><a class="reference internal" href="#a-nexus-xml-primer">A NeXus XML primer</a><ul>
+<li><a class="reference internal" href="#creating-groups">Creating groups</a></li>
+<li><a class="reference internal" href="#creating-fields">Creating fields</a></li>
+<li><a class="reference internal" href="#dealing-with-attributes">Dealing with attributes</a></li>
+<li><a class="reference internal" href="#writing-data-from-xml">Writing data from XML</a></li>
+<li><a class="reference internal" href="#creating-links">Creating links</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-xml-to-nexus">From XML to NeXus</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nexus_links.html"
+                        title="previous chapter">Working with links</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api_guide.html"
+                        title="next chapter">API documentation</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script><p>
+  <h3 class='versions'>Versions</h3>
+  <p>
+    <ul>
+      <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
+      <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
+      
+      <li><a class="reference external" href="index/../../v3.0.1/index.html">v3.0.1</a></li>
+      <li><a class="reference external" href="index/../../v2.0.0/index.html">v2.0.0</a></li>
+      <li><a class="reference external" href="index/../../v1.3.4/index.html">v1.3.4</a></li>
+      
+    </ul>
+  </p>
+</p>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api_guide.html" title="API documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nexus_links.html" title="Working with links"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Nexus and XML</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+    </div>
+  </body>
+</html>
