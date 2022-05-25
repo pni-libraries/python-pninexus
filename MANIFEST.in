@@ -3,6 +3,7 @@ include doc/sphinx/*
 include doc/sphinx/_templates/*
 include build_tools/*.py
 include test/*.py
+include test/*/*.xml
 include test/*/*.py
 include test/*/*/*.py
 include pkgconfig.py
