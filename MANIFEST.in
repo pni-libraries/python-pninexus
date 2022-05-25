@@ -1,6 +1,7 @@
 recursive-include src *.hpp *.cpp
 include doc/sphinx/*
 include doc/sphinx/_templates/*
+include doc/sphinx/_static/*
 include build_tools/*.py
 include test/*.py
 include test/*/*.xml
