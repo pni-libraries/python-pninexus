@@ -15,8 +15,8 @@ from build_tools import (CppExtensionFactory,
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
-version = "3.0.0"
-release = "3.0.0"
+version = "3.0.1"
+release = "3.0.1"
 # release = "3.0"
 
 if release.count(".") == 1:
