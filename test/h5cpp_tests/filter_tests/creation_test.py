@@ -210,7 +210,7 @@ class FilterCreationTest(unittest.TestCase):
         filter = ExternalFilter(32008, [0, 2])
         self.assertEqual(filter.id, 32008)
         self.assertEqual(filter.cd_values, [0, 2])
-        if(is_filter_available(32008)):
+        if is_filter_available(32008):
             filter(self.dcpl)
             hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter2"),
                               self.datatype,
@@ -248,7 +248,7 @@ class FilterCreationTest(unittest.TestCase):
         filter = ExternalFilter(31999, [0, 2])
         self.assertEqual(filter.id, 31999)
         self.assertEqual(filter.cd_values, [0, 2])
-        if(is_filter_available(31999)):
+        if is_filter_available(31999):
             filter(self.dcpl)
             hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter3"),
                               self.datatype,
