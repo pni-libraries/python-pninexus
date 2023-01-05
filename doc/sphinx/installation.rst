@@ -72,13 +72,13 @@ For Debian (Bullseye) use
 
    $ wget http://repos.pni-hdri.de/bullseye-hdri.list
 
-and for Ubuntu (Focal)
+and for Ubuntu (Jammy)
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/focal-pni-hdri.list
+   $ wget http://repos.pni-hdri.de/jammy-pni-hdri.list
 
-Similarly, proceed for Bullseye, Buster, Stretch, Impish, Focal or Bionic.
+Similarly, proceed for Bullseye, Buster, Stretch, Kinetic, Jammy, Focal or Bionic.
 Once you have downloaded the file use
 
 .. code-block:: bash
