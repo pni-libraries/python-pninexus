@@ -12,7 +12,7 @@ RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian bullseye main" -y
 # RUN apt-get -qq update && apt-get -qq -y dist-upgrade
 RUN apt-get -qq update && apt-get -qq install -y python3-sphinx  apt-utils net-tools
-RUN apt-get install -y libpninexus3.0.1-dev libpninexus3.0.1 libh5cpp0.5.1-dev libh5cpp0.5.1 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 git python3-pytest cmake doxygen python3-sphinx libboost-all-dev 
+RUN apt-get install -y libpninexus3.0.2-dev libpninexus3.0.2 libh5cpp0.5.2-dev libh5cpp0.5.2 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 git python3-pytest cmake doxygen python3-sphinx libboost-all-dev 
 RUN useradd -ms /bin/bash tango
 RUN apt-get -qq install -y adduser
 RUN  /bin/bash -c 'sleep 10'
