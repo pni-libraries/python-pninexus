@@ -1,6 +1,12 @@
 # ChangeLog
 
-## 3.0.0 - 2021-05-09
+## 3.0.2 - 2023-01-05
+- technical release for libpninexus v3.0.2 ([#196](https://github.com/pni-libraries/libpninexus/issues/196)) and libh5cpp v0.5.2 (https://github.com/ess-dmsc/h5cpp/issues/616)
+
+## 3.0.1 - 2022-05-25
+- technical release for libpninexus v3.0.1 ([#189](https://github.com/pni-libraries/libpninexus/issues/189)) and libh5cpp v0.5.1 (https://github.com/ess-dmsc/h5cpp/issues/602)
+
+## 3.0.0 - 2022-05-09
 - add documetation versioning ([#148](https://github.com/pni-libraries/python-pninexus/pull/148))
 - switch tests to pytest ([#149](https://github.com/pni-libraries/python-pninexus/pull/149))
 - add size, type and dimensions to Hyperslab ([#154](https://github.com/pni-libraries/python-pninexus/pull/154))
