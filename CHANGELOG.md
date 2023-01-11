@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.0.3 - 2023-01-12
+- technical release for libpninexus v3.0.3 ([#196](https://github.com/pni-libraries/libpninexus/issues/196)) and libh5cpp v0.5.2 (https://github.com/ess-dmsc/h5cpp/issues/616)
+
 ## 3.0.2 - 2023-01-05
 - technical release for libpninexus v3.0.2 ([#196](https://github.com/pni-libraries/libpninexus/issues/196)) and libh5cpp v0.5.2 (https://github.com/ess-dmsc/h5cpp/issues/616)
 
