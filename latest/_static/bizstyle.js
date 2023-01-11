@@ -36,6 +36,6 @@ $(window).resize(function(){
         $("li.nav-item-0 a").text("Top");
     }
     else {
-        $("li.nav-item-0 a").text("pninexus 3.0.3 documentation");
+        $("li.nav-item-0 a").text("pninexus (latest) documentation");
     }
 });
