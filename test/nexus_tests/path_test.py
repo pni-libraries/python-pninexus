@@ -94,9 +94,16 @@ class NexusPathTests(unittest.TestCase):
             nexus.Path.to_string(p),
             "{filename}://scan_001:NXentry/instrument:NXinstrument/"
             "detector_01:NXdetector".format(filename=self.filename))
-
-        for element in p:
-            print(element)
+        res = [
+            {'name': '/', 'base_class': 'NXroot'},
+            {'name': 'scan_001', 'base_class': 'NXentry'},
+            {'name': 'instrument', 'base_class': 'NXinstrument'},
+            {'name': 'detector_01', 'base_class': 'NXdetector'}
+        ]
+        for i, element in enumerate(p):
+            self.assertEqual(type(element), dict)
+            self.assertEqual(element['name'], res[i]['name'])
+            self.assertEqual(element['base_class'], res[i]['base_class'])
 
     def test_get_path(self):
 

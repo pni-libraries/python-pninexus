@@ -10,9 +10,9 @@ For the build of the package the following dependencies must be satisfied
 +--------------+----------------+
 | package      | version        |
 +==============+================+
-| libh5cpp     | >=0.4.0        |
+| libh5cpp     | >=0.5.0        |
 +--------------+----------------+
-| libpninexus  | >=2.0.0        |
+| libpninexus  | >=3.0.0        |
 +--------------+----------------+
 | libboost     | >=1.60.0       |
 +--------------+----------------+
@@ -60,25 +60,25 @@ keyring
 
 .. code-block:: bash
 
-   $ curl http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
-
+   $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+   $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
 The return value of this command line should be `OK`.
 In a next step you have to add new package sources to your system. For this
 purpose go to :file:`/etc/apt/sources.list.d` and download the sources file.
-For Debian (Buster) use
+For Debian (Bullseye) use
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/buster-pni-hdri.list
+   $ wget http://repos.pni-hdri.de/bullseye-hdri.list
 
-and for Ubuntu (Focal)
+and for Ubuntu (Jammy)
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/focal-pni-hdri.list
+   $ wget http://repos.pni-hdri.de/jammy-pni-hdri.list
 
-Similarly, proceed for Bullseye, Buster, Stretch, Groovy, Focal or Bionic.
+Similarly, proceed for Bullseye, Buster, Stretch, Kinetic, Jammy, Focal or Bionic.
 Once you have downloaded the file use
 
 .. code-block:: bash

@@ -24,6 +24,7 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "../numpy/numpy.hpp"
 
 
@@ -38,7 +39,7 @@
 template<typename IoType>
 bool has_variable_length_string_type(const IoType &object)
 {
-  if(object.datatype().get_class() != hdf5::datatype::Class::STRING)
+  if(object.datatype().get_class() != hdf5::datatype::Class::String)
     return false;
 
   hdf5::datatype::String string_type = object.datatype();
@@ -105,12 +106,12 @@ boost::python::object read(const IoType &instance)
   // if we read string data we have to fix the shape of the resulting
   // numpy array.
   //
-  if(instance.datatype().get_class()==hdf5::datatype::Class::STRING)
+  if(instance.datatype().get_class()==hdf5::datatype::Class::String)
   {
     PyArrayObject *array_ptr = static_cast<PyArrayObject*>(adapter);
     numpy::Dimensions dims{1};
 
-    if(instance.dataspace().type()==hdf5::dataspace::Type::SIMPLE)
+    if(instance.dataspace().type()==hdf5::dataspace::Type::Simple)
       dims = numpy::Dimensions(hdf5::dataspace::Simple(instance.dataspace()).current_dimensions());
 
     PyArray_Dims py_dims{dims.data(),dims.size()};
@@ -162,7 +163,7 @@ boost::python::object read(const IoType &instance,const hdf5::dataspace::Selecti
 
   object array = numpy::ArrayFactory::create(instance.datatype(),selection);
 
-  if(instance.datatype().get_class() == hdf5::datatype::Class::STRING)
+  if(instance.datatype().get_class() == hdf5::datatype::Class::String)
   {
 //    std::vector<std::string> buffer(instance.dataspace().size());
 //    instance.read(buffer,selection);
@@ -172,7 +173,7 @@ boost::python::object read(const IoType &instance,const hdf5::dataspace::Selecti
 //    std::for_each(buffer.begin(),buffer.end(),
 //                  [&l](const std::string &s) { l.append(s);});
 //
-//    return numpy::ArrayFactory::create(l,pni::type_id_t::STRING,output_dims);
+//    return numpy::ArrayFactory::create(l,pni::type_id_t::String,output_dims);
   }
   else
   {

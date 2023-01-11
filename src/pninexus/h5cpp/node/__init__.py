@@ -229,26 +229,29 @@ def selection_to_shape(selection):
 
     """
 
-    if not isinstance(selection, dataspace.Hyperslab):
+    if isinstance(selection, dataspace.Hyperslab):
+        shape = []
+        size = 1
+        for blocks, counts in zip(selection.block(), selection.count()):
+            size *= blocks * counts
+            shape.append(blocks * counts)
+
+        if size == 1:
+            #
+            # it the total number of elements in the selection is 1
+            # the shape is always (1,)
+            # no matter how many dimension are in the selection.
+            #
+            return (1,)
+        elif len(shape) > 1:
+            shape = [s for s in shape if s != 1]
+
+        return shape
+    elif isinstance(selection, dataspace.Points):
+        return [selection.points]
+    else:
         raise TypeError(
-            "Shape conversion currently only works for Hyperslabs")
-
-    shape = []
-    size = 1
-    for blocks, counts in zip(selection.block(), selection.count()):
-        size *= blocks * counts
-        shape.append(blocks * counts)
-
-    if size == 1:
-        #
-        # it the total number of elements in the selection is 1 the shape is
-        # always (1,) no matter how many dimension are in the selection.
-        #
-        return (1,)
-    elif len(shape) > 1:
-        shape = [s for s in shape if s != 1]
-
-    return shape
+            "Shape conversion currently only works for Hyperslabs or Points")
 
 
 def dataset_write(self, data, selection=None):

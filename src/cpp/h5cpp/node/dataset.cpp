@@ -26,6 +26,7 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "../common/io.hpp"
 #include "../common/converters.hpp"
 
@@ -115,12 +116,12 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
 
   self.read(array_adapter,memory_type,memory_space,file_space);
 
-  if(self.datatype().get_class() == hdf5::datatype::Class::STRING)
+  if(self.datatype().get_class() == hdf5::datatype::Class::String)
   {
     hdf5::datatype::String string_type = self.datatype();
     if(!string_type.is_variable_length())
     {
-      std::cout<<"Saving fixed length string array!"<<std::endl;
+      // std::cout<<"Saving fixed length string array!"<<std::endl;
       PyObject *ptr = reinterpret_cast<PyObject*>(static_cast<PyArrayObject*>(array_adapter));
       Py_XINCREF(ptr);
 

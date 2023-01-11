@@ -25,8 +25,14 @@
 
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 namespace {
+
+hdf5::Dimensions get_dimensions(const hdf5::dataspace::Hyperslab &self)
+{
+  return self.dimensions();
+}
 
 hdf5::Dimensions get_offset(const hdf5::dataspace::Hyperslab &self)
 {
@@ -58,26 +64,84 @@ hdf5::Dimensions get_block(const hdf5::dataspace::Hyperslab &self)
 
 } // anonymous namespace
 
+
+// hdf5::Dimensions get_points_dimensions(const hdf5::dataspace::Points &self)
+// {
+//   return self.dimensions();
+// }
+
+std::vector<std::vector<hsize_t>> get_coord_set(boost::python::list coord_set){
+
+  std::vector<std::vector<hsize_t>> coords;
+
+  for (boost::python::ssize_t i = 0, iend = len(coord_set); i < iend; ++i){
+    std::vector<hsize_t> crd;
+    boost::python::list coord(coord_set[i]);
+    for (boost::python::ssize_t j = 0, jend = len(coord); j < jend; ++j){
+      boost::python::object o = coord[j];
+      boost::python::extract<hsize_t> s(o);
+      if (s.check()){
+        crd.push_back(s());
+      }
+    }
+    coords.push_back(crd);
+  }
+  return coords;
+}
+
+std::vector<hsize_t> get_coords(boost::python::list coords){
+
+  std::vector<hsize_t> crd;
+
+  for (boost::python::ssize_t j = 0, jend = len(coords); j < jend; ++j){
+    boost::python::object o = coords[j];
+    boost::python::extract<hsize_t> s(o);
+    if (s.check()){
+      crd.push_back(s());
+    }
+  }
+  return crd;
+}
+
+class DLL_EXPORT PointsWrapper : public hdf5::dataspace::Points
+{
+ public:
+  PointsWrapper(): hdf5::dataspace::Points()
+    {}
+  PointsWrapper(size_t rank): hdf5::dataspace::Points(rank)
+    {}
+  PointsWrapper(boost::python::list coord_set):
+    hdf5::dataspace::Points(get_coord_set(coord_set))
+    {}
+  void add_set(boost::python::list coord_set){
+    hdf5::dataspace::Points::add_set(get_coord_set(coord_set));
+  }
+  void add(boost::python::list coords){
+    hdf5::dataspace::Points::add(get_coords(coords));
+  }
+};
+
+
 void create_selections()
 {
   using namespace boost::python;
   using namespace hdf5::dataspace;
 
   enum_<SelectionType>("SelectionType")
-      .value("NONE",SelectionType::NONE)
-      .value("POINTS",SelectionType::POINTS)
-      .value("HYPERSLAB",SelectionType::HYPERSLAB)
-      .value("ALL",SelectionType::ALL);
+      .value("NONE",SelectionType::None)
+      .value("POINTS",SelectionType::Points)
+      .value("HYPERSLAB",SelectionType::Hyperslab)
+      .value("ALL",SelectionType::All);
 
   enum_<SelectionOperation>("SelectionOperation")
-      .value("SET",SelectionOperation::SET)
-      .value("OR",SelectionOperation::OR)
-      .value("AND",SelectionOperation::AND)
-      .value("XOR",SelectionOperation::XOR)
-      .value("NOTB",SelectionOperation::NOTB)
-      .value("NOTA",SelectionOperation::NOTA)
-      .value("APPEND",SelectionOperation::APPEND)
-      .value("PREPEND",SelectionOperation::PREPEND)
+      .value("SET",SelectionOperation::Set)
+      .value("OR",SelectionOperation::Or)
+      .value("AND",SelectionOperation::And)
+      .value("XOR",SelectionOperation::XOr)
+      .value("NOTB",SelectionOperation::NotB)
+      .value("NOTA",SelectionOperation::NotA)
+      .value("APPEND",SelectionOperation::Append)
+      .value("PREPEND",SelectionOperation::Prepend)
       ;
 
 
@@ -102,6 +166,9 @@ void create_selections()
            ((arg("offset"),arg("count"),arg("stride")))
            )
       .add_property("rank",&Hyperslab::rank)
+      .add_property("size",&Hyperslab::size)
+      .add_property("type",&Hyperslab::type)
+      .def("dimensions",get_dimensions)
       .def("offset",get_offset)
       .def("offset",set_entire_offset)
       .def("offset",set_individual_offset)
@@ -115,6 +182,15 @@ void create_selections()
       .def("block",set_entire_block)
       .def("block",set_individual_block)
            ;
+
+  class_<PointsWrapper, bases<Selection>>("Points")
+    .def(init<boost::python::list>(args("coord_set")))
+      .add_property("rank",&PointsWrapper::rank)
+      .add_property("size",&PointsWrapper::size)
+      .add_property("type",&PointsWrapper::type)
+      .add_property("points",&PointsWrapper::points)
+      .def("dimensions", &PointsWrapper::dimensions)
+    ;
 
   class_<View>("View")
       .def(init<Dataspace,Hyperslab>((arg("space"),arg("selection"))))

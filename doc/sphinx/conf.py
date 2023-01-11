@@ -148,7 +148,19 @@ html_static_path = ['_static']
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'localtoc.html',
+        'relations.html',
+	'searchbox.html',
+        # located at _templates/
+        'versions.html',
+    ]
+}
+
+html_context = {
+    "docs_versions" : ["v3.0.3", "v3.0.2", "v3.0.1", "v3.0.0", "v2.0.0", "v1.3.4"]
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

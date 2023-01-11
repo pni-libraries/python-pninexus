@@ -32,6 +32,7 @@ extern "C"{
 #include <boost/python.hpp>
 #include <boost/python/docstring_options.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include <pni/nexus.hpp>
 
 #include "wrappers.hpp"
@@ -79,7 +80,7 @@ BOOST_PYTHON_MODULE(_nexus)
                                        const hdf5::property::FileCreationList &,
                                        const hdf5::property::FileAccessList &) = &pni::nexus::create_file;
   def("create_file",create_file_flag,(arg("path"),
-                                      arg("flags")=hdf5::file::AccessFlags::EXCLUSIVE,
+                                      arg("flags")=hdf5::file::AccessFlags::Exclusive,
                                       arg("fcpl")=hdf5::property::FileCreationList(),
                                       arg("fapl")=hdf5::property::FileAccessList()));
 
@@ -87,7 +88,7 @@ BOOST_PYTHON_MODULE(_nexus)
                                      hdf5::file::AccessFlagsBase,
                                      const hdf5::property::FileAccessList &) = &pni::nexus::open_file;
   def("open_file",open_file_flag,(arg("path"),
-                                  arg("flags")=hdf5::file::AccessFlags::READONLY,
+                                  arg("flags")=hdf5::file::AccessFlags::ReadOnly,
                                   arg("fapl")=hdf5::property::FileAccessList()));
 
 

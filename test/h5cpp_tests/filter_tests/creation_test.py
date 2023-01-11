@@ -27,7 +27,7 @@ import unittest
 import os
 from pninexus.h5cpp.filter import (
     Deflate, Fletcher32, Shuffle, ExternalFilter, ExternalFilters,
-    NBit, SZip, ScaleOffset, SOScaleType,
+    NBit, SZip, ScaleOffset, SOScaleType, SZipOptionMask,
     is_filter_available, Availability)
 import pninexus.h5cpp as hdf5
 
@@ -113,7 +113,7 @@ class FilterCreationTest(unittest.TestCase):
 
     def testSZip(self):
 
-        filter = SZip(SZip.EC_OPTION_MASK, 16)
+        filter = SZip(SZipOptionMask.ENTROPY_CODING, 16)
         filter(self.dcpl)
         hdf5.node.Dataset(self.root, hdf5.Path("SZip"),
                           self.datatype,
@@ -136,17 +136,17 @@ class FilterCreationTest(unittest.TestCase):
 
     def testScaleOffset(self):
 
-        filter = ScaleOffset(SOScaleType.INT, 2)
-        filter(self.dcpl)
+        sfilter = ScaleOffset(SOScaleType.INT, 2)
+        sfilter(self.dcpl)
         hdf5.node.Dataset(self.root, hdf5.Path("ScaleOffset"),
                           self.datatype,
                           self.dataspace,
                           self.lcpl,
                           self.dcpl)
         self.assertEqual(self.dcpl.nfilters, 1)
-        self.assertTrue(filter.is_encoding_enabled())
-        self.assertTrue(filter.is_decoding_enabled())
-        self.assertEqual(filter.id, 6)
+        self.assertTrue(sfilter.is_encoding_enabled())
+        self.assertTrue(sfilter.is_decoding_enabled())
+        self.assertEqual(sfilter.id, 6)
         filters = ExternalFilters()
         self.assertEqual(len(filters), 0)
         flags = filters.fill(self.dcpl)
@@ -210,7 +210,7 @@ class FilterCreationTest(unittest.TestCase):
         filter = ExternalFilter(32008, [0, 2])
         self.assertEqual(filter.id, 32008)
         self.assertEqual(filter.cd_values, [0, 2])
-        if(is_filter_available(32008)):
+        if is_filter_available(32008):
             filter(self.dcpl)
             hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter2"),
                               self.datatype,
@@ -237,7 +237,8 @@ class FilterCreationTest(unittest.TestCase):
             except RuntimeError:
                 error = True
             if not error:
-                print("filter with 32008 id  created")
+                pass
+                # print("filter with 32008 id  created")
             # for newer versions of hdf5 you can constuct the object
             #       on nonexisting filter
             # self.assertTrue(error)
@@ -247,7 +248,7 @@ class FilterCreationTest(unittest.TestCase):
         filter = ExternalFilter(31999, [0, 2])
         self.assertEqual(filter.id, 31999)
         self.assertEqual(filter.cd_values, [0, 2])
-        if(is_filter_available(31999)):
+        if is_filter_available(31999):
             filter(self.dcpl)
             hdf5.node.Dataset(self.root, hdf5.Path("ExternalFilter3"),
                               self.datatype,
@@ -261,7 +262,8 @@ class FilterCreationTest(unittest.TestCase):
             except RuntimeError:
                 error = True
             if not error:
-                print("filter with 31999 id  created")
+                pass
+                # print("filter with 31999 id  created")
             # for newer versions of hdf5 you can constuct the object
             #       on nonexisting filter
             # self.assertTrue(error)

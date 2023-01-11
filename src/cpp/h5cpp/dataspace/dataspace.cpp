@@ -22,9 +22,10 @@
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "wrappers.hpp"
 
-static const hsize_t UNLIMITED = H5S_UNLIMITED;
+static const hsize_t unlimited = H5S_UNLIMITED;
 
 
 BOOST_PYTHON_MODULE(_dataspace)
@@ -40,8 +41,8 @@ BOOST_PYTHON_MODULE(_dataspace)
   doc_opts.enable_user_defined();
 
   enum_<Type>("Type")
-      .value("SCALAR",hdf5::dataspace::Type::SCALAR)
-      .value("SIMPLE",hdf5::dataspace::Type::SIMPLE)
+      .value("SCALAR",hdf5::dataspace::Type::Scalar)
+      .value("SIMPLE",hdf5::dataspace::Type::Simple)
       ;
 
   class_<SelectionManager,boost::noncopyable>("SelectionManager",no_init)
@@ -75,7 +76,7 @@ BOOST_PYTHON_MODULE(_dataspace)
       ;
 
   scope current;
-  current.attr("UNLIMITED") = UNLIMITED;
+  current.attr("UNLIMITED") = unlimited;
 
   create_selections();
 }

@@ -22,6 +22,7 @@
 //
 #include <boost/python.hpp>
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 using namespace boost::python;
 
@@ -34,9 +35,9 @@ boost::python::object get_node(const hdf5::node::Group &base,
   hdf5::node::Node n = hdf5::node::get_node(base,path,lapl);
   switch(n.type())
   {
-    case hdf5::node::Type::DATASET:
+    case hdf5::node::Type::Dataset:
       return boost::python::object(hdf5::node::Dataset(n));
-    case hdf5::node::Type::GROUP:
+    case hdf5::node::Type::Group:
       return boost::python::object(hdf5::node::Group(n));
     default:
       return boost::python::object(n);

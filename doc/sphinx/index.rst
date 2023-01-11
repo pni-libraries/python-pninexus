@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to libpninexus Python bindings's documentation!
-=======================================================
+Welcome to PNI/NeXus and h5cpp python bindings's documentation!
+===============================================================
 
 Contents:
 
@@ -17,11 +17,11 @@ Contents:
     
 
 
-Welcome to the documentation of `python-pninexus`. This package is a wrapper
+Welcome to the documentation of `python-pninexus`. This package is a python wrapper
 for libh5cpp_ and libpninexus_.
 
 .. _libh5cpp: https://github.com/ess-dmsc/h5cpp
-.. _libpninexus: https://github.com/pni-libraries/libpniio
+.. _libpninexus: https://github.com/pni-libraries/libpninexus
 
 Indices and tables
 ==================

@@ -25,12 +25,13 @@
 #pragma once
 
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include <cstdint>
 #include "array_adapter.hpp"
 
 namespace hdf5  {
 namespace dataspace {
-    
+
 template<> class TypeTrait<numpy::ArrayAdapter>
 {
   public:
@@ -51,8 +52,13 @@ template<> class TypeTrait<numpy::ArrayAdapter>
       return array.data();
     }
 
+    const static Dataspace & get(const numpy::ArrayAdapter &, hdf5::dataspace::DataspacePool &) {
+      const static Dataspace & cref_ = Dataspace();
+      return cref_;
+    }
+
 };
-    
+
 } // namespace dataspace
 
 namespace datatype {
@@ -90,13 +96,20 @@ template<> class TypeTrait<numpy::ArrayAdapter>
         case NPY_STRING:
         {
           String type = String::fixed(array.itemsize());
-          type.padding(StringPad::NULLPAD);
+          type.padding(StringPad::NullPad);
           return type;
         }
         default:
           throw std::runtime_error("Datatype not supported by HDF5!");
       }
     }
+
+    const static Datatype & get(const numpy::ArrayAdapter &) {
+      const static Datatype & cref_ = Datatype();
+      return cref_;
+    }
+
+
 };
 
 } // namespace datatype

@@ -23,6 +23,7 @@
 #pragma once
 
 #include <h5cpp/hdf5.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 #include "array_adapter.hpp"
 #include "array_factory.hpp"
 
@@ -66,7 +67,7 @@ struct FixedLengthStringTrait<numpy::ArrayAdapter>
                                const dataspace::Dataspace &memory_space)
    {
      numpy::Dimensions dims{1};
-     if(memory_space.type()==dataspace::Type::SIMPLE)
+     if(memory_space.type()==dataspace::Type::Simple)
        dims = numpy::Dimensions(dataspace::Simple(memory_space).current_dimensions());
 
      numpy::ArrayAdapter adapter(reinterpret_cast<PyArrayObject*>(numpy::ArrayFactory::create_ptr(memory_type,dims)));

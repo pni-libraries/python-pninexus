@@ -27,7 +27,8 @@
 #include <cstdint>
 #include <h5cpp/datatype/datatype.hpp>
 #include <h5cpp/datatype/enum.hpp>
-#include <h5cpp/datatype/ebool.hpp>
+#include <h5cpp/contrib/nexus/ebool.hpp>
+#include <h5cpp/contrib/stl/stl.hpp>
 
 
 const boost::python::tuple integer_get_pad(const hdf5::datatype::Integer &self)
@@ -40,8 +41,8 @@ const boost::python::tuple integer_get_pad(const hdf5::datatype::Integer &self)
 
 void integer_set_pad(const hdf5::datatype::Integer &self, const boost::python::object pad)
 {
-  hdf5::datatype::Pad lp = hdf5::datatype::Pad::ZERO;
-  hdf5::datatype::Pad mp = hdf5::datatype::Pad::ZERO;
+  hdf5::datatype::Pad lp = hdf5::datatype::Pad::Zero;
+  hdf5::datatype::Pad mp = hdf5::datatype::Pad::Zero;
   if(boost::python::len(pad) != 2)
     throw std::runtime_error("Object is not a two element list");
   boost::python::object lo = pad[0];
@@ -66,8 +67,8 @@ const boost::python::tuple float_get_pad(const hdf5::datatype::Float &self)
 
 void float_set_pad(const hdf5::datatype::Float &self, const boost::python::object pad)
 {
-  hdf5::datatype::Pad lp = hdf5::datatype::Pad::ZERO;
-  hdf5::datatype::Pad mp = hdf5::datatype::Pad::ZERO;
+  hdf5::datatype::Pad lp = hdf5::datatype::Pad::Zero;
+  hdf5::datatype::Pad mp = hdf5::datatype::Pad::Zero;
   if(boost::python::len(pad) != 2)
     throw std::runtime_error("Object is not a two element list");
   boost::python::object lo = pad[0];
@@ -133,47 +134,47 @@ BOOST_PYTHON_MODULE(_datatype)
 
 
   enum_<Class>("Class")
-      .value("NONE",Class::NONE)
-      .value("INTEGER",Class::INTEGER)
-      .value("FLOAT",Class::FLOAT)
-      .value("TIME",Class::TIME)
-      .value("STRING",Class::STRING)
-      .value("BITFIELD",Class::BITFIELD)
-      .value("OPAQUE",Class::OPAQUE)
-      .value("COMPOUND",Class::COMPOUND)
-      .value("REFERENCE",Class::REFERENCE)
-      .value("ENUM",Class::ENUM)
-      .value("VARLENGTH",Class::VARLENGTH)
-      .value("ARRAY",Class::ARRAY);
+      .value("NONE",Class::None)
+      .value("INTEGER",Class::Integer)
+      .value("FLOAT",Class::Float)
+      .value("TIME",Class::Time)
+      .value("STRING",Class::String)
+      .value("BITFIELD",Class::BitField)
+      .value("OPAQUE",Class::Opaque)
+      .value("COMPOUND",Class::Compound)
+      .value("REFERENCE",Class::Reference)
+      .value("ENUM",Class::Enum)
+      .value("VARLENGTH",Class::VarLength)
+      .value("ARRAY",Class::Array);
 
   enum_<Order>("Order")
       .value("LE",Order::LE)
       .value("BE",Order::BE)
-      .value("VAX",Order::VAX)
-      .value("NONE",Order::NONE);
+      .value("VAX",Order::Vax)
+      .value("NONE",Order::None);
 
   enum_<Sign>("Sign")
-      .value("TWOS_COMPLEMENT",Sign::TWOS_COMPLEMENT)
-      .value("UNSIGNED",Sign::UNSIGNED);
+      .value("TWOS_COMPLEMENT",Sign::TwosComplement)
+      .value("UNSIGNED",Sign::Unsigned);
 
   enum_<Norm>("Norm")
-      .value("IMPLIED",Norm::IMPLIED)
-      .value("MSBSET",Norm::MSBSET)
-      .value("NONE",Norm::NONE);
+      .value("IMPLIED",Norm::Implied)
+      .value("MSBSET",Norm::MSBSet)
+      .value("NONE",Norm::None);
 
   enum_<Pad>("Pad")
-      .value("ZERO",Pad::ZERO)
-      .value("ONE",Pad::ONE)
-      .value("BACKGROUND",Pad::BACKGROUND);
+      .value("ZERO",Pad::Zero)
+      .value("ONE",Pad::One)
+      .value("BACKGROUND",Pad::Background);
 
   enum_<StringPad>("StringPad")
-      .value("NULLTERM",StringPad::NULLTERM)
-      .value("NULLPAD",StringPad::NULLPAD)
-      .value("SPACEPAD",StringPad::SPACEPAD);
+      .value("NULLTERM",StringPad::NullTerm)
+      .value("NULLPAD",StringPad::NullPad)
+      .value("SPACEPAD",StringPad::SpacePad);
 
   enum_<Direction>("Direction")
-      .value("ASCEND",Direction::ASCEND)
-      .value("DESCEND",Direction::DESCEND);
+      .value("ASCEND",Direction::Ascend)
+      .value("DESCEND",Direction::Descend);
 
   enum_<CharacterEncoding>("CharacterEncoding")
       .value("ASCII",CharacterEncoding::ASCII)
@@ -184,7 +185,7 @@ BOOST_PYTHON_MODULE(_datatype)
   class_<Datatype>("Datatype")
       .add_property("type",&Datatype::get_class)
       .add_property("super",&Datatype::super)
-      .def("native_type",&Datatype::native_type,(arg("dir")=Direction::ASCEND))
+      .def("native_type",&Datatype::native_type,(arg("dir")=Direction::Ascend))
       .def("has_class",&Datatype::has_class)
       .add_property("size",get_size,set_size)
       .add_property("is_valid",&Datatype::is_valid)
