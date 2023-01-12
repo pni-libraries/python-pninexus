@@ -22,19 +22,23 @@
 #
 from __future__ import print_function
 import unittest
-# import os
+import os
 # import numpy
 
 from pninexus import h5cpp
 
+module_path = os.path.split(os.path.abspath(__file__))[0]
+
 
 class GroupConstructionTest(unittest.TestCase):
+
+    hdf5_file_path = os.path.join(module_path, "GroupTest.h5")
 
     def setUp(self):
         unittest.TestCase.setUp(self)
 
         self.file = h5cpp.file.create(
-            "GroupTest.h5", h5cpp.file.AccessFlags.TRUNCATE)
+            self.hdf5_file_path, h5cpp.file.AccessFlags.TRUNCATE)
 
     def tearDown(self):
 

@@ -27,9 +27,12 @@ from pninexus.h5cpp.file import AccessFlags
 # from pninexus.h5cpp.node import Dataset
 # from pninexus.h5cpp.dataspace import Simple
 # from pninexus.h5cpp.dataspace import Scalar
+import os
 import numpy
 import numpy.testing as npt
 import h5py
+
+module_path = os.path.split(os.path.abspath(__file__))[0]
 
 
 class H5pyCompatibilityReading(unittest.TestCase):
@@ -42,7 +45,7 @@ class H5pyCompatibilityReading(unittest.TestCase):
 
     """
 
-    filename = "H5pyCompatibilityReading.h5"
+    filename = os.path.join(module_path, "H5pyCompatibilityReading.h5")
 
     str_data = numpy.array(
         [["hello", "world"], ["a", "text"], ["array", "!"]])
