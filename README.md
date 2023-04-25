@@ -9,7 +9,7 @@ The wrapper supports Python 2.X and 3.X.
 
 ### Required packages
 
-* *h5cpp*  >= 1.0.0
+* *h5cpp*  >= 0.5.0
 * *libpninexus* >= 3.0.0
 * python setuptools
 * numpy
@@ -53,7 +53,7 @@ For Python3 just replace python with python3 in the above instructions.
 
 ### Debian and Ubuntu packages
 
-Debian  `bullseye`, `buster`, `stretch` or Ubuntu  `jammy`, `focal`, `bionic` packages can be found in the HDRI repository.
+Debian  `bullseye`, `buster` or Ubuntu `lunar`, `jammy`, `focal` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
