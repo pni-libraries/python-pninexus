@@ -115,7 +115,7 @@ void create_function_wrapper()
                            const hdf5::Path &,
                            const hdf5::property::LinkCreationList &,
                            const hdf5::property::LinkAccessList &) = &hdf5::node::link;
-  void (*link_external)(const boost::filesystem::path &,
+  void (*link_external)(const fs::path &,
                         const hdf5::Path &,
                         const hdf5::node::Group &,
                         const hdf5::Path &,

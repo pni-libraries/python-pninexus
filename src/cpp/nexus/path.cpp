@@ -30,8 +30,8 @@ using namespace pni;
 
 void create_path_wrappers()
 {
-  void (nexus::Path::*set_filename)(const boost::filesystem::path &) = &nexus::Path::filename;
-  boost::filesystem::path (nexus::Path::*get_filename)() const = &nexus::Path::filename;
+  void (nexus::Path::*set_filename)(const fs::path &) = &nexus::Path::filename;
+  fs::path (nexus::Path::*get_filename)() const = &nexus::Path::filename;
   void (nexus::Path::*set_attribute)(const std::string &) = &nexus::Path::attribute;
   std::string (nexus::Path::*get_attribute)() const = &nexus::Path::attribute;
   nexus::Path::ConstElementIterator (nexus::Path::*cbegin)() const = &nexus::Path::begin;

@@ -60,7 +60,7 @@ BOOST_PYTHON_MODULE(_property)
 
 #if H5_VERSION_GE(1, 10, 0)
   class_<VirtualDataMap>("VirtualDataMap")
-    .def(init<View,boost::filesystem::path,Path,View>((arg("target_view"),arg("source_file"),arg("source_dataset"),arg("source_view"))))
+    .def(init<View,fs::path,Path,View>((arg("target_view"),arg("source_file"),arg("source_dataset"),arg("source_view"))))
     ;
   class_<VirtualDataMaps>("VirtualDataMaps") 
     .def("add", add_map)

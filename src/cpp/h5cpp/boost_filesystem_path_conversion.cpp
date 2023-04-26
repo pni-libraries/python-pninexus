@@ -27,10 +27,10 @@ using namespace boost::python;
 
 BoostFilesystemPathToPythonObject::BoostFilesystemPathToPythonObject()
 {
-  to_python_converter<boost::filesystem::path,BoostFilesystemPathToPythonObject>();
+  to_python_converter<fs::path,BoostFilesystemPathToPythonObject>();
 }
 
-PyObject *BoostFilesystemPathToPythonObject::convert(const boost::filesystem::path &path)
+PyObject *BoostFilesystemPathToPythonObject::convert(const fs::path &path)
 {
   return incref(object(path.string()).ptr());
 }
@@ -38,7 +38,7 @@ PyObject *BoostFilesystemPathToPythonObject::convert(const boost::filesystem::pa
 PythonObjectToBoostFilesystemPath::PythonObjectToBoostFilesystemPath()
 {
   converter::registry::push_back(&convertible,&construct,
-                                 type_id<boost::filesystem::path>());
+                                 type_id<fs::path>());
 }
 
 void *PythonObjectToBoostFilesystemPath::convertible(PyObject *ptr)
@@ -57,6 +57,7 @@ void PythonObjectToBoostFilesystemPath::construct(PyObject *ptr,rvalue_type *dat
   boost::python::str py_string(handle<>(borrowed(ptr)));
 
   void *storage = ((storage_type*)data)->storage.bytes;
-  new (storage) boost::filesystem::path(extract<std::string>(py_string));
+  std::string path = extract<std::string>(py_string);
+  new (storage) fs::path(path);
   data->convertible = storage;
 }
