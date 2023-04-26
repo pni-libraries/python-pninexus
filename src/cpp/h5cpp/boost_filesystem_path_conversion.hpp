@@ -23,29 +23,29 @@
 #pragma once
 
 #include <boost/python.hpp>
-#include <boost/filesystem.hpp>
+#include <h5cpp/core/filesystem.hpp>
 
 //!
-//! @brief convert boost::filesystem::path to a Python object
+//! @brief convert fs::path to a Python object
 //!
-//! Instances of boost::filesystem::path are converted to a Python string
+//! Instances of fs::path are converted to a Python string
 //!
 struct BoostFilesystemPathToPythonObject
 {
     BoostFilesystemPathToPythonObject();
-    static PyObject *convert(const boost::filesystem::path &path);
+    static PyObject *convert(const fs::path &path);
 };
 
 //!
 //! @brief convert a Python string to boost::fileystem::path
 //!
-//! Python strings can be converted to an instance of boost::filesystem::path
+//! Python strings can be converted to an instance of fs::path
 //! if required.
 //!
 struct PythonObjectToBoostFilesystemPath
 {
     using rvalue_type = boost::python::converter::rvalue_from_python_stage1_data;
-    using storage_type = boost::python::converter::rvalue_from_python_storage<boost::filesystem::path>;
+    using storage_type = boost::python::converter::rvalue_from_python_storage<fs::path>;
 
     PythonObjectToBoostFilesystemPath();
 

@@ -15,9 +15,9 @@ from build_tools import (CppExtensionFactory,
 
 cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
-version = "3.0.3"
-# release = "3.0.3"
-release = "3.0"
+version = "3.1.0"
+release = "3.1.0"
+# release = "3.1"
 
 if release.count(".") == 1:
     docs_release = '(latest)'
@@ -102,7 +102,7 @@ nexus_config.add_include_directories(get_numpy_include_dirs())
 if sys.platform == "win32":
     pass
 else:
-    arguments = ['-std=c++11', '-Wall', '-Wextra', '-fdiagnostics-show-option']
+    arguments = ['-std=c++17', '-Wall', '-Wextra', '-fdiagnostics-show-option']
     nexus_config.add_compiler_arguments(arguments)
 
 # ----------------------------------------------------------------------------

@@ -171,8 +171,8 @@ void create_class_wrappers()
 
   size_t (LinkAccessList::*get_link_traversals)() const = &LinkAccessList::maximum_link_traversals;
   void (LinkAccessList::*set_link_traversals)(size_t) const= &LinkAccessList::maximum_link_traversals;
-  boost::filesystem::path (LinkAccessList::*get_external_link_prefix)() const =  &LinkAccessList::external_link_prefix;
-  void (LinkAccessList::*set_external_link_prefix)(const boost::filesystem::path &) =  &LinkAccessList::external_link_prefix;
+  fs::path (LinkAccessList::*get_external_link_prefix)() const =  &LinkAccessList::external_link_prefix;
+  void (LinkAccessList::*set_external_link_prefix)(const fs::path &) =  &LinkAccessList::external_link_prefix;
 
   class_<LinkAccessList,bases<List>>("LinkAccessList")
       .add_property("maximum_link_traversals",get_link_traversals,set_link_traversals)

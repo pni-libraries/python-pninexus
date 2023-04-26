@@ -75,7 +75,7 @@ BOOST_PYTHON_MODULE(_nexus)
   //
   def("is_nexus_file",&pni::nexus::is_nexus_file);
 
-  hdf5::file::File (*create_file_flag)(const boost::filesystem::path &,
+  hdf5::file::File (*create_file_flag)(const fs::path &,
                                        hdf5::file::AccessFlagsBase,
                                        const hdf5::property::FileCreationList &,
                                        const hdf5::property::FileAccessList &) = &pni::nexus::create_file;
@@ -84,7 +84,7 @@ BOOST_PYTHON_MODULE(_nexus)
                                       arg("fcpl")=hdf5::property::FileCreationList(),
                                       arg("fapl")=hdf5::property::FileAccessList()));
 
-  hdf5::file::File (*open_file_flag)(const boost::filesystem::path &,
+  hdf5::file::File (*open_file_flag)(const fs::path &,
                                      hdf5::file::AccessFlagsBase,
                                      const hdf5::property::FileAccessList &) = &pni::nexus::open_file;
   def("open_file",open_file_flag,(arg("path"),

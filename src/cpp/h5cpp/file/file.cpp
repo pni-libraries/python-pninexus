@@ -55,7 +55,7 @@ using namespace boost::python;
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(root_overloads,root,0,0);
 
-hdf5::file::File create_file(const boost::filesystem::path &file_path,
+hdf5::file::File create_file(const fs::path &file_path,
                              hdf5::file::AccessFlagsBase flags,
                              const hdf5::property::FileCreationList &fcpl,
                              const hdf5::property::FileAccessList &fapl)
@@ -63,7 +63,7 @@ hdf5::file::File create_file(const boost::filesystem::path &file_path,
   return hdf5::file::create(file_path,flags,fcpl,fapl);
 }
 
-hdf5::file::File open_file(const boost::filesystem::path &file_path,
+hdf5::file::File open_file(const fs::path &file_path,
                            hdf5::file::AccessFlagsBase flags,
                            const hdf5::property::FileAccessList &fapl)
 {
