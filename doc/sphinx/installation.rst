@@ -66,11 +66,11 @@ keyring
 The return value of this command line should be `OK`.
 In a next step you have to add new package sources to your system. For this
 purpose go to :file:`/etc/apt/sources.list.d` and download the sources file.
-For Debian (Bullseye) use
+For Debian (Bookworm) use
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/bullseye-hdri.list
+   $ wget http://repos.pni-hdri.de/bookworm-hdri.list
 
 and for Ubuntu (Jammy)
 
@@ -78,7 +78,7 @@ and for Ubuntu (Jammy)
 
    $ wget http://repos.pni-hdri.de/jammy-pni-hdri.list
 
-Similarly, proceed for Bullseye, Buster, Stretch, Kinetic, Jammy, Focal or Bionic.
+Similarly, proceed for Bookworm, Bullseye, Buster, Lunar, Jammy, Focal.
 Once you have downloaded the file use
 
 .. code-block:: bash
