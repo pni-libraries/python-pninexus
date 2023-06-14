@@ -2,18 +2,21 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Addressing objects: the NeXus path &#8212; pninexus (latest) documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,10 +54,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.nexus">
-<span id="addressing-objects-the-nexus-path"></span><h1>Addressing objects: the NeXus path<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="an-introduction">
-<h2>An introduction<a class="headerlink" href="#an-introduction" title="Permalink to this headline">¶</a></h2>
+  <section id="module-pninexus.nexus">
+<span id="addressing-objects-the-nexus-path"></span><h1>Addressing objects: the NeXus path<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this heading">¶</a></h1>
+<section id="an-introduction">
+<h2>An introduction<a class="headerlink" href="#an-introduction" title="Permalink to this heading">¶</a></h2>
 <p>One of the major contributions added by <em>libpninexus</em> to the standard HDF5 library
 is its <em>Path</em> class which is provided by <a class="reference internal" href="#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code></a> via the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>. The most obvious difference between a plain HDF5 path and a
@@ -86,8 +89,8 @@ of the object the attribute is attached to</p>
 character. With the concept of base classes in place we can further determine
 the path of an object by adding the base classes the intermediate objects belong
 to:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1:NXentry/instrument:NXinstrument/ <span class="se">\</span>
-                detector:NXdetector/transformation:NXtransformation/phi@units
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>detector_1.nxs://scan_1:NXentry/instrument:NXinstrument/<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>detector:NXdetector/transformation:NXtransformation/phi@units
 </pre></div>
 </div>
 <p>This would mean that the first element of name <cite>scan_1</cite> must be a group
@@ -111,8 +114,8 @@ of time. As long as the overall structure is not altered this approach will
 still work. It is important to note that the leading <code class="docutils literal notranslate"><span class="pre">:</span></code> before the group
 types is requied to indicate the parser that the following string refers to a
 type rather than to a name.</p>
-<div class="section" id="the-anatomy-of-a-nexus-path">
-<h3>The anatomy of a Nexus path<a class="headerlink" href="#the-anatomy-of-a-nexus-path" title="Permalink to this headline">¶</a></h3>
+<section id="the-anatomy-of-a-nexus-path">
+<h3>The anatomy of a Nexus path<a class="headerlink" href="#the-anatomy-of-a-nexus-path" title="Permalink to this heading">¶</a></h3>
 <p>A NeXus path consists of three sections</p>
 <ul class="simple">
 <li><p>the <em>file-section</em> determining the file within which a particular object is
@@ -132,9 +135,9 @@ section are separated by a <code class="docutils literal notranslate"><span clas
 system. For groups an element can have the form <em>name:type</em> while for a field
 it is only the <em>name</em>. As we have seen in the examples above the name can be
 omitted group in which case the element reduces to <em>:type</em>.</p>
-</div>
-<div class="section" id="path-equality-and-match">
-<h3>Path equality and match<a class="headerlink" href="#path-equality-and-match" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="path-equality-and-match">
+<h3>Path equality and match<a class="headerlink" href="#path-equality-and-match" title="Permalink to this heading">¶</a></h3>
 <p>Two paths are equal if all their elements (including file and attribute
 section) are equal. Equality is thus a rather strict criteria when comparing
 two paths. A more relaxed version is a <em>match</em>. Two paths are matching if they
@@ -153,9 +156,9 @@ and <cite>mythen:NXdetector</cite> would match but <cite>pilatus:NXdetector</cit
 This is again simple. For instance <cite>:NXdetector</cite> and <cite>:NXdetector</cite> would
 match as well as <cite>data</cite> and <cite>data</cite> would.</p></li>
 </ol>
-</div>
-<div class="section" id="using-paths">
-<h3>Using paths<a class="headerlink" href="#using-paths" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="using-paths">
+<h3>Using paths<a class="headerlink" href="#using-paths" title="Permalink to this heading">¶</a></h3>
 <p>All that theory sounds rather complicated. However, it is quite simple in
 practice.
 Nearly all objects in the NeXus API have a <code class="xref py py-attr docutils literal notranslate"><span class="pre">path</span></code> attribute
@@ -271,9 +274,9 @@ entry is always an empty string.</p>
 <span class="c1">#output: True</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -282,8 +285,9 @@ entry is always an empty string.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Addressing objects: the NeXus path</a><ul>
 <li><a class="reference internal" href="#an-introduction">An introduction</a><ul>
 <li><a class="reference internal" href="#the-anatomy-of-a-nexus-path">The anatomy of a Nexus path</a></li>
@@ -295,22 +299,27 @@ entry is always an empty string.</p>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="nexus_files.html"
-                        title="previous chapter">Working with Nexus files</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="nexus_groups.html"
-                        title="next chapter">Working with groups</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="nexus_files.html"
+                          title="previous chapter">Working with Nexus files</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="nexus_groups.html"
+                          title="next chapter">Working with groups</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script><p>
+<script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
     <ul>
@@ -355,7 +364,7 @@ entry is always an empty string.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

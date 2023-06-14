@@ -2,18 +2,21 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>HDF5 datatypes &#8212; pninexus (latest) documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,8 +54,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.h5cpp.datatype">
-<span id="hdf5-datatypes"></span><h1>HDF5 datatypes<a class="headerlink" href="#module-pninexus.h5cpp.datatype" title="Permalink to this headline">¶</a></h1>
+  <section id="module-pninexus.h5cpp.datatype">
+<span id="hdf5-datatypes"></span><h1>HDF5 datatypes<a class="headerlink" href="#module-pninexus.h5cpp.datatype" title="Permalink to this heading">¶</a></h1>
 <p>Beneath HDF5s IO model there are two fundamental concepts</p>
 <ul class="simple">
 <li><p><em>datatypes</em></p></li>
@@ -101,10 +104,6 @@ string representation of the appropriate numpy data type</p>
 <p>The <a class="reference internal" href="#module-pninexus.h5cpp.datatype" title="pninexus.h5cpp.datatype"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.datatype</span></code></a> package also provides a set of predefined
 datatypes</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 57%" />
-<col style="width: 43%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>datatype constant</p></th>
 <th class="head"><p>description</p></th>
@@ -152,8 +151,8 @@ datatypes</p>
 <p>Datatype are only important when creating datasets or attributes. During IO
 operations the appropriate type for the data is obtained automatically by the
 IO functions.</p>
-<div class="section" id="string-types">
-<h2>String types<a class="headerlink" href="#string-types" title="Permalink to this headline">¶</a></h2>
+<section id="string-types">
+<h2>String types<a class="headerlink" href="#string-types" title="Permalink to this heading">¶</a></h2>
 <p>String types are particularly difficult in HDF5. This is true for virtually
 every wrapper or programming interface currently available. Though <em>h5py</em> seems
 to make things easy (at least for the user side) there are corner cases where
@@ -171,8 +170,8 @@ the array. In terms of HDF5 that would be</p>
 <span class="n">datatype</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">CharachterEncoding</span><span class="o">.</span><span class="n">UTF8</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -181,30 +180,36 @@ the array. In terms of HDF5 that would be</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">HDF5 datatypes</a><ul>
 <li><a class="reference internal" href="#string-types">String types</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="h5cpp_groups.html"
-                        title="previous chapter">HDF5 nodes, links, and groups</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="h5cpp_dataspace.html"
-                        title="next chapter">HDF5 dataspaces and selections</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="h5cpp_groups.html"
+                          title="previous chapter">HDF5 nodes, links, and groups</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="h5cpp_dataspace.html"
+                          title="next chapter">HDF5 dataspaces and selections</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script><p>
+<script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
     <ul>
@@ -249,7 +254,7 @@ the array. In terms of HDF5 that would be</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
