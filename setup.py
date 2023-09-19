@@ -3,7 +3,7 @@ from __future__ import print_function
 import sys
 import os
 import os.path
-from numpy.distutils.misc_util import get_numpy_include_dirs
+import numpy
 from setuptools import setup
 from sphinx.setup_command import BuildDoc
 from distutils.command.install import install
@@ -92,8 +92,7 @@ else:
 #
 # adding include directories from numpy
 #
-
-nexus_config.add_include_directories(get_numpy_include_dirs())
+nexus_config.add_include_directories([numpy.get_include()])
 
 
 # ----------------------------------------------------------------------------
