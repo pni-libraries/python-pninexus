@@ -31,7 +31,7 @@ RUN mkdir -p /libpninexus-src
 RUN cd /libpninexus-src && git clone https://github.com/pni-libraries/libpninexus && mkdir build
 RUN cd /libpninexus-src/libpninexus && git submodule init && git pull --recurse-submodules
 RUN cd /libpninexus-src/build && cmake  -DCMAKE_BUILD_TYPE=Release -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
-$ RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/libpninexus/ ../libpninexus  && make -j4 && make install -j4
+# RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/libpninexus/ ../libpninexus  && make -j4 && make install -j4
 ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libpninexus/lib
 ENV PNINEXUS_LOCAL_PATH=/opt/libpninexus
