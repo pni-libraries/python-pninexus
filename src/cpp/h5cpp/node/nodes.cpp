@@ -281,17 +281,17 @@ BOOST_PYTHON_MODULE(_node)
       .def_readonly("links",&Group::links)
       .def_readonly("nodes",&Group::nodes)
       .def("close",&Group::close)
-      .def("get_group", &Group::get_group,
-	   (arg("base"), arg("path"),
+      .def("get_group_", &Group::get_group,
+	   (arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
-      .def("get_dataset", &Group::get_dataset,
-	   (arg("base"), arg("path"),
+      .def("get_dataset_", &Group::get_dataset,
+	   (arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
-      .def("has_group", &Group::has_group,
-	   (arg("base"), arg("path"),
+      .def("has_group_", &Group::has_group,
+	   (arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
-      .def("has_dataset", &Group::has_dataset,
-	   (arg("base"), arg("path"),
+      .def("has_dataset_", &Group::has_dataset,
+	   (arg("path"),
 	    arg("lapl")=hdf5::property::LinkAccessList()))
       ;
 
