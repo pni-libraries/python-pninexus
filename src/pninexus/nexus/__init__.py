@@ -45,7 +45,7 @@ from ._nexus import get_objects_
 
 def get_objects(base, path):
     if isinstance(path, str):
-        path = nexus.Path(path)
+        path = Path(path)
     return get_objects_(base, path)
 
 
