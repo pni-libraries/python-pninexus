@@ -116,3 +116,30 @@ class NexusPathTests(unittest.TestCase):
         self.assertEqual(
             str(p2),
             "{filename}://scan_001:NXentry".format(filename=self.filename))
+
+    def test_entry_selection_str(self):
+
+        entries = nexus.get_objects(self.root, ":NXentry")
+        self.assertEqual(len(entries), 3)
+        for entry in entries:
+            self.assertEqual(entry.attributes["NX_class"].read(), "NXentry")
+            self.assertEqual(entry.type, h5cpp.node.Type.GROUP)
+
+    def test_get_experiment_identifier_str(self):
+
+        ids = nexus.get_objects(self.root, ":NXentry/experiment_identifier")
+        self.assertEqual(len(ids), 3)
+
+        for id in ids:
+            self.assertEqual(id.type, h5cpp.node.Type.DATASET)
+            self.assertEqual(id.link.path.name, "experiment_identifier")
+
+    def test_detector_search_str(self):
+
+        detectors = nexus.get_objects(
+            self.root,
+            "scan_001:NXentry/:NXinstrument/:NXdetector")
+
+        self.assertEqual(len(detectors), 4)
+        for detector in detectors:
+            self.assertEqual(detector.type, h5cpp.node.Type.GROUP)

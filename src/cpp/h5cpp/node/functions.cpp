@@ -57,7 +57,7 @@ void create_function_wrapper()
   //
   // get node functions
   //
-  def("get_node",get_node,(arg("base"),
+  def("get_node_",get_node,(arg("base"),
                            arg("path"),
                            arg("lapl")=hdf5::property::LinkAccessList()));
 

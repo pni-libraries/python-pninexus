@@ -31,7 +31,7 @@ from pninexus.h5cpp._node import RecursiveNodeIterator
 #
 from pninexus.h5cpp._node import is_dataset
 from pninexus.h5cpp._node import is_group
-from pninexus.h5cpp._node import get_node
+from pninexus.h5cpp._node import get_node_
 
 from pninexus.h5cpp._node import _copy
 from pninexus.h5cpp._node import _link
@@ -386,9 +386,59 @@ def dataset_filters(self):
     return efilters
 
 
+def group_get_dataset(self, path, lapl=None):
+    if isinstance(path, str):
+        path = Path(path)
+    if lapl is None:
+        return self.get_dataset_(path)
+    else:
+        return self.get_dataset_(path, lapl)
+
+
+def group_has_dataset(self, path, lapl=None):
+    if isinstance(path, str):
+        path = Path(path)
+    if lapl is None:
+        return self.has_dataset_(path)
+    else:
+        return self.has_dataset_(path, lapl)
+
+
+def group_get_group(self, path, lapl=None):
+    if isinstance(path, str):
+        path = Path(path)
+    if lapl is None:
+        return self.get_group_(path)
+    else:
+        return self.get_group_(path, lapl)
+
+
+def group_has_group(self, path, lapl=None):
+    if isinstance(path, str):
+        path = Path(path)
+    if lapl is None:
+        return self.has_group_(path)
+    else:
+        return self.has_group_(path, lapl)
+
+
+def get_node(base, path, lapl=None):
+    if isinstance(path, str):
+        path = Path(path)
+    if lapl is None:
+        return get_node_(base, path)
+    else:
+        return get_node_(base, path, lapl)
+
+
 Dataset.write = dataset_write
 Dataset.read = dataset_read
 Dataset.filters = dataset_filters
+
+Group.get_dataset = group_get_dataset
+Group.has_dataset = group_has_dataset
+Group.get_group = group_get_group
+Group.has_group = group_has_group
 
 
 __all__ = ["Type", "LinkType", "Node", "GroupView", "NodeView", "LinkView",

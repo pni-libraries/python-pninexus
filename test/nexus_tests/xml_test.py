@@ -84,3 +84,39 @@ class XMLTests(unittest.TestCase):
         self.assertEqual(detector.link.path.name, 'mythen')
         self.assertEqual(detector.nodes["description"].read(),
                          "DECTRIS strip detector")
+
+    def test_create_from_file_str(self):
+
+        nexus.create_from_string(self.root, basic_file)
+        instrument = h5cpp.node.get_node(
+            self.root, "/entry/instrument")
+        nexus.create_from_file(instrument, self.detector_file)
+        detector = h5cpp.node.get_node(
+            self.root, "/entry/instrument/mythen")
+
+        self.assertEqual(detector.link.path.name, 'mythen')
+        self.assertEqual(detector.nodes["description"].read(),
+                         "DECTRIS strip detector")
+
+    def test_create_from_file_get_group_str(self):
+
+        nexus.create_from_string(self.root, basic_file)
+        self.assertTrue(self.root.has_group("/entry/instrument"))
+        self.assertTrue(not self.root.has_group("/entry/instrument2"))
+
+        instrument = self.root.get_group("/entry/instrument")
+        nexus.create_from_file(instrument, self.detector_file)
+        self.assertTrue(self.root.has_group("/entry/instrument/mythen"))
+        detector = self.root.get_group("/entry/instrument/mythen")
+
+        self.assertEqual(detector.link.path.name, 'mythen')
+        self.assertTrue(
+            not self.root.has_group("/entry/instrument/mythen/description"))
+        self.assertTrue(
+            self.root.has_dataset("/entry/instrument/mythen/description"))
+        self.assertTrue(
+            not self.root.has_dataset("/entry/instrument/mythen/description2"))
+        self.assertEqual(
+            self.root.get_dataset(
+                "/entry/instrument/mythen/description").read(),
+            "DECTRIS strip detector")
