@@ -28,6 +28,14 @@
 using namespace boost::python;
 using namespace pni;
 
+nexus::PathObjectList get_objects_path(const hdf5::node::Group &base,
+				       const nexus::Path &path)
+{
+  return nexus::get_objects(base, path);
+}
+
+
+
 void create_path_wrappers()
 {
   void (nexus::Path::*set_filename)(const fs::path &) = &nexus::Path::filename;
@@ -80,7 +88,7 @@ void create_path_wrappers()
   def("get_path",get_path_node);
   def("get_path",get_path_attr);
 
-  def("get_objects",nexus::get_objects);
+  def("get_objects_", get_objects_path);
 
   nxpath_element_to_dict_converter();
   dict_to_nxpath_element_converter();

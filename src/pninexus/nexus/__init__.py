@@ -40,7 +40,13 @@ from ._nexus import join
 from ._nexus import make_relative
 from ._nexus import match
 from ._nexus import get_path
-from ._nexus import get_objects
+from ._nexus import get_objects_
+
+
+def get_objects(base, path):
+    if isinstance(path, str):
+        path = nexus.Path(path)
+    return get_objects_(base, path)
 
 
 def base_class_factory_create(parent, name, base_class,
