@@ -12,7 +12,7 @@ RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian focal main" -y
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y python3-sphinx apt-utils net-tools
-RUN apt-get -qq install -y libpninexus3.1.0-dev libpninexus3.1.0 libh5cpp0.6.0-dev libh5cpp0.6.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py
+RUN apt-get -qq install -y libpninexus3.2.0-dev libpninexus3.2.0 libh5cpp0.6.0-dev libh5cpp0.6.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py
 RUN apt-get -qq install -y hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 python3-pytest git cmake doxygen python3-sphinx libboost-all-dev
 RUN useradd -ms /bin/bash tango
 
@@ -27,15 +27,15 @@ RUN useradd -ms /bin/bash tango
 # ENV H5CPP_LOCAL_PATH=/opt/h5cpp
 # ENV HDF5_HL_LOCAL_PATH=/usr/lib/x86_64-linux-gnu/hdf5/serial/
 
-# # install latest linpninexus
-RUN mkdir -p /opt/libpninexus
-RUN mkdir -p /libpninexus-src
-RUN cd /libpninexus-src && git clone https://github.com/pni-libraries/libpninexus && mkdir build
-# RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release  -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
-RUN cd /libpninexus-src/build && cmake -DCMAKE_BUILD_TYPE=Release  -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/libpninexus/ ../libpninexus  && make -j4 && make install -j4
-ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libpninexus/lib
-ENV PNINEXUS_LOCAL_PATH=/opt/libpninexus
+# # # install latest linpninexus
+# RUN mkdir -p /opt/libpninexus
+# RUN mkdir -p /libpninexus-src
+# RUN cd /libpninexus-src && git clone https://github.com/pni-libraries/libpninexus && mkdir build
+# # RUN cd /libpninexus-src/build && cmake -Dh5cpp_DIR=$H5CPP  -DCMAKE_BUILD_TYPE=Release  -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/h5cpp/ ../libpninexus  && make -j4 && make install -j4
+# RUN cd /libpninexus-src/build && cmake -DCMAKE_BUILD_TYPE=Release  -DPNINEXUS_CONAN=DISABLE -DCMAKE_INSTALL_PREFIX=/opt/libpninexus/ ../libpninexus  && make -j4 && make install -j4
+# ENV CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/libpninexus/include
+# ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libpninexus/lib
+# ENV PNINEXUS_LOCAL_PATH=/opt/libpninexus
 
 ENV PKG_CONFIG_PATH=/home/tango/lib/pkgconfig
 USER tango
