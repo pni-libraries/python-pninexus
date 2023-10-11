@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 3.2.0 - 2023-10-12
+- string parameters to has/get_dataset/group/node added ([#185](https://github.com/pni-libraries/python-pninexus/pull/185))
+- get_numpy_include_dirs to numpy.get_include changed ([#184](https://github.com/pni-libraries/python-pninexus/pull/183))
+- technical release for libpninexus v3.2.0 ([#234](https://github.com/pni-libraries/libpninexus/issues/234)) and libh5cpp v0.6.0 (https://github.com/ess-dmsc/h5cpp/issues/631)
+
 ## 3.1.0 - 2023-04-25
 - technical release for libpninexus v3.1.0 ([#196](https://github.com/pni-libraries/libpninexus/issues/213)) and libh5cpp v0.6.0 (https://github.com/ess-dmsc/h5cpp/issues/631)
 
