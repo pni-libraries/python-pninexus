@@ -1,4 +1,6 @@
 recursive-include src *.hpp *.cpp
+include README.rst
+include LICENSE
 include doc/sphinx/*
 include doc/sphinx/_templates/*
 include doc/sphinx/_static/*
