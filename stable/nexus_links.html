@@ -2,18 +2,21 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Working with links &#8212; pninexus 3.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Working with links &#8212; pninexus 3.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +42,7 @@
         <li class="right" >
           <a href="nexus_attributes.html" title="Working with attributes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_nexus.html" accesskey="U">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Working with links</a></li> 
@@ -51,8 +54,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="working-with-links">
-<h1>Working with links<a class="headerlink" href="#working-with-links" title="Permalink to this headline">¶</a></h1>
+  <section id="working-with-links">
+<h1>Working with links<a class="headerlink" href="#working-with-links" title="Permalink to this heading">¶</a></h1>
 <p>Nexus files support two kinds of links</p>
 <ul class="simple">
 <li><p><em>internal</em> links between objects within the same file</p></li>
@@ -68,12 +71,14 @@ particular when the amount of data is getting large (think of a 3D image block
 recorded with a 2D detector).</p>
 <p>With links we can simply provide references to the original data below
 <em>NXdata</em>.</p>
-<div class="figure align-center" id="id2">
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="_images/link.svg"><img alt="_images/link.svg" src="_images/link.svg" width="100%" /></a>
-<p class="caption"><span class="caption-text">The internal links in <em>NXdata</em> point to already existing data in
+<figcaption>
+<p><span class="caption-text">The internal links in <em>NXdata</em> point to already existing data in
 other locations within the same file. This avoids data duplication
 within a single file.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
+</figcaption>
+</figure>
 <p>In the above example the <em>data</em> and <em>position</em> field are members of the
 <em>NXdetector</em> and <em>NXsample</em> group respectively. However, by means of links
 we can make these two fields available as children of the <em>NXdata</em> group
@@ -91,18 +96,20 @@ which we will call <em>master</em>-file. To make the detector data available fro
 <p>The drawbacks of the former solution are obvious: we would need to copy all the
 data to a different file. However, with <em>external</em>-links we can do something
 like this</p>
-<div class="figure align-center" id="id4">
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="_images/external_link.svg"><img alt="_images/external_link.svg" src="_images/external_link.svg" width="100%" /></a>
-<p class="caption"><span class="caption-text">With an external link we can avoid copying data between two individual
+<figcaption>
+<p><span class="caption-text">With an external link we can avoid copying data between two individual
 NeXus files. The data in the detector file can be accessed easily from
 within the master file.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
+</figcaption>
+</figure>
 <p>Here the detector group can be accessed from the <em>master</em>-file as if it would
 be a part of it. The link is totally transparent to the user.</p>
-<div class="section" id="creating-links">
-<h2>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="internal-links">
-<h3>Internal links<a class="headerlink" href="#internal-links" title="Permalink to this headline">¶</a></h3>
+<section id="creating-links">
+<h2>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this heading">¶</a></h2>
+<section id="internal-links">
+<h3>Internal links<a class="headerlink" href="#internal-links" title="Permalink to this heading">¶</a></h3>
 <p>Links are created using the <code class="xref py py-func docutils literal notranslate"><span class="pre">link()</span></code> function.
 The signature of the function is the same for internal and external links.
 Only the path to the link target differs.
@@ -138,9 +145,9 @@ of an existing object. In this case the above example would look like this</p>
 </div>
 <p>In this case the object we are linking to must obviously exist in order to make
 the call to <code class="xref py py-func docutils literal notranslate"><span class="pre">get_object()</span></code> successful.</p>
-</div>
-<div class="section" id="external-links">
-<h3>External links<a class="headerlink" href="#external-links" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="external-links">
+<h3>External links<a class="headerlink" href="#external-links" title="Permalink to this heading">¶</a></h3>
 <p>Creating an external links is quite similar to the first example shown above
 for internal links. The only difference is that the path to the link target
 starts with a filename</p>
@@ -156,10 +163,10 @@ starts with a filename</p>
 </div>
 <p>For external links relative paths to the file should be used. Otherwise moving
 the files to a different file system can cause unresolvable links!</p>
-</div>
-</div>
-<div class="section" id="using-links-in-existing-files">
-<h2>Using links in existing files<a class="headerlink" href="#using-links-in-existing-files" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="using-links-in-existing-files">
+<h2>Using links in existing files<a class="headerlink" href="#using-links-in-existing-files" title="Permalink to this heading">¶</a></h2>
 <p>Links can also be used to create more robust parsers for NeXus files.
 In many cases files may contain unresolvable links (typically external ones).
 As an alternative to iterating over a group one could use either
@@ -183,8 +190,8 @@ the links cannot be resolved due to a missing target.  The list
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">borken_links</span></code> holds all links which are not resolveable in the file
 while <code class="xref py py-obj docutils literal notranslate"><span class="pre">objects</span></code> the objects refered to by all valid links.</p>
 <p><code class="xref py py-func docutils literal notranslate"><span class="pre">get_links()</span></code> returns only a list of the direct children of a group.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -193,8 +200,9 @@ while <code class="xref py py-obj docutils literal notranslate"><span class="pre
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">Working with links</a><ul>
 <li><a class="reference internal" href="#creating-links">Creating links</a><ul>
 <li><a class="reference internal" href="#internal-links">Internal links</a></li>
@@ -206,28 +214,34 @@ while <code class="xref py py-obj docutils literal notranslate"><span class="pre
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="nexus_attributes.html"
-                        title="previous chapter">Working with attributes</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="nexus_xml.html"
-                        title="next chapter">Nexus and XML</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="nexus_attributes.html"
+                          title="previous chapter">Working with attributes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="nexus_xml.html"
+                          title="next chapter">Nexus and XML</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script><p>
+<script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
     <ul>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.2.0/index.html">v3.2.0</a></li>
       <li><a class="reference external" href="index/../../v3.1.0/index.html">v3.1.0</a></li>
       <li><a class="reference external" href="index/../../v3.0.3/index.html">v3.0.3</a></li>
       <li><a class="reference external" href="index/../../v3.0.2/index.html">v3.0.2</a></li>
@@ -258,7 +272,7 @@ while <code class="xref py py-obj docutils literal notranslate"><span class="pre
         <li class="right" >
           <a href="nexus_attributes.html" title="Working with attributes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_nexus.html" >Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code> package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Working with links</a></li> 
@@ -266,7 +280,7 @@ while <code class="xref py py-obj docutils literal notranslate"><span class="pre
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

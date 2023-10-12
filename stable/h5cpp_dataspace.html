@@ -2,18 +2,21 @@
 
 <!doctype html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HDF5 dataspaces and selections &#8212; pninexus 3.1.0 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>HDF5 dataspaces and selections &#8212; pninexus 3.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,7 +42,7 @@
         <li class="right" >
           <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_h5cpp.html" accesskey="U">Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">HDF5 dataspaces and selections</a></li> 
@@ -51,8 +54,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-pninexus.h5cpp.dataspace">
-<span id="id1"></span><span id="hdf5-dataspaces-and-selections"></span><h1>HDF5 dataspaces and selections<a class="headerlink" href="#module-pninexus.h5cpp.dataspace" title="Permalink to this headline">¶</a></h1>
+  <section id="module-pninexus.h5cpp.dataspace">
+<span id="id1"></span><span id="hdf5-dataspaces-and-selections"></span><h1>HDF5 dataspaces and selections<a class="headerlink" href="#module-pninexus.h5cpp.dataspace" title="Permalink to this heading">¶</a></h1>
 <p>While datatype declare what is stored the dataspace defines how it is stored.
 At the current state of the HDF5 library there are only two storage schemes
 available</p>
@@ -112,8 +115,8 @@ dataspace indefinitely along this first dimension. As a result we are able
 to extend a dataset using such a dataspace indefinitely along this dimension
 and thus append data as it drops in. This has the nice advantage that we do
 not have to know the number of recorded data points in advance.</p>
-<div class="section" id="selections">
-<h2>Selections<a class="headerlink" href="#selections" title="Permalink to this headline">¶</a></h2>
+<section id="selections">
+<h2>Selections<a class="headerlink" href="#selections" title="Permalink to this heading">¶</a></h2>
 <p>A topic closely related to dataspaces are selections which is related to
 HDF5s partial IO feature. In many cases the data stored to disk is far
 larger than the memory available on the machine the data should be analyzed.
@@ -142,8 +145,8 @@ individual block</p></li>
 <li><p>a <em>stride</em> giving the distance between the blocks</p></li>
 <li><p>and a <em>count</em> value which determines how many blocks to read.</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -152,36 +155,43 @@ individual block</p></li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
 <li><a class="reference internal" href="#">HDF5 dataspaces and selections</a><ul>
 <li><a class="reference internal" href="#selections">Selections</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="h5cpp_datatypes.html"
-                        title="previous chapter">HDF5 datatypes</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="h5cpp_dataset.html"
-                        title="next chapter">HDF5 datasets</a></p>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="h5cpp_datatypes.html"
+                          title="previous chapter">HDF5 datatypes</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="h5cpp_dataset.html"
+                          title="next chapter">HDF5 datasets</a></p>
+  </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script><p>
+<script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
     <ul>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.2.0/index.html">v3.2.0</a></li>
       <li><a class="reference external" href="index/../../v3.1.0/index.html">v3.1.0</a></li>
       <li><a class="reference external" href="index/../../v3.0.3/index.html">v3.0.3</a></li>
       <li><a class="reference external" href="index/../../v3.0.2/index.html">v3.0.2</a></li>
@@ -212,7 +222,7 @@ individual block</p></li>
         <li class="right" >
           <a href="h5cpp_datatypes.html" title="HDF5 datatypes"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pninexus 3.2.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="users_guide.html" >Users Guide</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="using_h5cpp.html" >Using the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp</span></code> package</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">HDF5 dataspaces and selections</a></li> 
@@ -220,7 +230,7 @@ individual block</p></li>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.4.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
