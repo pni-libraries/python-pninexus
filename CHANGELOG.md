@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.2.1 - 2023-10-12
+- replace README.md by README.rst ([#190](https://github.com/pni-libraries/python-pninexus/pull/190))
+
 ## 3.2.0 - 2023-10-12
 - string parameters to has/get_dataset/group/node added ([#185](https://github.com/pni-libraries/python-pninexus/pull/185))
 - get_numpy_include_dirs to numpy.get_include changed ([#184](https://github.com/pni-libraries/python-pninexus/pull/183))
