@@ -14,7 +14,7 @@ from build_tools import (CppExtensionFactory,
 cmdclass = {}
 try:
     from sphinx.setup_command import BuildDoc
-    cmdclass['build_sphinx'] =  BuildDoc
+    cmdclass['build_sphinx'] = BuildDoc
 except ImportError:
     print('WARNING: sphinx is not available, not building docs')
 
