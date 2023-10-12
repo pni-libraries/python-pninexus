@@ -99,3 +99,28 @@ or
    $ apt-get install python3-pninexus
 
 to install the the PNI/NeXus package for python or python3, respectively.
+
+Manylinux wheels from PyPI
+==========================
+
+To install pninexus in a conda or python virtual environment manylinux pip wheels can be used, e.g.
+
+.. code-block:: console
+
+   $ python3 -m venv myvenv
+   $ . myvenv/bin/activate
+   
+   $ pip install pip --upgrade
+   $ pip install numpy
+   
+   $ pip install pninexus -U wheel
+
+For some versions of wheels numpy needs to be installed in advance.
+
+
+
+More information can be found at `online
+documentation <https://pni-libraries.github.io/python-pninexus/index.html>`__.
+
+Changes for a specific version of libpninexus can be found at
+`CHANGELOG <https://github.com/pni-libraries/python-pninexus/blob/develop/CHANGELOG.md>`__.
