@@ -1,5 +1,6 @@
 # setup script for python-pninexus
 from __future__ import print_function
+import codecs
 import sys
 import os
 import os.path
@@ -19,7 +20,7 @@ except ImportError:
     print('WARNING: sphinx is not available, not building docs')
 
 name = "pninexus"
-version = "3.2.0"
+version = "3.2.1"
 # release = "3.2.0"
 release = "3.2"
 
@@ -27,6 +28,17 @@ if release.count(".") == 1:
     docs_release = '(latest)'
 else:
     docs_release = release
+
+
+def read(fname):
+    """ read the file
+
+    :param fname: readme file name
+    :type fname: :obj:`str`
+    """
+    with codecs.open(os.path.join('.', fname), encoding='utf-8') as f:
+        long_description = f.read()
+    return long_description
 
 
 def get_build_dir():
@@ -205,8 +217,7 @@ setup(
     author="Eugen Wintersberger",
     author_email="eugen.wintersberger@desy.de",
     description="Python wrapper for the H5CPP and PNI libraries",
-    long_description="This package provides wrappers for the PNI C++ " +
-    "libraries libpninexus and libh5cpp.",
+    long_description=read('README.rst'),
     maintainer="Eugen Wintersberger, Jan Kotanski",
     maintainer_email="jan.kotanski@desy.de",
     license="GPLv2",
@@ -242,13 +253,11 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     test_suite="test",
     test_loader="unittest:TestLoader",
