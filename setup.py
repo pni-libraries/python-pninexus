@@ -5,15 +5,19 @@ import os
 import os.path
 import numpy
 from setuptools import setup
-from sphinx.setup_command import BuildDoc
 from distutils.command.install import install
 import sysconfig
 from build_tools import (CppExtensionFactory,
                          ConanBuildInfoBuilder,
                          BuildConfiguration)
 
+cmdclass = {}
+try:
+    from sphinx.setup_command import BuildDoc
+    cmdclass['build_sphinx'] =  BuildDoc
+except ImportError:
+    print('WARNING: sphinx is not available, not building docs')
 
-cmdclass = {'build_sphinx': BuildDoc}
 name = "pninexus"
 version = "3.2.0"
 release = "3.2.0"
