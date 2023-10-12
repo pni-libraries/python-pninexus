@@ -211,7 +211,7 @@ setup(
     maintainer_email="jan.kotanski@desy.de",
     license="GPLv2",
     version=release,
-    requires=["numpy"],
+    install_requires=["numpy"],
     ext_modules=[
         h5cpp_core_ext,
         h5cpp_attribute_ext,
