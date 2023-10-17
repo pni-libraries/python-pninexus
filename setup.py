@@ -41,13 +41,6 @@ def read(fname):
     return long_description
 
 
-def get_build_dir():
-    build_dir = "lib.{platform}-{version[0]}.{version[1]}"
-
-    return os.path.join("build",
-                        build_dir.format(platform=sysconfig.get_platform(),
-                                         version=sys.version_info))
-
 # -----------------------------------------------------------------------------
 # set include directories, linker path and libraries
 # we have two possibilities to configure the build:
@@ -65,7 +58,6 @@ nexus_extra_link_args = []
 if os.path.exists("conanbuildinfo.txt"):
     builder = ConanBuildInfoBuilder()
     nexus_config = builder.create("conanbuildinfo.txt")
-    core_config = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
 
@@ -124,13 +116,6 @@ else:
 # creating the extension factories
 # ----------------------------------------------------------------------------
 nexus_extension_factory = CppExtensionFactory(config=nexus_config)
-
-# ----------------------------------------------------------------------------
-# list of files for the pnicore extensions
-# ----------------------------------------------------------------------------
-
-core_lib_dir = os.path.join(get_build_dir(), "pninexus", "core")
-
 
 # -----------------------------------------------------------------------------
 # setup for the h5cpp and nexus extensions
