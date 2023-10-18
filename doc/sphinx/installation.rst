@@ -117,6 +117,12 @@ To install pninexus in a conda or python virtual environment manylinux pip wheel
 
 For some versions of wheels numpy needs to be installed in advance.
 
+Starting from v3.2.2 the pninexus wheel contains the most important external filters.
+In order to use them one needs to set HDF5_PLUGIN_PATH e.g. by
+
+.. code-block:: python
+
+   import pninexus
 
 
 More information can be found at `online
