@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.2.2 - 2023-10-12
+- add pninexus filters to python wheel ([#196](https://github.com/pni-libraries/python-pninexus/pull/196))
+
 ## 3.2.1 - 2023-10-12
 - replace README.md by README.rst ([#190](https://github.com/pni-libraries/python-pninexus/pull/190))
 
