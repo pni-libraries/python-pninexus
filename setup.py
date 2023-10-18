@@ -21,7 +21,7 @@ except ImportError:
 
 name = "pninexus"
 version = "3.2.2"
-#release = "3.2.2"
+# release = "3.2.2"
 release = "3.2"
 
 if release.count(".") == 1:
