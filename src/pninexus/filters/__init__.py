@@ -1,5 +1,5 @@
 """
-:py:mod:`pninexus.io.filters` is a path setter for HDF5_PLUGIN_PATH
+:py:mod:`pninexus.filters` is a path setter for HDF5_PLUGIN_PATH
 """
 import os
 from pathlib import Path
