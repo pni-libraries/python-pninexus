@@ -5,6 +5,7 @@ import sys
 import os
 import os.path
 import numpy
+import shutil
 from setuptools import setup
 from distutils.command.install import install
 import sysconfig
@@ -12,12 +13,11 @@ from build_tools import (CppExtensionFactory,
                          ConanBuildInfoBuilder,
                          BuildConfiguration)
 
-cmdclass = {}
 try:
     from sphinx.setup_command import BuildDoc
-    cmdclass['build_sphinx'] = BuildDoc
 except ImportError:
     print('WARNING: sphinx is not available, not building docs')
+    BuildDoc = None
 
 name = "pninexus"
 version = "3.2.1"
@@ -96,6 +96,49 @@ else:
         nexus_config.add_include_directory("%s/include" % pninexus_path)
         nexus_config.add_library_directory("%s/lib" % pninexus_path)
         nexus_config.add_linker_argument("-Wl,-rpath,%s/lib" % pninexus_path)
+
+packages = ['pninexus',
+            'pninexus.h5cpp',
+            'pninexus.h5cpp.attribute',
+            'pninexus.h5cpp.dataspace',
+            'pninexus.h5cpp.datatype',
+            'pninexus.h5cpp.file',
+            'pninexus.h5cpp.filter',
+            'pninexus.h5cpp.node',
+            'pninexus.h5cpp.property',
+            'pninexus.nexus']
+package_data = {}
+
+
+def add_filters(filters, pkgs, pkgs_data):
+    added = False
+    dst = "src/pninexus/filters"
+    filter_path = os.environ.get('HDF5_PLUGIN_PATH')
+    for flt in filters:
+        if os.path.exists(flt):
+            if 'pninexus.filters' not in pkgs_data:
+                pkgs_data['pninexus.filters'] = []
+            pkgs_data['pninexus.filters'].append(os.path.split(flt)[-1])
+            shutil.copy(flt, dst)
+            added = True
+        elif filter_path and os.path.exists(os.path.join(filter_path, flt)):
+            if 'pninexus.filters' not in pkgs_data:
+                pkgs_data['pninexus.filters'] = []
+            pkgs_data['pninexus.filters'].append(os.path.split(flt)[-1])
+            shutil.copy(os.path.join(filter_path, flt), dst)
+            added = True
+        else:
+            raise Exception("Filter %s cannot be found" % flt)
+        print("Copy %s to pninexus/filters" % flt)
+    if added:
+        pkgs.append('pninexus.filters')
+    return added
+
+
+pninexus_filters = os.environ.get('PNINEXUS_FILTERS')
+if pninexus_filters:
+    add_filters(pninexus_filters.split(','),
+                packages, package_data)
 
 #
 # adding include directories from numpy
@@ -220,16 +263,8 @@ setup(
         nexus_extension,
     ],
     package_dir={'': 'src'},
-    packages=['pninexus',
-              'pninexus.h5cpp',
-              'pninexus.h5cpp.attribute',
-              'pninexus.h5cpp.dataspace',
-              'pninexus.h5cpp.datatype',
-              'pninexus.h5cpp.file',
-              'pninexus.h5cpp.filter',
-              'pninexus.h5cpp.node',
-              'pninexus.h5cpp.property',
-              'pninexus.nexus'],
+    packages=packages,
+    package_data=package_data,
     url="https://github.com/pni-libraries/python-pninexus",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -246,7 +281,10 @@ setup(
     ],
     test_suite="test",
     test_loader="unittest:TestLoader",
-    cmdclass={"install": pni_install},
+    cmdclass={
+        "install": pni_install,
+        'build_sphinx': BuildDoc,
+    },
     keywords='h5cpp hdf5 python photon science detector',
     command_options={
         'build_sphinx': {
