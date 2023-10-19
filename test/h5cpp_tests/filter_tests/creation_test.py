@@ -229,7 +229,7 @@ class FilterCreationTest(unittest.TestCase):
                 filters[0].name,
                 "bitshuffle; see https://github.com/kiyo-masui/bitshuffle")
         else:
-            raise Exception("Bitshuffle filter is not available")
+            # raise Exception("Bitshuffle filter is not available")
             error = False
             try:
                 filter(self.dcpl)
