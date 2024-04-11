@@ -18,7 +18,7 @@ else
     docker exec  --user root ndts python3 setup.py install
     if [ "$?" != "0" ]; then exit 255; fi
     echo "build python3-pninexus docs"
-    docker exec ndts python3 setup.py  build_sphinx
+    docker exec ndts sphinx-build doc/sphinx/ build/sphinx/html
 fi
 if [ "$?" != "0" ]; then exit 255; fi
 

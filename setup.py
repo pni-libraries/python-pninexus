@@ -20,9 +20,9 @@ except ImportError:
     BuildDoc = None
 
 name = "pninexus"
-version = "3.2.2"
-# release = "3.2.2"
-release = "3.2"
+version = "3.2.3"
+release = "3.2.3"
+# release = "3.2"
 
 if release.count(".") == 1:
     docs_release = '(latest)'
@@ -278,6 +278,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
     test_suite="test",
     test_loader="unittest:TestLoader",
