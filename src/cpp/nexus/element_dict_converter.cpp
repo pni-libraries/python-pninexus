@@ -92,7 +92,7 @@ void* dict_to_nxpath_element_converter::convertible(PyObject *obj_ptr)
 string get_string_from_pyobject(PyObject *ptr)
 {
 #if PY_MAJOR_VERSION >= 3
-    Py_ssize_t str_size = PyUnicode_GET_DATA_SIZE(ptr);
+    Py_ssize_t str_size = PyUnicode_GET_LENGTH(ptr);
     if(str_size)
     {
         PyObject *utf8_str = PyUnicode_AsUTF8String(ptr);
