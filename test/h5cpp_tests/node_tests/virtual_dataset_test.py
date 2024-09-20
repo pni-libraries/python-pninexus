@@ -69,6 +69,7 @@ if VDSAvailable:
 
         @classmethod
         def createSource(cls, fname, data):
+
             fl = h5cpp.file.create(fname, AccessFlags.TRUNCATE)
             root = fl.root()
             dataset = Dataset(root,
@@ -77,6 +78,21 @@ if VDSAvailable:
                               Simple(tuple(data.shape)))
             dataset.write(data)
             dataset.close()
+            if len(data.shape) == 1:
+                link_creation_list = LinkCreationList()
+                dataset_creation_list = DatasetCreationList()
+                dataset_creation_list.layout = DatasetLayout.CHUNKED
+                dataset_creation_list.chunk = (1,)
+                dataset2 = Dataset(
+                    root,
+                    h5cpp.Path("module_data2"),
+                    h5cpp.datatype.kInt32,
+                    Simple(tuple(data.shape),
+                           (h5cpp.dataspace.UNLIMITED,)),
+                    link_creation_list,
+                    dataset_creation_list)
+                dataset2.write(data)
+                dataset2.close()
             root.close()
             fl.close()
 
@@ -85,6 +101,9 @@ if VDSAvailable:
             self.datamodule1 = numpy.array([1] * kmodulesize)
             self.datamodule2 = numpy.array([2] * kmodulesize)
             self.datamodule3 = numpy.array([3] * kmodulesize)
+            self.datamodule11 = numpy.array([11] * kmodulesize)
+            self.datamodule12 = numpy.array([12] * kmodulesize)
+            self.datamodule13 = numpy.array([13] * kmodulesize)
             self.datamodule8 = numpy.array([8] * kmodulesize)
             self.createSource(self.vds1name, self.datamodule1)
             self.createSource(self.vds2name, self.datamodule2)
@@ -277,6 +296,126 @@ if VDSAvailable:
             mod3 = dataset.read(selection=selection)
             npt.assert_array_equal(mod3, self.datamodule3)
             npt.assert_array_equal(allmod[:, 2], self.datamodule3)
+
+        def testUnlimitedGrow(self):
+
+            unlimitedsize = h5cpp.dataspace.UNLIMITED
+
+            self.file = h5cpp.file.open(self.filename, AccessFlags.READWRITE)
+            self.root = self.file.root()
+            dataspace = Simple((kmodulesize, 3), (unlimitedsize, 3))
+            singledataspace = Simple((kmodulesize,), (unlimitedsize,))
+
+            vdsmap = VirtualDataMaps()
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(0, 0),
+                               count=(unlimitedsize, 1),
+                               stride=(1, 1))),
+                self.vds1name,
+                h5cpp.Path("/module_data2"),
+                View(singledataspace, Hyperslab(offset=(0,),
+                                                count=(unlimitedsize,),
+                                                stride=(1,)))))
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(0, 1),
+                               count=(unlimitedsize, 1),
+                               stride=(1, 1))),
+                self.vds2name,
+                h5cpp.Path("/module_data2"),
+                View(singledataspace, Hyperslab(offset=(0,),
+                                                count=(unlimitedsize,),
+                                                stride=(1,)))))
+            vdsmap.add(VirtualDataMap(
+                View(dataspace,
+                     Hyperslab(offset=(0, 2),
+                               count=(unlimitedsize, 1),
+                               stride=(1, 1))),
+                self.vds3name,
+                h5cpp.Path("/module_data2"),
+                View(singledataspace, Hyperslab(offset=(0,),
+                                                count=(unlimitedsize,),
+                                                stride=(1,)))))
+
+            dataset = VirtualDataset(
+                self.root,
+                h5cpp.Path("unlimited_grow"), kInt32, dataspace, vdsmap)
+
+            #
+            # grow data back
+            #
+            fl = h5cpp.file.open(self.vds1name, AccessFlags.READWRITE)
+            d1 = h5cpp.node.get_node(fl.root(), h5cpp.Path("/module_data2"))
+            sel1d = Hyperslab(
+                offset=(kmodulesize,), count=(kmodulesize,), stride=(1,))
+            d1.extent(0, kmodulesize)
+            d1.write(data=self.datamodule11, selection=sel1d)
+            d1.close()
+            fl = h5cpp.file.open(self.vds2name, AccessFlags.READWRITE)
+            d1 = h5cpp.node.get_node(fl.root(), h5cpp.Path("/module_data2"))
+            sel1d = Hyperslab(
+                offset=(kmodulesize,), count=(kmodulesize,), stride=(1,))
+            d1.extent(0, kmodulesize)
+            d1.write(data=self.datamodule12, selection=sel1d)
+            d1.close()
+            fl = h5cpp.file.open(self.vds3name, AccessFlags.READWRITE)
+            d1 = h5cpp.node.get_node(fl.root(), h5cpp.Path("/module_data2"))
+            sel1d = Hyperslab(
+                offset=(kmodulesize,), count=(kmodulesize,), stride=(1,))
+            d1.extent(0, kmodulesize)
+            d1.write(data=self.datamodule13, selection=sel1d)
+            d1.close()
+            #
+            # read data back
+            #
+            selection = Hyperslab(offset=(0, 0),
+                                  count=(kmodulesize, 3),
+                                  stride=(1, 1))
+            selection.offset(0, 0)
+            allmod = dataset.read(selection=selection)
+
+            selection = Hyperslab(offset=(0, 0),
+                                  count=(kmodulesize, 1),
+                                  stride=(1, 1))
+            selection.offset(0, 0)
+            mod1 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod1, self.datamodule1)
+            npt.assert_array_equal(allmod[:, 0], self.datamodule1)
+
+            selection.offset((0, 1))
+            mod2 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod2, self.datamodule2)
+            npt.assert_array_equal(allmod[:, 1], self.datamodule2)
+
+            selection.offset((0, 2))
+            mod3 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod3, self.datamodule3)
+            npt.assert_array_equal(allmod[:, 2], self.datamodule3)
+
+            selection = Hyperslab(offset=(kmodulesize, 0),
+                                  count=(kmodulesize, 3),
+                                  stride=(1, 1))
+            allmod = dataset.read(selection=selection)
+
+            selection = Hyperslab(offset=(kmodulesize, 0),
+                                  count=(kmodulesize, 1),
+                                  stride=(1, 1))
+
+            selection.offset((kmodulesize, 0))
+            mod1 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod1, self.datamodule11)
+            npt.assert_array_equal(allmod[:, 0], self.datamodule11)
+
+            selection.offset((kmodulesize, 1))
+            mod2 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod2, self.datamodule12)
+            npt.assert_array_equal(allmod[:, 1], self.datamodule12)
+
+            selection.offset((kmodulesize, 2))
+            mod3 = dataset.read(selection=selection)
+            npt.assert_array_equal(mod3, self.datamodule13)
+            npt.assert_array_equal(allmod[:, 2], self.datamodule13)
 
         def testGap(self):
 
