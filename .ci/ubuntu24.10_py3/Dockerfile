@@ -1,4 +1,4 @@
-\65;7006;1cFROM ubuntu:24.10
+FROM ubuntu:24.10
 
 MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
