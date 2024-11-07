@@ -78,8 +78,8 @@ For Python3 just replace python with python3 in the above instructions.
 Debian and Ubuntu packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Debian ``bookworm``, ``bullseye``, ``buster`` or Ubuntu ``lunar``,
-``jammy``, ``focal`` packages can be found in the HDRI repository.
+Debian ``bookworm``, ``bullseye``, ``buster`` or Ubuntu ``oracular``,
+``noble``, ``jammy`` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
@@ -89,19 +89,19 @@ To install the debian packages, add the PGP repository key
        $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
        $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
-and then download the corresponding source list, e.g. for ``bullseye``
+and then download the corresponding source list, e.g. for ``bookworm``
 
 ::
 
        $ cd /etc/apt/sources.list.d
-       $ wget http://repos.pni-hdri.de/bullseye-pni-hdri.list
+       $ wget http://repos.pni-hdri.de/bookworm-pni-hdri.list
 
-or ``jammy``
+or ``noble``
 
 ::
 
        $ cd /etc/apt/sources.list.d
-       $ wget http://repos.pni-hdri.de/jammy-pni-hdri.list
+       $ wget http://repos.pni-hdri.de/noble-pni-hdri.list
 
 respectively.
 
