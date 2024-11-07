@@ -110,16 +110,16 @@ Finally,
 ::
 
        $ apt-get update
-       $ apt-get install python-pninexus
+       $ apt-get install python3-pninexus
 
 or
 
 ::
 
        $ apt-get update
-       $ apt-get install python3-pninexus
+       $ apt-get install python-pninexus
 
-for python3.
+for python2.
 
 
 Manylinux wheels from PyPI
