@@ -110,4 +110,4 @@ the array. In terms of HDF5 that would be
 
    datatype = String.fixed(str_len)
    datatype.padding  = StringPad.NULLPAD
-   datatype.encoding = CharachterEncoding.UTF8
+   datatype.encoding = CharacterEncoding.UTF8
