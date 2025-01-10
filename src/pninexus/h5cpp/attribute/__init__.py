@@ -29,9 +29,11 @@ def attribute_write(self, data):
     elif write_data.dtype == 'bool':
         write_data = write_data.astype("int8")
 
+    print("DATA", data, write_data)
     try:
         self._write(write_data)
-    except RuntimeError:
+    except RuntimeError as e:
+        print(str(e))
         print(write_data, write_data.dtype)
 
 
