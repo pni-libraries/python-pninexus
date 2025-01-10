@@ -234,7 +234,6 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         npt.assert_array_equal(read, data)
 
-
     def testWriteVariableLengthStringUTF8Array(self):
 
         data = numpy.array([u"µm", u"µA"])

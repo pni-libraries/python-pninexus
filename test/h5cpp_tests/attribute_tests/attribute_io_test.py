@@ -118,6 +118,7 @@ class AttributeIOTests(unittest.TestCase):
         a = self.root.attributes.create("StringScalar", dtype)
         a.write("hello world")
         r = a.read()
+        self.assertEqual(r, data)
 
     def testStringScalarVariableLength(self):
 
