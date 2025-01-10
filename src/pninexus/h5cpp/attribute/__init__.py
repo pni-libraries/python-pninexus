@@ -22,7 +22,10 @@ def attribute_write(self, data):
         write_data = numpy.array(write_data)
 
     if write_data.dtype.kind == 'U':
-        write_data = write_data.astype("S")
+        try:
+            write_data = write_data.astype("S")
+        except Exception:
+            pass
     elif write_data.dtype == 'bool':
         write_data = write_data.astype("int8")
 

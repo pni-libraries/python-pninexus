@@ -275,7 +275,10 @@ def dataset_write(self, data, selection=None):
     # if the data is a unicode numpy array we have to convert it to a
     # simple string array
     if data.dtype.kind == 'U':
-        data = data.astype('S')
+        try:
+            data = data.astype('S')
+        except Exception:
+            pass
 
     #
     # determine memory datatype and dataspace
