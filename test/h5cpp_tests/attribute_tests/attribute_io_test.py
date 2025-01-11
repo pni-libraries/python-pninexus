@@ -150,20 +150,20 @@ class AttributeIOTests(unittest.TestCase):
 
     def testStringArrayVariableLength(self):
 
-        data = numpy.array([u"µm", u"µA"])
-        dtype = String.variable()
-        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        data = numpy.array([["hello", "world", "this"], ["is", "a", "test"]])
         a = self.root.attributes.create(
-            "StringUTF8ArrayVLength", dtype, (2,))
+            "StringArrayVLength", kVariableString, (2, 3))
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r, data)
 
     def testStringUTF8ArrayVariableLength(self):
 
-        data = numpy.array([["hello", "world", "this"], ["is", "a", "test"]])
+        data = numpy.array([u"µm", u"µA"])
+        dtype = String.variable()
+        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
         a = self.root.attributes.create(
-            "StringArrayVLength", kVariableString, (2, 3))
+            "StringUTF8ArrayVLength", dtype, (2,))
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r, data)

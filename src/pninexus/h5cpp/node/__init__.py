@@ -278,8 +278,10 @@ def dataset_write(self, data, selection=None):
         try:
             data = data.astype('S')
         except Exception:
-            pass
-
+            if isinstance(data, numpy.ndarray) and data.shape:
+                data = numpy.array([bytes(str(dt).encode('utf-8')) for dt in data])
+            else:
+                data = numpy.array(str(data).encode('utf-8'))
     #
     # determine memory datatype and dataspace
     # - if the file type is a variable length string we have to adjust the
