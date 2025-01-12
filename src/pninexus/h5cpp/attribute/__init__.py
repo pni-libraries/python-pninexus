@@ -25,8 +25,13 @@ def attribute_write(self, data):
             write_data = write_data.astype("S")
         except Exception:
             if isinstance(data, numpy.ndarray) and data.shape:
+                shape = data.shape
+                if len(shape) > 1:
+                    data = data.flatten()
                 write_data = numpy.array(
                     [bytes(str(dt).encode('utf-8')) for dt in data])
+                if len(shape) > 1:
+                    write_data = write_data.reshape(shape)
             else:
                 write_data = numpy.array(str(data).encode('utf-8'))
     elif write_data.dtype == 'bool':
