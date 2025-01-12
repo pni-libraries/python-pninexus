@@ -117,7 +117,7 @@ void attribute_write(const hdf5::attribute::Attribute &self,
       (mem_type.get_class() == hdf5::datatype::Class::String))
     {
       String mem_type2 = String::variable();
-      mem_type2.encoding(hdf5::datatype::CharacterEncoding::UTF8);
+      // mem_type2.encoding(hdf5::datatype::CharacterEncoding::UTF8);
       self.write(array_adapter,mem_type2);
     }
   else{

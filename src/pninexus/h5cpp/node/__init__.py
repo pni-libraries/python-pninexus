@@ -279,7 +279,8 @@ def dataset_write(self, data, selection=None):
             data = data.astype('S')
         except Exception:
             if isinstance(data, numpy.ndarray) and data.shape:
-                data = numpy.array([bytes(str(dt).encode('utf-8')) for dt in data])
+                data = numpy.array(
+                    [bytes(str(dt).encode('utf-8')) for dt in data])
             else:
                 data = numpy.array(str(data).encode('utf-8'))
     #

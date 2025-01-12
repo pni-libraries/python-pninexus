@@ -20,19 +20,19 @@ def attribute_write(self, data):
     write_data = data
     if not isinstance(write_data, numpy.ndarray):
         write_data = numpy.array(write_data)
-
     if write_data.dtype.kind == 'U':
         try:
             write_data = write_data.astype("S")
         except Exception:
             if isinstance(data, numpy.ndarray) and data.shape:
-                write_array = numpy.array([bytes(str(dt).encode('utf-8')) for dt in data])
+                write_data = numpy.array(
+                    [bytes(str(dt).encode('utf-8')) for dt in data])
             else:
                 write_data = numpy.array(str(data).encode('utf-8'))
     elif write_data.dtype == 'bool':
         write_data = write_data.astype("int8")
 
-    print("DATA", data, write_data)
+    #  print("DATA", data, write_data)
     try:
         self._write(write_data)
     except RuntimeError as e:
