@@ -115,17 +115,11 @@ void attribute_write(const hdf5::attribute::Attribute &self,
   Datatype mem_type = hdf5::datatype::create<numpy::ArrayAdapter>(array_adapter);
   if(has_variable_length_string_type(self) &&
       (mem_type.get_class() == hdf5::datatype::Class::String))
-    {
-      String mem_type2 = String::variable();
-      // mem_type2.encoding(hdf5::datatype::CharacterEncoding::UTF8);
-      self.write(array_adapter,mem_type2);
-    }
-  else{
-    if((self.datatype().get_class() == hdf5::datatype::Class::Enum) &&
-       hdf5::datatype::is_bool(hdf5::datatype::Enum(self.datatype())))
-      mem_type = hdf5::datatype::create<hdf5::datatype::EBool>();
-    self.write(array_adapter,mem_type);
-  }
+    mem_type = String::variable();
+  if((self.datatype().get_class() == hdf5::datatype::Class::Enum) &&
+     hdf5::datatype::is_bool(hdf5::datatype::Enum(self.datatype())))
+    mem_type = hdf5::datatype::create<hdf5::datatype::EBool>();
+  self.write(array_adapter,mem_type);
 }
 
 hdf5::attribute::Attribute
