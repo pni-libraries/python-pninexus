@@ -115,6 +115,17 @@ class DatasetAllIOTests(unittest.TestCase):
         read = dataset.read()
         self.assertEqual(read, "hello world")
 
+    def testWriteVariableLengthUTF8Scalar(self):
+        data = u"µm"
+        dtype = h5cpp.datatype.String.variable()
+        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        dataset = Dataset(
+            self.root, h5cpp.Path("VariableLengthStringUTF8Scalar"),
+            dtype, Scalar())
+        dataset.write(data)
+        read = dataset.read()
+        self.assertEqual(read, data)
+
     def testWriteIntegerArray(self):
 
         data = numpy.array([[1, 2, 3, 4], [5, 6, 7, 8]])
@@ -219,6 +230,20 @@ class DatasetAllIOTests(unittest.TestCase):
         dataset = Dataset(self.root, h5cpp.Path("VariableLengthStringArray"),
                           dtype,
                           Simple((2, 3)))
+        dataset.write(data)
+        read = dataset.read()
+        npt.assert_array_equal(read, data)
+
+    def testWriteVariableLengthStringUTF8Array(self):
+
+        data = numpy.array([u"µm", u"µA"])
+        dtype = h5cpp.datatype.String.variable()
+        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        dataset = Dataset(
+            self.root,
+            h5cpp.Path("VariableLengthStringUTF8Array"),
+            dtype,
+            Simple((2,)))
         dataset.write(data)
         read = dataset.read()
         npt.assert_array_equal(read, data)

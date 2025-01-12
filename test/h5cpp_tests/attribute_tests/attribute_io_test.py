@@ -118,12 +118,22 @@ class AttributeIOTests(unittest.TestCase):
         a = self.root.attributes.create("StringScalar", dtype)
         a.write("hello world")
         r = a.read()
-        self.assertEqual(r, "hello world")
+        self.assertEqual(r, data)
 
     def testStringScalarVariableLength(self):
 
         data = "hello world"
         a = self.root.attributes.create("StringScalarVLength", kVariableString)
+        a.write(data)
+        r = a.read()
+        self.assertEqual(r, data)
+
+    def testStringUTF8ScalarVariableLength(self):
+
+        data = u"µm"
+        dtype = String.variable()
+        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        a = self.root.attributes.create("StringUTF8ScalarVLength", dtype)
         a.write(data)
         r = a.read()
         self.assertEqual(r, data)
@@ -143,6 +153,17 @@ class AttributeIOTests(unittest.TestCase):
         data = numpy.array([["hello", "world", "this"], ["is", "a", "test"]])
         a = self.root.attributes.create(
             "StringArrayVLength", kVariableString, (2, 3))
+        a.write(data)
+        r = a.read()
+        npt.assert_array_equal(r, data)
+
+    def testStringUTF8ArrayVariableLength(self):
+
+        data = numpy.array([u"µm", u"µA"])
+        dtype = String.variable()
+        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        a = self.root.attributes.create(
+            "StringUTF8ArrayVLength", dtype, (2,))
         a.write(data)
         r = a.read()
         npt.assert_array_equal(r, data)
