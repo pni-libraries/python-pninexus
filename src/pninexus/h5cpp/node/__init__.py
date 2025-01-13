@@ -5,6 +5,7 @@ from pninexus.h5cpp import dataspace
 from pninexus.h5cpp import datatype
 from pninexus.h5cpp.filter import ExternalFilters
 import numpy
+import sys
 # from collections import OrderedDict
 
 #
@@ -43,6 +44,10 @@ try:
     VDSAvailable = True
 except Exception:
     VDSAvailable = False
+
+
+if sys.version_info > (3,):
+    unicode = str
 
 
 def copy(node, base, path=None, link_creation_list=property.LinkCreationList(),
@@ -283,11 +288,11 @@ def dataset_write(self, data, selection=None):
                 if len(shape) > 1:
                     data = data.flatten()
                 data = numpy.array(
-                    [bytes(str(dt).encode('utf-8')) for dt in data])
+                    [bytes(unicode(dt).encode('utf-8')) for dt in data])
                 if len(shape) > 1:
                     data = data.reshape(shape)
             else:
-                data = numpy.array(str(data).encode('utf-8'))
+                data = numpy.array(unicode(data).encode('utf-8'))
     #
     # determine memory datatype and dataspace
     # - if the file type is a variable length string we have to adjust the

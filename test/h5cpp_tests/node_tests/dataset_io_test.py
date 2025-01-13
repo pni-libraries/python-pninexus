@@ -23,6 +23,7 @@
 from __future__ import print_function
 import unittest
 import os
+import sys
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.node import Dataset
@@ -116,7 +117,8 @@ class DatasetAllIOTests(unittest.TestCase):
         self.assertEqual(read, "hello world")
 
     def testWriteVariableLengthUTF8Scalar(self):
-        data = u"µm"
+        data = u"\u03bcm"
+        bdata = b"\xce\xbcm"
         dtype = h5cpp.datatype.String.variable()
         dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
         dataset = Dataset(
@@ -124,7 +126,10 @@ class DatasetAllIOTests(unittest.TestCase):
             dtype, Scalar())
         dataset.write(data)
         read = dataset.read()
-        self.assertEqual(read, data)
+        if sys.version_info > (3,):
+            self.assertEqual(read, data)
+        else:
+            self.assertEqual(read, bdata)
 
     def testWriteIntegerArray(self):
 
@@ -236,7 +241,8 @@ class DatasetAllIOTests(unittest.TestCase):
 
     def testWriteVariableLengthStringUTF8Array(self):
 
-        data = numpy.array([u"µm", u"µA"])
+        data = numpy.array([u"\u03bcm", u"\u03bcA"])
+        bdata = numpy.array([b'\xce\xbcm', b'\xce\xbcA'])
         dtype = h5cpp.datatype.String.variable()
         dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
         dataset = Dataset(
@@ -246,4 +252,7 @@ class DatasetAllIOTests(unittest.TestCase):
             Simple((2,)))
         dataset.write(data)
         read = dataset.read()
-        npt.assert_array_equal(read, data)
+        if sys.version_info > (3,):
+            npt.assert_array_equal(read, data)
+        else:
+            npt.assert_array_equal(read, bdata)
