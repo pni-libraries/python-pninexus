@@ -20,8 +20,8 @@ except ImportError:
     BuildDoc = None
 
 name = "pninexus"
-version = "3.2.3"
-release = "3.2.3"
+version = "3.2.4"
+release = "3.2.4"
 # release = "3.2"
 
 if release.count(".") == 1:
