@@ -1,11 +1,16 @@
 from __future__ import print_function
 import numpy
+import sys
 
 from pninexus.h5cpp import property
 from pninexus.h5cpp._attribute import AttributeManager
 from pninexus.h5cpp._attribute import Attribute
 
 __all__ = ["property", "AttributeManager", "Attribute"]
+
+
+if sys.version_info > (3,):
+    unicode = str
 
 
 def attribute__getitem__(self, index):
@@ -29,11 +34,11 @@ def attribute_write(self, data):
                 if len(shape) > 1:
                     data = data.flatten()
                 write_data = numpy.array(
-                    [bytes(str(dt).encode('utf-8')) for dt in data])
+                    [bytes(unicode(dt).encode('utf-8')) for dt in data])
                 if len(shape) > 1:
                     write_data = write_data.reshape(shape)
             else:
-                write_data = numpy.array(str(data).encode('utf-8'))
+                write_data = numpy.array(unicode(data).encode('utf-8'))
     elif write_data.dtype == 'bool':
         write_data = write_data.astype("int8")
 

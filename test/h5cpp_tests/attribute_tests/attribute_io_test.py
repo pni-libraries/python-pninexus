@@ -24,6 +24,7 @@ from __future__ import print_function
 import unittest
 import numpy
 import os
+import sys
 import numpy.testing as npt
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
@@ -130,13 +131,17 @@ class AttributeIOTests(unittest.TestCase):
 
     def testStringUTF8ScalarVariableLength(self):
 
-        data = u"µm"
+        data = u"\u03bcm"
+        bdata = b"\xce\xbcm"
         dtype = String.variable()
         dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
         a = self.root.attributes.create("StringUTF8ScalarVLength", dtype)
         a.write(data)
         r = a.read()
-        self.assertEqual(r, data)
+        if sys.version_info > (3,):
+            self.assertEqual(r, data)
+        else:
+            self.assertEqual(r, bdata)
 
     def testStringArray(self):
 
@@ -159,14 +164,18 @@ class AttributeIOTests(unittest.TestCase):
 
     def testStringUTF8ArrayVariableLength(self):
 
-        data = numpy.array([u"µm", u"µA"])
+        data = numpy.array([u"\u03bcm", u"\u03bcA"])
+        bdata = numpy.array([b'\xce\xbcm', b'\xce\xbcA'])
         dtype = String.variable()
         dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
         a = self.root.attributes.create(
             "StringUTF8ArrayVLength", dtype, (2,))
         a.write(data)
         r = a.read()
-        npt.assert_array_equal(r, data)
+        if sys.version_info > (3,):
+            npt.assert_array_equal(r, data)
+        else:
+            npt.assert_array_equal(r, bdata)
 
     def testIntArray(self):
 
