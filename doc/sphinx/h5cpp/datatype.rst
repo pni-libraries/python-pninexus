@@ -10,7 +10,7 @@ Enumerations
 
 .. autosummary::
 
-   pninexus.h5cpp.datatype.Class
+   Class
    Order
    Sign
    Norm
