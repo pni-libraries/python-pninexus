@@ -51,11 +51,11 @@ void dataset_write_chunk(const hdf5::node::Dataset &self,
 			 hdf5::property::DatasetTransferList())
 {
   numpy::ArrayAdapter array_adapter(data);
-  std::vector<long long unsigned int> voffset;
+  std::vector<long unsigned int> voffset;
 
   for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
     boost::python::object o = offset[i];
-    boost::python::extract<long long unsigned int> s(o);
+    boost::python::extract<long unsigned int> s(o);
     if (s.check()){
       voffset.push_back(s());
     }
@@ -73,12 +73,12 @@ std::uint32_t dataset_read_chunk(const hdf5::node::Dataset &self,
 				 hdf5::property::DatasetTransferList())
 {
   numpy::ArrayAdapter array_adapter(data);
-  std::vector<long long unsigned int> voffset;
+  std::vector<long unsigned int> voffset;
 
 
   for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
     boost::python::object o = offset[i];
-    boost::python::extract<long long unsigned int> s(o);
+    boost::python::extract<long unsigned int> s(o);
     if (s.check()){
       voffset.push_back(s());
     }
@@ -87,14 +87,14 @@ std::uint32_t dataset_read_chunk(const hdf5::node::Dataset &self,
   return self.read_chunk(array_adapter,voffset,dtpl);
 }
 
-long long unsigned int dataset_chunk_storage_size(const hdf5::node::Dataset &self,
+long unsigned int dataset_chunk_storage_size(const hdf5::node::Dataset &self,
 						  boost::python::list offset)
 {
-  std::vector<long long unsigned int> voffset;
+  std::vector<long unsigned int> voffset;
 
   for (boost::python::ssize_t i = 0, end = len(offset); i < end; ++i){
     boost::python::object o = offset[i];
-    boost::python::extract<long long unsigned int> s(o);
+    boost::python::extract<long unsigned int> s(o);
     if (s.check()){
       voffset.push_back(s());
     }
