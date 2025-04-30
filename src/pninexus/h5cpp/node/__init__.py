@@ -302,7 +302,7 @@ def dataset_write(self, data, selection=None):
 
     if isinstance(self.datatype, datatype.String):
         if self.datatype.is_variable_length:
-            memory_type = datatype.String.variable()
+            memory_type = self.datatype
 
     # if the data is bool numpy array we have to convert it to a
     # int array
