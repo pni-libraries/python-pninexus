@@ -115,7 +115,7 @@ void attribute_write(const hdf5::attribute::Attribute &self,
   Datatype mem_type = hdf5::datatype::create<numpy::ArrayAdapter>(array_adapter);
   if(has_variable_length_string_type(self) &&
       (mem_type.get_class() == hdf5::datatype::Class::String))
-    mem_type = String::variable();
+    mem_type = self.datatype();
   if((self.datatype().get_class() == hdf5::datatype::Class::Enum) &&
      hdf5::datatype::is_bool(hdf5::datatype::Enum(self.datatype())))
     mem_type = hdf5::datatype::create<hdf5::datatype::EBool>();
