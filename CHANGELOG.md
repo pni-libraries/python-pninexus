@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## 3.3.0 - 2025-05-08
-- fixs for writing utf8 strings ([#215](https://github.com/pni-libraries/python-pninexus/pull/215)), ([#213](https://github.com/pni-libraries/python-pninexus/pull/213)), ([#210](https://github.com/pni-libraries/python-pninexus/pull/210))
+- fixes for writing utf8 strings ([#215](https://github.com/pni-libraries/python-pninexus/pull/215)), ([#213](https://github.com/pni-libraries/python-pninexus/pull/213)), ([#210](https://github.com/pni-libraries/python-pninexus/pull/210))
 - technical release for libpninexus v3.3.0 (https://github.com/pni-libraries/libpninexus/issues/252) and libh5cpp v0.7.1 (https://github.com/ess-dmsc/h5cpp/issues/679)
 
 ## 3.2.3 - 2025-01-12
