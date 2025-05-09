@@ -21,8 +21,9 @@ except ImportError:
 
 name = "pninexus"
 version = "3.3.0"
-release = "3.3.0"
-# release = "3.3"
+# release = "3.3.0"
+# documentation for release with one '.' is stored as v:latest
+release = "3.3"
 
 if release.count(".") == 1:
     docs_release = '(latest)'
