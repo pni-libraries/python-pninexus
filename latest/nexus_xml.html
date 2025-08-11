@@ -1,22 +1,18 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
-
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Nexus and XML &#8212; libpninexus Python bindings 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=fcc624f5" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=fc837d61"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,7 +23,7 @@
     <script src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -55,7 +51,7 @@
           <div class="body" role="main">
             
   <section id="nexus-and-xml">
-<h1>Nexus and XML<a class="headerlink" href="#nexus-and-xml" title="Permalink to this heading">¶</a></h1>
+<h1>Nexus and XML<a class="headerlink" href="#nexus-and-xml" title="Link to this heading">¶</a></h1>
 <p>Though NeXus files can be rather complicated, accessing data can be quite easy
 as shown in the previous sections of this manual.
 However, the complexity of NeXus files can become rather painful when creating
@@ -65,7 +61,7 @@ The <code class="docutils literal notranslate"><span class="pre">python-pninexus
 files from XML. Even existing files can be extended by structures described by
 XML.</p>
 <section id="a-nexus-xml-primer">
-<h2>A NeXus XML primer<a class="headerlink" href="#a-nexus-xml-primer" title="Permalink to this heading">¶</a></h2>
+<h2>A NeXus XML primer<a class="headerlink" href="#a-nexus-xml-primer" title="Link to this heading">¶</a></h2>
 <p>The XML dialect used to create or extend files with <code class="docutils literal notranslate"><span class="pre">python-pninexus</span></code> is very
 close to NXDL, the XML language used to define classes in the NeXus standard.
 However, NXDL is not powerful enough for creating HDF5 files as it lacks some
@@ -73,7 +69,7 @@ tags (for instance tags for describing the chunk-shape of a field) and
 the types are not specific enough (<cite>NX_FLOAT</cite> would be valid for 32 and 64 Bit
 floating point numbers).</p>
 <section id="creating-groups">
-<h3>Creating groups<a class="headerlink" href="#creating-groups" title="Permalink to this heading">¶</a></h3>
+<h3>Creating groups<a class="headerlink" href="#creating-groups" title="Link to this heading">¶</a></h3>
 <p>The <cite>group</cite> tag is used to create groups which can then embed other groups,
 fields, or attributes. Its usage is fairly simple</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;scan_1&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
@@ -99,7 +95,7 @@ skeleton</p>
 </div>
 </section>
 <section id="creating-fields">
-<h3>Creating fields<a class="headerlink" href="#creating-fields" title="Permalink to this heading">¶</a></h3>
+<h3>Creating fields<a class="headerlink" href="#creating-fields" title="Link to this heading">¶</a></h3>
 <p>Fields are described by the <cite>field</cite> tag. For a simple scalar field use</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;data&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;float64&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
@@ -151,7 +147,7 @@ the physical unit of the data stored in a field.</p>
 HDF5 field.</p>
 </section>
 <section id="dealing-with-attributes">
-<h3>Dealing with attributes<a class="headerlink" href="#dealing-with-attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Dealing with attributes<a class="headerlink" href="#dealing-with-attributes" title="Link to this heading">¶</a></h3>
 <p>Attributes are quite similar to fields but created with the <cite>attribute</cite> tag.
 An attribute tag can appear within a <cite>field</cite> or <cite>group</cite> tag. Unlike the <cite>field</cite>
 tag the <cite>attribute</cite> tag does not have a <cite>units</cite> attribute.
@@ -172,7 +168,7 @@ Here is a short example with an attribute attached to a field</p>
 </div>
 </section>
 <section id="writing-data-from-xml">
-<h3>Writing data from XML<a class="headerlink" href="#writing-data-from-xml" title="Permalink to this heading">¶</a></h3>
+<h3>Writing data from XML<a class="headerlink" href="#writing-data-from-xml" title="Link to this heading">¶</a></h3>
 <p>The last example already shows a problem: it many cases it would be feasible to
 not only create a field or attribute but also to fill it with data. This is
 particularly true when the field or attribute should store static data which
@@ -205,7 +201,7 @@ whitespace-characters can be part of the string. However, for most applications
 this limitation is not a serious problem.</p>
 </section>
 <section id="creating-links">
-<h3>Creating links<a class="headerlink" href="#creating-links" title="Permalink to this heading">¶</a></h3>
+<h3>Creating links<a class="headerlink" href="#creating-links" title="Link to this heading">¶</a></h3>
 <p>Links can be created using the <cite>link</cite> tag. External as well as internal links
 are supported. An external link can be made like this</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;group</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;entry&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;NXentry&quot;</span><span class="nt">&gt;</span>
@@ -241,7 +237,7 @@ in a different file like this</p>
 </section>
 </section>
 <section id="from-xml-to-nexus">
-<h2>From XML to NeXus<a class="headerlink" href="#from-xml-to-nexus" title="Permalink to this heading">¶</a></h2>
+<h2>From XML to NeXus<a class="headerlink" href="#from-xml-to-nexus" title="Link to this heading">¶</a></h2>
 <p>To create a NeXus file from XML is rather simple. Just use the
 <code class="xref py py-func docutils literal notranslate"><span class="pre">xml_to_nexus()</span></code> function provided by the package</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pninexus.nexus</span> <span class="k">as</span> <span class="nn">nexus</span>
@@ -289,7 +285,7 @@ If only fields of size one should be written we can use the following approach</
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -319,7 +315,7 @@ If only fields of size one should be written we can use the following approach</
     <p class="topless"><a href="api_guide.html"
                           title="next chapter">API documentation</a></p>
   </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -327,7 +323,7 @@ If only fields of size one should be written we can use the following approach</
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
@@ -355,7 +351,7 @@ If only fields of size one should be written we can use the following approach</
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -377,8 +373,8 @@ If only fields of size one should be written we can use the following approach</
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>
