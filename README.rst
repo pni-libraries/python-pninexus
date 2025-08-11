@@ -78,7 +78,7 @@ For Python3 just replace python with python3 in the above instructions.
 Debian and Ubuntu packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Debian ``bookworm``, ``bullseye``, ``buster`` or Ubuntu ``oracular``,
+Debian ``trixie``, ``bookworm``, ``bullseye`` or Ubuntu ``plucky``,
 ``noble``, ``jammy`` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
@@ -89,12 +89,12 @@ To install the debian packages, add the PGP repository key
        $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
        $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
-and then download the corresponding source list, e.g. for ``bookworm``
+and then download the corresponding source list, e.g. for ``trixie``
 
 ::
 
        $ cd /etc/apt/sources.list.d
-       $ wget http://repos.pni-hdri.de/bookworm-pni-hdri.list
+       $ wget http://repos.pni-hdri.de/trixie-pni-hdri.list
 
 or ``noble``
 
