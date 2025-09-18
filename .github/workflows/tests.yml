@@ -86,5 +86,7 @@ jobs:
           MESSAGE: "Build: ({sha}) {msg}"
 
       - name: Stop the docker
-        run: docker container stop ndts
+        run: |
+             docker exec  --user root ndts  /bin/bash -c "chown -R 1001 /home/tango "
+             docker container stop ndts
 
