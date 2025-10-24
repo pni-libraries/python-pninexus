@@ -70,7 +70,7 @@ For Debian (Trixie) use
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/trixie-hdri.list
+   $ wget http://repos.pni-hdri.de/trixie-hdri.sources
 
 and for Ubuntu (Noble)
 
@@ -78,7 +78,7 @@ and for Ubuntu (Noble)
 
    $ wget http://repos.pni-hdri.de/noble-pni-hdri.list
 
-Similarly, proceed for Trixie, Bookworm, Bullseye, Plucky, Jammy.
+Similarly, proceed for Trixie, Bookworm, Bullseye, Questing, Jammy.
 Once you have downloaded the file use
 
 .. code-block:: bash
