@@ -1,6 +1,6 @@
 FROM debian:trixie
 
-MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
+# MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 
 RUN apt-get update
