@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
+# MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 RUN sed -i 's|http://archive|http://de.archive|g' /etc/apt/sources.list
 RUN apt-get update
