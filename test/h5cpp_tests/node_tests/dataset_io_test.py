@@ -131,6 +131,21 @@ class DatasetAllIOTests(unittest.TestCase):
         else:
             self.assertEqual(read, bdata)
 
+    def testWriteVariableLengthEmptyScalar(self):
+        data = u""
+        bdata = b""
+        dtype = h5cpp.datatype.String.variable()
+        # dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        dataset = Dataset(
+            self.root, h5cpp.Path("VariableLengthStringEmptyScalar"),
+            dtype, Scalar())
+        # dataset.write(data)
+        read = dataset.read()
+        if sys.version_info > (3,):
+            self.assertEqual(read, data)
+        else:
+            self.assertEqual(read, bdata)
+
     def testWriteIntegerArray(self):
 
         data = numpy.array([[1, 2, 3, 4], [5, 6, 7, 8]])

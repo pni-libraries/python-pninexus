@@ -126,6 +126,7 @@ boost::python::object dataset_read(const hdf5::node::Dataset &self,
       Py_XINCREF(ptr);
 
       boost::python::handle<> h(ptr);
+      // CHECK
       data = boost::python::object(h);
     }
   }
