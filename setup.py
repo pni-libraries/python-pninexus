@@ -162,7 +162,7 @@ else:
     # no-lto to be on the save side
     arguments = ['-std=c++17', '-Wall', '-Wextra', '-fdiagnostics-show-option',
                  '-fno-lto']
-    nexus_config.add_compiler_arguments(arguments)
+nexus_config.add_compiler_arguments(arguments)
 
 # ----------------------------------------------------------------------------
 # creating the extension factories
