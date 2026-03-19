@@ -150,8 +150,8 @@ nexus_config.add_include_directories([numpy.get_include()])
 # ----------------------------------------------------------------------------
 # set compiler options
 # ----------------------------------------------------------------------------
-if sys.platform == "win32":
-    pass
+if sys.platform in ["win32", "win64"]:
+    arguments = ['/std:c++17']
 else:
     # old version
     # arguments = ['-std=c++17', '-Wall', '-Wextra',

@@ -116,16 +116,27 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
     PyObject ***dataptr = (PyObject***)NpyIter_GetDataPtrArray(iter);
     for(auto string: buffer)
     {
+      PyObject *ptr;
       if(string == NULL)
 	{
 	  char empty[] = {'\0'};
 	  string = empty;
-	}
-#if PY_MAJOR_VERSION >= 3
-      PyObject *ptr = PyUnicode_FromString(string);
+#if PY_VERSION_HEX >= 0x030d0000
+	  ptr = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+#elif PY_MAJOR_VERSION >= 3
+	  ptr = PyUnicode_FromString(string);
 #else
-      PyObject *ptr = PyString_FromString(string);
+	  ptr = PyString_FromString(string);
 #endif
+	}
+      else
+	{
+#if PY_MAJOR_VERSION >= 3
+	  ptr = PyUnicode_FromString(string);
+#else
+	  ptr = PyString_FromString(string);
+#endif
+	}
       if(ptr==NULL)
       {
         std::cerr<<"could not create python string!"<<std::endl;
