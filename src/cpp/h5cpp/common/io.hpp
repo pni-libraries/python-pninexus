@@ -114,7 +114,7 @@ boost::python::object read(const IoType &instance)
     if(instance.dataspace().type()==hdf5::dataspace::Type::Simple)
       dims = numpy::Dimensions(hdf5::dataspace::Simple(instance.dataspace()).current_dimensions());
 
-    PyArray_Dims py_dims{dims.data(),dims.size()};
+    PyArray_Dims py_dims{dims.data(),static_cast<int>(dims.size())};
 
     array = object(handle<>(PyArray_Newshape(array_ptr,&py_dims,NPY_CORDER)));
   }
