@@ -70,7 +70,6 @@ else:
 
     nexus_config.add_link_library('pninexus')
     nexus_config.add_link_library('h5cpp')
-    nexus_config.add_link_library('hdf5_hl')
     nexus_config.add_link_library(
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
@@ -79,6 +78,7 @@ else:
     hdf5_hl_path = os.environ.get('HDF5_HL_LOCAL_PATH')
     if hdf5_hl_path:
         # use when h5cpp compiled with --as-needed
+        nexus_config.add_link_library('hdf5_hl')
         nexus_config.add_library_directory(
             # '/usr/lib/x86_64-linux-gnu/hdf5/serial/'
             hdf5_hl_path
