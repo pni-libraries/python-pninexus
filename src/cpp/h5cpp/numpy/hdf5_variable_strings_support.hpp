@@ -119,7 +119,15 @@ struct VarLengthStringTrait<numpy::ArrayAdapter>
       PyObject *ptr;
       if(string == NULL)
 	{
+	  char empty[] = {'\0'};
+	  string = empty;
+#if PY_VERSION_HEX >= 0x030d0000
 	  ptr = Py_GetConstant(Py_CONSTANT_EMPTY_STR);
+#elif PY_MAJOR_VERSION >= 3
+	  ptr = PyUnicode_FromString(string);
+#else
+	  ptr = PyString_FromString(string);
+#endif
 	}
       else
 	{
