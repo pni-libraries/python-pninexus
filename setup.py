@@ -79,10 +79,21 @@ else:
     if hdf5_hl_path:
         # use when h5cpp compiled with --as-needed
         nexus_config.add_link_library('hdf5_hl')
-        nexus_config.add_library_directory(
-            # '/usr/lib/x86_64-linux-gnu/hdf5/serial/'
-            hdf5_hl_path
-        )
+        if hdf5_hl_path != '__SYS__':
+            nexus_config.add_library_directory(
+                # '/usr/lib/x86_64-linux-gnu/hdf5/serial/'
+                hdf5_hl_path
+            )
+
+    hdf5_path = os.environ.get('HDF5_LOCAL_PATH')
+    if hdf5_path:
+        # use when h5cpp compiled with --as-needed
+        nexus_config.add_link_library('hdf5')
+        if hdf5_path != '__SYS__':
+            nexus_config.add_library_directory(
+                # '/usr/lib/x86_64-linux-gnu/hdf5/serial/'
+                hdf5_path
+            )
 
     h5cpp_path = os.environ.get('H5CPP_LOCAL_PATH')
     if h5cpp_path:

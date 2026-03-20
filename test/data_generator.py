@@ -82,8 +82,12 @@ _type_desc = {"uint8": type_desc(np.dtype("uint8"), np.uint8),
               "float128": type_desc(np.dtype("float128"), np.float128),
               "complex32": type_desc(np.dtype("complex64"), np.complex64),
               "complex64": type_desc(np.dtype("complex128"), np.complex128),
-              "complex128": type_desc(np.dtype("complex256"), np.complex256),
               "bool": type_desc(np.dtype("bool"), np.bool_)}
+
+if hasattr(np, "complex256"):
+    _type_desc["complex128"] = type_desc(np.dtype("complex256"), np.complex256)
+else:
+    _type_desc["complex128"] = type_desc(np.dtype("complex256"), np.complex128)
 
 
 if sys.version_info[0] >= 3:

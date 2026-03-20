@@ -56,7 +56,11 @@ int get_type_number(const hdf5::datatype::Datatype &datatype)
   // else if(datatype == create<std::complex<float16_t>>())    return NPY_COMPLEX32;
   else if(datatype == create<std::complex<float>>())    return NPY_COMPLEX64;
   else if(datatype == create<std::complex<double>>())   return NPY_COMPLEX128;
+#ifdef NPY_COMPLEX256
   else if(datatype == create<std::complex<long double>>()) return NPY_COMPLEX256;
+#else
+  else if(datatype == create<std::complex<long double>>()) return NPY_COMPLEX128;
+#endif
   else if(datatype.get_class() == Class::String)
   {
     String string_type = datatype;
