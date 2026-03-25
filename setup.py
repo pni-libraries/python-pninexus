@@ -73,7 +73,11 @@ else:
     nexus_config.add_link_library(
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
-    nexus_config.add_include_directory('/usr/include/hdf5/serial')
+    hdf5_include_path = os.environ.get('HDF5_INC_LOCAL_PATH')
+    if hdf5_hl_path == '__SYS__':
+        nexus_config.add_include_directory('/usr/include/hdf5/serial')
+    elif hdf5_include_path:
+        nexus_config.add_include_directory(hdf5_include_path)
 
     hdf5_hl_path = os.environ.get('HDF5_HL_LOCAL_PATH')
     if hdf5_hl_path:
