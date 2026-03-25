@@ -47,6 +47,10 @@ scalars = {"uint8": numpy.uint8,
            "float128": numpy.float128,
            "complex32": numpy.complex64,
            "complex64": numpy.complex128,
-           "complex128": numpy.complex256,
            "string": numpy.str_,
            "bool": numpy.bool_}
+
+if hasattr(numpy, "complex256"):
+    scalars["complex128"] = numpy.complex256
+else:
+    scalars["complex128"] = numpy.complex128

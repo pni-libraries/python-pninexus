@@ -24,8 +24,15 @@
 #
 from __future__ import print_function
 import unittest
+import numpy
 from pninexus import h5cpp
 from pninexus.h5cpp.datatype import Float, String, Datatype, Integer, Enum
+
+
+if hasattr(numpy, "complex256"):
+    LINUX = True
+else:
+    LINUX = False
 
 
 class PredefinedTypeTests(unittest.TestCase):
@@ -586,6 +593,8 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
+        if not LINUX:
+            dtype.size = 8
         sz = dtype.size
         self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
                                         4 * sz * sz * sz - 1])
@@ -881,7 +890,10 @@ class PredefinedTypeTests(unittest.TestCase):
 
         dtype = h5cpp.datatype.Compound(h5cpp.datatype.kComplex256)
         self.assertTrue(isinstance(dtype, self.float_types))
-        self.assertEqual(dtype.size, 32)
+        if LINUX:
+            self.assertEqual(dtype.size, 32)
+        else:
+            self.assertEqual(dtype.size, 16)
         self.assertEqual(dtype.number_of_fields, 2)
         self.assertEqual(dtype.field_name(0), "real")
         self.assertEqual(dtype.field_name(1), "imag")
@@ -889,8 +901,12 @@ class PredefinedTypeTests(unittest.TestCase):
         self.assertEqual(dtype.field_index("imag"), 1)
         self.assertEqual(dtype.field_offset("real"), 0)
         self.assertEqual(dtype.field_offset(0), 0)
-        self.assertEqual(dtype.field_offset("imag"), 16)
-        self.assertEqual(dtype.field_offset(1), 16)
+        if LINUX:
+            self.assertEqual(dtype.field_offset("imag"), 16)
+            self.assertEqual(dtype.field_offset(1), 16)
+        else:
+            self.assertEqual(dtype.field_offset("imag"), 8)
+            self.assertEqual(dtype.field_offset(1), 8)
         self.assertEqual(dtype.field_class("real"),
                          h5cpp._datatype.Class.FLOAT)
         self.assertEqual(dtype.field_class("imag"),
@@ -903,8 +919,12 @@ class PredefinedTypeTests(unittest.TestCase):
         real = dtype[0]
         imag = dtype[1]
 
-        self.assertTrue(real.precision in [80, 128])
-        self.assertTrue(imag.precision in [80, 128])
+        if LINUX:
+            self.assertTrue(real.precision in [80, 128])
+            self.assertTrue(imag.precision in [80, 128])
+        else:
+            self.assertTrue(real.precision in [64])
+            self.assertTrue(imag.precision in [64])
         self.assertEqual(real.offset, 0)
         self.assertEqual(imag.offset, 0)
         self.assertTrue(real.order in [h5cpp.datatype.Order.LE,
@@ -927,8 +947,12 @@ class PredefinedTypeTests(unittest.TestCase):
             h5cpp.datatype.Norm.NONE, h5cpp.datatype.Norm.IMPLIED])
         # self.assertEqual(real.ebias, 16383)
         # self.assertEqual(imag.ebias, 16383)
-        self.assertEqual(real.size, 16)
-        self.assertEqual(imag.size, 16)
+        if LINUX:
+            self.assertEqual(real.size, 16)
+            self.assertEqual(imag.size, 16)
+        else:
+            self.assertEqual(real.size, 8)
+            self.assertEqual(imag.size, 8)
 
         fields = real.fields
         self.assertEqual(len(fields), 5)

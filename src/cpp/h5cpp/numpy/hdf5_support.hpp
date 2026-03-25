@@ -87,7 +87,9 @@ template<> class TypeTrait<numpy::ArrayAdapter>
 	// case NPY_COMPLEX32: return hdf5::datatype::create<std::complex<float16_t>>();
         case NPY_COMPLEX64: return hdf5::datatype::create<std::complex<float>>();
         case NPY_COMPLEX128: return hdf5::datatype::create<std::complex<double>>();
+#ifdef NPY_COMPLEX256
         case NPY_COMPLEX256: return hdf5::datatype::create<std::complex<long double>>();
+#endif
         case NPY_BOOL: return hdf5::datatype::create<bool>();
 #if PY_MAJOR_VERSION >= 3
         case NPY_UNICODE:
