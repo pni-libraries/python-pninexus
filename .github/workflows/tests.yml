@@ -34,7 +34,9 @@ jobs:
           source .sh.sh 
           pixi add rattler-build
       - name: build pninexus
-        run: pixi run rattler-build build  --recipe recipes/pninexus/recipe.yaml
+        run: |
+          source .sh.sh 
+          pixi run rattler-build build  --recipe recipes/pninexus/recipe.yaml
 
   debian_tests:
     runs-on: ubuntu-latest
