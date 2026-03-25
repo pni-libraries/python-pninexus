@@ -8,13 +8,6 @@ package:
 source:
   url: https://github.com/pni-libraries/python-pninexus/archive/refs/tags/v${{ version }}.tar.gz
   sha256: 4833db1524715f7172cdb63948364019c7cc44c284e612f1d103e8bd4ee2b89a
-  # patches:
-  #   - add-empty-scalar-test.patch
-  #   - fix-dim-size-cast.patch
-  #   - set-empty-string.patch
-  #   - change-compiler-parameters.patch
-  #   - skip-complex256-in-windows.patch
-  #   - adapt-type-tests-for-windows.patch
 
 build:
   noarch: python
@@ -37,25 +30,16 @@ requirements:
   build:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
-    - python
     - cmake
     - ninja
-    - sphinx
-    - pygments
-    - setuptools
-    - pytest
-    - cython
-    - pkgconf
-    - pip
-    - numpy
-    - sphinx
-    - h5py
     - make
   host:
     - python
-    # - python ${{ python_min }}.*
     - setuptools
     - pip
+    - pytest  # for testing                                                                                                                       
+    - h5py    # for testing                                                                                                                       
+    - sphinx  # for building documentation                                                                                                        
     - numpy
     - hdf5
     - h5cpp
@@ -67,12 +51,7 @@ requirements:
     - zlib
   run:
     - python
-    # - python >=${{ python_min }}
-    - libboost-devel
-    - libboost-python-devel
-    - hdf5
-    - h5cpp
-    - libpninexus
+    - numpy
 
 tests:
   - python:
