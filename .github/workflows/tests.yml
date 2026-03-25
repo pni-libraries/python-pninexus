@@ -34,7 +34,7 @@ jobs:
           apt-get -qq -y dist-upgrade
           apt-get -qq update && apt-get install  -qq  -y flake8 python3 curl
           curl -fsSL https://pixi.sh/install.sh | sh
-          export PATH=/home/runner/.pixi/bin:$PATH
+          export PATH=/github/home/.pixi/bin:$PATH
           pixi shell-hook > .sh.sh
           source .sh.sh 
           pixi add rattler-build
