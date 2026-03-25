@@ -74,7 +74,7 @@ else:
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
     hdf5_include_path = os.environ.get('HDF5_INC_LOCAL_PATH')
-    if hdf5_hl_path == '__SYS__':
+    if hdf5_include_path == '__SYS__':
         nexus_config.add_include_directory('/usr/include/hdf5/serial')
     elif hdf5_include_path:
         nexus_config.add_include_directory(hdf5_include_path)
