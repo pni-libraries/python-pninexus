@@ -49,6 +49,9 @@ requirements:
   run:
     - python
     - numpy
+    - hdf5
+    - h5cpp
+    - libpninexus
 
 tests:
   - python:
