@@ -6,8 +6,7 @@ package:
   version: ${{ version }}
 
 source:
-  url: https://github.com/pni-libraries/python-pninexus/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 4833db1524715f7172cdb63948364019c7cc44c284e612f1d103e8bd4ee2b89a
+  - path: ../../../
 
 build:
   noarch: python

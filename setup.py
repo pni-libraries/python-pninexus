@@ -1,6 +1,5 @@
 # setup script for python-pninexus
 from __future__ import print_function
-import codecs
 import sys
 import os
 import os.path
