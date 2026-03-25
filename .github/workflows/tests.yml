@@ -40,6 +40,7 @@ jobs:
           source .sh.sh 
           pixi add rattler-build
       - name: build pninexus
+        shell: bash
         run: |
           source .sh.sh 
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
