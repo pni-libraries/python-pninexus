@@ -23,6 +23,9 @@ build:
         - export HDF5_INC_LOCAL_PATH=__SYS__
     - python setup.py install
     - python -m pytest test
+    - if: win
+      then:  python setup.py install  --prefix=%PREFIX%
+      else: python setup.py install  --prefix=$PREFIX
 
 requirements:
   build:
