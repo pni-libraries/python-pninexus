@@ -1,5 +1,5 @@
 name: Test Package
-65;7006;1c
+
 on:
   push:
   pull_request:
