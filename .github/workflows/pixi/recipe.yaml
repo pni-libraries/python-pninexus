@@ -68,7 +68,7 @@ requirements:
     - python
     - numpy
     - h5cpp
-    - pninexus
+    - libpninexus
     - hdf5
 
 tests:
