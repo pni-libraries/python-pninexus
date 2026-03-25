@@ -20,6 +20,7 @@ build:
         - set HDF5_HL_LOCAL_PATH=__SYS__
       else:
         - export HDF5_HL_LOCAL_PATH=__SYS__
+        - export HDF5_INC_LOCAL_PATH=__SYS__
     - python setup.py install
     - python -m pytest test
 
