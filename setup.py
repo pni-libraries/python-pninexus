@@ -58,7 +58,7 @@ nexus_extra_link_args = []
 
 if os.path.exists("conanbuildinfo.txt"):
     builder = ConanBuildInfoBuilder()
-    nexus_cnfig = builder.create("conanbuildinfo.txt")
+    nexus_config = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
 
@@ -298,7 +298,7 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Physics',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        # 'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
