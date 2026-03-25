@@ -37,7 +37,7 @@ def read(fname):
     :param fname: readme file name
     :type fname: :obj:`str`
     """
-    with codecs.open(os.path.join('.', fname), encoding='utf-8') as f:
+    with open(os.path.join('.', fname), encoding='utf-8') as f:
         long_description = f.read()
     return long_description
 
@@ -58,7 +58,7 @@ nexus_extra_link_args = []
 
 if os.path.exists("conanbuildinfo.txt"):
     builder = ConanBuildInfoBuilder()
-    nexus_config = builder.create("conanbuildinfo.txt")
+    nexus_cnfig = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
 
@@ -74,9 +74,12 @@ else:
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
     hdf5_include_path = os.environ.get('HDF5_INC_LOCAL_PATH')
+    print("HDF5_INC_LOCAL_PATH: '%s'" % hdf5_include_path)
     if not hdf5_include_path:
+        print("W1")
         nexus_config.add_include_directory('/usr/include/hdf5/serial')
     elif hdf5_include_path != "__SYS__":
+        print("W2")
         nexus_config.add_include_directory(hdf5_include_path)
 
     hdf5_hl_path = os.environ.get('HDF5_HL_LOCAL_PATH')
@@ -304,8 +307,8 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
-    test_suite="test",
-    test_loader="unittest:TestLoader",
+    # test_suite="test",
+    # test_loader="unittest:TestLoader",
     cmdclass={
         "install": pni_install,
         'build_sphinx': BuildDoc,
