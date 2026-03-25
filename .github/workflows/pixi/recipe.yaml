@@ -30,31 +30,24 @@ requirements:
   build:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
+    - python
     - cmake
     - ninja
+    - sphinx
+    - pygments
+    - setuptools
+    - pytest
+    - cython
+    - pkgconf
+    - pip
+    - numpy
+    - sphinx
+    - h5py
     - make
-    # - python
-    # - setuptools
-    # - pip
-    # # - pytest  # for testing                                                                                                                       
-    # # - h5py    # for testing                                                                                                                       
-    # # - sphinx  # for building documentation                                                                                                        
-    # - numpy
-    # - hdf5
-    # - h5cpp
-    # - sphinx
-    # - libpninexus
-    # - libboost-devel
-    # - libboost-python-devel
-    # - blas
-    # - zlib
   host:
     - python
     - setuptools
     - pip
-    - pytest  # for testing                                                                                                                       
-    - h5py    # for testing                                                                                                                       
-    - sphinx  # for building documentation                                                                                                        
     - numpy
     - hdf5
     - h5cpp
@@ -66,14 +59,11 @@ requirements:
     - zlib
   run:
     - python
-    - numpy
-    - h5cpp
-    - libpninexus
     - libboost-devel
     - libboost-python-devel
     - hdf5
-    - blas
-    - zlib
+    - h5cpp
+    - libpninexus
 
 tests:
   - python:
