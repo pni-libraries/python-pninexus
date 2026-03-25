@@ -52,6 +52,10 @@ requirements:
     - hdf5
     - h5cpp
     - libpninexus
+    - libboost-devel
+    - libboost-python-devel
+    - blas
+    - zlib
 
 tests:
   - python:
