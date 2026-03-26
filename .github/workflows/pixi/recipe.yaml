@@ -17,6 +17,7 @@ build:
         - set CL=/DH5_BUILT_AS_DYNAMIC_LIB=1 %CL%
         - set HDF5_LOCAL_PATH=__SYS__
         - set HDF5_HL_LOCAL_PATH=__SYS__
+        - set HDF5_INC_LOCAL_PATH=__SYS__
       else:
         - export HDF5_HL_LOCAL_PATH=__SYS__
         - export HDF5_INC_LOCAL_PATH=__SYS__

@@ -75,7 +75,7 @@ jobs:
           cache: false
       - name: build pninexus
         run: |
-          pixi add rattler-build
+          pixi add rattler-build compilers
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   deb_tests:
