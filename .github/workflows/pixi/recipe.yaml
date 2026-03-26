@@ -28,8 +28,8 @@ build:
 
 requirements:
   build:
-    - ${{ compiler('cxx') }}
-    - ${{ stdlib('c') }}
+    # - ${{ compiler('cxx') }}
+    # - ${{ stdlib('c') }}
     - python
     - cmake
     - ninja
