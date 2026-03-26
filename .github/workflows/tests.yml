@@ -73,18 +73,18 @@ jobs:
       - uses: actions/setup-python@v2
 
       - name: install pixi
-        # shell: powershell
+        shell: powershell
         run: |
-          powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-          # export PATH=/github/home/.pixi/bin:$PATH
-          pixi shell-hook > .sh.sh
-          source .sh.sh
-          pixi add rattler-build
-      - name: build pninexus
-        shell: bash
-        run: |
-          source .sh.sh
-          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+         irm -useb https://pixi.sh/install.ps1 | iex
+      #    # export PATH=/github/home/.pixi/bin:$PATH
+      #    pixi shell-hook > .sh.sh
+      #    source .sh.sh
+      #    pixi add rattler-build
+      # - name: build pninexus
+      #   shell: bash
+      #   run: |
+      #     source .sh.sh
+      #     pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   debian_tests:
     runs-on: ubuntu-latest
