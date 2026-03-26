@@ -66,17 +66,16 @@ jobs:
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   windows-2025_tests:
-    runs-on: windows-2025
+    runs-on: windows-2025    
     steps:
-      - uses: actions/checkout@v4
-      - name: Add MSVC to PATH
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: Set environment variables
+      - uses: prefix-dev/setup-pixi@v0.9.4
+        with:
+          pixi-version: v0.62.2
+          cache: true
+          auth-host: prefix.dev
+          auth-token: ${{ secrets.PREFIX_DEV_TOKEN }}
+      - name: build pninexus
         run: |
-          powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-          set PATH=%PATH%;C:\Users\runneradmin\.pixi\bin\
-          pixi shell-hook > .sh.bat
-          call .sh.bat
           pixi add rattler-build
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
