@@ -34,19 +34,21 @@ requirements:
     - python
     - cmake
     - ninja
-    - numpy
-    - setuptools
-    - pytest  # for testing
-    - h5py    # for testing
-    - sphinx  # for building documentation
-    - hdf5
-    - h5cpp
-    - sphinx
-    - libpninexus
-    - libboost-devel
-    - libboost-python-devel
-    - blas
-    - zlib
+    - if: not win
+      then:
+        - numpy
+        - setuptools
+        - pytest  # for testing
+        - h5py    # for testing
+        - sphinx  # for building documentation
+        - hdf5
+        - h5cpp
+        - sphinx
+        - libpninexus
+        - libboost-devel
+        - libboost-python-devel
+        - blas
+        - zlib
   host:
     - python
     - setuptools
