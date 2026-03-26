@@ -27,6 +27,8 @@ build:
         # - dir %BUILD_PREFIX%\include
         - dir %BUILD_PREFIX%\Lib\site-packages\numpy\_core\include
         - dir %PREFIX%\Include
+        - dir %BUILD_PREFIX%\Lib
+        - dir %PREFIX%\Lib
         # - dir %PREFIX%\include
         # - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include"
         # - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include"
@@ -61,8 +63,8 @@ requirements:
     - sphinx
     - libpninexus
     - libboost-headers
-    - libboost-devel
-    - libboost-python-devel
+    # - libboost-devel
+    # - libboost-python-devel
     - blas
     - zlib
   host:
