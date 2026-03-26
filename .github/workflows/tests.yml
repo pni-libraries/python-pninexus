@@ -72,8 +72,6 @@ jobs:
         with:
           pixi-version: v0.62.2
           cache: true
-          auth-host: prefix.dev
-          auth-token: ${{ secrets.PREFIX_DEV_TOKEN }}
       - name: build pninexus
         run: |
           pixi add rattler-build
