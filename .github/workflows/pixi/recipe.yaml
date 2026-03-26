@@ -34,6 +34,7 @@ requirements:
     - cmake
     - ninja
     - numpy
+    - setuptools
   host:
     - python
     - setuptools
