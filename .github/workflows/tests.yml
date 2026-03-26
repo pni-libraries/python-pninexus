@@ -38,7 +38,7 @@ jobs:
           export PATH=/github/home/.pixi/bin:$PATH
           pixi shell-hook > .sh.sh
           source .sh.sh
-          pixi add rattler-build
+          pixi add rattler-build compilers
       - name: build pninexus
         shell: bash
         run: |
@@ -58,7 +58,7 @@ jobs:
           export PATH=/Users/runner/.pixi/bin:$PATH
           pixi shell-hook > .sh.sh
           source .sh.sh
-          pixi add rattler-build
+          pixi add rattler-build compilers
       - name: build pninexus
         shell: bash
         run: |
