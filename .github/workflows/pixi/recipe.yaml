@@ -33,21 +33,13 @@ requirements:
     - python
     - cmake
     - ninja
-    - sphinx
-    - pygments
-    - setuptools
-    - pytest
-    - cython
-    - pkgconf
-    - pip
-    - numpy
-    - sphinx
-    - h5py
-    - make
   host:
     - python
     - setuptools
     - pip
+    - pytest  # for testing
+    - h5py    # for testing
+    - sphinx  # for building documentation
     - numpy
     - hdf5
     - h5cpp
