@@ -75,7 +75,7 @@ jobs:
           cache: false
       - name: build pninexus
         run: |
-          pixi add rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0
+          pixi add rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   deb_tests:
