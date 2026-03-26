@@ -65,12 +65,25 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  windows_tests:
+  windows-2022:
+    strategy:
+      matrix:
+        shared: [
+          "shared",
+          "static"
+        ]
+        boost: [
+          "boost",
+          "stdfs"
+        ]
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+      - name: Add MSVC to PATH
         uses: ilammy/msvc-dev-cmd@v1
-
+      - name: Set environment variables
+        run: |
+          powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
   #     - name: install pixi
   #       shell: powershell
   #       run: |
