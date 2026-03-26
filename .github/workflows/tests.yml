@@ -58,7 +58,7 @@ jobs:
           export PATH=/Users/runner/.pixi/bin:$PATH
           pixi shell-hook > .sh.sh
           source .sh.sh
-          pixi add rattler-build compilers
+          pixi add rattler-build
       - name: build pninexus
         shell: bash
         run: |
