@@ -34,10 +34,10 @@ requirements:
     - python
     - cmake
     - ninja
+    - numpy
+    - setuptools
     - if: not win
       then:
-        - numpy
-        - setuptools
         - pytest  # for testing
         - h5py    # for testing
         - sphinx  # for building documentation
