@@ -26,15 +26,17 @@ build:
         - dir %BUILD_PREFIX%\Include
         - dir %BUILD_PREFIX%\include
         - dir %BUILD_PREFIX%\Lib\site-packages\numpy\_core\include
-        - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include"
-        - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include"
-        - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include"
-        - dir "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt"
-        - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um"
-        - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared"
-        - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt"
-        - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt"
-        - dir "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
+        - dir %PREFIX%\Include
+        - dir %PREFIX%\include
+        # - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include"
+        # - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include"
+        # - dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include"
+        # - dir "C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt"
+        # - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um"
+        # - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared"
+        # - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt"
+        # - dir "C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt"
+        # - dir "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
         - dir "D:\a\python-pninexus\python-pninexus\.pixi\envs\default\Library\include"
     - python setup.py install
     - python -m pytest test
