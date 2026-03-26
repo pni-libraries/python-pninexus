@@ -36,19 +36,17 @@ requirements:
     - ninja
     - numpy
     - setuptools
-    - if: not win
-      then:
-        - pytest  # for testing
-        - h5py    # for testing
-        - sphinx  # for building documentation
-        - hdf5
-        - h5cpp
-        - sphinx
-        - libpninexus
-        - libboost-devel
-        - libboost-python-devel
-        - blas
-        - zlib
+    - pytest  # for testing
+    - h5py    # for testing
+    - sphinx  # for building documentation
+    - hdf5
+    - h5cpp
+    - sphinx
+    - libpninexus
+    - libboost-devel
+    - libboost-python-devel
+    - blas
+    - zlib
   host:
     - python
     - setuptools
