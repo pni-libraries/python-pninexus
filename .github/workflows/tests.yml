@@ -74,7 +74,7 @@ jobs:
       - name: Set environment variables
         run: |
           powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-          set PATH=%PATH%;C:\Users\runneradmin\.pixi\bin
+          set PATH=%PATH%;C:\Users\runneradmin\.pixi\bin\
           pixi shell-hook > .sh.bat
           call .sh.bat
           pixi add rattler-build
