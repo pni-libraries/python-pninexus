@@ -45,7 +45,7 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  macos_tests:
+  macos-15_tests:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v2
@@ -65,7 +65,7 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  windows-2025:
+  windows-2025_tests:
     runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
@@ -74,19 +74,11 @@ jobs:
       - name: Set environment variables
         run: |
           powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-  #     - name: install pixi
-  #       shell: powershell
-  #       run: |
-  #        irm -useb https://pixi.sh/install.ps1 | iex
-  #     #    # export PATH=/github/home/.pixi/bin:$PATH
-  #     #    pixi shell-hook > .sh.sh
-  #     #    source .sh.sh
-  #     #    pixi add rattler-build
-  #     # - name: build pninexus
-  #     #   shell: bash
-  #     #   run: |
-  #     #     source .sh.sh
-  #     #     pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+          set PATH=%PATH%;C:\Users\runneradmin\.pixi\bin
+          pixi shell-hook > .sh.bat
+          call .sh.bat
+          pixi add rattler-build
+          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   deb_tests:
     runs-on: ubuntu-latest
