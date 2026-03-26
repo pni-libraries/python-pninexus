@@ -65,8 +65,8 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  windows-2022:
-    runs-on: windows-2022
+  windows-2025:
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
       - name: Add MSVC to PATH
