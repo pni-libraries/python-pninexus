@@ -65,12 +65,11 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  # windows_tests:
-  #   runs-on: windows-2022
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       uses: ilammy/msvc-dev-cmd@v1
-  #     - uses: actions/setup-python@v2
+  windows_tests:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        uses: ilammy/msvc-dev-cmd@v1
 
   #     - name: install pixi
   #       shell: powershell
@@ -86,7 +85,7 @@ jobs:
   #     #     source .sh.sh
   #     #     pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  debian_tests:
+  deb_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
