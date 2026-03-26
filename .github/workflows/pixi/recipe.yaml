@@ -60,6 +60,7 @@ requirements:
     - h5cpp
     - sphinx
     - libpninexus
+    - libboost-headers
     - libboost-devel
     - libboost-python-devel
     - blas
