@@ -50,23 +50,23 @@ requirements:
   build:
     # - ${{ compiler('cxx') }}
     # - ${{ stdlib('c') }}
-    - python
-    - cmake
-    - ninja
-    - numpy
-    - setuptools
-    - pytest  # for testing
-    - h5py    # for testing
-    - sphinx  # for building documentation
-    - hdf5
-    - h5cpp
-    - sphinx
-    - libpninexus
+    # - python
+    # - cmake
+    # - ninja
+    # - numpy
+    # - setuptools
+    # - pytest  # for testing
+    # - h5py    # for testing
+    # - sphinx  # for building documentation
+    # - hdf5
+    # - h5cpp
+    # - sphinx
+    # - libpninexus
     - libboost-headers
     # - libboost-devel
     # - libboost-python-devel
-    - blas
-    - zlib
+    # - blas
+    # - zlib
   host:
     - python
     - setuptools
