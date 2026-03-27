@@ -1,0 +1,99 @@
+context:
+  version: 3.3.0
+
+package:
+  name: pninexus
+  version: ${{ version }}
+
+source:
+  - path: ../../../
+
+build:
+  noarch: python
+  number: 0
+  script:
+    - if: win
+      then:
+        - set CL=/DH5_BUILT_AS_DYNAMIC_LIB=1 %CL%
+        - set HDF5_LOCAL_PATH=__SYS__
+        - set HDF5_HL_LOCAL_PATH=__SYS__
+        - set HDF5_INC_LOCAL_PATH=__SYS__
+      else:
+        - export HDF5_HL_LOCAL_PATH=__SYS__
+        - export HDF5_INC_LOCAL_PATH=__SYS__
+    - python setup.py install
+    - python -m pytest test
+    - if: win
+      then:  python setup.py install  --prefix=%PREFIX%
+      else: python setup.py install  --prefix=$PREFIX
+
+requirements:
+  build:
+    # - ${{ compiler('cxx') }}
+    # - ${{ stdlib('c') }}
+    - python
+    - cmake
+    - ninja
+    - numpy
+    - setuptools
+    - pytest  # for testing
+    - h5py    # for testing
+    - sphinx  # for building documentation
+    - hdf5
+    - h5cpp
+    - sphinx
+    - libpninexus
+    - libboost-headers
+    - libboost-devel
+    - libboost-python-devel
+    - blas
+    - zlib
+  host:
+    - python
+    - setuptools
+    - pip
+    - pytest  # for testing
+    - h5py    # for testing
+    - sphinx  # for building documentation
+    - numpy
+    - hdf5
+    - h5cpp
+    - sphinx
+    - libpninexus
+    - libboost-headers
+    - libboost-devel
+    - libboost-python-devel
+    - blas
+    - zlib
+  run:
+    - python
+    - libboost-devel
+    - libboost-python-devel
+    - hdf5
+    - h5cpp
+    - libpninexus
+
+# # ImportError: libhdf5_hl.so.310: cannot open shared object file: No such file or directory
+# tests:
+#   - python:
+#       # python_version: ${{ python_min }}.*
+#       imports:
+#         - pninexus.h5cpp
+#         - pninexus.nexus
+
+about:
+  homepage: https://github.com/pni-libraries/python-pninexus
+  license: GPL-2.0-only
+  license_file: LICENSE
+  summary: Python bindings or  NeXus libpninexus and h5cpp library
+  description: |
+    pninexus is python bindings of C++ library to create NeXus files.
+    It provides NeXus tree-structure builder basedon XML (NXDL-like) input,
+    NeXus path parsers and other algorithms to access NeXus files.
+  documentation: https://pni-libraries.github.io/python-pninexus
+  repository: https://github.com/pni-libraries/python-pninexus
+
+extra:
+  recipe-maintainers:
+    - jkotan
+    - yuelongyu

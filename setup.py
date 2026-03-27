@@ -1,6 +1,5 @@
 # setup script for python-pninexus
 from __future__ import print_function
-import codecs
 import sys
 import os
 import os.path
@@ -37,7 +36,7 @@ def read(fname):
     :param fname: readme file name
     :type fname: :obj:`str`
     """
-    with codecs.open(os.path.join('.', fname), encoding='utf-8') as f:
+    with open(os.path.join('.', fname), encoding='utf-8') as f:
         long_description = f.read()
     return long_description
 
@@ -73,7 +72,11 @@ else:
     nexus_config.add_link_library(
         "boost_python{major}{minor}".format(major=sys.version_info.major,
                                             minor=sys.version_info.minor))
-    nexus_config.add_include_directory('/usr/include/hdf5/serial')
+    hdf5_include_path = os.environ.get('HDF5_INC_LOCAL_PATH')
+    if not hdf5_include_path:
+        nexus_config.add_include_directory('/usr/include/hdf5/serial')
+    elif hdf5_include_path != "__SYS__":
+        nexus_config.add_include_directory(hdf5_include_path)
 
     hdf5_hl_path = os.environ.get('HDF5_HL_LOCAL_PATH')
     if hdf5_hl_path:
@@ -291,7 +294,7 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Physics',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        # 'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -300,8 +303,8 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
-    test_suite="test",
-    test_loader="unittest:TestLoader",
+    # test_suite="test",
+    # test_loader="unittest:TestLoader",
     cmdclass={
         "install": pni_install,
         'build_sphinx': BuildDoc,

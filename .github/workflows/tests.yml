@@ -20,7 +20,65 @@ jobs:
       - name: Run flake8
         run: flake8 .
 
-  python3_tests:
+  linux_tests:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+
+      - name: install pixi
+        shell: bash
+        run: |
+          apt-get update
+          apt-get -qq -y dist-upgrade
+          apt-get -qq update && apt-get install  -qq  -y flake8 python3 curl bash
+          curl -fsSL https://pixi.sh/install.sh | sh
+          export PATH=/github/home/.pixi/bin:$PATH
+          pixi shell-hook > .sh.sh
+          source .sh.sh
+          pixi add rattler-build compilers
+      - name: build pninexus
+        shell: bash
+        run: |
+          source .sh.sh
+          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+
+  macos-15_tests:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+
+      - name: install pixi
+        shell: bash
+        run: |
+          curl -fsSL https://pixi.sh/install.sh | sh
+          export PATH=/Users/runner/.pixi/bin:$PATH
+          pixi shell-hook > .sh.sh
+          source .sh.sh
+          pixi add rattler-build
+      - name: build pninexus
+        shell: bash
+        run: |
+          source .sh.sh
+          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+
+  windows-2025_tests:
+    runs-on: windows-2025    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: prefix-dev/setup-pixi@v0.9.4
+        with:
+          pixi-version: v0.62.2
+          cache: false
+      - name: build pninexus
+        run: |
+          pixi add rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
+          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+
+  deb_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -89,4 +147,3 @@ jobs:
         run: |
              docker exec  --user root ndts  /bin/bash -c "chown -R 1001 /home/tango "
              docker container stop ndts
-

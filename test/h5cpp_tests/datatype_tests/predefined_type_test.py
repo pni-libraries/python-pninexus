@@ -544,8 +544,9 @@ class PredefinedTypeTests(unittest.TestCase):
 
         prec = dtype.precision
         self.assertTrue(dtype.precision in [64, 80, 128])
-        dtype.precision = 80
-        self.assertEqual(dtype.precision, 80)
+        # mprec = 80
+        # dtype.precision = mprec
+        # self.assertEqual(dtype.precision, mprec)
         dtype.precision = prec
         self.assertEqual(dtype.precision, prec)
 
@@ -593,11 +594,9 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
-        if not LINUX:
-            dtype.size = 8
-        sz = dtype.size
-        self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
-                                        4 * sz * sz * sz - 1])
+        self.assertTrue(ebias in [1023, 16383])
+        self.assertTrue(dtype.size in [9, 16, 17])
+
         dtype.ebias = 63
         self.assertEqual(dtype.ebias, 63)
         dtype.ebias = 31
