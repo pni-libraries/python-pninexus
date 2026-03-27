@@ -594,11 +594,9 @@ class PredefinedTypeTests(unittest.TestCase):
         dtype.norm = norm
 
         ebias = dtype.ebias
-        if not LINUX:
-            dtype.size = 8
-        sz = dtype.size
-        self.assertTrue(dtype.ebias in [2 * sz * sz * sz - 1,
-                                        4 * sz * sz * sz - 1])
+        self.assertTrue(ebias in [1023, 16383])
+        self.assertTrue(dtype.size in [8, 16, 17])
+
         dtype.ebias = 63
         self.assertEqual(dtype.ebias, 63)
         dtype.ebias = 31
