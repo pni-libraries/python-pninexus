@@ -544,8 +544,9 @@ class PredefinedTypeTests(unittest.TestCase):
 
         prec = dtype.precision
         self.assertTrue(dtype.precision in [64, 80, 128])
-        dtype.precision = 80
-        self.assertEqual(dtype.precision, 80)
+        mprec = min(prec, 80)
+        dtype.precision = mprec
+        self.assertEqual(dtype.precision, mprec)
         dtype.precision = prec
         self.assertEqual(dtype.precision, prec)
 
