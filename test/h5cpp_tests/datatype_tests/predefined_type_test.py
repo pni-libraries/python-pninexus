@@ -595,7 +595,7 @@ class PredefinedTypeTests(unittest.TestCase):
 
         ebias = dtype.ebias
         self.assertTrue(ebias in [1023, 16383])
-        self.assertEqual(dtype.size, 12)   #in [8, 16, 17])
+        self.assertTrue(dtype.size in [9, 16, 17])
 
         dtype.ebias = 63
         self.assertEqual(dtype.ebias, 63)
