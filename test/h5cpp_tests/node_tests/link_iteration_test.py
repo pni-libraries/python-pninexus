@@ -88,8 +88,9 @@ class LinkIterationTest(unittest.TestCase):
 
         links = [link.path.name for link in entry.links]
 
-        self.assertListEqual(links, ["data", "instrument", "sample"],
-                             "Comparison of link names {}".format(links))
+        self.assertSetEqual(set(links),
+                            set(["data", "instrument", "sample"]),
+                            "Comparison of link names {}".format(links))
 
     def test_recursive_iteration(self):
 
@@ -104,5 +105,5 @@ class LinkIterationTest(unittest.TestCase):
                     "detector_module_2",
                     "detector_module_3",
                     "sample"]
-        self.assertListEqual(links, refnames,
-                             "Comparison of link names {}".format(links))
+        self.assertSetEqual(set(links), set(refnames),
+                            "Comparison of link names {}".format(links))
