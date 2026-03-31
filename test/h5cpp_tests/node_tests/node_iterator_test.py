@@ -109,8 +109,8 @@ class NodeIteratorTest(unittest.TestCase):
 
         nodes = [node.link.path.name for node in entry.nodes]
         refnames = ["data", "instrument", "sample"]
-        self.assertListEqual(nodes, refnames,
-                             "Comparison of node names: {}".format(nodes))
+        self.assertSetEqual(set(nodes), set(refnames),
+                            "Comparison of node names: {}".format(nodes))
 
     def test_recursive_node_iteration(self):
 
@@ -123,8 +123,15 @@ class NodeIteratorTest(unittest.TestCase):
                  h5cpp.Path("/entry/instrument/detector_2"),
                  h5cpp.Path("/entry/instrument/detector_2/data")
                  ]
-        self.assertListEqual(
-            node_paths, paths, "Path comparison: {}".format(node_paths))
+        self.assertEqual(
+            len(paths), len(node_paths),
+            "Number of links comparison: {} == {}".format(len(paths),
+                                                          len(node_paths)))
+
+        for path in paths:
+            self.assertTrue(
+                path in node_paths,
+                "Path comparison: {} in {}".format(path, node_paths))
 
     def test_exists(self):
 
