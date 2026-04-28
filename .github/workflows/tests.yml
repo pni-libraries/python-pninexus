@@ -69,14 +69,14 @@ jobs:
     runs-on: windows-2025    
     steps:
       - uses: actions/checkout@v4
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@v1.4.1
       - uses: prefix-dev/setup-pixi@v0.9.4
         with:
           pixi-version: v0.62.2
           cache: false
       - name: build pninexus
         run: |
-          pixi add rattler-build libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
+          pixi add rattler-build libboost-headers=1.90.0 h5cpp libpninexus libboost=1.90.0  libboost-python=1.90.0 hdf5=1.14.6  compilers
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   deb_tests:
