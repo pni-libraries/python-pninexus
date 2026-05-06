@@ -65,11 +65,11 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  windows-2022_tests:
-    runs-on: windows-2022
+  windows-2025_tests:
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.4
+      - uses: prefix-dev/setup-pixi@v0.9.5
         with:
           pixi-version: v0.62.2
           cache: false
