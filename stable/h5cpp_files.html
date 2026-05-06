@@ -1,22 +1,18 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
-
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Working with files &#8212; libpninexus Python bindings 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=fcc624f5" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=fc837d61"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,7 +23,7 @@
     <script src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -55,12 +51,12 @@
           <div class="body" role="main">
             
   <section id="working-with-files">
-<h1>Working with files<a class="headerlink" href="#working-with-files" title="Permalink to this heading">¶</a></h1>
+<h1>Working with files<a class="headerlink" href="#working-with-files" title="Link to this heading">¶</a></h1>
 <p>The first thing to do when working with HDF5 is to create new or opening
 existing files. Classes and functions related to file operations can be
 found in the <a class="reference internal" href="#module-pninexus.h5cpp.file" title="pninexus.h5cpp.file"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.h5cpp.file</span></code></a> package.</p>
 <section id="module-pninexus.h5cpp.file">
-<span id="creating-a-file"></span><h2>Creating a file<a class="headerlink" href="#module-pninexus.h5cpp.file" title="Permalink to this heading">¶</a></h2>
+<span id="creating-a-file"></span><h2>Creating a file<a class="headerlink" href="#module-pninexus.h5cpp.file" title="Link to this heading">¶</a></h2>
 <p>In the <a class="reference internal" href="h5cpp/file.html#pninexus.h5cpp.file.create" title="pninexus.h5cpp.file.create"><code class="xref py py-func docutils literal notranslate"><span class="pre">create()</span></code></a> function is used to create new files. In
 the simplest case you can use this function with a single argument: the name
 of the new file</p>
@@ -97,7 +93,7 @@ which accept instances of <a class="reference internal" href="h5cpp/properties.h
 <em>file creation property list</em> and a <em>file access property list</em> respectively.</p>
 </section>
 <section id="opening-files">
-<h2>Opening files<a class="headerlink" href="#opening-files" title="Permalink to this heading">¶</a></h2>
+<h2>Opening files<a class="headerlink" href="#opening-files" title="Link to this heading">¶</a></h2>
 <p>To open an existing file use the <a class="reference internal" href="h5cpp/file.html#pninexus.h5cpp.file.open" title="pninexus.h5cpp.file.open"><code class="xref py py-func docutils literal notranslate"><span class="pre">open()</span></code></a> function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pninexus</span> <span class="kn">import</span> <span class="n">h5cpp</span>
 
@@ -120,7 +116,7 @@ to check if the requested file is an HDF5 file.</p>
 </div>
 </section>
 <section id="id1">
-<h2>Working with files<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<h2>Working with files<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>At first: a file can be closed by calling its <code class="xref py py-func docutils literal notranslate"><span class="pre">close()</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -136,7 +132,7 @@ destroyed when they’re losing their scope.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -160,7 +156,7 @@ destroyed when they’re losing their scope.</p>
     <p class="topless"><a href="h5cpp_groups.html"
                           title="next chapter">HDF5 nodes, links, and groups</a></p>
   </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -168,7 +164,7 @@ destroyed when they’re losing their scope.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
@@ -176,6 +172,7 @@ destroyed when they’re losing their scope.</p>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.4.0/index.html">v3.4.0</a></li>
       <li><a class="reference external" href="index/../../v3.3.0/index.html">v3.3.0</a></li>
       <li><a class="reference external" href="index/../../v3.2.3/index.html">v3.2.3</a></li>
       <li><a class="reference external" href="index/../../v3.2.2/index.html">v3.2.2</a></li>
@@ -196,7 +193,7 @@ destroyed when they’re losing their scope.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -218,8 +215,8 @@ destroyed when they’re losing their scope.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

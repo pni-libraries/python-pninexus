@@ -1,22 +1,18 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
-
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Installation &#8212; libpninexus Python bindings 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=fcc624f5" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=fc837d61"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,7 +23,7 @@
     <script src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -53,9 +49,9 @@
           <div class="body" role="main">
             
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <section id="build-requirements">
-<h2>Build requirements<a class="headerlink" href="#build-requirements" title="Permalink to this heading">¶</a></h2>
+<h2>Build requirements<a class="headerlink" href="#build-requirements" title="Link to this heading">¶</a></h2>
 <p>For the build of the package the following dependencies must be satisfied</p>
 <table class="docutils align-default">
 <thead>
@@ -86,7 +82,7 @@
 </table>
 </section>
 <section id="building-the-package">
-<h2>Building the package<a class="headerlink" href="#building-the-package" title="Permalink to this heading">¶</a></h2>
+<h2>Building the package<a class="headerlink" href="#building-the-package" title="Link to this heading">¶</a></h2>
 <p>The wrapper package follows the standard Python build and installation
 protocoll using Python setuptools.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>build
@@ -104,7 +100,7 @@ $<span class="w"> </span>python3<span class="w"> </span>setup.py<span class="w">
 </div>
 </section>
 <section id="debian-and-ubuntu-users">
-<h2>Debian and Ubuntu users<a class="headerlink" href="#debian-and-ubuntu-users" title="Permalink to this heading">¶</a></h2>
+<h2>Debian and Ubuntu users<a class="headerlink" href="#debian-and-ubuntu-users" title="Link to this heading">¶</a></h2>
 <p>As Debian and Ubuntu are closely related the installation is quite similar.
 The packages are provided by a special Debian repository. To work on the
 package sources you need to login as <cite>root</cite> user. Use <strong class="command">su</strong> or
@@ -118,15 +114,15 @@ $<span class="w"> </span>chmod<span class="w"> </span><span class="m">644</span>
 <p>The return value of this command line should be <cite>OK</cite>.
 In a next step you have to add new package sources to your system. For this
 purpose go to <code class="file docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d</span></code> and download the sources file.
-For Debian (Bookworm) use</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>http://repos.pni-hdri.de/bookworm-hdri.list
+For Debian (Trixie) use</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>http://repos.pni-hdri.de/trixie-hdri.sources
 </pre></div>
 </div>
-<p>and for Ubuntu (Jammy)</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>http://repos.pni-hdri.de/jammy-pni-hdri.list
+<p>and for Ubuntu (Noble)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>wget<span class="w"> </span>http://repos.pni-hdri.de/noble-pni-hdri.list
 </pre></div>
 </div>
-<p>Similarly, proceed for Bookworm, Bullseye, Buster, Lunar, Jammy, Focal.
+<p>Similarly, proceed for Trixie, Bookworm, Bullseye, Resolute, Noble, Jammy.
 Once you have downloaded the file use</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>apt-get<span class="w"> </span>update
 </pre></div>
@@ -142,7 +138,7 @@ Once you have downloaded the file use</p>
 <p>to install the the PNI/NeXus package for python or python3, respectively.</p>
 </section>
 <section id="manylinux-wheels-from-pypi">
-<h2>Manylinux wheels from PyPI<a class="headerlink" href="#manylinux-wheels-from-pypi" title="Permalink to this heading">¶</a></h2>
+<h2>Manylinux wheels from PyPI<a class="headerlink" href="#manylinux-wheels-from-pypi" title="Link to this heading">¶</a></h2>
 <p>To install pninexus in a conda or python virtual environment manylinux pip wheels can be used, e.g.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>myvenv
 <span class="gp">$ </span>.<span class="w"> </span>myvenv/bin/activate
@@ -171,7 +167,7 @@ documentation</a>.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -196,7 +192,7 @@ documentation</a>.</p>
     <p class="topless"><a href="users_guide.html"
                           title="next chapter">Users Guide</a></p>
   </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -204,7 +200,7 @@ documentation</a>.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
@@ -212,6 +208,7 @@ documentation</a>.</p>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.4.0/index.html">v3.4.0</a></li>
       <li><a class="reference external" href="index/../../v3.3.0/index.html">v3.3.0</a></li>
       <li><a class="reference external" href="index/../../v3.2.3/index.html">v3.2.3</a></li>
       <li><a class="reference external" href="index/../../v3.2.2/index.html">v3.2.2</a></li>
@@ -232,7 +229,7 @@ documentation</a>.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -252,8 +249,8 @@ documentation</a>.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

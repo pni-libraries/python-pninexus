@@ -1,22 +1,18 @@
 
+<!DOCTYPE html>
 
-<!doctype html>
-
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Addressing objects: the NeXus path &#8212; libpninexus Python bindings 1.1.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=fcc624f5" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=fc837d61"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,7 +23,7 @@
     <script src="_static/css3-mediaqueries.js"></script>
     <![endif]-->
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -55,9 +51,9 @@
           <div class="body" role="main">
             
   <section id="module-pninexus.nexus">
-<span id="addressing-objects-the-nexus-path"></span><h1>Addressing objects: the NeXus path<a class="headerlink" href="#module-pninexus.nexus" title="Permalink to this heading">¶</a></h1>
+<span id="addressing-objects-the-nexus-path"></span><h1>Addressing objects: the NeXus path<a class="headerlink" href="#module-pninexus.nexus" title="Link to this heading">¶</a></h1>
 <section id="an-introduction">
-<h2>An introduction<a class="headerlink" href="#an-introduction" title="Permalink to this heading">¶</a></h2>
+<h2>An introduction<a class="headerlink" href="#an-introduction" title="Link to this heading">¶</a></h2>
 <p>One of the major contributions added by <em>libpninexus</em> to the standard HDF5 library
 is its <em>Path</em> class which is provided by <a class="reference internal" href="#module-pninexus.nexus" title="pninexus.nexus"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pninexus.nexus</span></code></a> via the
 <code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code>. The most obvious difference between a plain HDF5 path and a
@@ -115,7 +111,7 @@ still work. It is important to note that the leading <code class="docutils liter
 types is requied to indicate the parser that the following string refers to a
 type rather than to a name.</p>
 <section id="the-anatomy-of-a-nexus-path">
-<h3>The anatomy of a Nexus path<a class="headerlink" href="#the-anatomy-of-a-nexus-path" title="Permalink to this heading">¶</a></h3>
+<h3>The anatomy of a Nexus path<a class="headerlink" href="#the-anatomy-of-a-nexus-path" title="Link to this heading">¶</a></h3>
 <p>A NeXus path consists of three sections</p>
 <ul class="simple">
 <li><p>the <em>file-section</em> determining the file within which a particular object is
@@ -137,7 +133,7 @@ it is only the <em>name</em>. As we have seen in the examples above the name can
 omitted group in which case the element reduces to <em>:type</em>.</p>
 </section>
 <section id="path-equality-and-match">
-<h3>Path equality and match<a class="headerlink" href="#path-equality-and-match" title="Permalink to this heading">¶</a></h3>
+<h3>Path equality and match<a class="headerlink" href="#path-equality-and-match" title="Link to this heading">¶</a></h3>
 <p>Two paths are equal if all their elements (including file and attribute
 section) are equal. Equality is thus a rather strict criteria when comparing
 two paths. A more relaxed version is a <em>match</em>. Two paths are matching if they
@@ -158,7 +154,7 @@ match as well as <cite>data</cite> and <cite>data</cite> would.</p></li>
 </ol>
 </section>
 <section id="using-paths">
-<h3>Using paths<a class="headerlink" href="#using-paths" title="Permalink to this heading">¶</a></h3>
+<h3>Using paths<a class="headerlink" href="#using-paths" title="Link to this heading">¶</a></h3>
 <p>All that theory sounds rather complicated. However, it is quite simple in
 practice.
 Nearly all objects in the NeXus API have a <code class="xref py py-attr docutils literal notranslate"><span class="pre">path</span></code> attribute
@@ -283,7 +279,7 @@ entry is always an empty string.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -310,7 +306,7 @@ entry is always an empty string.</p>
     <p class="topless"><a href="nexus_groups.html"
                           title="next chapter">Working with groups</a></p>
   </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -318,7 +314,7 @@ entry is always an empty string.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script><p>
   <h3 class='versions'>Versions</h3>
   <p>
@@ -326,6 +322,7 @@ entry is always an empty string.</p>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.4.0/index.html">v3.4.0</a></li>
       <li><a class="reference external" href="index/../../v3.3.0/index.html">v3.3.0</a></li>
       <li><a class="reference external" href="index/../../v3.2.3/index.html">v3.2.3</a></li>
       <li><a class="reference external" href="index/../../v3.2.2/index.html">v3.2.2</a></li>
@@ -346,7 +343,7 @@ entry is always an empty string.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -368,8 +365,8 @@ entry is always an empty string.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2015, DESY.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2015, DESY.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>
