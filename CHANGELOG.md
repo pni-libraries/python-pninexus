@@ -1,8 +1,19 @@
 # ChangeLog
 
+## 3.4.0 - 2026-05-05
+- update tests for hdf5 2.0 )[#235](https://github.com/pni-libraries/python-pninexus/pull/235), [#233](https://github.com/pni-libraries/python-pninexus/pull/233)
+- add support for windows ([#231](https://github.com/pni-libraries/python-pninexus/pull/231))
+- cleaning setting string empty ([#229](https://github.com/pni-libraries/python-pninexus/pull/229))
+- define empty python string with PyCONSTANT_EMPTY_STR ([#228](https://github.com/pni-libraries/python-pninexus/pull/228])
+- cast dims.size explicitly for osx ([#227](https://github.com/pni-libraries/python-pninexus/pull/227))
+- add -fno-lto flag ([#225](https://github.com/pni-libraries/python-pninexus/pull/225))
+- fix warning on stopping CI docker ([#221](https://github.com/pni-libraries/python-pninexus/pull/221))
+- add debian 13 test ([#220](https://github.com/pni-libraries/python-pninexus/pull/220))
+- technical release for libpninexus v3.4.0 (https://github.com/pni-libraries/libpninexus/issues/252) and libh5cpp v0.8.0 (https://github.com/ess-dmsc/h5cpp/issues/679)
+
 ## 3.3.0 - 2025-05-08
 - fixes for writing utf8 strings ([#215](https://github.com/pni-libraries/python-pninexus/pull/215)), ([#213](https://github.com/pni-libraries/python-pninexus/pull/213)), ([#210](https://github.com/pni-libraries/python-pninexus/pull/210))
-- technical release for libpninexus v3.3.0 (https://github.com/pni-libraries/libpninexus/issues/252) and libh5cpp v0.7.1 (https://github.com/ess-dmsc/h5cpp/issues/679)
+- technical release for libpninexus v3.3.0 (https://github.com/pni-libraries/libpninexus/issues/272) and libh5cpp v0.7.1 (https://github.com/ess-dmsc/h5cpp/issues/698)
 
 ## 3.2.3 - 2025-01-12
 - adapt code to python 3.12 ([#201](https://github.com/pni-libraries/python-pninexus/pull/201))
@@ -13,7 +24,7 @@
 
 ## 3.2.1 - 2023-10-12
 - replace README.md by README.rst ([#190](https://github.com/pni-libraries/python-pninexus/pull/190))
-
+](https://github.com/pni-libraries/python-pninexus/pull/
 ## 3.2.0 - 2023-10-12
 - string parameters to has/get_dataset/group/node added ([#185](https://github.com/pni-libraries/python-pninexus/pull/185))
 - get_numpy_include_dirs to numpy.get_include changed ([#184](https://github.com/pni-libraries/python-pninexus/pull/183))
