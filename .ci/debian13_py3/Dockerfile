@@ -13,7 +13,7 @@ RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN cd /etc/apt/sources.list.d && wget http://repos.pni-hdri.de/trixie-pni-hdri.list
 RUN apt-get -qq update && apt-get -qq -y dist-upgrade
 RUN apt-get -qq update && apt-get -qq install -y python3-sphinx  apt-utils net-tools
-RUN apt-get install -y libpninexus3.3.0-dev libpninexus3.3.0 libh5cpp0.7.1-dev libh5cpp0.7.1 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev  cython3 python3-setuptools libboost-python-dev python3-numpy-dev g++ python3-h5py  git python3-pytest cmake doxygen python3-sphinx libboost-all-dev hdf5-filter-plugin bitshuffle
+RUN apt-get install -y libpninexus3.4.0-dev libpninexus3.4.0 libh5cpp0.8.0-dev libh5cpp0.8.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev  cython3 python3-setuptools libboost-python-dev python3-numpy-dev g++ python3-h5py  git python3-pytest cmake doxygen python3-sphinx libboost-all-dev hdf5-filter-plugin bitshuffle
 # hdf5-plugin-bz2 hdf5-plugin-lz4
 
 RUN useradd -ms /bin/bash tango
