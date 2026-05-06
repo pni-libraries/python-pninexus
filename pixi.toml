@@ -14,5 +14,5 @@ python = "==3.14"
 conda-smithy = ">=3.56.3,<4"
 
 [target.win-64.dependencies]
-vc = "17.*"
-vs2022_win-64 = "17.*"
+vc = ">=17.14,<18"
+vs2022_win-64 = ">=17.14,<18"
