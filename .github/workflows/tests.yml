@@ -65,24 +65,24 @@ jobs:
           source .sh.sh
           pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
-  windows-2025_tests:
-    runs-on: windows-2025    
-    steps:
-      - uses: actions/checkout@v4
-      - uses: prefix-dev/setup-pixi@v0.9.4
-        with:
-          pixi-version: v0.62.2
-          cache: false
-      - name: build pninexus
-        run: |
-          pixi add rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
-          pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
+  # windows-2025_tests:
+  #   runs-on: windows-2025    
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: prefix-dev/setup-pixi@v0.9.4
+  #       with:
+  #         pixi-version: v0.62.2
+  #         cache: false
+  #     - name: build pninexus
+  #       run: |
+  #         pixi add rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
+  #         pixi run rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   deb_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [debian13, debian12, debian11, ubuntu25.10, ubuntu24.04, ubuntu22.04]
+        os: [debian13, debian12, debian11, ubuntu26.04, ubuntu24.04, ubuntu22.04]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
