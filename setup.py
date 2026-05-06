@@ -19,10 +19,10 @@ except ImportError:
     BuildDoc = None
 
 name = "pninexus"
-version = "3.3.0"
-# release = "3.3.0"
+version = "3.4.0"
+release = "3.4.0"
 # documentation for release with one '.' is stored as v:latest
-release = "3.3"
+# release = "3.4"
 
 if release.count(".") == 1:
     docs_release = '(latest)'
@@ -302,6 +302,8 @@ setup(
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
     ],
     # test_suite="test",
     # test_loader="unittest:TestLoader",
