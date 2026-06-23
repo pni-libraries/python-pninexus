@@ -3,8 +3,8 @@ FROM ubuntu:18.04
 MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y software-properties-common curl
-RUN curl http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
-RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian bionic main" -y
+RUN curl https://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
+RUN add-apt-repository "deb https://repos.pni-hdri.de/apt/debian bionic main" -y
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y python3-sphinx apt-utils net-tools 
 RUN apt-get -qq install -y libpninexus3.1.0-dev libpninexus3.1.0 libh5cpp0.6.0-dev libh5cpp0.6.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py python3-pytest
