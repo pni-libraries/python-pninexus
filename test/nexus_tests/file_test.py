@@ -105,11 +105,25 @@ class CreatFileTest(unittest.TestCase):
         f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
         f.root()
 
-    def test_h5create_memory(self):
+    def test_h5create_memory_def(self):
 
         fapl = h5cpp.property.FileAccessList()
         mdrv = h5cpp.file.MemoryDriver()
         self.assertEqual(mdrv.id, h5cpp.file.DriverID.MEMORY)
+        mdrv(fapl)
+
+        f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
+        f.root()
+
+    def test_h5create_memory_args(self):
+
+        fapl = h5cpp.property.FileAccessList()
+        increment = 7000
+        backing_store = True
+        mdrv = h5cpp.file.MemoryDriver(increment, backing_store)
+        self.assertEqual(mdrv.id, h5cpp.file.DriverID.MEMORY)
+        self.assertEqual(mdrv.increment, increment)
+        self.assertEqual(mdrv.backing_store, backing_store)
         mdrv(fapl)
 
         f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
