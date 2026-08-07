@@ -118,6 +118,13 @@ BOOST_PYTHON_MODULE(_file)
             .value("DONT_RELEASE",ImageFlags::DontRelease)
             .value("ALL",ImageFlags::All);
 
+  enum_<DriverID>("DriverID","The file driver ID")
+    .value("CUSTOM", DriverID::Custom)
+    .value("POSIX", DriverID::Posix)
+    .value("DIRECT", DriverID::Direct)
+    .value("MEMORY", DriverID::Memory)
+    .value("MPI", DriverID::MPI);
+
   //hdf5::node::Group (hdf5::file::File::*root)() = &hdf5::file::File::root;
   class_<File>("File")
             .def(init<>())
@@ -133,6 +140,44 @@ BOOST_PYTHON_MODULE(_file)
             .def("to_buffer",file_to_buffer,(arg("data")))
             ;
 
+  class_<Driver,boost::noncopyable>("Driver",no_init)
+    .add_property("id",&Driver::id)
+    .def("__call__",&Driver::operator(),(args("fapl")))
+    ;
+
+  class_<PosixDriver,bases<Driver>>("PosixDriver");
+
+  // usage of DirectDriver in python bindings not supported
+  //
+  // void (DirectDriver::*set_alignment)(size_t) = &DirectDriver::alignment;
+  // size_t(DirectDriver::*get_alignment)() const = &DirectDriver::alignment;
+  // void (DirectDriver::*set_block_size)(size_t) = &DirectDriver::block_size;
+  // size_t(DirectDriver::*get_block_size)() const = &DirectDriver::block_size;
+  // void (DirectDriver::*set_copy_buffer_size)(size_t) = &DirectDriver::copy_buffer_size;
+  // size_t(DirectDriver::*get_copy_buffer_size)() const = &DirectDriver::copy_buffer_size;
+  // class_<DirectDriver,bases<Driver>>("DirectDriver")
+  // 	   .def(init<size_t,size_t,size_t>((arg("alignment")=0,
+  // 				    arg("block_size")=0,
+  // 				    arg("copy_buffer_size")=0)))
+  // 	   .add_property("alignment",get_alignment,set_alignment)
+  // 	   .add_property("block_size",get_block_size,set_block_size)
+  // 	   .add_property("copy_buffer_size",get_copy_buffer_size,set_copy_buffer_size)
+          ;
+
+  void (MemoryDriver::*set_increment)(size_t) = &MemoryDriver::increment;
+  size_t(MemoryDriver::*get_increment)() const = &MemoryDriver::increment;
+  void (MemoryDriver::*set_backing_store)(bool) = &MemoryDriver::backing_store;
+  bool(MemoryDriver::*get_backing_store)() const = &MemoryDriver::backing_store;
+  class_<MemoryDriver,bases<Driver>>("MemoryDriver")
+	   .def(init<size_t,bool>((arg("increment")=0,
+				    arg("backing_store")=0)))
+	   .add_property("increment",get_increment,set_increment)
+	   .add_property("backing_store",get_backing_store,set_backing_store)
+          ;
+
+  // usage of MPI in python bindings not supported
+  // class_<MPIDriver,bases<Driver>>("MPIDriver");
+	   
   //need some functions
   def("is_hdf5_file",&is_hdf5_file);
   def("create",&create_file,(arg("file"),arg("flags")=AccessFlags::Exclusive,

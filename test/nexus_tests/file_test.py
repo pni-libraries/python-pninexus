@@ -93,3 +93,24 @@ class CreatFileTest(unittest.TestCase):
 
         f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
         f.root()
+
+    def test_h5create_posix(self):
+
+        fapl = h5cpp.property.FileAccessList()
+        pdrv = h5cpp.file.PosixDriver()
+        self.assertEqual(pdrv.id, h5cpp.file.DriverID.POSIX)
+
+        pdrv(fapl)
+
+        f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
+        f.root()
+
+    def test_h5create_memory(self):
+
+        fapl = h5cpp.property.FileAccessList()
+        mdrv = h5cpp.file.MemoryDriver()
+        self.assertEqual(mdrv.id, h5cpp.file.DriverID.MEMORY)
+        mdrv(fapl)
+
+        f = h5cpp.file.create(self.h5filename, AccessFlags.TRUNCATE, fapl=fapl)
+        f.root()
