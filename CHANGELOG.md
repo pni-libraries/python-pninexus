@@ -1,7 +1,11 @@
 # ChangeLog
 
+## 3.5.0 - 2026-08-10
+- add wrapper for file drivers ([#242](https://github.com/pni-libraries/python-pninexus/pull/242)
+- technical release for libpninexus v3.5.0 (https://github.com/pni-libraries/libpninexus/issues/280) and libh5cpp v0.8.0 (https://github.com/ess-dmsc/h5cpp/issues/679)
+
 ## 3.4.0 - 2026-05-05
-- update tests for hdf5 2.0 )[#235](https://github.com/pni-libraries/python-pninexus/pull/235), [#233](https://github.com/pni-libraries/python-pninexus/pull/233)
+- update tests for hdf5 2.0 ([#235](https://github.com/pni-libraries/python-pninexus/pull/235), [#233](https://github.com/pni-libraries/python-pninexus/pull/233)
 - add support for windows ([#231](https://github.com/pni-libraries/python-pninexus/pull/231))
 - cleaning setting string empty ([#229](https://github.com/pni-libraries/python-pninexus/pull/229))
 - define empty python string with PyCONSTANT_EMPTY_STR ([#228](https://github.com/pni-libraries/python-pninexus/pull/228])

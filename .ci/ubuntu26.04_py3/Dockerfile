@@ -16,7 +16,7 @@ RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq d
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y python3-sphinx apt-utils net-tools
 RUN apt-get -qq install -y python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev  cython3 python3-setuptools libboost-python-dev python3-numpy-dev g++ python3-h5py
 RUN apt-get -qq install -y hdf5-filter-plugin bitshuffle python3-pytest git cmake doxygen python3-sphinx libboost-all-dev
-RUN apt-get -qq install -y libpninexus3.4.0-dev libpninexus3.4.0 libh5cpp0.8.0-dev libh5cpp0.8.0
+RUN apt-get -qq install -y libpninexus3.5.0-dev libpninexus3.5.0 libh5cpp0.8.0-dev libh5cpp0.8.0
 RUN useradd -ms /bin/bash tango
 
 # # install latest h5cpp

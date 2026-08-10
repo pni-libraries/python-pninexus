@@ -15,7 +15,7 @@ RUN cd /etc/apt/sources.list.d && wget http://repos.pni-hdri.de/noble-pni-hdri.l
 
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y python3-sphinx apt-utils net-tools
-RUN apt-get -qq install -y libpninexus3.4.0-dev libpninexus3.4.0 libh5cpp0.8.0-dev libh5cpp0.8.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py
+RUN apt-get -qq install -y libpninexus3.5.0-dev libpninexus3.5.0 libh5cpp0.8.0-dev libh5cpp0.8.0 python3-numpy libhdf5-dev libboost-regex-dev libboost-program-options-dev libboost-system-dev libboost-date-time-dev libboost-filesystem-dev libblas-dev libatlas-base-dev cython3 python3-setuptools libboost-python-dev python3-numpy-abi9 g++ python3-h5py
 RUN apt-get -qq install -y hdf5-filter-plugin hdf5-plugin-bshuf python3-pytest git cmake doxygen python3-sphinx libboost-all-dev
 RUN useradd -ms /bin/bash tango
 
