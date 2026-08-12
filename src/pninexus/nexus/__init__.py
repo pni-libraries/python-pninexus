@@ -173,7 +173,7 @@ def field_factory_create(parent, name, dtype, shape=None, max_shape=None,
             raise TypeError("`units` must be an instance of `str`!")
 
         unit_attr = dataset.attributes.create(
-            "units", h5cpp.datatype.kVariableString)
+            "units", h5cpp.datatype.kVariableUTF8)
         unit_attr.write(units)
 
     return dataset

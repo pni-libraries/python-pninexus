@@ -29,7 +29,8 @@ import numpy.testing as npt
 from pninexus import h5cpp
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.datatype import (
-    kInt32, kFloat32, kUInt8, kVariableString, kEBool)
+    kInt32, kFloat32, kUInt8, kVariableString,
+    kVariableUTF8, kVariableASCII, kEBool)
 from pninexus.h5cpp.datatype import StringPad, String
 
 
@@ -129,13 +130,23 @@ class AttributeIOTests(unittest.TestCase):
         r = a.read()
         self.assertEqual(r, data)
 
+    def testStringASCIIScalarVariableLength(self):
+
+        data = "hello world"
+        a = self.root.attributes.create(
+            "StringASCIIScalarVLength", kVariableASCII)
+        a.write(data)
+        r = a.read()
+        self.assertEqual(r, data)
+
     def testStringUTF8ScalarVariableLength(self):
 
         data = u"\u03bcm"
         bdata = b"\xce\xbcm"
-        dtype = String.variable()
-        dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
-        a = self.root.attributes.create("StringUTF8ScalarVLength", dtype)
+        # dtype = String.variable()
+        # dtype.encoding = h5cpp.datatype.CharacterEncoding.UTF8
+        a = self.root.attributes.create(
+            "StringUTF8ScalarVLength", kVariableUTF8)
         a.write(data)
         r = a.read()
         if sys.version_info > (3,):

@@ -27,7 +27,7 @@ import os
 
 from pninexus.h5cpp.file import File
 from pninexus.h5cpp.file import ImageFlags
-from pninexus.h5cpp.datatype import kVariableString
+from pninexus.h5cpp.datatype import kVariableUTF8
 from pninexus.h5cpp.file import AccessFlags
 from pninexus.h5cpp.file import create, from_buffer
 from pninexus.h5cpp.file import open as h5open
@@ -62,7 +62,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.4"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_Version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableUTF8)
         a1.write(hdf5_version)
         a1.close()
         r1.close()
@@ -84,7 +84,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.3"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_Version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableUTF8)
         a1.write(hdf5_version)
         size = f1.buffer_size
         obuffer = np.zeros(shape=[size], dtype='uint8')
@@ -110,7 +110,7 @@ class ImageTest(unittest.TestCase):
         hdf5_version = "1.0.2"
         f1 = create(self.filename, AccessFlags.TRUNCATE)
         r1 = f1.root()
-        a1 = r1.attributes.create("HDF5_Version", kVariableString)
+        a1 = r1.attributes.create("HDF5_Version", kVariableUTF8)
         a1.write(hdf5_version)
 
         size = f1.buffer_size
