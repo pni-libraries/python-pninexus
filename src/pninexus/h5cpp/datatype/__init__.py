@@ -40,6 +40,8 @@ from pninexus.h5cpp._datatype import kComplex64
 from pninexus.h5cpp._datatype import kComplex128
 from pninexus.h5cpp._datatype import kComplex256
 from pninexus.h5cpp._datatype import kVariableString
+from pninexus.h5cpp._datatype import kVariableASCII
+from pninexus.h5cpp._datatype import kVariableUTF8
 from pninexus.h5cpp._datatype import kEBool
 
 from pninexus.h5cpp._datatype import is_bool
@@ -179,5 +181,5 @@ __all__ = ["Class", "Order", "Sign", "Norm", "Pad", "StringPad", "Direction",
            "kUInt64", "kInt64",
            "kFloat16", "kFloat32", "kFloat64", "kFloat128",
            "kComplex32", "kComplex64", "kComplex128", "kComplex256",
-           "kVariableString",
+           "kVariableString", "kVariableASCII", "kVariableUTF8",
            "Factory", "kFactory", "to_numpy", "kEBool", "is_bool", "Enum"]

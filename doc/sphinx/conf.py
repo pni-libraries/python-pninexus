@@ -160,6 +160,7 @@ html_sidebars = {
 
 html_context = {
     "docs_versions" : [
+        "v3.6.0",
         "v3.5.0",
         "v3.4.0",
         "v3.3.0",

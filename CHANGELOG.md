@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 3.6.0 - 2026-08-12
+- add kVariableUTF8 ([#247](https://github.com/pni-libraries/python-pninexus/pull/242)
+- technical release for libpninexus v3.6.0 (https://github.com/pni-libraries/libpninexus/issues/285) and libh5cpp v0.8.0 (https://github.com/ess-dmsc/h5cpp/issues/679)
+
 ## 3.5.0 - 2026-08-10
 - add wrapper for file drivers ([#242](https://github.com/pni-libraries/python-pninexus/pull/242)
 - technical release for libpninexus v3.5.0 (https://github.com/pni-libraries/libpninexus/issues/280) and libh5cpp v0.8.0 (https://github.com/ess-dmsc/h5cpp/issues/679)

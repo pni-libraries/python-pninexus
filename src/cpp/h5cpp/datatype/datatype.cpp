@@ -276,6 +276,9 @@ BOOST_PYTHON_MODULE(_datatype)
 
   scope current;
 
+  auto utf8_type = hdf5::datatype::create<std::string>();
+  utf8_type.encoding(hdf5::datatype::CharacterEncoding::UTF8);
+  
   current.attr("kUInt8") = hdf5::datatype::create<uint8_t>();
   current.attr("kInt8") = hdf5::datatype::create<int8_t>();
   current.attr("kUInt16") = hdf5::datatype::create<uint16_t>();
@@ -293,6 +296,8 @@ BOOST_PYTHON_MODULE(_datatype)
   current.attr("kComplex128") = hdf5::datatype::create<std::complex<double>>();
   current.attr("kComplex256") = hdf5::datatype::create<std::complex<long double>>();
   current.attr("kVariableString") = hdf5::datatype::create<std::string>();
+  current.attr("kVariableASCII") = hdf5::datatype::create<std::string>();
+  current.attr("kVariableUTF8") = utf8_type;
   current.attr("kEBool") = hdf5::datatype::create<hdf5::datatype::EBool>();
 
   //need some functions
