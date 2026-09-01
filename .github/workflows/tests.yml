@@ -35,7 +35,6 @@ jobs:
       - name: build pninexus
         shell: bash
         run: |
-          source .sh.sh
           pixi run --manifest-path .github/workflows/pixi/pixi.toml rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   macos-15_tests:
@@ -53,7 +52,6 @@ jobs:
       - name: build pninexus
         shell: bash
         run: |
-          source .sh.sh
           pixi run --manifest-path .github/workflows/pixi/pixi.toml rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   windows-2025_tests:
