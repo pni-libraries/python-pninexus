@@ -29,8 +29,8 @@ jobs:
       - name: install pixi
         uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          pixi-version: v0.66.0
           manifest-path: .github/workflows/pixi/pixi.toml
+          pixi-version: v0.66.0
           cache: false
       - name: build pninexus
         shell: bash
@@ -47,8 +47,8 @@ jobs:
       - name: install pixi
         uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          pixi-version: v0.66.0
           manifest-path: .github/workflows/pixi/pixi.toml
+          pixi-version: v0.66.0
           cache: false
       - name: build pninexus
         shell: bash
