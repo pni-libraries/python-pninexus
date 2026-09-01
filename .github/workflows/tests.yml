@@ -35,6 +35,7 @@ jobs:
       - name: build pninexus
         shell: bash
         run: |
+          pixi add  --manifest-path .github/workflows/pixi/pixi.toml rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
           pixi run --manifest-path .github/workflows/pixi/pixi.toml rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   macos-15_tests:
@@ -52,6 +53,7 @@ jobs:
       - name: build pninexus
         shell: bash
         run: |
+          pixi add  --manifest-path .github/workflows/pixi/pixi.toml rattler-build compilers libboost-headers=1.88.0 h5cpp libpninexus libboost=1.88.0  libboost-python=1.88.0 hdf5=1.14.6
           pixi run --manifest-path .github/workflows/pixi/pixi.toml rattler-build build  --recipe .github/workflows/pixi/recipe.yaml
 
   windows-2025_tests:
