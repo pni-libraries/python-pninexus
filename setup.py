@@ -8,6 +8,8 @@ import shutil
 from setuptools import setup
 from distutils.command.install import install
 import sysconfig
+
+sys.path.insert(0, os.path.abspath("."))  # Adjust path as necessary
 from build_tools import (CppExtensionFactory,
                          ConanBuildInfoBuilder,
                          BuildConfiguration)
