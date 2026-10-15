@@ -24,7 +24,7 @@ release = "3.6.1"
 
 
 def get_build_tools():
-    sys.path.insert(0, os.path.abspath("../"))
+    sys.path.insert(0, os.path.abspath("./"))
     import build_tools
     return build_tools
 
