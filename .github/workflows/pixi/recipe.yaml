@@ -48,6 +48,8 @@ requirements:
     - libboost-python-devel
     - blas
     - zlib
+    - pip
+    - wheel
   host:
     - python
     - setuptools
