@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installation &#8212; libpninexus Python bindings 1.1.0 documentation</title>
+    <title>Installation &#8212; libpninexus Python bindings 3.6.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=fcc624f5" />
     
-    <script src="_static/documentation_options.js?v=fc837d61"></script>
+    <script src="_static/documentation_options.js?v=f731707b"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/bizstyle.js"></script>
@@ -38,7 +38,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to PNI/NeXus and h5cpp python bindings’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">libpninexus Python bindings 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">libpninexus Python bindings 3.6.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>  
@@ -85,17 +85,17 @@
 <h2>Building the package<a class="headerlink" href="#building-the-package" title="Link to this heading">¶</a></h2>
 <p>The wrapper package follows the standard Python build and installation
 protocoll using Python setuptools.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>build
-$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w">  </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>-vv<span class="w"> </span>--no-deps<span class="w"> </span>--no-build-isolation
 </pre></div>
 </div>
-<p>or for Python3</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>setup.py<span class="w"> </span>build
-$<span class="w"> </span>python3<span class="w"> </span>setup.py<span class="w"> </span>install
+<p>For those who are still running on the old interface it is maybe whise
+to install this package in a custom location with something like this</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w">  </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>-vv<span class="w"> </span>--no-deps<span class="w"> </span>--no-build-isolation<span class="w"> </span>--prefix<span class="o">=</span>&lt;path<span class="w"> </span>to<span class="w"> </span>installation<span class="w"> </span>prefix&gt;
 </pre></div>
 </div>
+<p>For Python3 just replace python with python3 in the above instructions.</p>
 <p>In order to build the Sphinx documentation use</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>setup.py<span class="w"> </span>build_sphinx
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sphinx-build<span class="w"> </span>doc/sphinx<span class="w"> </span>build/sphinx/html
 </pre></div>
 </div>
 </section>
@@ -208,6 +208,7 @@ documentation</a>.</p>
       <li><a class="reference external" href="index/../../latest/index.html">v:latest</a></li>
       <li><a class="reference external" href="index/../../stable/index.html">v:stable</a></li>
       
+      <li><a class="reference external" href="index/../../v3.6.1/index.html">v3.6.1</a></li>
       <li><a class="reference external" href="index/../../v3.6.0/index.html">v3.6.0</a></li>
       <li><a class="reference external" href="index/../../v3.5.0/index.html">v3.5.0</a></li>
       <li><a class="reference external" href="index/../../v3.4.0/index.html">v3.4.0</a></li>
@@ -246,7 +247,7 @@ documentation</a>.</p>
         <li class="right" >
           <a href="index.html" title="Welcome to PNI/NeXus and h5cpp python bindings’s documentation!"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">libpninexus Python bindings 1.1.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">libpninexus Python bindings 3.6.1 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
       </ul>
     </div>
