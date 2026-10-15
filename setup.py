@@ -8,11 +8,9 @@ import shutil
 from setuptools import setup
 from distutils.command.install import install
 import sysconfig
+from importlib.util import module_from_spec, spec_from_file_location
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath("."))  # Adjust path as necessary
-from build_tools import (CppExtensionFactory,
-                         ConanBuildInfoBuilder,
-                         BuildConfiguration)
 
 try:
     from sphinx.setup_command import BuildDoc
@@ -25,6 +23,15 @@ version = "3.6.1"
 release = "3.6.1"
 # documentation for release with one '.' is stored as v:latest
 # release = "3.6"
+
+
+def get_build_tools():
+    path = Path(__file__).parent / "build_tools" / ("__init__.py")
+    spec = spec_from_file_location("build_tools", path.as_posix())
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
 
 if release.count(".") == 1:
     docs_release = '(latest)'
@@ -56,9 +63,11 @@ def read(fname):
 h5cpp_extra_link_args = []
 nexus_extra_link_args = []
 
+build_tools = get_build_tools()
+
 
 if os.path.exists("conanbuildinfo.txt"):
-    builder = ConanBuildInfoBuilder()
+    builder = build_tools.ConanBuildInfoBuilder()
     nexus_config = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
@@ -67,7 +76,7 @@ if os.path.exists("conanbuildinfo.txt"):
     for lib in nexus_config.link_libraries:
         print(lib)
 else:
-    nexus_config = BuildConfiguration()
+    nexus_config = build_tools.BuildConfiguration()
 
     nexus_config.add_link_library('pninexus')
     nexus_config.add_link_library('h5cpp')
@@ -183,7 +192,8 @@ nexus_config.add_compiler_arguments(arguments)
 # ----------------------------------------------------------------------------
 # creating the extension factories
 # ----------------------------------------------------------------------------
-nexus_extension_factory = CppExtensionFactory(config=nexus_config)
+nexus_extension_factory = build_tools.CppExtensionFactory(
+    config=nexus_config)
 
 # -----------------------------------------------------------------------------
 # setup for the h5cpp and nexus extensions
