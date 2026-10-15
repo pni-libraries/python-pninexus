@@ -48,11 +48,11 @@ requirements:
     - libboost-python-devel
     - blas
     - zlib
-    - pip
   host:
     - python
     - setuptools
     - pip
+    - wheel
     - pytest  # for testing
     - h5py    # for testing
     - sphinx  # for building documentation
