@@ -48,6 +48,7 @@ requirements:
     - libboost-python-devel
     - blas
     - zlib
+    - pip
   host:
     - python
     - setuptools
@@ -65,6 +66,7 @@ requirements:
     - libboost-python-devel
     - blas
     - zlib
+    - pip
   run:
     - python
     - libboost-devel
