@@ -32,21 +32,22 @@ protocoll using Python setuptools.
 
 .. code-block:: bash
 
-    $ python setup.py build
-    $ python setup.py install
+    $ python  -m pip install . -vv --no-deps --no-build-isolation
 
-or for Python3
+For those who are still running on the old interface it is maybe whise
+to install this package in a custom location with something like this
 
 .. code-block:: bash
 
-    $ python3 setup.py build
-    $ python3 setup.py install
+    $  python -m pip install . -vv --no-deps --no-build-isolation --prefix=<path to installation prefix>
+
+For Python3 just replace python with python3 in the above instructions.
 
 In order to build the Sphinx documentation use
 
 .. code-block:: bash
 
-    $ python3 setup.py build_sphinx
+    $ sphinx-build doc/sphinx build/sphinx/html
 
 Debian and Ubuntu users
 =======================
