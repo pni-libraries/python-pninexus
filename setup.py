@@ -8,8 +8,6 @@ import shutil
 from setuptools import setup
 from distutils.command.install import install
 import sysconfig
-from importlib.util import module_from_spec, spec_from_file_location
-from pathlib import Path
 
 
 try:
@@ -26,11 +24,9 @@ release = "3.6.1"
 
 
 def get_build_tools():
-    path = Path(__file__).parent / "build_tools" / ("__init__.py")
-    spec = spec_from_file_location("build_tools", path.as_posix())
-    module = module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    sys.path.insert(0, os.path.abspath("../"))
+    import build_tools
+    return build_tools
 
 
 if release.count(".") == 1:

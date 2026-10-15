@@ -5,7 +5,7 @@ echo "install python3-pninexus"
 docker exec  --user root ndts chown -R tango:tango .
 docker exec ndts mkdir -p build
 if [ "$?" != "0" ]; then exit 255; fi
-if [ "$1" = "ubuntu22.04" ] ; then
+if [ "$1" = "ubuntu22.04" ] || [ "$1" = "debian11"] ; then
     docker exec --user root ndts python3 -m pip install . -vv  --no-deps --no-build-isolation
 else
     docker exec --user root ndts python3 -m pip install . -vv  --no-deps --no-build-isolation  --break-system-packages --root-user-action=ignore
