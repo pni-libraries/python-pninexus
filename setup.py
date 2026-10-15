@@ -8,9 +8,7 @@ import shutil
 from setuptools import setup
 from distutils.command.install import install
 import sysconfig
-from build_tools import (CppExtensionFactory,
-                         ConanBuildInfoBuilder,
-                         BuildConfiguration)
+
 
 try:
     from sphinx.setup_command import BuildDoc
@@ -19,10 +17,17 @@ except ImportError:
     BuildDoc = None
 
 name = "pninexus"
-version = "3.6.0"
-release = "3.6.0"
+version = "3.6.1"
+release = "3.6.1"
 # documentation for release with one '.' is stored as v:latest
 # release = "3.6"
+
+
+def get_build_tools():
+    sys.path.insert(0, os.path.abspath("./"))
+    import build_tools
+    return build_tools
+
 
 if release.count(".") == 1:
     docs_release = '(latest)'
@@ -54,9 +59,11 @@ def read(fname):
 h5cpp_extra_link_args = []
 nexus_extra_link_args = []
 
+build_tools = get_build_tools()
+
 
 if os.path.exists("conanbuildinfo.txt"):
-    builder = ConanBuildInfoBuilder()
+    builder = build_tools.ConanBuildInfoBuilder()
     nexus_config = builder.create("conanbuildinfo.txt")
 
     nexus_config.add_linker_argument("-Wl,-rpath,'$ORIGIN'/../../libs")
@@ -65,7 +72,7 @@ if os.path.exists("conanbuildinfo.txt"):
     for lib in nexus_config.link_libraries:
         print(lib)
 else:
-    nexus_config = BuildConfiguration()
+    nexus_config = build_tools.BuildConfiguration()
 
     nexus_config.add_link_library('pninexus')
     nexus_config.add_link_library('h5cpp')
@@ -181,7 +188,8 @@ nexus_config.add_compiler_arguments(arguments)
 # ----------------------------------------------------------------------------
 # creating the extension factories
 # ----------------------------------------------------------------------------
-nexus_extension_factory = CppExtensionFactory(config=nexus_config)
+nexus_extension_factory = build_tools.CppExtensionFactory(
+    config=nexus_config)
 
 # -----------------------------------------------------------------------------
 # setup for the h5cpp and nexus extensions

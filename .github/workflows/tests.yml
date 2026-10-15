@@ -85,11 +85,14 @@ jobs:
         run: docker run --name  ndts -d -it -v `pwd`:/home/tango  ndts
 
       - name: install python-pninexus
-        run: .ci/install.sh 3
+        env:
+          OS: ${{ matrix.os }}
+        run: .ci/install.sh ${OS}
 
       - name: run tests
-        run: .ci/run.sh 3
-
+        env:
+          OS: ${{ matrix.os }}
+        run: .ci/run.sh ${OS}
       - name: Append documentation for the latest release version
         if: github.ref == 'refs/heads/develop' &&  matrix.os == 'debian13'
         run: |
