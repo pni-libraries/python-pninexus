@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.6.2 - 2026-10-15
+- add numpy to pyproject.toml file ([#248](https://github.com/pni-libraries/python-pninexus/pull/258)
+
 ## 3.6.1 - 2026-10-15
 - add pyproject.toml file ([#247](https://github.com/pni-libraries/python-pninexus/pull/254)
 

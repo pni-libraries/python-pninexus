@@ -1,5 +1,5 @@
-[build-system]
-requires = ["setuptools>=42", "wheel"]
+\61;8001;1c[build-system]
+requires = ["setuptools>=42", "wheel", "numpy"]
 build-backend = "setuptools.build_meta"
 
 # [tool.ruff.lint]
