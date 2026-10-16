@@ -1,4 +1,4 @@
-\61;8001;1c[build-system]
+[build-system]
 requires = ["setuptools>=42", "wheel", "numpy"]
 build-backend = "setuptools.build_meta"
 
