@@ -79,7 +79,7 @@ and for Ubuntu (Noble)
 
    $ wget http://repos.pni-hdri.de/noble-pni-hdri.list
 
-Similarly, proceed for Trixie, Bookworm, Bullseye, Resolute, Noble, Jammy.
+Similarly, proceed for Trixie, Bookworm, Bullseye, Stonking Resolute, Noble.
 Once you have downloaded the file use
 
 .. code-block:: bash
