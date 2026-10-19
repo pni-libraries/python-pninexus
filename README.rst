@@ -78,8 +78,8 @@ For Python3 just replace python with python3 in the above instructions.
 Debian and Ubuntu packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Debian ``trixie``, ``bookworm``, ``bullseye`` or Ubuntu ``resolute``,
-``noble``, ``jammy`` packages can be found in the HDRI repository.
+Debian ``trixie``, ``bookworm``, ``bullseye`` or Ubuntu ``stonking``, ``resolute``,
+``noble`` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
