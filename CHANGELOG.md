@@ -3,6 +3,7 @@
 ## 3.X.Y - 2026-XX-YY
 - add ububtu 26.10 tests ([#260](https://github.com/pni-libraries/python-pninexus/pull/260)
 - add numpy to pyproject.toml file ([#258](https://github.com/pni-libraries/python-pninexus/pull/258)
+- update URL for the HDRI repository ([#258](https://github.com/pni-libraries/python-pninexus/pull/262)
 
 ## 3.6.1 - 2026-10-15
 - add pyproject.toml file ([#247](https://github.com/pni-libraries/python-pninexus/pull/254)
