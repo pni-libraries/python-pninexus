@@ -86,7 +86,7 @@ To install the debian packages, add the PGP repository key
 ::
 
        $ sudo su
-       $ curl -s https://docs.desy.de/pni-hdri/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+       $ curl -s https://repos.desy.de/pni-hdri/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
        $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
 and then download the corresponding source list, e.g. for ``trixie``
@@ -94,14 +94,14 @@ and then download the corresponding source list, e.g. for ``trixie``
 ::
 
        $ cd /etc/apt/sources.list.d
-       $ wget https://docs.desy.de/pni-hdri/trixie-pni-hdri.sources
+       $ wget https://repos.desy.de/pni-hdri/trixie-pni-hdri.sources
 
 or ``noble``
 
 ::
 
        $ cd /etc/apt/sources.list.d
-       $ wget https://docs.desy.de/pni-hdri/noble-pni-hdri.list
+       $ wget https://repos.desy.de/pni-hdri/noble-pni-hdri.list
 
 respectively.
 
