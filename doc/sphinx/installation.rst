@@ -61,7 +61,7 @@ keyring
 
 .. code-block:: bash
 
-   $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+   $ curl -s https://docs.desy.de/pni-hdri/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
    $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
 The return value of this command line should be `OK`.
@@ -71,13 +71,13 @@ For Debian (Trixie) use
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/trixie-hdri.sources
+   $ wget https://docs.desy.de/pni-hdri/trixie-hdri.sources
 
 and for Ubuntu (Noble)
 
 .. code-block:: bash
 
-   $ wget http://repos.pni-hdri.de/noble-pni-hdri.list
+   $ wget https://docs.desy.de/pni-hdri/noble-pni-hdri.list
 
 Similarly, proceed for Trixie, Bookworm, Bullseye, Stonking Resolute, Noble.
 Once you have downloaded the file use
